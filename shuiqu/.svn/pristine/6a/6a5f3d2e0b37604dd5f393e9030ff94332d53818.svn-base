@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>分享海报</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="./css/sm.min.css">
+    <link rel="stylesheet" href="./css/sm-extend.min.css">
+    <link rel="stylesheet" href="./css/shop.css">
+</head>
+<body>
+	<div class="page-group">
+        <div class="page page-finish page-current">
+            <div class="content content-poster" id="posterTpl">
+                <div><img src="./css/images/1.jpg" alt=""></div>
+                <!-- <div class="top">
+                    <div class="headImg"></div>
+                </div>
+                <div class="middle">
+                    <div class="qrCode"></div>
+                    <h3>扫二维码注册并下载水趣APP</h3>
+                    <p>即可获得价值888元健康饮水大礼包,数量有限</p>
+                </div>
+                <div class="foot">
+                    <div class="bucket"><a href="" class="open-about"></a></div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+    <!-- About Popup -->
+    <div class="popup popup-about">
+        <div class="content-block">
+            <div class="content">
+                <div class="card">
+                    <div class="card-header">请选择品牌首字母<span class="pull-right close-popup">关闭</span></div>
+                    <div class="card-content">
+                        <div class="card-content-inner">
+                            <table class="select-brand">
+                            <tr>
+                                <td><a href="">A</a></td>
+                                <td><a href="">B</a></td>
+                                <td><a href="">C</a></td>
+                                <td><a href="">D</a></td>
+                                <td><a href="">E</a></td>
+                                <td><a href="">F</a></td>
+                                <td><a href="">G</a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="">H</a></td>
+                                <td><a href="">I</a></td>
+                                <td><a href="">J</a></td>
+                                <td><a href="">K</a></td>
+                                <td><a href="">L</a></td>
+                                <td><a href="">M</a></td>
+                                <td><a href="">N</a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="">O</a></td>
+                                <td><a href="">P</a></td>
+                                <td><a href="">Q</a></td>
+                                <td><a href="">R</a></td>
+                                <td><a href="">S</a></td>
+                                <td><a href="">T</a></td>
+                                <td><a href="">U</a></td>
+                            </tr>
+                            <tr>
+                                <tr>
+                                    <td><a href="">V</a></td>
+                                    <td><a href="">W</a></td>
+                                    <td><a href="">X</a></td>
+                                    <td><a href="">Y</a></td>
+                                    <td><a href="">Z</a></td>
+                                </tr>
+                            </tr>
+                            </table>     
+                        </div>
+                    </div>
+                    <ul class="water-brand">
+                        <!-- <li>
+                            <img src="http://7xlmry.com1.z0.glb.clouddn.com/Upload/Product/images/20151123/151123172654646937.jpg" alt="">
+                            <span>哇哈哈饮用水</span>
+                        </li>
+                        <li>
+                            <img src="http://7xlmry.com1.z0.glb.clouddn.com/Upload/Product/images/20151123/151123172654646937.jpg" alt="">
+                            <span>哇哈哈饮用水</span>
+                        </li>
+                        <li>
+                            <img src="http://7xlmry.com1.z0.glb.clouddn.com/Upload/Product/images/20151123/151123172654646937.jpg" alt="">
+                            <span>哇哈哈饮用水</span>
+                        </li>
+                        <li>
+                            <img src="http://7xlmry.com1.z0.glb.clouddn.com/Upload/Product/images/20151123/151123172654646937.jpg" alt="">
+                            <span>哇哈哈饮用水</span>
+                        </li> -->
+                        <li>
+                            <img src="http://7xlmry.com1.z0.glb.clouddn.com/Upload/Product/images/20151123/151123172654646937.jpg" alt="">
+                            <span>哇哈哈饮用水</span>
+                        </li>
+                        <li>
+                            <img src="http://7xlmry.com1.z0.glb.clouddn.com/Upload/Product/images/20151123/151123172654646937.jpg" alt="">
+                            <span>哇哈哈饮用水</span>
+                        </li>
+                        <li>
+                            <img src="http://7xlmry.com1.z0.glb.clouddn.com/Upload/Product/images/20151123/151123172654646937.jpg" alt="">
+                            <span>哇哈哈饮用水</span>
+                        </li>
+                        <li>
+                            <img src="http://7xlmry.com1.z0.glb.clouddn.com/Upload/Product/images/20151123/151123172654646937.jpg" alt="">
+                            <span>哇哈哈饮用水</span>
+                        </li>
+                        <li>
+                            <img src="http://7xlmry.com1.z0.glb.clouddn.com/Upload/Product/images/20151123/151123172654646937.jpg" alt="">
+                            <span>哇哈哈饮用水</span>
+                        </li>
+                        <li>
+                            <img src="http://7xlmry.com1.z0.glb.clouddn.com/Upload/Product/images/20151123/151123172654646937.jpg" alt="">
+                            <span>哇哈哈饮用水</span>
+                        </li>
+                        <li>
+                            <img src="http://7xlmry.com1.z0.glb.clouddn.com/Upload/Product/images/20151123/151123172654646937.jpg" alt="">
+                            <span>哇哈哈饮用水</span>
+                        </li>
+                        <li>
+                            <img src="http://7xlmry.com1.z0.glb.clouddn.com/Upload/Product/images/20151123/151123172654646937.jpg" alt="">
+                            <span>哇哈哈饮用水</span>
+                        </li>
+                        <li>
+                            <img src="http://7xlmry.com1.z0.glb.clouddn.com/Upload/Product/images/20151123/151123172654646937.jpg" alt="">
+                            <span>哇哈哈饮用水</span>
+                        </li>
+                        <li>
+                            <img src="http://7xlmry.com1.z0.glb.clouddn.com/Upload/Product/images/20151123/151123172654646937.jpg" alt="">
+                            <span>哇哈哈饮用水</span>
+                        </li>
+                    </ul>      
+                </div>
+            </div>
+            <div class="bar bar-footer">
+                <a href="#" class="button button-fill btn-yello">确认</a>
+            </div>
+        </div>
+        
+    </div>
+	<script type='text/javascript' src='js/common/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/sm-extend.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/handlebars-v4.0.5.js'></script>
+    <script src="./css/iconfont.js"></script>
+    <script>
+        $(document).on('click','.open-about', function () {
+          $.popup('.popup-about');
+        });
+        $.init();
+    </script>
+</body>
+</html>

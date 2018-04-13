@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>人人开店</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="./css/sm.min.css">
+    <link rel="stylesheet" href="./css/sm-extend.min.css">
+    <link rel="stylesheet" href="./css/shop.css">
+    <link rel="stylesheet" href="./css/layout.css">
+    <style>
+    	.wrap{width:100%;padding: 0;}
+/*	    .wrap > h1 {
+	      color: rgb(221, 142, 22);
+	      margin: 14px auto 0;
+	    }*/
+	    #showcase {
+	      width: 100%;
+	      height: 20rem;
+	      overflow: visible !important;
+	      position: relative;
+	      top:-1rem;
+	      left: -0.5rem;
+	    }
+	    .card {
+	    	position: absolute;
+	    	left: 0;
+	    	top: 0;
+	      width: 28%;
+	      text-align: center;
+	    }
+	    .card img{
+	    	width: 100%;
+	    }
+	    .nav.left{
+	    	position: absolute;
+	    	left:3%;
+	    	top:60%;
+	    }
+	    .nav.right{
+	    	position: absolute;
+	    	right: 3%;
+	    	top:60%;
+	    }
+    </style>
+</head>
+<body>
+	<div class="page-group">
+		<div class="page page-finish page-current">
+			<header class="bar bar-nav light-nav">
+	            <span class="icon icon-35icoback pull-left"></span>  
+	            <h1 class="title">人人开店</h1>
+	            <a href="#" class="icon icon-help pull-right">
+	            </a>
+	        </header>
+	        <div class="content-people">
+	        	<div class="account">
+	        		<h4>店东账号：<span>15914000858</span></h4>
+					<p><a href="#" class="button button-fill btn-yello">添加提现账号</a></p>
+	        	</div>
+	        	<div class="income">
+	        		<table class="icon pull-left">
+	        			<tr>
+	        				<td>
+	        					<svg class="icon icon-svg pull-left" aria-hidden="true">
+				                    <use xlink:href="#icon-shouyi"></use>
+				                </svg>
+	        				</td>
+	        				<td>
+	        					<h5>店铺收益</h5>
+	        					<p>03-18 15:00</p>
+	        				</td>
+	        			</tr>
+	        		</table>  
+		            <a href="#" class="button pull-right">提现</a>
+		            <div class="money">
+		            	<div class="inner-item">
+		            		<h5>￥<span>0</span></h5>
+		            		<p>总收益</p>
+		            	</div>
+		            	<div class="inner-item">
+		            		<h5>￥<span>0</span></h5>
+		            		<p>昨日收益</p>
+		            	</div>
+		            	<div class="inner-item">
+		            		<h5><span>3</span></h5>
+		            		<p>我的客户</p>
+		            	</div>
+		            </div>
+	        	</div>
+	        	<div class="poster">
+	        		<p><a href="#" class="button button-fill btn-yello">生成海报</a></p>
+	        		<div class="wrap">
+				      <div id="showcase" class="noselect">
+				        <div class="card">
+				          <img src="./css/images/1.jpg">
+				        </div>
+				        <div class="card">
+				          <img src="./css/images/2.jpg">
+				        </div>
+				        <div class="card">
+				          <img src="./css/images/3.jpg">
+				        </div>
+				        
+				        </div>
+				      </div>
+				      <span class="nav noselect left icon icon-35icoback">
+				      </span>
+				      <span class="nav noselect right icon icon-ico_awwor_right">
+				      </span>
+				    </div>
+	        	</div>
+            </div>
+	    </div>
+
+	</div>
+	<script type='text/javascript' src='./js/common/zepto.min.js' charset='utf-8'></script>
+	<script type='text/javascript' src='./js/common/extend.js' charset='utf-8'></script>
+	<script src="./js/common/jquery.cloud9carousel.js" charset='utf-8'></script>
+  	<script>
+    $(function() {
+      	var showcase = $("#showcase");
+	    showcase.Cloud9Carousel( {
+	        yOrigin: 42,
+	        yRadius: -24,
+	        itemClass: "card",
+	        buttonLeft: $(".nav.left"),
+	        buttonRight: $(".nav.right"),
+	        bringToFront: true,
+	        onLoaded: function() {
+	          showcase.css( 'visibility', 'visible' )
+	          showcase.css( 'display', 'none' )
+	          showcase.fadeIn( 1500 )
+	        }
+	    })
+    })
+  	</script>
+	<script type='text/javascript' src='./js/common/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='./js/common/sm-extend.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='./js/common/handlebars-v4.0.5.js' charset='utf-8'></script>
+    
+	<script>
+		$.init();
+	</script>
+	<script src="./css/iconfont.js"></script>
+</body>
+</html>

@@ -1,0 +1,1912 @@
+@charset "UTF-8";
+/*基础数据，可配置*/
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0; }
+
+h3, h4, h5, h6,
+p {
+  margin: 0; }
+
+.button.btn-gray {
+  background: #7E8699; }
+
+.button.btn-yello.active,
+.button.btn-yello:hover,
+.button.btn-yello {
+  background: #036EB8;
+  color: #fff; }
+
+.hide {
+  display: none; }
+
+.no-bg-input {
+  border: none;
+  background: none; }
+
+.wihte-bg {
+  background: #fff; }
+
+label.label-checkbox {
+  display: inline-block; }
+
+label.label-checkbox input[type="radio"]:checked + .item-media i.icon-form-checkbox,
+label.label-checkbox input[type="checkbox"]:checked + .item-media i.icon-form-checkbox {
+  background-color: #036EB8; }
+
+.pb3 {
+  padding-bottom: 3rem; }
+
+.swiper-container-horizontal {
+  position: relative; }
+
+.swiper-slide {
+  background: #fff; }
+
+.swiper-slide img {
+  width: 60%;
+  margin: 0 auto; }
+
+/*icon图标*/
+.icon-svg {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden; }
+
+.icon-btn_sp1:before {
+  content: "\e8ab"; }
+.icon-btn_sp1.active {
+  color: #EAAE12; }
+  .icon-btn_sp1.active:before {
+    content: "\e8da"; }
+
+.icon-btn_xj1:before {
+  content: "\e8aa"; }
+.icon-btn_xj1.active {
+  color: #EAAE12; }
+  .icon-btn_xj1.active:before {
+    content: "\e8dc"; }
+
+.icon-btn_dzp-:before {
+  content: "\e8d6"; }
+.icon-btn_dzp-.active {
+  color: #EAAE12; }
+  .icon-btn_dzp-.active:before {
+    content: "\e8eb"; }
+
+.icon-65notice:before {
+  content: "\e641"; }
+
+.icon-111icosearch:before {
+  content: "\e670"; }
+
+.icon-35icoback:before {
+  content: "\e623";
+  color: #fff; }
+
+.icon-86star {
+  color: #D9D9D9; }
+  .icon-86star.active {
+    color: #FDC10A; }
+  .icon-86star:before {
+    content: "\e656"; }
+
+.icon-11addressdel {
+  font-size: 1.5rem;
+  color: red;
+  position: absolute;
+  right: 0;
+  bottom: 0; }
+
+.icon-onlyforaddressdelete:before,
+.icon-11addressdel:before {
+  content: "\e60a"; }
+
+.icon-63navbaricoarrowdown:before {
+  content: "\e63f"; }
+
+.icon-47location1:before {
+  content: "\e62f";
+  color: #FAD602; }
+
+.title-icon {
+  width: 2.2rem;
+  height: 2.2rem; }
+
+.bar .title-icon {
+  padding: .3rem .1rem; }
+
+.icon-ico_awwor_right:before {
+  content: "\e8b5"; }
+
+.icon-cod:before {
+  content: "\e8b9"; }
+
+.icon-weixin:before {
+  content: "\e8ba";
+  color: #3CAF36; }
+
+.icon-weixin {
+  font-size: 2.3rem; }
+
+.icon-40icoedit:before {
+  content: "\e628"; }
+
+.icon-83shoppingbtnnumadd:before {
+  content: "\e653"; }
+
+.icon-42icotime:before {
+  content: "\e62a"; }
+
+.icon-53meicolocation:before {
+  content: "\e635"; }
+
+.icon-87tel:before {
+  content: "\e657"; }
+
+.icon-76share:before {
+  content: "\e64c"; }
+
+.icon-57meorderstatus1:before {
+  content: "\e639"; }
+
+.icon-58meorderstatus2:before {
+  content: "\e63a"; }
+
+.icon-59meorderstatus3:before {
+  content: "\e63b"; }
+
+.icon-60meorderstatus4:before {
+  content: "\e63c"; }
+
+.icon-62meorderstatus10:before {
+  content: "\e63e"; }
+
+.icon-73ordericostore:before {
+  content: "\e649"; }
+
+.icon-88tipicoorder:before {
+  content: "\e658"; }
+
+.icon-star02:before {
+  content: "\e671";
+  color: #FDC10A; }
+
+.icon-img_default:before {
+  content: "\e8c0";
+  color: #eee; }
+
+.icon-101couponused:before {
+  content: "\e665";
+  color: #999; }
+
+.icon-46location:before {
+  content: "\e62e"; }
+
+.icon-51youhui:before {
+  content: "\e6d2"; }
+
+.icon-default:before {
+  content: "\e8fc";
+  font-size: 3rem; }
+
+.icon-shouyi:before {
+  content: "\e8c6"; }
+
+.icon-edit:before {
+  content: "\e8c4";
+  color: #5B5B5B; }
+
+.icon-help:before {
+  content: "\e8c5";
+  color: #fff; }
+
+.icon-49zhifubao:before {
+  content: "\e672";
+  background: #fff;
+  color: #1AA1E6; }
+
+.icon-yinhang:before {
+  content: "\e8c3";
+  color: #036EB8; }
+
+.icon-ico_pic:before {
+  content: "\e8ca"; }
+
+.icon-card:before {
+  content: "\e8cb";
+  color: #BFBFBF; }
+
+.icon-share:before {
+  content: "\e8cc"; }
+
+.icon-me_ico_shop:before {
+  content: "\e8cd"; }
+
+.icon-ico_tel:before {
+  content: "\e8c7"; }
+
+.icon-ico_mima:before {
+  content: "\e8c8"; }
+
+.icon-duigou1-copy:before {
+  content: "\e8e9"; }
+
+.icon-123close:before {
+  content: "\e86e"; }
+
+.icon-vat_ico_pass:before {
+  content: "\e8d3"; }
+
+.icon-vat_ico_reject:before {
+  content: "\e8d2"; }
+
+.icon-vat__ico_andit:before {
+  content: "\e8d1"; }
+
+.icon-invoice:before {
+  content: "\e887"; }
+
+.icon-btn_no_crime:before {
+  content: "\e8b6"; }
+
+.icon-btn_healthy:before {
+  content: "\e8b4"; }
+
+.icon-btn_work:before {
+  content: "\e8b3"; }
+
+.icon-icon_e_ticket:before {
+  content: "\e8d7"; }
+
+.icon-41icolocal:before {
+  content: "\e629"; }
+
+.icon-zhengjian:before {
+  content: "\e8c2"; }
+
+.icon-100huodao:before {
+  content: "\e674"; }
+
+.icon-ico_pay:before {
+  content: "\e8f7"; }
+
+.icon-ico_no_pay:before {
+  content: "\e8f8"; }
+
+.icon-btn_fx_1:before {
+  content: "\e8ac"; }
+
+.icon-me_ico_shop:before {
+  content: "\e8cd"; }
+
+.icon-ico_tel1:before {
+  content: "\e8f9"; }
+
+.icon-ico_map:before {
+  content: "\e8fa"; }
+
+.icon-61meorderstatus5:before {
+  content: "\e63d"; }
+
+.icon-btn_healthy:before {
+  content: "\e8e0"; }
+
+.icon-btn_work:before {
+  content: "\e8de"; }
+
+.icon-btn_no_crime:before {
+  content: "\e8df"; }
+
+.icon-xiaolian:before {
+  content: "\e8c9"; }
+
+.icon-no_coupon:before {
+  content: "\e8fb"; }
+
+.icon-98zhifu:before {
+  content: "\e675"; }
+
+.icon-99nozhifu:before {
+  content: "\e676"; }
+
+.icon-code_off:before {
+  content: "\e8fd"; }
+
+.icon-code_on:before {
+  content: "\e8fe"; }
+
+.icon-close1:before {
+  content: "\e8ff"; }
+
+.icon-no_code:before {
+  content: "\e900"; }
+
+.icon-kefu:before {
+  content: "\e901"; }
+
+.icon-51meicochat:before {
+  content: "\e633"; }
+
+.icon-weixinzhifu:before {
+  content: "\e678";
+  color: #3CAF36;
+  font-size: 2.2rem; }
+
+.icon-peison:before {
+  content: "\e903"; }
+
+.bar-nav {
+  background: #036EB8; }
+
+.white {
+  color: #fff; }
+
+.gray-color {
+  background: #ccc !important; }
+
+.bar-left {
+  position: absolute !important;
+  left: 0;
+  right: auto; }
+
+.bar-left-black::before {
+  color: #000; }
+
+.light-nav {
+  background: #FDFDFD; }
+
+.price {
+  color: #E8A44F; }
+
+.pick-nav {
+  background: #F7F7F8; }
+
+.required {
+  color: #ff0000; }
+
+.err-msg {
+  color: #ff0000;
+  line-height: 1.2rem;
+  font-size: 0.65rem;
+  text-indent: 1rem; }
+
+/*人人开店*/
+.content-people .account {
+  /*height: 4.4rem;*/
+  background: #fff;
+  padding: 0.5rem 1rem; }
+  .content-people .account h4 {
+    font-weight: normal;
+    /*padding:0rem 1rem;*/
+    /*padding:0rem 0rem 1rem;*/ }
+    .content-people .account h4 span {
+      color: #bbb; }
+    .content-people .account h4 .icon-bao {
+      margin-left: 0.3rem;
+      vertical-align: baseline; }
+  .content-people .account .button.button-fill {
+    width: 42%;
+    text-align: center;
+    margin: 0.2rem auto 0;
+    line-height: 1.5rem;
+    height: 1.5rem; }
+.content-people .income {
+  height: 6.5rem;
+  background: #fff;
+  margin-top: 0.2rem;
+  padding: 0.5rem 1rem 0rem; }
+  .content-people .income .tips {
+    color: red;
+    font-size: 0.5rem;
+    margin-bottom: 0.2rem;
+    text-align: center; }
+  .content-people .income table td:nth-of-type(1) {
+    width: 2rem; }
+    .content-people .income table td:nth-of-type(1) img {
+      width: 100%; }
+    .content-people .income table td:nth-of-type(1) .icon-svg {
+      width: 1.5rem;
+      height: 1.5rem; }
+  .content-people .income table td:nth-of-type(2) h5 {
+    font-size: 0.7rem;
+    font-weight: normal; }
+  .content-people .income table td:nth-of-type(2) p {
+    font-size: 0.2px;
+    font-weight: normal; }
+  .content-people .income a {
+    display: block;
+    width: 20%;
+    font-size: 0.75rem;
+    border: 0 none;
+    color: #1A1A1A;
+    font-weight: bold; }
+  .content-people .income .tiXian {
+    display: block;
+    width: 20%;
+    font-size: 0.75rem;
+    border: 0 none;
+    color: #fff;
+    font-weight: bold; }
+  .content-people .income .btn-gra {
+    background: #D4D4D4;
+    font-weight: normal;
+    height: 1.35rem;
+    line-height: 1.4rem; }
+  .content-people .income .money {
+    width: 100%;
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: row; }
+    .content-people .income .money .inner-item {
+      margin: auto;
+      align-items: center;
+      /*h5{
+      	text-align: center;
+      	line-height: 1;
+      	span{
+      		font-size: 1rem;
+      		font-weight: normal;
+      	}
+      }
+      p{
+      	font-size:0.7rem;
+      	white-space: nowrap;
+      	a{
+      		font-size:0.7rem;
+      		font-weight: normal;
+      	}
+      }*/ }
+      .content-people .income .money .inner-item a {
+        width: 100%;
+        text-align: center; }
+        .content-people .income .money .inner-item a h5 span {
+          font-size: 1rem;
+          font-weight: normal; }
+        .content-people .income .money .inner-item a p {
+          font-size: 0.7rem;
+          font-weight: normal; }
+.content-people .poster {
+  margin-top: 0.2rem;
+  text-align: center; }
+  .content-people .poster .wrap {
+    padding: 0;
+    height: 14rem;
+    position: relative;
+    background: #fff;
+    width: 100%;
+    min-height: 2.5rem;
+    margin-bottom: 0.2rem; }
+    .content-people .poster .wrap .wrap-title {
+      padding: 0.5rem 1rem 0rem; }
+      .content-people .poster .wrap .wrap-title table td:nth-of-type(1) {
+        width: 2rem; }
+        .content-people .poster .wrap .wrap-title table td:nth-of-type(1) img {
+          width: 100%; }
+        .content-people .poster .wrap .wrap-title table td:nth-of-type(1) .icon-svg {
+          width: 1.5rem;
+          height: 1.5rem; }
+      .content-people .poster .wrap .wrap-title table td:nth-of-type(2) h5 {
+        font-size: 0.7rem;
+        font-weight: normal; }
+      .content-people .poster .wrap .wrap-title table td:nth-of-type(2) p {
+        font-size: 0.2px;
+        font-weight: normal; }
+      .content-people .poster .wrap .wrap-title a.btn-125 {
+        height: 1.25rem; }
+      .content-people .poster .wrap .wrap-title .share-btn {
+        display: block;
+        width: 20%;
+        font-size: 0.75rem;
+        border: 0 none;
+        padding: 0;
+        color: #1A1A1A;
+        height: 1.35rem;
+        line-height: 1.4rem; }
+      .content-people .poster .wrap .wrap-title .share-btn.no-active {
+        background: #D4D4D4; }
+    .content-people .poster .wrap #showcase {
+      width: 100%;
+      height: 12.5rem;
+      overflow: visible !important;
+      position: absolute;
+      top: 1.5rem;
+      /*left: -0.5rem;*/ }
+      .content-people .poster .wrap #showcase .card {
+        margin: 0 auto;
+        position: relative;
+        left: 0;
+        top: 0;
+        width: 28%;
+        box-shadow: none;
+        /*text-align: center;*/ }
+        .content-people .poster .wrap #showcase .card img {
+          width: 100%; }
+      .content-people .poster .wrap #showcase .card.active img {
+        border: 0.2rem solid #036EB8; }
+      .content-people .poster .wrap #showcase .nav.left {
+        position: absolute;
+        left: 3%;
+        top: 40%; }
+      .content-people .poster .wrap #showcase .nav.right {
+        position: absolute;
+        right: 3%;
+        top: 40%; }
+  .content-people .poster .tpl-box {
+    padding: 0;
+    height: 17rem;
+    position: relative;
+    width: 100%;
+    min-height: 2.5rem;
+    background: #fff; }
+    .content-people .poster .tpl-box .wrap-title {
+      padding: 0.5rem 1rem 0rem; }
+      .content-people .poster .tpl-box .wrap-title table td:nth-of-type(1) {
+        width: 2rem; }
+        .content-people .poster .tpl-box .wrap-title table td:nth-of-type(1) img {
+          width: 100%; }
+        .content-people .poster .tpl-box .wrap-title table td:nth-of-type(1) .icon-svg {
+          width: 1.5rem;
+          height: 1.5rem; }
+      .content-people .poster .tpl-box .wrap-title table td:nth-of-type(2) h5 {
+        font-size: 0.7rem;
+        font-weight: normal; }
+      .content-people .poster .tpl-box .wrap-title table td:nth-of-type(2) p {
+        font-size: 0.2px;
+        font-weight: normal; }
+      .content-people .poster .tpl-box .wrap-title .create-btn {
+        display: block;
+        width: 32%;
+        font-size: 0.75rem;
+        border: 0 none;
+        padding: 0;
+        color: #fff;
+        height: 1.35rem;
+        line-height: 1.4rem; }
+      .content-people .poster .tpl-box .wrap-title .create-btn.no-active {
+        background: #D4D4D4;
+        color: #1A1A1A; }
+    .content-people .poster .tpl-box #showcase2 {
+      width: 100%;
+      height: 12.5rem;
+      overflow: visible !important;
+      position: absolute;
+      top: 1.5rem;
+      /*left: -0.5rem;*/ }
+      .content-people .poster .tpl-box #showcase2 .card {
+        margin: 0 auto;
+        position: relative;
+        left: 0;
+        top: 0;
+        width: 28%;
+        box-shadow: none;
+        /*text-align: center;*/ }
+        .content-people .poster .tpl-box #showcase2 .card img {
+          width: 100%; }
+      .content-people .poster .tpl-box #showcase2 .card.active img {
+        border: 0.2rem solid #036EB8; }
+      .content-people .poster .tpl-box #showcase2 .nav.left {
+        position: absolute;
+        left: 3%;
+        top: 40%; }
+      .content-people .poster .tpl-box #showcase2 .nav.right {
+        position: absolute;
+        right: 3%;
+        top: 40%; }
+
+/*添加提现账号*/
+.content-addCash table {
+  width: 100%;
+  height: 2rem;
+  line-height: 2rem;
+  background: #fff;
+  margin-top: 0.3rem; }
+  .content-addCash table tr {
+    line-height: 2rem; }
+    .content-addCash table tr td {
+      font-size: 0.8rem; }
+      .content-addCash table tr td label {
+        margin-left: 0.3rem; }
+        .content-addCash table tr td label .icon-form-checkbox {
+          width: 0.9rem;
+          height: 0.9rem; }
+      .content-addCash table tr td u {
+        text-decoration: none;
+        margin-left: 0.3rem;
+        font-size: 0.5rem;
+        color: #A1A1A1; }
+      .content-addCash table tr td .icon-49zhifubao {
+        font-size: 1rem;
+        margin-right: 0.25rem; }
+      .content-addCash table tr td .icon-yinhang {
+        font-size: 1.2rem;
+        margin-right: 0.25rem; }
+    .content-addCash table tr .pull-left {
+      padding-left: 1rem; }
+      .content-addCash table tr .pull-left b {
+        color: #757575; }
+    .content-addCash table tr .pull-right {
+      padding-right: 1rem; }
+      .content-addCash table tr .pull-right b {
+        color: #757575; }
+.content-addCash .new-form-list {
+  margin: 0.2rem 0 0;
+  font-size: 0.8rem; }
+  .content-addCash .new-form-list .item-title.label {
+    width: auto; }
+  .content-addCash .new-form-list input[type="text"] {
+    font-size: 0.7rem; }
+  .content-addCash .new-form-list input[type="password"] {
+    font-size: 0.7rem; }
+  .content-addCash .new-form-list .button.button-fill {
+    font-size: 0.8rem;
+    width: 90%;
+    margin: 1rem auto 1rem;
+    line-height: 1.8rem;
+    height: 1.8rem; }
+  .content-addCash .new-form-list .edit-forget {
+    width: 90%;
+    margin: 0.2rem auto 0; }
+    .content-addCash .new-form-list .edit-forget a {
+      color: #4C5B87;
+      font-size: 0.7rem; }
+  .content-addCash .new-form-list ul {
+    margin-top: 0.3rem; }
+    .content-addCash .new-form-list ul li {
+      margin-right: 10px;
+      margin-left: 10px;
+      border-bottom: 1px solid #EDEDEC; }
+    .content-addCash .new-form-list ul li:last-child {
+      border-bottom: none; }
+
+/*收益账单*/
+.content-count {
+  top: 2.4rem !important; }
+  .content-count .count {
+    color: #848484;
+    width: 100%;
+    height: 4rem;
+    background: #fff; }
+    .content-count .count .time {
+      font-size: 0.6rem;
+      margin-left: 1rem; }
+    .content-count .count .item-content {
+      text-align: center; }
+      .content-count .count .item-content h4 {
+        color: #FD5E59;
+        font-size: 1rem;
+        font-weight: normal; }
+        .content-count .count .item-content h4 span {
+          font-size: 0.8rem; }
+      .content-count .count .item-content p {
+        font-size: 0.6rem; }
+  .content-count .sevenDays {
+    margin-top: 0.2rem;
+    height: 7.8rem; }
+    .content-count .sevenDays .item-title {
+      height: 1.5rem;
+      line-height: 1.5rem;
+      padding-left: 1rem;
+      font-size: 0.7rem;
+      background: #fff;
+      margin-bottom: 0.1rem; }
+    .content-count .sevenDays .item-charts {
+      width: 100%;
+      height: 6rem;
+      background: #fff !important; }
+  .content-count .client-list {
+    width: 100%;
+    background: #fff;
+    padding: 1rem 0; }
+    .content-count .client-list table {
+      text-align: center;
+      width: 100%; }
+      .content-count .client-list table tr {
+        width: 100%;
+        display: flex; }
+        .content-count .client-list table tr th {
+          font-size: 0.5rem;
+          flex: 25;
+          border-bottom: 0.05rem solid #ddd;
+          padding-bottom: 0.2rem;
+          color: #949494; }
+        .content-count .client-list table tr td {
+          font-size: 0.6rem;
+          flex: 25;
+          margin-top: 0.4rem; }
+
+/*我的客户*/
+.myClient-content .buttons-tab {
+  margin-bottom: 0.3rem; }
+  .myClient-content .buttons-tab .button {
+    color: #A2A2A2; }
+  .myClient-content .buttons-tab .button.active {
+    color: #000;
+    border-color: #E8A44F; }
+.myClient-content .content-block {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  background: #fff; }
+  .myClient-content .content-block .tabs {
+    background: #fff; }
+    .myClient-content .content-block .tabs #tab1 li {
+      width: 100%;
+      height: 3rem;
+      padding: 0.5rem;
+      border-bottom: 1px solid #EFEFEF; }
+      .myClient-content .content-block .tabs #tab1 li .info-left {
+        float: left;
+        width: 58%; }
+        .myClient-content .content-block .tabs #tab1 li .info-left .photo {
+          float: left;
+          margin-right: 0.5rem; }
+          .myClient-content .content-block .tabs #tab1 li .info-left .photo img {
+            height: 2rem;
+            border-radius: 50%; }
+        .myClient-content .content-block .tabs #tab1 li .info-left .nick-name {
+          float: left;
+          width: 68%;
+          height: 1rem;
+          line-height: 1rem; }
+          .myClient-content .content-block .tabs #tab1 li .info-left .nick-name p {
+            font-size: 0.8rem;
+            font-weight: normal;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap; }
+          .myClient-content .content-block .tabs #tab1 li .info-left .nick-name #nick-data-p {
+            font-size: 0.3rem; }
+      .myClient-content .content-block .tabs #tab1 li .info-right {
+        float: left;
+        width: 38%;
+        text-align: right;
+        height: 1rem;
+        line-height: 1.2rem; }
+        .myClient-content .content-block .tabs #tab1 li .info-right span {
+          font-size: 0.7rem; }
+    .myClient-content .content-block .tabs #tab2 li {
+      width: 100%;
+      height: 3rem;
+      padding: 0.5rem;
+      border-bottom: 1px solid #EFEFEF; }
+      .myClient-content .content-block .tabs #tab2 li .info-left {
+        float: left;
+        width: 58%; }
+        .myClient-content .content-block .tabs #tab2 li .info-left .photo {
+          float: left;
+          margin-right: 0.5rem; }
+          .myClient-content .content-block .tabs #tab2 li .info-left .photo img {
+            height: 2rem;
+            border-radius: 50%; }
+        .myClient-content .content-block .tabs #tab2 li .info-left .nick-name {
+          float: left;
+          width: 68%; }
+          .myClient-content .content-block .tabs #tab2 li .info-left .nick-name h5 {
+            font-size: 0.7rem;
+            font-weight: normal;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap; }
+          .myClient-content .content-block .tabs #tab2 li .info-left .nick-name .phone {
+            font-size: 0.5rem; }
+      .myClient-content .content-block .tabs #tab2 li .info-right {
+        float: left;
+        width: 38%;
+        text-align: right; }
+        .myClient-content .content-block .tabs #tab2 li .info-right h5 {
+          font-size: 0.8rem;
+          /*font-weight: lighter;*/
+          color: #000; }
+        .myClient-content .content-block .tabs #tab2 li .info-right span {
+          font-size: 0.6rem; }
+    .myClient-content .content-block .tabs #tab3 li {
+      width: 100%;
+      height: 3rem;
+      padding: 0.5rem;
+      border-bottom: 1px solid #EFEFEF; }
+      .myClient-content .content-block .tabs #tab3 li .info-left {
+        float: left;
+        width: 58%; }
+        .myClient-content .content-block .tabs #tab3 li .info-left .photo {
+          float: left;
+          margin-right: 0.5rem; }
+          .myClient-content .content-block .tabs #tab3 li .info-left .photo img {
+            height: 2rem;
+            border-radius: 50%; }
+        .myClient-content .content-block .tabs #tab3 li .info-left .nick-name {
+          float: left;
+          width: 68%; }
+          .myClient-content .content-block .tabs #tab3 li .info-left .nick-name h5 {
+            font-size: 0.5rem;
+            font-weight: normal;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap; }
+          .myClient-content .content-block .tabs #tab3 li .info-left .nick-name .pname {
+            font-size: 0.5rem; }
+      .myClient-content .content-block .tabs #tab3 li .info-right {
+        float: left;
+        width: 42%;
+        text-align: left; }
+        .myClient-content .content-block .tabs #tab3 li .info-right h5 {
+          text-align: right;
+          font-weight: normal; }
+        .myClient-content .content-block .tabs #tab3 li .info-right span {
+          font-size: 0.5rem; }
+
+/*我的团队*/
+.popup-tuikeEarningsDetail #earningsDetail .earningsDetailHeader {
+  margin: 0;
+  background-color: #F3F3F3; }
+  .popup-tuikeEarningsDetail #earningsDetail .earningsDetailHeader p {
+    font-size: 0.8rem;
+    position: relative;
+    top: 1rem;
+    /*vertical-align:middle;*/ }
+  .popup-tuikeEarningsDetail #earningsDetail .earningsDetailHeader .photo img {
+    margin: 0.2rem;
+    margin-bottom: 0;
+    width: 80%;
+    border-radius: 50%; }
+.popup-tuikeEarningsDetail #earningsDetail .earningsDetailUl {
+  padding: 10px;
+  font-size: 0.7rem;
+  line-height: 1.4rem; }
+  .popup-tuikeEarningsDetail #earningsDetail .earningsDetailUl .orderNo {
+    color: #000;
+    /*margin-top: 0.2rem;
+    margin-bottom: 0.2rem;*/ }
+  .popup-tuikeEarningsDetail #earningsDetail .earningsDetailUl div {
+    padding: 0; }
+    .popup-tuikeEarningsDetail #earningsDetail .earningsDetailUl div p {
+      margin: 0; }
+    .popup-tuikeEarningsDetail #earningsDetail .earningsDetailUl div .money {
+      text-align: right; }
+
+/*分享海报*/
+.content-poster .wrap-all {
+  width: 100%;
+  position: relative; }
+  .content-poster .wrap-all img {
+    width: 100%; }
+  .content-poster .wrap-all .bucket {
+    width: 36%;
+    height: 28%;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    cursor: pointer; }
+    .content-poster .wrap-all .bucket a {
+      display: block;
+      width: 100%;
+      height: 100%; }
+
+.popup-about .content-block {
+  padding: 0;
+  margin: 0 auto;
+  height: 100%; }
+  .popup-about .content-block .content {
+    margin-bottom: 2.2rem; }
+  .popup-about .content-block .card {
+    border: 0 none;
+    box-shadow: 0 0 0 #fff;
+    margin: 0;
+    height: 100%; }
+    .popup-about .content-block .card .card-content-inner .select-brand {
+      width: 100%;
+      /*margin: 0 auto;*/
+      display: flex;
+      flex-direction: column; }
+      .popup-about .content-block .card .card-content-inner .select-brand tr {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between; }
+        .popup-about .content-block .card .card-content-inner .select-brand tr td {
+          width: 1.4rem;
+          height: 1.4rem;
+          line-height: 1.4rem;
+          border-radius: 0.2rem;
+          text-align: center;
+          margin: 0.2rem 0;
+          border: 0.05rem solid #ccc; }
+        .popup-about .content-block .card .card-content-inner .select-brand tr .active {
+          background-color: #036EB8; }
+    .popup-about .content-block .card .water-brand {
+      width: 100%;
+      /*display: flex;
+      flex-wrap: wrap;*/
+      margin: 0 auto 2rem;
+      padding: 0 0.75rem;
+      font-size: 0;
+      /*flex-direction:row;
+      justify-content: space-between;*/
+      /*li:nth-child(3n+1){
+      	align-self: flex-start;
+      }*/ }
+      .popup-about .content-block .card .water-brand li {
+        					/*flex: 0 0 30%; 
+            				max-width: 30%;*/
+        width: 30%;
+        border: 0.02rem solid #ddd;
+        border-radius: 0.2rem;
+        overflow: hidden;
+        /*margin-left:1%;*/
+        margin-right: 5%;
+        float: left;
+        margin-bottom: 3%;
+        padding: 1% 0;
+        /*display: inline-block;*/
+        text-align: center; }
+        .popup-about .content-block .card .water-brand li b {
+          z-index: 1000;
+          color: #B9716A;
+          font-weight: normal;
+          font-size: 0.5rem;
+          overflow: hidden; }
+        .popup-about .content-block .card .water-brand li em {
+          position: relative; }
+          .popup-about .content-block .card .water-brand li em img {
+            width: 100%;
+            display: block;
+            position: relative; }
+        .popup-about .content-block .card .water-brand li span {
+          display: inline-block;
+          height: 0.85rem;
+          font-size: 0.5rem;
+          overflow: hidden; }
+      .popup-about .content-block .card .water-brand li.active {
+        border: 0.2rem solid #036EB8; }
+      .popup-about .content-block .card .water-brand li:nth-child(3n) {
+        margin-right: 0; }
+.popup-about .bar-footer a {
+  top: 0;
+  height: 2.2rem;
+  line-height: 2.2rem;
+  font-size: 0.8rem; }
+
+.popup-pic .content-block {
+  padding: 0;
+  margin: 0 auto;
+  height: 100%; }
+  .popup-pic .content-block .content {
+    margin-bottom: 1.7rem; }
+  .popup-pic .content-block img {
+    width: 100%; }
+.popup-pic .bar-footer a {
+  top: 0;
+  height: 2.2rem;
+  line-height: 2.2rem;
+  font-size: 0.8rem; }
+
+/*注册*/
+header .icon-white {
+  color: #fff; }
+
+.content-register {
+  background: #F9F9F9; }
+  .content-register .banner {
+    height: 35%;
+    /*background: url('/files/images/dali_banner.png') no-repeat;
+    background-size:100% auto;*/
+    position: relative; }
+    .content-register .banner table {
+      position: absolute;
+      left: 2rem; }
+      .content-register .banner table tr td {
+        color: #fff; }
+        .content-register .banner table tr td img {
+          width: 3rem;
+          height: 3rem; }
+  .content-register .item-content {
+    margin-bottom: 0.5rem; }
+    .content-register .item-content .item-input {
+      position: relative; }
+      .content-register .item-content .item-input .icon {
+        position: absolute;
+        top: 0;
+        left: 0.2rem;
+        height: 2.15rem;
+        line-height: 2.15rem;
+        font-size: 1.3rem; }
+      .content-register .item-content .item-input input[type="text"] {
+        background: #F9F9F9;
+        border: 1px solid #C5C5C5;
+        padding-left: 2.5rem; }
+      .content-register .item-content .item-input .btn-confirm {
+        display: inline-block;
+        width: 35%;
+        border-radius: 0;
+        height: 2.15rem;
+        line-height: 2.15rem;
+        position: absolute;
+        top: 0;
+        right: 0; }
+  .content-register .list-block {
+    margin: 1.75rem 0 5rem; }
+    .content-register .list-block .wrap-receive {
+      padding: 0 0.75rem;
+      margin: 0.7rem 0 1rem; }
+      .content-register .list-block .wrap-receive a.button.btn-yello.btn-receive {
+        margin: 0 auto;
+        height: 1.8rem;
+        line-height: 1.8rem;
+        width: 100%;
+        font-size: 0.8rem; }
+    .content-register .list-block .tips {
+      font-size: 0.7rem;
+      padding-left: 0.75rem; }
+      .content-register .list-block .tips a {
+        color: #C7AF31; }
+  .content-register .footer {
+    text-align: center; }
+    .content-register .footer a {
+      text-decoration: underline; }
+
+.popup-activity .content h4 {
+  text-align: center;
+  margin: 1rem auto;
+  color: #000; }
+.popup-activity .content p {
+  text-indent: 2rem; }
+.popup-activity .bar-footer a {
+  height: 2.2rem;
+  line-height: 2.2rem;
+  top: 0;
+  font-size: 0.8rem; }
+
+/*忘记提现密码*/
+.content-forgetCash .list-block {
+  margin: 0.3rem auto 0;
+  font-size: 0.8rem; }
+  .content-forgetCash .list-block .item-title.label {
+    width: auto; }
+  .content-forgetCash .list-block input[type="text"] {
+    font-size: 0.7rem; }
+  .content-forgetCash .list-block input[type="password"] {
+    font-size: 0.7rem; }
+  .content-forgetCash .list-block .btn-getCode {
+    padding: 0;
+    width: 65%;
+    font-size: 0.6rem; }
+  .content-forgetCash .list-block .button-confirm {
+    font-size: 0.8rem;
+    width: 90%;
+    margin: 1rem auto;
+    line-height: 1.8rem;
+    height: 1.8rem; }
+
+/*修改提现密码*/
+.content-editCash .list-block {
+  margin: 0.3rem auto 0;
+  font-size: 0.8rem; }
+  .content-editCash .list-block ul {
+    margin-bottom: 0; }
+    .content-editCash .list-block ul li .item-title.label {
+      width: auto;
+      font-size: 0.8rem; }
+    .content-editCash .list-block ul li input[type="text"] {
+      font-size: 0.7rem; }
+    .content-editCash .list-block ul li input[type="password"] {
+      font-size: 0.7rem; }
+    .content-editCash .list-block ul li .btn-getCode {
+      padding: 0;
+      width: 50%;
+      font-size: 0.6rem; }
+  .content-editCash .list-block .button-confirm {
+    font-size: 0.8rem;
+    width: 90%;
+    margin: 1rem auto;
+    line-height: 1.8rem;
+    height: 1.8rem; }
+
+/*登录app提现余额*/
+.content-loginApp .close-win {
+  color: #fff;
+  font-size: 1.2rem;
+  display: inline-block;
+  position: absolute;
+  top: 2rem;
+  right: 1rem;
+  cursor: pointer; }
+.content-loginApp .list-block {
+  margin: 1.75rem 0 6rem; }
+  .content-loginApp .list-block .qrCode {
+    width: 6rem;
+    height: 6rem;
+    margin: 50% auto 0;
+    background: url("/files/images/dalishuishou.png") no-repeat;
+    background-size: 100% auto; }
+  .content-loginApp .list-block .btn-yello {
+    font-size: 0.8rem;
+    width: 60%;
+    margin: 1.5rem auto 0.5rem;
+    line-height: 1.6rem;
+    height: 1.6rem; }
+  .content-loginApp .list-block .tips {
+    font-size: 0.7rem;
+    font-weight: normal;
+    color: #fff;
+    text-align: center; }
+.content-loginApp .footer {
+  color: #fff;
+  font-size: 0.6rem;
+  text-align: center; }
+
+/*已绑定微信公众号*/
+.content-boundWeixin .list-block .tips {
+  font-size: 0.75rem;
+  color: #fff;
+  text-align: center;
+  margin: 10rem auto 6rem; }
+.content-boundWeixin .list-block .btn-yello {
+  width: 60%;
+  margin: 0 auto 0.5rem;
+  line-height: 1.3rem;
+  height: 1.3rem;
+  font-size: 0.7rem; }
+.content-boundWeixin .list-block .login-tips {
+  display: block;
+  font-size: 0.5rem;
+  font-weight: normal;
+  color: #F8D52F;
+  text-decoration: underline;
+  text-align: center; }
+
+/*未绑定微信公众号*/
+.content-unboundWeixin {
+  background: #fff; }
+  .content-unboundWeixin .list-block {
+    text-align: center;
+    margin: 8.5rem auto 0; }
+    .content-unboundWeixin .list-block .tips {
+      font-size: 0.75rem;
+      color: #036EB8;
+      text-align: center;
+      margin: 1.5rem auto 6rem; }
+    .content-unboundWeixin .list-block .btn-yello {
+      width: 60%;
+      margin: 0 auto 0.5rem;
+      line-height: 1.5rem;
+      height: 1.5rem;
+      font-size: 0.7rem; }
+    .content-unboundWeixin .list-block .login-tips {
+      font-size: 0.6rem;
+      font-weight: normal;
+      color: #036EB8;
+      text-decoration: underline;
+      text-align: center; }
+
+/*活动已结束*/
+.content-overtime {
+  background: #F9F9F9;
+  text-align: center; }
+  .content-overtime .banner {
+    height: 35%;
+    /*background: url('/files/images/dali_banner01.png') no-repeat;*/
+    /*background-size:100% auto;*/
+    position: relative; }
+    .content-overtime .banner table {
+      position: absolute;
+      left: 2rem; }
+      .content-overtime .banner table tr td {
+        color: #fff; }
+        .content-overtime .banner table tr td img {
+          width: 3rem;
+          height: 3rem; }
+  .content-overtime .title-icon {
+    width: 6rem;
+    height: 6rem;
+    color: #EBEBEC;
+    margin: 2rem; }
+  .content-overtime p {
+    color: #7A7A7A; }
+
+/*发票信息*/
+.page-receipt .content .receipt-list {
+  margin-top: 0.5rem;
+  padding-bottom: 3rem; }
+  .page-receipt .content .receipt-list li {
+    background: #fff;
+    color: #555;
+    padding: 0.5rem 0.5rem 0;
+    font-size: 0.75rem;
+    line-height: 1.5em;
+    margin-bottom: 0.5rem;
+    position: relative; }
+    .page-receipt .content .receipt-list li h4 {
+      color: #000;
+      font-size: 0.85rem; }
+      .page-receipt .content .receipt-list li h4 span {
+        padding-right: 0.5rem; }
+    .page-receipt .content .receipt-list li p {
+      text-indent: 1em;
+      white-space: nowrap;
+      position: relative;
+      overflow: hidden;
+      /*溢出部分变成省略号*/
+      text-overflow: ellipsis; }
+    .page-receipt .content .receipt-list li em {
+      font-style: normal;
+      margin-right: 0.3rem;
+      color: #B6B6B6; }
+    .page-receipt .content .receipt-list li .icon.audit {
+      font-size: 3rem;
+      position: absolute;
+      top: -0.25rem;
+      right: 0; }
+    .page-receipt .content .receipt-list li .bottom-ctrl {
+      border-top: #F1F1F1 solid 1px;
+      margin-top: 0.5rem;
+      padding: 0.5rem 0; }
+      .page-receipt .content .receipt-list li .bottom-ctrl table {
+        width: 100%; }
+        .page-receipt .content .receipt-list li .bottom-ctrl table tr td:last-child {
+          width: 20%; }
+        .page-receipt .content .receipt-list li .bottom-ctrl table span {
+          font-size: 0.9rem;
+          margin-right: 0.2rem;
+          color: #036EB8; }
+        .page-receipt .content .receipt-list li .bottom-ctrl table span.icon-40icoedit {
+          font-size: 1.1rem; }
+      .page-receipt .content .receipt-list li .bottom-ctrl label {
+        margin-right: 0.2rem; }
+.page-receipt .bar-footer a {
+  top: 0;
+  height: 2.2rem;
+  line-height: 2.2rem;
+  font-size: 0.8rem; }
+
+.new-add-list {
+  margin: 0.5rem 0 0; }
+  .new-add-list ul {
+    margin-bottom: 0.5rem; }
+    .new-add-list ul li {
+      font-size: 0.65rem; }
+      .new-add-list ul li .item-title.label {
+        width: 32%; }
+      .new-add-list ul li input[type="text"] {
+        font-size: 0.65rem; }
+  .new-add-list .map-wrap {
+    position: relative; }
+    .new-add-list .map-wrap i {
+      position: absolute;
+      font-size: 1.8rem;
+      top: 1rem;
+      right: 0.2rem;
+      color: #A2A1A7; }
+  .new-add-list .streetDescribe {
+    width: 80%;
+    overflow: hidden;
+    text-overflow: ellipsis; }
+
+.popup-new-receipt, .popup-edit-receipt {
+  background: #EFEFF4; }
+
+.new-edit-list {
+  margin: 0.5rem 0 0; }
+  .new-edit-list ul {
+    margin-bottom: 0.5rem; }
+    .new-edit-list ul li {
+      font-size: 0.65rem; }
+      .new-edit-list ul li .item-title.label {
+        width: 32%; }
+      .new-edit-list ul li input[type="text"] {
+        font-size: 0.65rem; }
+
+.tag-box {
+  background: #fff;
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.75rem; }
+  .tag-box table {
+    width: 100%; }
+    .tag-box table a {
+      color: #808080;
+      display: inline-block;
+      margin: 0.2rem;
+      border: 1px solid #808080;
+      border-radius: 0.2rem;
+      line-height: 1.8em;
+      height: 1.8em;
+      padding: 0 0.3em;
+      width: 40%;
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 0.7rem; }
+      .tag-box table a.active {
+        color: #036EB8;
+        border-color: #036EB8; }
+    .tag-box table tr td:first-child {
+      width: 28%;
+      vertical-align: top; }
+    .tag-box table tr td:last-child {
+      width: 15%;
+      font-size: 1.5rem; }
+
+#allmap {
+  width: 100%;
+  height: 60%;
+  overflow: hidden; }
+
+#r-result {
+  width: 100%;
+  background: #fff; }
+  #r-result li {
+    padding: 0.5rem;
+    border-bottom: 1px solid #CCCCCC; }
+
+.location-notice {
+  background: #e4e6e7;
+  color: #6C6C6C;
+  line-height: 2em;
+  text-indent: 0.5em; }
+
+.popup-new-address .content {
+  background: #eee; }
+
+/*我的电子票*/
+.myTicket-content .buttons-tab a {
+  border-bottom: 2px solid transparent;
+  color: #A2A2A2; }
+.myTicket-content .buttons-tab .button.active {
+  color: #000;
+  border-bottom: 2px solid #E8A44F; }
+.myTicket-content .content-block {
+  padding: 0;
+  margin: 0; }
+  .myTicket-content .content-block .count-info {
+    font-size: 0.7rem;
+    text-align: center;
+    padding: 0.5rem 0; }
+    .myTicket-content .content-block .count-info b {
+      font-weight: normal; }
+      .myTicket-content .content-block .count-info b span {
+        color: red; }
+  .myTicket-content .content-block .to-use-list {
+    margin: 0;
+    padding: 0; }
+    .myTicket-content .content-block .to-use-list li {
+      background: #fff;
+      list-style: none;
+      margin-bottom: 0.4rem; }
+      .myTicket-content .content-block .to-use-list li table {
+        width: 100%;
+        vertical-align: middle;
+        font-size: 0.6rem; }
+        .myTicket-content .content-block .to-use-list li table tr {
+          width: 100%; }
+          .myTicket-content .content-block .to-use-list li table tr .col2 {
+            width: 80%;
+            position: relative;
+            padding: 0.5rem 1rem; }
+            .myTicket-content .content-block .to-use-list li table tr .col2 img {
+              width: 3rem;
+              height: 3rem;
+              position: absolute;
+              right: 1rem;
+              top: 50%;
+              margin-top: -1.5rem; }
+          .myTicket-content .content-block .to-use-list li table tr .col3 {
+            width: 10%;
+            background: #036EB8;
+            text-align: center; }
+            .myTicket-content .content-block .to-use-list li table tr .col3 span {
+              text-align: center;
+              display: block; }
+            .myTicket-content .content-block .to-use-list li table tr .col3 .arrow {
+              display: inline-block;
+              position: relative;
+              top: 0.15rem;
+              left: 0.15rem;
+              border: 0.3rem solid transparent;
+              border-left: 0.3rem solid #fff; }
+            .myTicket-content .content-block .to-use-list li table tr .col3 a {
+              color: #fff; }
+  .myTicket-content .content-block .buy-history {
+    margin: 0.5rem 0 0;
+    padding: 0; }
+    .myTicket-content .content-block .buy-history li {
+      background: #fff;
+      list-style: none;
+      margin-bottom: 0.4rem; }
+      .myTicket-content .content-block .buy-history li table {
+        width: 100%;
+        vertical-align: middle;
+        font-size: 0.6rem; }
+        .myTicket-content .content-block .buy-history li table tr {
+          width: 100%; }
+          .myTicket-content .content-block .buy-history li table tr .col2 {
+            width: 80%;
+            position: relative;
+            padding: 0.5rem 1rem; }
+            .myTicket-content .content-block .buy-history li table tr .col2 img {
+              width: 3rem;
+              height: 3rem;
+              position: absolute;
+              right: 1rem;
+              top: 50%;
+              margin-top: -1.5rem; }
+          .myTicket-content .content-block .buy-history li table tr .col3 {
+            width: 10%;
+            background: #036EB8;
+            text-align: center;
+            color: #fff; }
+            .myTicket-content .content-block .buy-history li table tr .col3 span {
+              text-align: center;
+              display: block; }
+            .myTicket-content .content-block .buy-history li table tr .col3 .arrow {
+              display: inline-block;
+              position: relative;
+              top: 0.15rem;
+              left: 0.15rem;
+              border: 0.3rem solid transparent;
+              border-left: 0.3rem solid #fff; }
+
+.popup-new-record {
+  background: #EFEFF4; }
+  .popup-new-record .new-record-list {
+    margin: 0.5rem 0; }
+    .popup-new-record .new-record-list .card {
+      padding: 0;
+      margin: 0 0 0.5rem; }
+      .popup-new-record .new-record-list .card .card-header {
+        font-size: 0.75rem; }
+      .popup-new-record .new-record-list .card b {
+        font-weight: normal; }
+    .popup-new-record .new-record-list .dispatch {
+      text-align: center;
+      background: #fff;
+      padding: 1rem 0;
+      width: 100%; }
+      .popup-new-record .new-record-list .dispatch tr {
+        width: 100%;
+        text-align: center; }
+        .popup-new-record .new-record-list .dispatch tr th {
+          width: 50%;
+          font-weight: normal;
+          font-size: 0.75rem;
+          text-align: center;
+          border-bottom: 0.05rem solid #ddd;
+          padding: 0.4rem 0;
+          color: #949494; }
+        .popup-new-record .new-record-list .dispatch tr td {
+          width: 50%;
+          text-align: center;
+          font-size: 0.7rem;
+          padding: 0.3rem 0; }
+
+/*.content-unboundWeixin{
+	.list-block{
+		text-align: center;
+    	margin: 8.5rem auto 0;
+		.tips{
+			font-size: 0.75rem;
+			color:#fff;
+			text-align: center;
+			margin: 1.5rem auto 6rem;
+		}
+		.btn-yello{
+	    	width: 60%;
+		    margin: 0 auto 0.5rem;
+		    line-height: 1.3rem;
+		    height: 1.3rem;
+		    font-size: 0.7rem;
+	    }
+	    .login-tips{
+	    	font-size: 0.5rem;
+	    	font-weight: normal;
+	    	color: #F8D52F;
+	    	text-decoration: underline;
+	    	text-align: center;
+	    }
+	}
+}*/
+.popup-invoices {
+  background: #eee; }
+  .popup-invoices .list-block {
+    margin: 0 auto; }
+    .popup-invoices .list-block .invoice-type {
+      background: #fff;
+      /*padding:0.1rem 0 0.75rem 0.75rem;*/
+      margin-bottom: 0.25rem; }
+      .popup-invoices .list-block .invoice-type h3 {
+        font-weight: normal;
+        font-size: 0.85rem;
+        height: 2rem;
+        line-height: 2rem;
+        padding-left: 0.75rem; }
+      .popup-invoices .list-block .invoice-type .buttons-row {
+        padding-bottom: 0.5rem; }
+        .popup-invoices .list-block .invoice-type .buttons-row a {
+          display: inline;
+          font-size: 0.7rem;
+          flex: 1;
+          margin: 0 0.5rem;
+          background: none;
+          border: 1px solid #000;
+          border-radius: 0.2rem;
+          /*margin-right: 0.3rem;*/
+          color: #747474; }
+        .popup-invoices .list-block .invoice-type .buttons-row a.active {
+          color: #F8B037;
+          border-color: #F8B037; }
+    .popup-invoices .list-block .tabs .invoice-header {
+      background: #fff;
+      border-bottom: 0 none;
+      margin-bottom: 0.25rem;
+      padding-bottom: 0.5rem; }
+      .popup-invoices .list-block .tabs .invoice-header table {
+        width: 100%;
+        height: 2.2rem;
+        line-height: 2.2rem;
+        /*height: 2.25rem;*/ }
+        .popup-invoices .list-block .tabs .invoice-header table tr {
+          /*height: 2.25rem;
+          line-height: 2.25rem;*/ }
+          .popup-invoices .list-block .tabs .invoice-header table tr td {
+            display: inline-block;
+            height: 100%; }
+            .popup-invoices .list-block .tabs .invoice-header table tr td .label-checkbox {
+              /*height: 2.25rem;
+              line-height: 2.25rem;*/
+              position: relative;
+              top: 0.2rem; }
+            .popup-invoices .list-block .tabs .invoice-header table tr td b {
+              font-weight: normal;
+              display: inline-block;
+              height: 100%;
+              line-height: 1; }
+          .popup-invoices .list-block .tabs .invoice-header table tr td.pull-right {
+            padding-right: 0.75rem; }
+      .popup-invoices .list-block .tabs .invoice-header .invoico-name {
+        margin-left: 0.75rem;
+        width: 90%;
+        height: 1.5rem;
+        border: 1px solid #CCCCCC;
+        border-radius: 0.2rem; }
+    .popup-invoices .list-block .tabs .invoice-header.no-padding {
+      padding-bottom: 0; }
+      .popup-invoices .list-block .tabs .invoice-header.no-padding .invoice-desc-wrap {
+        background: #EEEEEE; }
+    .popup-invoices .list-block .tabs .invoice-desc {
+      padding: 0.5rem 0 0.5rem 0.75rem;
+      margin-bottom: 0.25rem;
+      /*padding-left: 0.75rem;*/
+      font-size: 0.7rem;
+      border: 0 none; }
+      .popup-invoices .list-block .tabs .invoice-desc li {
+        padding: 0.1rem 0; }
+    .popup-invoices .list-block .tabs .invoice-detail li {
+      padding-left: 0.75rem;
+      height: 2rem;
+      line-height: 2rem; }
+      .popup-invoices .list-block .tabs .invoice-detail li .label-checkbox {
+        position: relative;
+        top: 0.2rem;
+        margin-right: 0.5rem; }
+      .popup-invoices .list-block .tabs .invoice-detail li b {
+        font-weight: normal; }
+    .popup-invoices .list-block .tabs .addressee-wrap {
+      background: #fff; }
+      .popup-invoices .list-block .tabs .addressee-wrap .addressee {
+        padding: 0.25rem 0 0.25rem 0.75rem;
+        font-size: 0.7rem;
+        border: 0 none; }
+        .popup-invoices .list-block .tabs .addressee-wrap .addressee li {
+          padding: 0.1rem 0; }
+
+/*领取注册礼包*/
+.content-register-gift {
+  background: #fff; }
+  .content-register-gift .tips {
+    height: 7rem;
+    text-align: center;
+    margin: 3rem auto 0;
+    border-bottom: 1px solid gray; }
+    .content-register-gift .tips span {
+      color: #036EB8;
+      font-size: 2.5rem; }
+    .content-register-gift .tips p {
+      color: #036EB8; }
+  .content-register-gift .detail {
+    padding: 2rem 0 4rem; }
+    .content-register-gift .detail .qrCode {
+      width: 6rem;
+      height: 6rem;
+      margin: 0 auto;
+      /*background: url('/files/images/download.png') no-repeat;
+      background-size:100% auto;*/ }
+    .content-register-gift .detail p {
+      width: 60%;
+      margin: 1rem auto;
+      height: 1.6rem;
+      line-height: 1.6rem; }
+      .content-register-gift .detail p a {
+        height: 1.6rem;
+        line-height: 1.6rem;
+        padding: 0;
+        font-size: 0.75rem; }
+  .content-register-gift .footer {
+    color: #fff;
+    font-size: 0.6rem;
+    text-align: center; }
+
+/*人人开店申请*/
+.page-shopApply .content .list-block {
+  margin: 0; }
+  .page-shopApply .content .list-block .verifing {
+    height: 3rem;
+    background: #EFEFF4; }
+    .page-shopApply .content .list-block .verifing li {
+      text-align: center;
+      color: red;
+      line-height: 3rem; }
+  .page-shopApply .content .list-block .refuse {
+    height: 1.5rem;
+    background: #EFEFF4;
+    padding-left: 1rem; }
+    .page-shopApply .content .list-block .refuse li {
+      color: red;
+      height: 1.5rem;
+      line-height: 1.5rem; }
+  .page-shopApply .content .list-block .apply-list {
+    padding-bottom: 2rem; }
+    .page-shopApply .content .list-block .apply-list li .item-title.label {
+      width: 20%; }
+    .page-shopApply .content .list-block .apply-list li [type="text"], .page-shopApply .content .list-block .apply-list li [name="resource"] {
+      color: #757575; }
+    .page-shopApply .content .list-block .apply-list li [name="enterPrise"] {
+      color: #757575; }
+      .page-shopApply .content .list-block .apply-list li [name="enterPrise"] option {
+        color: #757575; }
+    .page-shopApply .content .list-block .apply-list li:last-child {
+      height: 5rem;
+      background: #fff; }
+      .page-shopApply .content .list-block .apply-list li:last-child .item-content {
+        width: 100%;
+        padding-left: 0.75rem;
+        height: 5rem; }
+        .page-shopApply .content .list-block .apply-list li:last-child .item-content .item-inner {
+          padding-right: 0.75rem;
+          margin: 0;
+          height: 5rem; }
+          .page-shopApply .content .list-block .apply-list li:last-child .item-content .item-inner .item-title.label {
+            width: 20%;
+            height: 5rem;
+            float: left;
+            margin: 0;
+            padding-top: .4rem; }
+.page-shopApply .bar-footer {
+  text-align: center; }
+  .page-shopApply .bar-footer a {
+    width: 40%;
+    margin: 0 auto;
+    top: 0.4rem;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    font-size: 0.8rem; }
+
+/*重新申请人人开店*/
+.popup-apply-agin {
+  background: #EFEFF4; }
+  .popup-apply-agin .content .list-block {
+    margin: 0; }
+    .popup-apply-agin .content .list-block .apply-list {
+      padding-bottom: 2rem; }
+      .popup-apply-agin .content .list-block .apply-list li .item-title.label {
+        width: 20%; }
+      .popup-apply-agin .content .list-block .apply-list li [type="text"], .popup-apply-agin .content .list-block .apply-list li [name="resource"] {
+        color: #757575; }
+      .popup-apply-agin .content .list-block .apply-list li [name="enterPrise1"] {
+        color: #757575; }
+        .popup-apply-agin .content .list-block .apply-list li [name="enterPrise1"] option {
+          color: #757575; }
+      .popup-apply-agin .content .list-block .apply-list li:last-child {
+        height: 5rem;
+        background: #fff; }
+        .popup-apply-agin .content .list-block .apply-list li:last-child .item-content {
+          width: 100%;
+          padding-left: 0.75rem;
+          height: 5rem; }
+          .popup-apply-agin .content .list-block .apply-list li:last-child .item-content .item-inner {
+            padding-right: 0.75rem;
+            margin: 0;
+            height: 5rem; }
+            .popup-apply-agin .content .list-block .apply-list li:last-child .item-content .item-inner .item-title.label {
+              width: 20%;
+              height: 5rem;
+              float: left;
+              margin: 0;
+              padding-top: .4rem; }
+  .popup-apply-agin .bar-footer {
+    text-align: center; }
+    .popup-apply-agin .bar-footer a {
+      width: 40%;
+      margin: 0 auto;
+      top: 0.4rem;
+      height: 1.5rem;
+      line-height: 1.5rem;
+      font-size: 0.8rem; }
+
+/*我的评价*/
+.page-myEvaluate .evaluate-list {
+  background: #fff; }
+  .page-myEvaluate .evaluate-list li {
+    border-bottom: 1px solid #eeeeee;
+    padding: 0.5rem; }
+    .page-myEvaluate .evaluate-list li .info {
+      width: 100%; }
+      .page-myEvaluate .evaluate-list li .info tr td:first-child {
+        vertical-align: top;
+        width: 16%;
+        padding-top: 0.2rem;
+        padding-right: 2%;
+        margin-left: 16%; }
+      .page-myEvaluate .evaluate-list li .info tr td img {
+        display: block;
+        width: 80%;
+        border-radius: 50%; }
+      .page-myEvaluate .evaluate-list li .info tr td h5 {
+        font-weight: normal;
+        font-size: 0.7rem;
+        color: #ACACAC;
+        position: relative; }
+      .page-myEvaluate .evaluate-list li .info tr td p {
+        color: #151515;
+        font-size: 0.8rem; }
+      .page-myEvaluate .evaluate-list li .info tr td .time {
+        color: #ACACAC;
+        position: absolute;
+        top: 0;
+        right: 0.5rem;
+        font-size: 0.7rem; }
+      .page-myEvaluate .evaluate-list li .info tr td:last-child .stars {
+        position: relative; }
+        .page-myEvaluate .evaluate-list li .info tr td:last-child .stars div .pinzhi {
+          font-size: 0.7rem;
+          color: #A3A7AA; }
+        .page-myEvaluate .evaluate-list li .info tr td:last-child .stars div .pinzhi-text {
+          font-size: 0.7rem;
+          color: #A3A7AA; }
+      .page-myEvaluate .evaluate-list li .info tr td:last-child p {
+        color: #151515;
+        font-size: 0.8rem;
+        margin: 0.2rem 0;
+        font-size: 0.7rem; }
+    .page-myEvaluate .evaluate-list li p {
+      font-size: 0.6rem;
+      margin-top: 0.5rem; }
+    .page-myEvaluate .evaluate-list li p.pics {
+      width: 100%;
+      height: 2.8rem; }
+      .page-myEvaluate .evaluate-list li p.pics img {
+        width: 19%;
+        height: 2.8rem;
+        border-radius: 0;
+        float: left;
+        margin-right: 1%; }
+    .page-myEvaluate .evaluate-list li p.replyContent {
+      background: #eee;
+      padding: 0.3rem;
+      position: relative; }
+      .page-myEvaluate .evaluate-list li p.replyContent .triangle {
+        width: 0px;
+        height: 0px;
+        border-left: 0.3rem solid transparent;
+        border-right: 0.3rem solid transparent;
+        border-bottom: 0.3rem solid #eee;
+        position: absolute;
+        top: -0.3rem;
+        left: 0.3rem; }
+    .page-myEvaluate .evaluate-list li .evaluate {
+      width: 100%;
+      font-size: 0.7rem;
+      margin-top: 0.5rem;
+      border: 1px solid #eee;
+      background: #eee;
+      /*.productInfo{*/
+      /*margin-left: 12%;*/
+      height: 3rem;
+      /*}*/ }
+      .page-myEvaluate .evaluate-list li .evaluate img {
+        float: left;
+        height: 3rem;
+        margin-top: -1px;
+        border: 1px solid #eee;
+        border-left: 0; }
+      .page-myEvaluate .evaluate-list li .evaluate .detail {
+        float: left;
+        font-size: 0.7rem;
+        margin-left: 0.5rem;
+        height: 3rem; }
+        .page-myEvaluate .evaluate-list li .evaluate .detail div {
+          height: 1.5rem;
+          line-height: 1.5rem; }
+
+/*店铺注册*/
+.page-shopRegister .new-form-list {
+  margin: 0.5rem 0 0;
+  font-size: 0.75rem;
+  /*.button.button-fill{
+      width: 40%;
+      margin: 0.5rem auto;
+      line-height: 1.5rem;
+      height: 1.5rem;
+  }*/ }
+  .page-shopRegister .new-form-list .item-title.label {
+    width: 20%; }
+  .page-shopRegister .new-form-list input[type="text"], .page-shopRegister .new-form-list textarea {
+    font-size: 0.75rem; }
+.page-shopRegister .bar-footer a {
+  top: 0;
+  height: 2.2rem;
+  line-height: 2.2rem;
+  font-size: 0.8rem; }
+
+.page-tuikeManagerAudit .img-code-box {
+  /*.content-padded:last-child{
+  	border-top:none;
+  }*/
+  /*.defaut-wrapp {
+    padding: 5rem 1rem 1rem;
+    color: #b7b8b7; }
+  .defaut-wrap p {
+  width: 5rem;
+  margin: 0 auto; }
+  .defaut-wrap .def-note {
+  font-size: 0.8rem;
+  text-align: center; }
+  .defaut-wrap .icon {
+  display: block;
+  font-size: 3rem;
+  width: 3rem;
+  height: 3rem;
+  margin: 0 auto 2rem; }*/ }
+  .page-tuikeManagerAudit .img-code-box .content-padded {
+    border-bottom: 1px solid #E2E0E0; }
+  .page-tuikeManagerAudit .img-code-box li {
+    background-color: #FFF; }
+    .page-tuikeManagerAudit .img-code-box li .content-padded {
+      padding-top: 5px; }
+  .page-tuikeManagerAudit .img-code-box li:last-child .content-padded:last-child {
+    border-bottom: none; }
+  .page-tuikeManagerAudit .img-code-box .row .col-33 {
+    height: 140px; }
+    .page-tuikeManagerAudit .img-code-box .row .col-33 img {
+      width: 50%;
+      margin: 0.2rem;
+      position: relative;
+      left: 15px; }
+  .page-tuikeManagerAudit .img-code-box .row .col {
+    color: #7A7979; }
+    .page-tuikeManagerAudit .img-code-box .row .col table tr td:first-child {
+      width: 70px;
+      text-align: left;
+      vertical-align: text-top; }
+    .page-tuikeManagerAudit .img-code-box .row .col table tr td div {
+      width: 127px;
+      max-height: 50px;
+      overflow: hidden; }
+    .page-tuikeManagerAudit .img-code-box .row .col .row .picsAudit img {
+      width: 18%;
+      margin: 2px;
+      max-height: 50px; }
+    .page-tuikeManagerAudit .img-code-box .row .col .row .auditBtn {
+      padding: 15px; }
+      .page-tuikeManagerAudit .img-code-box .row .col .row .auditBtn a {
+        background-color: #F9D52E;
+        border: none;
+        width: 50%;
+        color: #6D6954;
+        position: relative;
+        left: 5rem;
+        padding-top: 1px; }
+    .page-tuikeManagerAudit .img-code-box .row .col .row .col-90 {
+      margin-left: 0px; }
+
+/*# sourceMappingURL=shop.css.map */

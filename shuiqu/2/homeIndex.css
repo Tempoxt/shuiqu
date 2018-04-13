@@ -1,0 +1,547 @@
+@charset "UTF-8";
+/*基础数据，可配置*/
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0; }
+
+h3, h4, h5, h6,
+p {
+  margin: 0; }
+
+.button.btn-gray {
+  background: #7E8699; }
+
+.button.btn-yello.active,
+.button.btn-yello:hover,
+.button.btn-yello {
+  background: #7B00D3 !important;
+  color: #fff !important; }
+
+.hide {
+  display: none; }
+
+.no-bg-input {
+  border: none;
+  background: none; }
+
+.wihte-bg {
+  background: #fff; }
+
+label.label-checkbox {
+  display: inline-block; }
+
+label.label-checkbox input[type="radio"]:checked + .item-media i.icon-form-checkbox,
+label.label-checkbox input[type="checkbox"]:checked + .item-media i.icon-form-checkbox {
+  background-color: #7B00D3; }
+
+.pb3 {
+  padding-bottom: 3rem; }
+
+.swiper-container-horizontal {
+  position: relative; }
+
+.swiper-slide {
+  background: #fff; }
+
+.swiper-slide img {
+  width: 60%;
+  margin: 0 auto; }
+
+/*icon图标*/
+.icon-svg {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden; }
+
+.icon-btn_sp1:before {
+  content: "\e8ab"; }
+.icon-btn_sp1.active {
+  color: #EAAE12; }
+  .icon-btn_sp1.active:before {
+    content: "\e8a6"; }
+
+.icon-btn_xj1:before {
+  content: "\e8aa"; }
+.icon-btn_xj1.active {
+  color: #EAAE12; }
+  .icon-btn_xj1.active:before {
+    content: "\e8a9"; }
+
+.icon-btn_dzp-:before {
+  content: "\e8d6"; }
+.icon-btn_dzp-.active {
+  color: #EAAE12; }
+  .icon-btn_dzp-.active:before {
+    content: "\e8d5"; }
+
+.icon-65notice:before {
+  content: "\e641"; }
+
+.icon-111icosearch:before {
+  content: "\e670"; }
+
+.icon-35icoback:before {
+  content: "\e623"; }
+
+.icon-86star {
+  color: #D9D9D9; }
+  .icon-86star.active {
+    color: #FDC10A; }
+  .icon-86star:before {
+    content: "\e656"; }
+
+.icon-11addressdel {
+  font-size: 1.5rem;
+  color: red;
+  position: absolute;
+  right: 0;
+  bottom: 0; }
+
+.icon-onlyforaddressdelete:before,
+.icon-11addressdel:before {
+  content: "\e60a"; }
+
+.icon-63navbaricoarrowdown:before {
+  content: "\e63f"; }
+
+.icon-47location1:before {
+  content: "\e62f";
+  color: #FAD602; }
+
+.title-icon {
+  width: 2.2rem;
+  height: 2.2rem; }
+
+.bar .title-icon {
+  padding: .3rem .1rem; }
+
+.icon-ico_awwor_right:before {
+  content: "\e8b5"; }
+
+.icon-cod:before {
+  content: "\e8b9"; }
+
+.icon-weixin:before {
+  content: "\e8ba";
+  color: #3CAF36; }
+
+.icon-weixin {
+  font-size: 2.3rem; }
+
+.icon-40icoedit:before {
+  content: "\e628"; }
+
+.icon-83shoppingbtnnumadd:before {
+  content: "\e653"; }
+
+.icon-42icotime:before {
+  content: "\e62a"; }
+
+.icon-53meicolocation:before {
+  content: "\e635"; }
+
+.icon-87tel:before {
+  content: "\e657"; }
+
+.icon-76share:before {
+  content: "\e64c"; }
+
+.icon-57meorderstatus1:before {
+  content: "\e639"; }
+
+.icon-58meorderstatus2:before {
+  content: "\e63a"; }
+
+.icon-59meorderstatus3:before {
+  content: "\e63b"; }
+
+.icon-60meorderstatus4:before {
+  content: "\e63c"; }
+
+.icon-62meorderstatus10:before {
+  content: "\e63e"; }
+
+.icon-73ordericostore:before {
+  content: "\e649"; }
+
+.icon-88tipicoorder:before {
+  content: "\e658"; }
+
+.icon-star02:before {
+  content: "\e671";
+  color: #FDC10A; }
+
+.icon-img_default:before {
+  content: "\e8c0";
+  color: #eee; }
+
+.icon-101couponused:before {
+  content: "\e665";
+  color: #999; }
+
+.icon-46location:before {
+  content: "\e62e"; }
+
+.icon-51youhui:before {
+  content: "\e6d2"; }
+
+.icon-default:before {
+  content: "\e8bf";
+  font-size: 2.2rem; }
+
+.icon-shouyi:before {
+  content: "\e8c6"; }
+
+.icon-edit:before {
+  content: "\e8c4";
+  color: #5B5B5B; }
+
+.icon-help:before {
+  content: "\e8c5"; }
+
+.icon-49zhifubao:before {
+  content: "\e672";
+  background: #fff;
+  color: #1AA1E6; }
+
+.icon-yinhang:before {
+  content: "\e8c3";
+  color: #F9D52E; }
+
+.icon-ico_pic:before {
+  content: "\e8ca"; }
+
+.icon-card:before {
+  content: "\e8cb";
+  color: #BFBFBF; }
+
+.icon-share:before {
+  content: "\e8cc"; }
+
+.icon-me_ico_shop:before {
+  content: "\e8cd"; }
+
+.icon-ico_tel:before {
+  content: "\e8c7"; }
+
+.icon-ico_mima:before {
+  content: "\e8c8"; }
+
+.icon-duigou1-copy:before {
+  content: "\e8ce"; }
+
+.icon-123close:before {
+  content: "\e86e"; }
+
+.icon-vat_ico_pass:before {
+  content: "\e8d3"; }
+
+.icon-vat_ico_reject:before {
+  content: "\e8d2"; }
+
+.icon-vat__ico_andit:before {
+  content: "\e8d1"; }
+
+.icon-invoice:before {
+  content: "\e887"; }
+
+.icon-btn_no_crime:before {
+  content: "\e8b6"; }
+
+.icon-btn_healthy:before {
+  content: "\e8b4"; }
+
+.icon-btn_work:before {
+  content: "\e8b3"; }
+
+.icon-icon_e_ticket:before {
+  content: "\e8d7"; }
+
+.icon-41icolocal:before {
+  content: "\e629"; }
+
+.icon-zhengjian:before {
+  content: "\e8c2"; }
+
+.icon-100huodao:before {
+  content: "\e674"; }
+
+.icon-ico_pay:before {
+  content: "\e8d8"; }
+
+.icon-ico_no_pay:before {
+  content: "\e8d9"; }
+
+.icon-btn_fx_1:before {
+  content: "\e8ac"; }
+
+.icon-me_ico_shop:before {
+  content: "\e8cd"; }
+
+.icon-ico_tel1:before {
+  content: "\e8dc"; }
+
+.icon-ico_map:before {
+  content: "\e8db"; }
+
+.icon-61meorderstatus5:before {
+  content: "\e63d"; }
+
+.icon-no_coupon:before {
+  content: "\e8dd"; }
+
+.icon-code_on:before {
+  content: "\e8df"; }
+
+.icon-no_code:before {
+  content: "\e8e0"; }
+
+.icon-xiaolian:before {
+  content: "\e8c9"; }
+
+.icon-94refundgotop:before {
+  content: "\e65f"; }
+
+.icon-95refundgodown:before {
+  content: "\e660"; }
+
+.icon-kefu:before {
+  content: "\e8e6";
+  font-size: 1.3rem; }
+
+.icon-51meicochat:before {
+  content: "\e633"; }
+
+.icon-shopping_btn_num_add-copy:before {
+  content: "\e8e8"; }
+
+.icon-peison:before {
+  content: "\e8ef"; }
+
+.icon-weixinzhifu:before {
+  content: "\e678";
+  color: #3CAF36;
+  font-size: 1.8rem; }
+
+.icon-8icon42:before {
+  content: "\e607"; }
+
+.icon-guanbi-copy:before {
+  content: "\e679"; }
+
+.icon-code_off:before {
+  content: "\e8de"; }
+
+.icon-code_qc:before {
+  content: "\e67b"; }
+
+.icon-183help:before {
+  content: "\e68e"; }
+
+.icon-shouyi1:before {
+  content: "\e691"; }
+
+.icon-me_order_zh:before {
+  content: "\e8f4"; }
+
+.public-color {
+  background: #F9D600 !important; }
+
+.icon-color {
+  color: #F9D600; }
+
+.version-color {
+  background-color: #F9D600; }
+
+.public-icon-color {
+  color: #FDC312; }
+
+.right-margin {
+  margin-right: .5rem; }
+
+.gray-color {
+  background: #ccc !important; }
+
+.bar-nav {
+  background: #7B00D3;
+  border: 0; }
+
+.bar-nav1 {
+  background: #7B00D3;
+  color: #000;
+  border: 0; }
+
+.bar-left {
+  position: absolute !important;
+  left: 0;
+  right: auto; }
+
+.light-nav {
+  background: #FDFDFD; }
+
+.price {
+  color: #E8A44F; }
+
+.pick-nav {
+  background: #F7F7F8; }
+
+.required {
+  color: #ff0000; }
+
+.err-msg {
+  color: #ff0000;
+  line-height: 1.2rem;
+  font-size: 0.65rem;
+  text-indent: 1rem; }
+
+/*底部导航条*/
+.bar-tab .tab-item.active {
+  color: #000; }
+.bar-tab .tab-item .def,
+.bar-tab .tab-item.active .cur {
+  display: block;
+  margin: 0 auto; }
+.bar-tab .tab-item .cur,
+.bar-tab .tab-item.active .def {
+  display: none; }
+
+/*首页*/
+.top-nav {
+  padding: 0 0.5rem; }
+  .top-nav .searchbar {
+    background: none;
+    width: 65%;
+    float: right;
+    padding-left: 0; }
+    .top-nav .searchbar .search-input a {
+      display: block; }
+      .top-nav .searchbar .search-input a label {
+        left: auto;
+        right: 0; }
+      .top-nav .searchbar .search-input a #search {
+        padding-left: 1rem; }
+  .top-nav span {
+    display: block;
+    float: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background: #987F08;
+    color: #fff;
+    border-radius: 0.2rem;
+    height: 1.4rem;
+    line-height: 1.4rem;
+    padding: 0 0.2rem;
+    width: 35%;
+    text-align: center;
+    margin: 0.4rem 0 0 0; }
+
+#bar {
+  background-color: transparent; }
+
+#bar span {
+  background-color: rgba(0, 0, 0, 0.3); }
+
+#bar:after {
+  height: 0; }
+
+.swiper-container {
+  padding-bottom: 0; }
+  .swiper-container .swiper-slide img {
+    width: 100%; }
+
+.swiper-container-horizontal {
+  overflow: hidden; }
+
+.swiper-container-horizontal > .swiper-pagination {
+  bottom: 0.2rem; }
+
+.notice-box {
+  /*background: #fff;*/
+  line-height: 2em;
+  height: 2em;
+  font-size: 0.8rem;
+  color: #7D889E;
+  padding: 0 0.5rem; }
+  .notice-box em {
+    font-style: normal;
+    color: red;
+    font-weight: bold; }
+
+.home-wrap {
+  padding: 0.5rem 0.5rem 5rem; }
+  .home-wrap .fresh {
+    width: 100%;
+    margin-bottom: 0.5rem;
+    overflow: hidden; }
+    .home-wrap .fresh li {
+      width: 48%;
+      float: left;
+      background: #fff; }
+      .home-wrap .fresh li:first-child {
+        margin-right: 4%; }
+      .home-wrap .fresh li table tr td p {
+        font-size: 0.6rem;
+        line-height: 1.5em; }
+      .home-wrap .fresh li table tr td:first-child {
+        width: 40%;
+        padding-right: 5%; }
+      .home-wrap .fresh li table tr td svg {
+        display: block;
+        width: 60%;
+        margin-left: 25%; }
+      .home-wrap .fresh li table tr td h4 {
+        font-size: 0.8rem;
+        line-height: 1.5em; }
+      .home-wrap .fresh li p {
+        color: #C29A1E; }
+  .home-wrap .defaut-wrap {
+    padding: 0rem 1rem 1rem;
+    color: #b7b8b7;
+    text-align: center; }
+    .home-wrap .defaut-wrap p {
+      width: 9rem;
+      margin: 0 auto; }
+    .home-wrap .defaut-wrap .def-note {
+      font-size: 0.8rem;
+      text-align: center;
+      font-weight: normal; }
+    .home-wrap .defaut-wrap .icon {
+      display: block;
+      font-size: 3rem;
+      width: 3rem;
+      height: 3rem;
+      margin: 0 auto; }
+
+.company li {
+  border: #E3E3E3 1px solid;
+  margin-bottom: 0.5rem;
+  background: -webkit-linear-gradient(left, #fff 45%, #E7E7E7);
+  /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient(right, #fff 45%, #E7E7E7);
+  /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient(right, #fff 45%, #E7E7E7);
+  /* Firefox 3.6 - 15 */
+  background: linear-gradient(to right, #fff 45%, #E7E7E7);
+  /* 标准的语法 */ }
+  .company li table tr td {
+    width: 36%;
+    padding: 0 2%; }
+    .company li table tr td:first-child {
+      width: 22%; }
+    .company li table tr td h4 {
+      font-size: 0.8rem;
+      line-height: 2em; }
+    .company li table tr td p {
+      font-size: 0.65rem;
+      color: #5B5B5B;
+      height: 3em;
+      overflow: hidden; }
+    .company li table tr td img {
+      display: block;
+      width: 100%; }
+
+/*# sourceMappingURL=homeIndex.css.map */

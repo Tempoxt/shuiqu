@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>收益账单</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="./css/sm.min.css">
+    <link rel="stylesheet" href="./css/sm-extend.min.css">
+    <link rel="stylesheet" href="./css/shop.css">
+    <script src="./css/echarts.min.js"></script>
+</head>
+<body>
+	<div class="page-group">
+		<div class="page page-finish page-current">
+			<header class="bar bar-nav light-nav">
+	            <span class="icon icon-35icoback pull-left"></span>  
+	            <h1 class="title">收益账单</h1>
+	        </header>
+	        <div class="content content-count">
+	        	<div class="count">
+	        		<span class="time">截至2017年05月25日</span>
+	        		<div class="item-content">
+	        			<h4><span>￥</span>255</h4>
+	        			<p>全部收益合计</p>
+	        		</div>
+	        	</div>
+	        	<div class="sevenDays">
+				    <div class="item-title">近7天收益</div>
+				    <div class="item-charts" id="charts"></div>
+				</div>
+				<div class="client-list">
+					<table>
+						<tr>
+							<th>客户</th>
+							<th>日期</th>
+							<th>交易额(元)</th>
+							<th>收益额(元)</th>
+						</tr>
+						<tr>
+							<td>156****3333</td>
+							<td>2017-02-10</td>
+							<td>25</td>
+							<td>2.5</td>
+						</tr>
+						<tr>
+							<td>156****3333</td>
+							<td>2017-02-10</td>
+							<td>25</td>
+							<td>2.5</td>
+						</tr>
+						<tr>
+							<td>156****3333</td>
+							<td>2017-02-10</td>
+							<td>25</td>
+							<td>2.5</td>
+						</tr>
+						<tr>
+							<td>156****3333</td>
+							<td>2017-02-10</td>
+							<td>25</td>
+							<td>2.5</td>
+						</tr>
+						<tr>
+							<td>156****3333</td>
+							<td>2017-02-10</td>
+							<td>25</td>
+							<td>2.5</td>
+						</tr>
+						<tr>
+							<td>156****3333</td>
+							<td>2017-02-10</td>
+							<td>25</td>
+							<td>2.5</td>
+						</tr>
+						<tr>
+							<td>156****3333</td>
+							<td>2017-02-10</td>
+							<td>25</td>
+							<td>2.5</td>
+						</tr>
+						<tr>
+							<td>156****3333</td>
+							<td>2017-02-10</td>
+							<td>25</td>
+							<td>2.5</td>
+						</tr>
+						<tr>
+							<td>156****3333</td>
+							<td>2017-02-10</td>
+							<td>25</td>
+							<td>2.5</td>
+						</tr>
+						<tr>
+							<td>156****3333</td>
+							<td>2017-02-10</td>
+							<td>25</td>
+							<td>2.5</td>
+						</tr>
+					</table>
+				</div>
+	        </div>
+	        
+	    </div>
+	</div>
+	<script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('charts'));
+
+        // 指定图表的配置项和数据
+        option = {
+    
+		    toolbox: {
+		        show: false,
+		        feature: {
+		            dataZoom: {
+		                yAxisIndex: 'none'
+		            },
+		            dataView: {readOnly: false},
+		            magicType: {type: ['line', 'bar']},
+		            restore: {},
+		            saveAsImage: {}
+		        }
+		    },
+		    xAxis:  {
+		        type: 'category',
+		        boundaryGap: false,
+		        axisLine: {show: false},
+		        axisTick: {
+				show: false
+				},
+		        data: ['6月11日','6月12日','6月13日','6月14日','6月15日','6月16日','6月17日']
+		    },
+		    yAxis: {
+		        type: 'value',
+		        axisLabel: {
+		            formatter: ''
+		        },
+		        axisLine: {show: false},
+				// 控制网格线是否显示
+				splitLine: {
+				show: false
+				},
+				// 去除y轴上的刻度线
+				axisTick: {
+				show: false
+				}
+		    },
+		    series: [
+		        {
+		            name:'',
+		            type:'line',
+		            data:[11, 11, 15, 13, 12, 13, 10]
+		           
+		        }
+		        
+		    ]
+		};
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+	<script type='text/javascript' src='js/common/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/sm-extend.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/handlebars-v4.0.5.js'></script>
+    <script src="./css/iconfont.js"></script>
+    <script>
+        $.init();
+    </script>
+</body>
+</html>

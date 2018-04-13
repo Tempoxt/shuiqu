@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>首页</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="./css/sm.min.css">
+    <link rel="stylesheet" href="./css/sm-extend.min.css">
+    <link rel="stylesheet" href="./css/index.css">
+    
+  </head>
+  <body>
+    <div class="page-group">
+        <div class="page page-finish page-current">
+            <header class="bar bar-nav search-bar">
+                <span class="icon icon-35icoback pull-left"></span>
+                <span class="icon pull-left choose-location">深圳市<em class="icon icon-63navbaricoarrowdown"></em></span>
+                
+                <div class="searchbar pull-left location-search"><form action="">
+                    <div class="search-input">
+                      <label class="icon icon-111icosearch" for="search"></label>
+                      <input type="search" id='search' placeholder='输入地址寻找周边水店'/>
+                    </div><form action="">
+                </div>
+            </header>
+
+            <div class="content wihte-bg">
+                <div class="title-list-wrap">
+                    <h4>定位地址</h4>
+                    <table class="now-location">
+                        <tr>
+                            <td>芙蓉路</td>
+                            <td><span class="icon icon-47location1"></span></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="title-list-wrap">
+                    <h4>选择城市</h4>
+                    <div class="list-city">
+                        <ul>
+                          <li>北京</li>
+                          <li>北京</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+    <script id="tpl" type="text/x-handlebars-template">
+        {{#each data}}
+        <li><a href="">
+            <table>
+                <tr>
+                    <td><img src="{{img}}" alt=""></td>
+                    <td>
+                        <h4>{{title}}</h4>
+                        <p>{{content}}</p>
+                    </td>
+                </tr>
+            </table></a>
+        </li>
+        {{/each}}
+    </script>
+    <script type='text/javascript' src='js/common/zepto.min.js' charset='utf-8'></script>
+    <script>
+        $.config = {router: false}
+    </script>
+    <script type='text/javascript' src='js/common/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/sm-extend.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/handlebars-v4.0.5.js'></script>
+    <script src="./css/iconfont.js"></script>
+    <script>
+    //注册is操作符
+    var isHelper = function() {
+        var args = arguments
+        ,   left = args[0]
+        ,   operator = args[1]
+        ,   right = args[2]
+        ,   options = args[3]
+        ;
+
+        if (args.length == 2) {
+            options = args[1];
+            if (left) return options.fn(this);
+            return options.inverse(this);
+        }
+
+        if (args.length == 3) {
+            right = args[1];
+            options = args[2];
+            if (left == right) return options.fn(this);
+            return options.inverse(this);
+        }
+
+        if (eR.call(operator, left, right)) {
+            return options.fn(this);
+        }
+        return options.inverse(this);
+    };
+
+    Handlebars.registerHelper('is', isHelper);
+   
+    $.init();
+    $(function() {
+        localStorage.setItem("b","gigiovo");//设置b为"isaac"
+        var b = localStorage.getItem("b");
+        $.alert(b)
+        
+    });
+
+    </script>
+  </body>
+</html>

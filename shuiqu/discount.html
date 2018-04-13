@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>优惠券</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="./css/sm.min.css">
+    <link rel="stylesheet" href="./css/sm-extend.min.css">
+    <link rel="stylesheet" href="./css/index.css">
+    
+  </head>
+  <body>
+    <div class="page-group">
+        <div class="page page-finish page-current">
+            <header class="bar bar-nav light-nav habit-nav">
+                <svg class="icon icon-svg title-icon pull-left" aria-hidden="true">
+                    <use xlink:href="#icon-goods_back"></use>
+                </svg>
+                <h1 class="title">优惠券</h1>
+                <a href="#" class=""><svg class="icon icon-svg title-icon pull-right" aria-hidden="true">
+                    <use xlink:href="#icon-101couponused"></use>
+                </svg></a>
+            </header>
+
+            <div class="content">
+                <ul class="discount-list" data-role="discount-list">
+                    <li>
+                        <a href="">
+                        <table>
+                            <tr>
+                                <td><img src="css/images/jt.jpg" alt=""></td>
+                                <td>
+                                    <h6>桶装水专用</h6>
+                                    <p><span>10.0元</span>优惠券</p>
+                                </td>
+                                <td>
+                                    <img src="http://7xlmry.com1.z0.glb.clouddn.com/hasdate.png" alt="">
+                                </td>
+                            </tr>
+                        </table>
+                        <div>
+                            <span><i class="icon"></i>广州</span>
+                            <em>可用时间：2017.1.3~2017.4.3</em>
+                        </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                        <table>
+                            <tr>
+                                <td><img src="css/images/jt.jpg" alt=""></td>
+                                <td>
+                                    <h6>桶装水专用</h6>
+                                    <p><span>10.0元</span>优惠券</p>
+                                </td>
+                                <td>
+                                    <img src="http://7xlmry.com1.z0.glb.clouddn.com/used.png" alt="">
+                                </td>
+                            </tr>
+                        </table>
+                        <div>
+                            <span><i class="icon"></i>广州</span>
+                            <em>可用时间：2017.1.3~2017.4.3</em>
+                        </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                        <table>
+                            <tr>
+                                <td><img src="css/images/jt.jpg" alt=""></td>
+                                <td>
+                                    <h6>桶装水专用</h6>
+                                    <p><span>10.0元</span>优惠券</p>
+                                </td>
+                                <td>
+                                    <img src="http://7xlmry.com1.z0.glb.clouddn.com/passed.png" alt="">
+                                </td>
+                            </tr>
+                        </table>
+                        <div>
+                            <span><i class="icon"></i>广州</span>
+                            <em>可用时间：2017.1.3~2017.4.3</em>
+                        </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        
+
+         
+        </div>
+       
+    </div>
+    <script id="editTpl" type="text/x-handlebars-template">
+        <h4>{{data.name}}</h4>
+        <p class="car-count">
+            <em data-action="minus">
+                <svg class="icon-svg" aria-hidden="true">
+                    <use xlink:href="#icon-shopping_btn_num_minus"></use>
+                </svg>
+            </em>
+            
+            <input type="hidden" name="num" data-max="{{data.max}}" value="{{data.num}}">
+            <i>{{data.num}}</i>
+            <em data-action="add">
+                <svg class="icon-svg" aria-hidden="true">
+                   <use xlink:href="#icon-shopping_btn_num_add"></use>
+                </svg> 
+            </em>
+            
+        </p>
+        
+        <span data-id="{{data.id}}" data-action="delete-item" class="icon icon-11addressdel"></span>
+    </script>
+    <script id="finishTpl" type="text/x-handlebars-template">
+        <h4>{{data.name}}</h4>
+        <p class="price">￥ {{data.price}}<em class="pull-right">X{{data.num}}</em></p>
+    </script>
+    <script type='text/javascript' src='js/common/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/sm-extend.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/handlebars-v4.0.5.js'></script>
+    <script src="./css/iconfont.js"></script>
+    <script>
+    //注册is操作符
+    var isHelper = function() {
+        var args = arguments
+        ,   left = args[0]
+        ,   operator = args[1]
+        ,   right = args[2]
+        ,   options = args[3]
+        ;
+
+        if (args.length == 2) {
+            options = args[1];
+            if (left) return options.fn(this);
+            return options.inverse(this);
+        }
+
+        if (args.length == 3) {
+            right = args[1];
+            options = args[2];
+            if (left == right) return options.fn(this);
+            return options.inverse(this);
+        }
+
+        if (eR.call(operator, left, right)) {
+            return options.fn(this);
+        }
+        return options.inverse(this);
+    };
+
+    Handlebars.registerHelper('is', isHelper);
+    //注册is操作符 end
+        $.init();
+        $(function() {
+            
+           
+           
+        
+        });
+    </script>
+  </body>
+</html>

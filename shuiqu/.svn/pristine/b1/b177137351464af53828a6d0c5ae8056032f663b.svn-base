@@ -1,0 +1,136 @@
+@charset "utf-8";
+.icon-svg {
+   width: 1em; 
+   height: 1em;
+   vertical-align: -0.15em;
+   fill: currentColor;
+   overflow: hidden;
+}
+.icon-btn_sp1{
+	&:before { content: "\e8ab"; }
+	&.active { 
+		color: #EAAE12;
+		&:before { content: "\e8a6"; }
+	}
+}
+.icon-btn_xj1{
+	&:before { content: "\e8aa"; }
+	&.active { 
+		color: #EAAE12;
+		&:before { content: "\e8a9"; }
+	}
+}
+.icon-btn_dzp-{
+	&:before { content: "\e8d6"; }
+	&.active { 
+		color: #EAAE12;
+		&:before { content: "\e8d5"; }
+	}
+}
+.icon-65notice:before { 
+	content: "\e641"; 
+}
+.icon-111icosearch:before { 
+	content: "\e670"; 
+}
+.icon-35icoback:before { content: "\e623";}
+.icon-86star { 
+	color: #D9D9D9;
+	&.active{
+		color: #FDC10A;
+	} 
+	&:before{
+		content: "\e656";
+	}
+}
+.icon-11addressdel{
+	font-size: 1.5rem; 
+	color: red;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+}
+.icon-onlyforaddressdelete:before,
+.icon-11addressdel:before { 
+	content: "\e60a";
+}
+
+.icon-63navbaricoarrowdown:before { content: "\e63f"; }
+.icon-47location1:before { content: "\e62f"; color: #FAD602;}
+.title-icon{
+	width: 2.2rem;
+	height: 2.2rem;
+}
+.bar .title-icon{
+	padding: .3rem .1rem;
+}
+.icon-ico_awwor_right:before { content: "\e8b5"; }
+.icon-cod:before { content: "\e8b9"; }
+
+.icon-weixin:before { content: "\e8ba"; color: #3CAF36; }
+.icon-weixin{
+	font-size: 2.3rem;
+}
+.icon-40icoedit:before { content: "\e628"; }
+.icon-83shoppingbtnnumadd:before { content: "\e653"; }
+.icon-42icotime:before { content: "\e62a"; }
+.icon-53meicolocation:before { content: "\e635"; }
+.icon-87tel:before { content: "\e657"; }
+.icon-76share:before { content: "\e64c";}
+.icon-57meorderstatus1:before { content: "\e639"; }
+.icon-58meorderstatus2:before { content: "\e63a"; }
+.icon-59meorderstatus3:before { content: "\e63b"; }
+.icon-60meorderstatus4:before { content: "\e63c"; }
+
+.icon-62meorderstatus10:before { content: "\e63e"; }
+.icon-73ordericostore:before { content: "\e649"; }
+.icon-88tipicoorder:before { content: "\e658"; }
+.icon-star02:before { content: "\e671"; color: #FDC10A;}
+.icon-img_default:before { content: "\e8c0"; color: #eee; }
+.icon-101couponused:before { content: "\e665"; color: #999;}
+.icon-46location:before { content: "\e62e";}
+.icon-51youhui:before { content: "\e6d2"; }
+.icon-default:before { content: "\e8bf";font-size:2.2rem; }
+.icon-shouyi:before { content: "\e8c6"; }
+.icon-edit:before { content: "\e8c4"; color:#5B5B5B;}
+.icon-help:before { content: "\e8c5"; }
+.icon-49zhifubao:before { content: "\e672"; background:#fff ;color:#1AA1E6;}
+.icon-yinhang:before { content: "\e8c3";color:#FCC153;}
+.icon-ico_pic:before { content: "\e8ca"; }
+.icon-card:before { content: "\e8cb"; color:#BFBFBF;}
+.icon-share:before { content: "\e8cc"; }
+.icon-me_ico_shop:before { content: "\e8cd"; }
+.icon-ico_tel:before { content: "\e8c7"; }
+.icon-ico_mima:before { content: "\e8c8"; }
+.icon-duigou1-copy:before { content: "\e8ce"; }
+.icon-123close:before { content: "\e86e"; }
+.icon-vat_ico_pass:before { content: "\e8d3"; }
+.icon-vat_ico_reject:before { content: "\e8d2"; }
+.icon-vat__ico_andit:before { content: "\e8d1"; }
+.icon-invoice:before { content: "\e887"; }
+.icon-btn_no_crime:before { content: "\e8b6"; }
+.icon-btn_healthy:before { content: "\e8b4"; }
+.icon-btn_work:before { content: "\e8b3"; }
+.icon-icon_e_ticket:before { content: "\e8d7"; }
+.icon-41icolocal:before { content: "\e629"; }
+.icon-zhengjian:before { content: "\e8c2"; }
+.icon-100huodao:before { content: "\e674"; }
+.icon-ico_pay:before { content: "\e8d8"; }
+.icon-ico_no_pay:before { content: "\e8d9"; }
+.icon-btn_fx_1:before { content: "\e8ac"; }
+.icon-me_ico_shop:before { content: "\e8cd"; }
+.icon-ico_tel1:before { content: "\e8dc"; }
+.icon-ico_map:before { content: "\e8db"; }
+.icon-61meorderstatus5:before { content: "\e63d"; }
+.icon-no_coupon:before { content: "\e8dd"; }
+.icon-code_on:before { content: "\e8df"; }
+.icon-no_code:before { content: "\e8e0"; }
+.icon-xiaolian:before { content: "\e8c9"; }
+.icon-94refundgotop:before { content: "\e65f"; }
+.icon-95refundgodown:before { content: "\e660"; }
+.icon-kefu:before { content: "\e8e6"; font-size: 1.3rem;}
+.icon-51meicochat:before { content: "\e633"; }
+.icon-shopping_btn_num_add-copy:before { content: "\e8e8"; }
+.icon-peison:before { content: "\e8ef"; }
+.icon-weixinzhifu:before { content: "\e678"; color: #3CAF36;font-size: 2.2rem;}
+.icon-8icon42:before { content: "\e607"; }

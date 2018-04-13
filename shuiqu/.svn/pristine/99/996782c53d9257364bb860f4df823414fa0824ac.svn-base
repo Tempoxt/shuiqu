@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>忘记提现密码</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="./css/sm.min.css">
+    <link rel="stylesheet" href="./css/sm-extend.min.css">
+    <link rel="stylesheet" href="./css/shop.css">
+</head>
+<body>
+	<div class="page-group">
+		<div class="page page-finish page-current">
+			<header class="bar bar-nav light-nav">
+	            <a href="/weixin/everyShop" class="icon icon-35icoback pull-left"></a>  
+	            <h1 class="title">忘记提现密码</h1>
+	        </header>
+	        <div class="content content-forgetCash">
+	            <div class="list-block new-forget-list">
+				  <ul>
+				    <li>
+				      <div class="item-content">
+				        <div class="item-inner">
+				          <div class="item-title label">手机号：</div>
+				          <div class="item-input">
+				            <input type="text" name="telNum" value="159****0858" disabled></div>
+				        </div>
+				      </div>
+				    </li>
+				    <li>
+				      <div class="item-content">
+				        <div class="item-inner">
+				          <div class="item-title label">验证码：</div>
+				          <div class="item-input">
+				            <input type="text" name="megCode" placeholder="请输入短信验证码"></div>
+				            <a href="" class="button button-fill btn-yello">获取验证码</a>
+				        </div>
+				      </div>
+				    </li>
+				    <li>
+				      <div class="item-content">
+				        <div class="item-inner">
+				          <div class="item-title label">新提现密码：</div>
+				          <div class="item-input">
+				            <input type="text" name="telNum" placeholder="6位数字"></div>
+				        </div>
+				      </div>
+				    </li>
+				    <li>
+				      <div class="item-content">
+				        <div class="item-inner">
+				          <div class="item-title label">确认新提现密码：</div>
+				          <div class="item-input">
+				            <input type="text" name="telNum" placeholder="6位数字"></div>
+				        </div>
+				      </div>
+				    </li>
+				  </ul>
+				  <p>
+				    <a href="#" class="button button-fill btn-yello button-confirm">确认提交</a></p>
+				</div>
+	        </div>
+	        
+	    </div>
+	</div>
+	<script type='text/javascript' src='js/common/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/sm-extend.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/handlebars-v4.0.5.js'></script>
+    <script src="./css/iconfont.js"></script>
+    <script>
+        $.init();
+    </script>
+</body>
+</html>

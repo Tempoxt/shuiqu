@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>闪订</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="./css/sm.min.css">
+    <link rel="stylesheet" href="./css/sm-extend.min.css">
+    <link rel="stylesheet" href="./css/index.css">
+    
+  </head>
+  <body>
+    <div class="page-group">
+        <div class="page page-finish page-current">
+            <header class="bar bar-nav">
+              <h1 class="title">闪订</h1>
+            </header>
+
+            <div class="content">
+                <ul class="car-list" data-role="car-list">
+                    <li>
+                        <h3>
+                            <label class="label-checkbox item-content" data-role="store-choose">
+                                <input type="checkbox" value="1" name="cart-item" />
+                                <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                            </label>
+                            宝安西乡店
+                            <a data-action="editControl" href="#" data-json="" class="button button-fill btn-yello">编辑</a>
+                            <textarea name="" id="" class="hide">
+                                [{"id":1,"img":"css/images/shop1.png","name":"乐百氏新一代纯净水18.9L","price":0.92,"num":3,"max":10,"curValue":2,"curName":"现金","payType":[{"name":"水票","value":1},{"name":"现金","value":2}]},{"id":2,"img":"css/images/shop1.png","name":"乐eeeee一代纯净水18.9L","price":3.92,"num":2,"max":10,"curValue":1,"curName":"水票","payType":[{"name":"水票","value":1},{"name":"现金","value":2}]}]
+                            </textarea>
+                        </h3>
+                        <div class="car-cont">
+                            <table data-id="1">
+                                <tr>
+                                    <td>
+                                        <label class="label-checkbox item-content">
+                                            <input type="checkbox" value="1" name="cart-child" />
+                                            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <img src="css/images/shop1.png" alt="">
+                                    </td>
+                                    <td class="edit-box">
+                                        <h4>乐百氏新一代纯净水18.9L</h4>
+                                        <p class="price">￥ 0.92</p>
+                                        <p><span>数量：<em>3</em></span><span>结算方式：<em>现金</em></span></p>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table data-id="2">
+                                <tr>
+                                    <td>
+                                        <label class="label-checkbox item-content">
+                                            <input type="checkbox" value="1" name="cart-child" />
+                                            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <img src="css/images/shop1.png" alt="">
+                                    </td>
+                                    <td class="edit-box">
+                                        <h4>乐百氏新一代纯净水18.9L</h4>
+                                        <p class="price">￥ 3.92</p>
+                                        <p><span>数量：<em>2</em></span><span>结算方式：<em>水票</em></span></p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </li>
+                    <li>
+                        <h3>
+                            <label class="label-checkbox item-content" data-role="store-choose">
+                                <input type="checkbox" value="1" name="cart-item" />
+                                <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                            </label>
+                            松岗芙蓉店
+                            <a data-action="editControl" href="#" data-json="" class="button button-fill btn-yello">编辑</a>
+                            <textarea name="" id="" class="hide">
+                                [{"id":3,"img":"css/images/shop1.png","name":"涟漪新一代纯净水15L","price":3.92,"num":3,"max":10,"curValue":2,"curName":"现金","payType":[{"name":"水票","value":1},{"name":"现金","value":2}]}]
+                            </textarea>
+                        </h3>
+                        <div class="car-cont">
+                            <table data-id="3">
+                                <tr>
+                                    <td>
+                                        <label class="label-checkbox item-content">
+                                            <input type="checkbox" value="1" name="cart-child" />
+                                            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <img src="css/images/shop1.png" alt="">
+                                    </td>
+                                    <td class="edit-box">
+                                        <h4>涟漪新一代纯净水15L</h4>
+                                        <p class="price">￥ 3.92</p>
+                                        <p><span>数量：<em>3</em></span><span>结算方式：<em>现金</em></span></p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- Block button in standard bar fixed above the footer -->
+            <div class="bar bar-footer-secondary">
+              <table data-id="3">
+                  <tr>
+                      <td>
+                        <label class="label-checkbox item-content" data-role="choose-all">
+                            <input type="checkbox" value="1" />
+                            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                        </label>
+                        共<span>￥ 12.32</span> 水票<span>0</span> 券<span>0</span>
+                      </td>
+                      <td class="go-buy">
+                          <p><a href="#" class="button button-fill btn-yello">去结算</a></p>
+                      </td>
+                  </tr>
+              </table>
+            </div>
+
+            <!-- nav bar -->
+            <nav class="bar bar-tab">
+              <a class="tab-item external" href="#">
+                <svg class="icon icon-svg def" aria-hidden="true">
+                    <use xlink:href="#icon-btn_home_"></use>
+                </svg>
+                <svg class="icon icon-svg cur" aria-hidden="true">
+                    <use xlink:href="#icon-btn_home"></use>
+                </svg>
+                <span class="tab-label">首页</span>
+              </a>
+              <a class="tab-item external" href="#">
+                <svg class="icon icon-svg def" aria-hidden="true">
+                    <use xlink:href="#icon-btn_fx_"></use>
+                </svg>
+                <svg class="icon icon-svg cur" aria-hidden="true">
+                    <use xlink:href="#icon-btn_fx"></use>
+                </svg>
+                <span class="tab-label">趣发现</span>
+                <span class="badge">2</span>
+              </a>
+              <a class="tab-item external active" href="#">
+                <svg class="icon icon-svg def" aria-hidden="true">
+                    <use xlink:href="#icon-btn_sd_"></use>
+                </svg>
+                <svg class="icon icon-svg cur" aria-hidden="true">
+                    <use xlink:href="#icon-btn_sd"></use>
+                </svg>
+                <span class="tab-label">闪订</span>
+              </a>
+              <a class="tab-item external" href="#">
+                <svg class="icon icon-svg def" aria-hidden="true">
+                    <use xlink:href="#icon-btn_shop"></use>
+                </svg>
+                <svg class="icon icon-svg cur" aria-hidden="true">
+                    <use xlink:href="#icon-btn_shop_"></use>
+                </svg>
+                <span class="tab-label">已选购</span>
+              </a>
+              <a class="tab-item external" href="#">
+                <svg class="icon icon-svg def" aria-hidden="true">
+                    <use xlink:href="#icon-btn_my_"></use>
+                </svg>
+                <svg class="icon icon-svg cur" aria-hidden="true">
+                    <use xlink:href="#icon-btn_my"></use>
+                </svg>
+                <span class="tab-label">我的</span>
+              </a>
+            </nav>
+        </div>
+       
+    </div>
+    <script id="editTpl" type="text/x-handlebars-template">
+        <h4>{{data.name}}</h4>
+        <p class="car-count">
+            <em data-action="minus">
+                <svg class="icon-svg" aria-hidden="true">
+                    <use xlink:href="#icon-shopping_btn_num_minus"></use>
+                </svg>
+            </em>
+            
+            <input type="hidden" name="num" data-max="{{data.max}}" value="{{data.num}}">
+            <i>{{data.num}}</i>
+            <em data-action="add">
+                <svg class="icon-svg" aria-hidden="true">
+                   <use xlink:href="#icon-shopping_btn_num_add"></use>
+                </svg> 
+            </em>
+            
+        </p>
+        <p class="car-btn">
+            <input type="hidden" name="payType" value="{{data.curValue}}" data-name="{{data.curName}}">
+            {{#each data.payType}}
+                {{#is value 1}}
+                <span data-role="pay-type" data-action="shuipiao" class="icon icon-btn_sp1 {{#is ../data.curValue 1}}active{{/is}}"></span>
+                {{/is}}
+                {{#is value 2}}
+                <span data-role="pay-type" data-action="xianjin" class="icon icon-btn_xj1 {{#is ../data.curValue 2}}active{{/is}}"></span>
+                {{/is}}
+            {{/each}}
+        </p>
+        <span data-id="{{data.id}}" data-action="delete-item" class="icon icon-11addressdel"></span>
+    </script>
+    <script id="finishTpl" type="text/x-handlebars-template">
+        <h4>{{data.name}}</h4>
+        <p class="price {{#is data.curValue 1}}no-money{{/is}}">￥ {{data.price}}</p>
+        <p>
+            <span>数量：<em>{{data.num}}</em></span>
+            <span>结算方式：<em>{{data.curName}}</em></span>
+        </p>
+    </script>
+    <script type='text/javascript' src='js/common/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/sm-extend.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/handlebars-v4.0.5.js'></script>
+    <script src="./css/iconfont.js"></script>
+    <script>
+    //注册is操作符
+    var isHelper = function() {
+        var args = arguments
+        ,   left = args[0]
+        ,   operator = args[1]
+        ,   right = args[2]
+        ,   options = args[3]
+        ;
+
+        if (args.length == 2) {
+            options = args[1];
+            if (left) return options.fn(this);
+            return options.inverse(this);
+        }
+
+        if (args.length == 3) {
+            right = args[1];
+            options = args[2];
+            if (left == right) return options.fn(this);
+            return options.inverse(this);
+        }
+
+        if (eR.call(operator, left, right)) {
+            return options.fn(this);
+        }
+        return options.inverse(this);
+    };
+
+    Handlebars.registerHelper('is', isHelper);
+    //注册is操作符 end
+        $.init();
+        $(function() {
+            //数量加减
+            $('[data-role="car-list"]').delegate("em", "click", function(e){
+                e.preventDefault();
+
+                var me = $(this),
+                    numbox = me.siblings('input'),
+                    max = numbox.data('max'),
+                    show = me.siblings('i'),
+                    action = me.data('action'),
+                    numValue = 0;
+
+                    if(action == 'add'){
+                        if(numbox.val() < max){
+                            numValue = parseInt(numbox.val()) + 1;
+                        }else{
+                            numValue = max;
+                        }
+
+                    }else if(action == 'minus'){
+                        if(numbox.val() >= 1){
+                            numValue = parseInt(numbox.val()) - 1;
+                        }
+                        
+                    }
+                    numbox.val(numValue);
+                    show.html(numValue);
+            });
+            //全局全选
+            var chooseAll = $('[data-role="choose-all"]');
+            var items = $('.car-list li label input[name=cart-item]');
+            var children = $('.car-list li label input[name=cart-child]');
+
+            chooseAll.on('click', function(e){
+                e.preventDefault();
+                //切换商品列表是否选择
+                if($(this).find('input:checked').length == 0){
+                    items.attr("checked",true);
+                    children.attr("checked",true);
+                }else{
+                    items.removeAttr("checked");
+                    children.removeAttr("checked");
+                }
+                //切换自身是否选中
+                if($(this).children('input').attr('checked')){
+                    $(this).children('input').removeAttr("checked");
+                    
+                }else{
+                    $(this).children('input').attr("checked",true);
+                }
+                
+            });
+            $('.car-list li label').on('click', function(e){
+
+                e.preventDefault();
+                if($(this).children('input').attr('checked')){
+                    $(this).children('input').removeAttr("checked");
+                    //完成状态
+                    if($(this).children('input').attr("name") == "cart-item"){
+                        chooseAll.children('input').removeAttr("checked");
+                        $(this).parents('li').find('[name="cart-child"]').removeAttr("checked");
+                    }
+                    if($(this).children('input').attr("name") == "cart-child"){
+                        chooseAll.children('input').removeAttr("checked");
+                        $(this).parents('li').find('[data-role="store-choose"] input').removeAttr("checked");
+                    }
+                        
+                        
+                }else{
+                    $(this).children('input').attr("checked",true);
+                    if($(this).children('input').attr("name") == "cart-item"){
+                        $(this).parents('li').find('[name="cart-child"]').attr("checked",true);
+                    }
+                    if($(this).parents('li').find('input[name=cart-child]').length == $(this).parents('li').find('input[name=cart-child]:checked').length){
+                        $(this).parents('li').find('[data-role="store-choose"] input').attr("checked",true);
+                    }
+                    //完成状态
+                    if($(this).parents('ul').find('input[name=cart-item]').length == $(this).parents('ul').find('input[name=cart-item]:checked').length){
+                        chooseAll.children('input').attr("checked",true);
+                    }
+                    
+                    
+                    
+                }
+                
+            });
+             //选择支付方式
+            $('[data-role="car-list"]').delegate("span", "click", function(e){
+                e.preventDefault();
+
+                var me = $(this),
+                    action = me.data('action');
+
+                    if(action == 'shuipiao'){
+                        if(!me.hasClass('active')){
+                            me.addClass('active');
+                            me.siblings('span').removeClass('active');
+                            me.siblings('input').val(1).attr('data-name','水票');
+                        }
+                        
+                    }else if(action == 'xianjin'){
+                        if(!me.hasClass('active')){
+                            me.addClass('active');
+                            me.siblings('span').removeClass('active');
+                            me.siblings('input').val(2).attr('data-name','现金');
+                        }
+                        
+                    }else if(action == 'delete-item'){
+                        var id = me.data('id'),
+                            valBox = me.parents('li').find('textarea'),
+                            data = JSON.parse(valBox.html());;
+
+                            $('table[data-id="' + id + '"]').remove();
+                           
+                            //回填数据
+                            for(var i=0; i < data.length; i++){
+                                if(data[i]['id'] == id){
+                                    data.splice(i,1);
+                                }
+                                
+                            } 
+                            valBox.html(JSON.stringify(data));
+
+                    }
+            });
+            //切换编辑完成
+            $('[data-role="car-list"]').delegate("a", "click", function(e){
+                e.preventDefault();
+
+                var me = $(this),
+                    action = me.data('action'),
+                    data = JSON.parse(me.next('textarea').html());
+
+                    if(action == 'editControl'){
+                        if(!me.hasClass('active')){
+                            me.addClass('active');
+                            me.html('完成');
+
+                            
+                            var tpl = $("#editTpl").html();
+                            var template = Handlebars.compile(tpl);
+                            for(var i=0; i < data.length; i++){
+                                var context = {
+                                    data: data[i]
+                                };
+                                $('table[data-id="' + data[i]["id"] + '"]').find('.edit-box').html(template(context));
+                            }
+                            
+                        }else{
+                            me.removeClass('active');
+                            me.html('编辑');
+                            //回填数据
+                            for(var i=0; i < data.length; i++){
+                                data[i]['num'] = $('table[data-id="' + data[i]["id"] + '"]').find('input[name=num]').val();
+                                data[i]['curValue'] = $('table[data-id="' + data[i]["id"] + '"]').find('input[name=payType]').val();
+                                data[i]['curName'] = $('table[data-id="' + data[i]["id"] + '"]').find('input[name=payType]').data('name');
+                            }
+                            me.parents('li').find('textarea').html(JSON.stringify(data));
+
+                            var tpl = $("#finishTpl").html();
+                            var template = Handlebars.compile(tpl);
+                            for(var i=0; i < data.length; i++){
+                                var context = {
+                                    data: data[i]
+                                };
+                                $('table[data-id="' + data[i]["id"] + '"]').find('.edit-box').html(template(context));
+                            }
+                        }
+                        
+                    }
+            });
+        });
+    </script>
+  </body>
+</html>

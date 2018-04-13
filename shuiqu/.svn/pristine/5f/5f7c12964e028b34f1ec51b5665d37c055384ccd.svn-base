@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>商品详情</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="./css/sm.min.css">
+    <link rel="stylesheet" href="./css/sm-extend.min.css">
+    <link rel="stylesheet" href="./css/index.css">
+
+  </head>
+  <body>
+    <div class="page-group">
+        <div class="page page-finish page-current">
+            <header class="bar bar-nav light-nav">
+                <svg class="icon icon-svg title-icon pull-left" aria-hidden="true">
+                    <use xlink:href="#icon-goods_back"></use>
+                </svg>  
+                <h1 class="title">商品详情</h1>
+            </header>
+
+            <div class="content pb3">
+                <!-- Slider -->
+                <div class="swiper-container" data-space-between='0'>
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><img src="css/images/tong.png" alt=""></div>
+                        <div class="swiper-slide"><img src="css/images/tong.png" alt=""></div>
+                        <div class="swiper-slide"><img src="css/images/tong.png" alt=""></div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+                <div class="product-info model-box">
+                    <h4 class="model-tit">商品信息</h4>
+                    <h5 class="pro-tit">乐百氏新一代18L <a class="icon icon-76share"></a></h4>
+                    <div class="info-detail">
+                        <div class="price">
+                            <span>￥ 0.12</span>
+                            <a href="#" class="button button-fill btn-yello">加入购物车</a>
+                        </div>
+                        <table>
+                            <tr>
+                                <th>品牌</th>
+                                <td>景田</td>
+                            </tr>
+                            <tr>
+                                <th>单位</th>
+                                <td>桶</td>
+                            </tr>
+                            <tr>
+                                <th>规格</th>
+                                <td>18L</td>
+                            </tr>
+                            <tr>
+                                <th>结算方式</th>
+                                <td>
+                                    <label class="label-checkbox item-content">
+                                        <input disabled="disabled" type="checkbox" value="1" name="" />
+                                        <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                    </label>可票结算
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <table class="show-pro-info">
+                    <tr>
+                        <td>免运费</td>
+                        <td>销售<span>29</span></td>
+                    </tr>
+                </table>
+                <div class="model-box recommend-wrap">
+                    <h4 class="model-tit">推荐</h4>
+                    <ul class="suggest-list">
+                        <li>
+                            <a href="">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <img src="http://7xlmry.com1.z0.glb.clouddn.com/Upload/Product/images/20151123/151123170745680601.jpg" alt="">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p>50张水票套餐</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span>
+                                                ￥1200.00
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <img src="http://7xlmry.com1.z0.glb.clouddn.com/Upload/Product/images/20151123/151123170745680601.jpg" alt="">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p>50张水票套餐</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span>
+                                                ￥1200.00
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <img src="http://7xlmry.com1.z0.glb.clouddn.com/Upload/Product/images/20151123/151123170745680601.jpg" alt="">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p>50张水票套餐</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span>
+                                                ￥1200.00
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <img src="http://7xlmry.com1.z0.glb.clouddn.com/Upload/Product/images/20151123/151123170745680601.jpg" alt="">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p>50张水票套餐</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span>
+                                                ￥1200.00
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="model-box store-info-wrap"> 
+                    <h4 class="model-tit">店铺信息</h4>
+                    <table class="store-tit-box">   
+                        <tr>    
+                            <td><img src="http://7xlmry.com1.z0.glb.clouddn.com/Upload/Shop/images/20151123/151123155839847622.jpg" alt=""></td>
+                            <td>    
+                                <h4>宝安西乡店</h4>
+                                <div>
+                                    <span class="icon icon-86star active"></span>
+                                    <span class="icon icon-86star active"></span>
+                                    <span class="icon icon-86star active"></span>
+                                    <span class="icon icon-86star"></span>
+                                    <span class="icon icon-86star"></span>
+                                </div>
+                            </td>
+                            <td>
+                                <a href="">进店逛逛</a>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="store-info-list">
+                        <tr>
+                            <td>
+                                <p><span>50</span><em>分钟</em></p>
+                                <p>平均送达时间</p>
+                            </td>
+                            <td>
+                                <p>
+                                    <em>￥</em><span>0.00</span>
+                                </p>
+                                <p>起送价</p>
+                            </td>
+                            <td>
+                                <p><em>￥</em><span>0.00</span></p>
+                                <p>配送费</p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="go-ahead open-evaluate">
+                    <a href="" data-role="imgurl">查看商品评价<span class="icon icon-ico_awwor_right"></span></a>
+                </div>
+                <div class="go-ahead open-detail">
+                    <a href="">查看商品详情<span class="icon icon-ico_awwor_right"></span></a>
+                </div>
+
+            </div>
+            <!-- Block button in standard bar fixed above the footer -->
+            <div class="bar bar-footer order-bar">
+              <table>
+                  <tr>
+                      <td>
+                        
+                      </td>
+                      <td class="go-buy">
+                          <p><a href="#" class="button button-fill btn-yello">去购物车结算</a></p>
+                      </td>
+                  </tr>
+              </table>
+            </div>
+
+            
+        </div>
+       
+    </div>
+<!-- 评价浮层 -->
+<div class="popup popup-evaluate">
+  <div class="content-block">
+    <header class="bar bar-nav  light-nav">
+        <span class="icon icon-35icoback pull-left close-popup"></span>
+        <h1 class="title">商品评价</h1>
+    </header>
+    <div class="content">
+        <div class="choose-evaluate">
+            <p>
+                <a class="active" href="">全部</a>
+                <a href="">好评</a>
+                <a href="">中评</a>
+                <a href="">差评</a>
+            </p>
+            <label class="label-checkbox item-content">
+                <input type="checkbox" value="1" name="cart-child" />
+                <div class="item-media"><i class="icon icon-form-checkbox"></i>只显示有图片的内容</div>
+            </label>
+        </div>
+        <ul class="evaluate-list">
+            <li>
+                <table>
+                    <tr>
+                        <td><img src="css/images/jt.jpg" alt=""></td>
+                        <td>
+                            <h5>15221****12<span class="time">2016-11-10</span></h5>
+                            <div class="stars">
+                                <span class="icon icon-86star active"></span>
+                                <span class="icon icon-86star active"></span>
+                                <span class="icon icon-86star active"></span>
+                                <span class="icon icon-86star"></span>
+                                <span class="icon icon-86star"></span>
+                            </div>
+                            <p>
+                                的地方肯德基发的快递放假
+                            </p>
+                            
+                        </td>
+
+                    </tr>
+                </table>
+            </li>
+            <li>
+                <table>
+                    <tr>
+                        <td><img src="css/images/jt.jpg" alt=""></td>
+                        <td>
+                            <h5>15221****12<span class="time">2016-11-10</span></h5>
+                            <div class="stars">
+                                <span class="icon icon-86star active"></span>
+                                <span class="icon icon-86star active"></span>
+                                <span class="icon icon-86star active"></span>
+                                <span class="icon icon-86star"></span>
+                                <span class="icon icon-86star"></span>
+                            </div>
+                            <p>
+                                的地方肯德基发的快递放假
+                            </p>
+                            
+                        </td>
+
+                    </tr>
+                </table>
+            </li>
+        </ul>
+    </div>
+  </div>
+</div>
+<!-- 详情浮层 -->
+<div class="popup popup-detail">
+  <div class="content-block">
+    <header class="bar bar-nav  light-nav">
+        <span class="icon icon-35icoback pull-left close-popup"></span>
+        <h1 class="title">商品详情</h1>
+    </header>
+    <div class="content">
+        商品详情内容
+    </div>
+  </div>
+</div>
+<script id="editTpl" type="text/x-handlebars-template">
+    <h4>{{data.name}}</h4>
+    <p class="car-count">
+        <em data-action="minus">
+            <svg class="icon-svg" aria-hidden="true">
+                <use xlink:href="#icon-shopping_btn_num_minus"></use>
+            </svg>
+        </em>
+        
+        <input type="hidden" name="num" data-max="{{data.max}}" value="{{data.num}}">
+        <i>{{data.num}}</i>
+        <em data-action="add">
+            <svg class="icon-svg" aria-hidden="true">
+               <use xlink:href="#icon-shopping_btn_num_add"></use>
+            </svg> 
+        </em>
+        
+    </p>
+    <p class="car-btn">
+        <input type="hidden" name="payType" value="{{data.curValue}}" data-name="{{data.curName}}">
+        {{#each data.payType}}
+            {{#is value 1}}
+            <span data-role="pay-type" data-action="shuipiao" class="icon icon-btn_sp1 {{#is ../data.curValue 1}}active{{/is}}"></span>
+            {{/is}}
+            {{#is value 2}}
+            <span data-role="pay-type" data-action="xianjin" class="icon icon-btn_xj1 {{#is ../data.curValue 2}}active{{/is}}"></span>
+            {{/is}}
+        {{/each}}
+    </p>
+    <span data-id="{{data.id}}" data-action="delete-item" class="icon icon-11addressdel"></span>
+</script>
+
+    <script type='text/javascript' src='js/common/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/sm-extend.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/handlebars-v4.0.5.js'></script>
+    <script src="./css/iconfont.js"></script>
+    <script>
+    //注册is操作符
+    var isHelper = function() {
+        var args = arguments
+        ,   left = args[0]
+        ,   operator = args[1]
+        ,   right = args[2]
+        ,   options = args[3]
+        ;
+
+        if (args.length == 2) {
+            options = args[1];
+            if (left) return options.fn(this);
+            return options.inverse(this);
+        }
+
+        if (args.length == 3) {
+            right = args[1];
+            options = args[2];
+            if (left == right) return options.fn(this);
+            return options.inverse(this);
+        }
+
+        if (eR.call(operator, left, right)) {
+            return options.fn(this);
+        }
+        return options.inverse(this);
+    };
+
+    Handlebars.registerHelper('is', isHelper);
+    //注册is操作符 end
+        $.init();
+        $(function() {
+            
+            $(document).on('click','.open-evaluate', function () {
+              $.popup('.popup-evaluate');
+            });
+            $(document).on('click','.open-detail', function () {
+              $.popup('.popup-detail');
+            });
+        });
+    </script>
+  </body>
+</html>

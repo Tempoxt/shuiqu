@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>消费习惯</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="./css/sm.min.css">
+    <link rel="stylesheet" href="./css/sm-extend.min.css">
+    <link rel="stylesheet" href="./css/index.css">
+    
+  </head>
+  <body>
+    <div class="page-group">
+        <div class="page page-finish page-current">
+            <header class="bar bar-nav light-nav habit-nav">
+                <svg class="icon icon-svg title-icon pull-left" aria-hidden="true">
+                    <use xlink:href="#icon-goods_back"></use>
+                </svg>
+                <h1 class="title">消费习惯</h1>
+                <a href="#" class="button button-fill btn-yello icon pull-right">保存</a>
+            </header>
+
+            <div class="content">
+                <ul class="habit-list" data-role="car-list">
+                    <li>
+                        <h3>宝安西乡店
+                            <a data-action="editControl" href="#" data-json="" class="button button-fill btn-yello">编辑</a>
+                            <textarea name="" id="" class="hide">
+                                [{"id":1,"img":"css/images/shop1.png","name":"乐百氏新一代纯净水18.9L","price":0.92,"num":3,"max":10},{"id":2,"img":"css/images/shop1.png","name":"乐eeeee一代纯净水18.9L","price":3.92,"num":2,"max":10}]
+                            </textarea>
+                        </h3>
+                        <div class="car-cont">
+                            <table data-id="1">
+                                <tr>
+                                    <td>
+                                        <img src="css/images/shop1.png" alt="">
+                                    </td>
+                                    <td class="edit-box">
+                                        <h4>乐百氏新一代纯净水18.9L</h4>
+                                        <p class="price">￥ 0.92<em class="pull-right">X3</em></p>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table data-id="2">
+                                <tr>
+                                    <td>
+                                        <img src="css/images/shop1.png" alt="">
+                                    </td>
+                                    <td class="edit-box">
+                                        <h4>乐百氏新一代纯净水18.9L</h4>
+                                        <p class="price">￥ 3.92<em class="pull-right">X3</em></p>
+                                        
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </li>
+                  
+                </ul>
+            </div>
+        
+
+         
+        </div>
+       
+    </div>
+    <script id="editTpl" type="text/x-handlebars-template">
+        <h4>{{data.name}}</h4>
+        <p class="car-count">
+            <em data-action="minus">
+                <svg class="icon-svg" aria-hidden="true">
+                    <use xlink:href="#icon-shopping_btn_num_minus"></use>
+                </svg>
+            </em>
+            
+            <input type="hidden" name="num" data-max="{{data.max}}" value="{{data.num}}">
+            <i>{{data.num}}</i>
+            <em data-action="add">
+                <svg class="icon-svg" aria-hidden="true">
+                   <use xlink:href="#icon-shopping_btn_num_add"></use>
+                </svg> 
+            </em>
+            
+        </p>
+        
+        <span data-id="{{data.id}}" data-action="delete-item" class="icon icon-11addressdel"></span>
+    </script>
+    <script id="finishTpl" type="text/x-handlebars-template">
+        <h4>{{data.name}}</h4>
+        <p class="price">￥ {{data.price}}<em class="pull-right">X{{data.num}}</em></p>
+    </script>
+    <script type='text/javascript' src='js/common/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/sm-extend.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/handlebars-v4.0.5.js'></script>
+    <script src="./css/iconfont.js"></script>
+    <script>
+    //注册is操作符
+    var isHelper = function() {
+        var args = arguments
+        ,   left = args[0]
+        ,   operator = args[1]
+        ,   right = args[2]
+        ,   options = args[3]
+        ;
+
+        if (args.length == 2) {
+            options = args[1];
+            if (left) return options.fn(this);
+            return options.inverse(this);
+        }
+
+        if (args.length == 3) {
+            right = args[1];
+            options = args[2];
+            if (left == right) return options.fn(this);
+            return options.inverse(this);
+        }
+
+        if (eR.call(operator, left, right)) {
+            return options.fn(this);
+        }
+        return options.inverse(this);
+    };
+
+    Handlebars.registerHelper('is', isHelper);
+    //注册is操作符 end
+        $.init();
+        $(function() {
+            //数量加减
+            $('[data-role="car-list"]').delegate("em", "click", function(e){
+                e.preventDefault();
+
+                var me = $(this),
+                    numbox = me.siblings('input'),
+                    max = numbox.data('max'),
+                    show = me.siblings('i'),
+                    action = me.data('action'),
+                    numValue = 0;
+
+                    if(action == 'add'){
+                        if(numbox.val() < max){
+                            numValue = parseInt(numbox.val()) + 1;
+                        }else{
+                            numValue = max;
+                        }
+
+                    }else if(action == 'minus'){
+                        if(numbox.val() >= 1){
+                            numValue = parseInt(numbox.val()) - 1;
+                        }
+                        
+                    }
+                    numbox.val(numValue);
+                    show.html(numValue);
+            });
+           
+             //删除消费习惯
+            $('[data-role="car-list"]').delegate("span", "click", function(e){
+                e.preventDefault();
+
+                var me = $(this),
+                    action = me.data('action');
+
+                    if(action == 'delete-item'){
+                        var id = me.data('id'),
+                            valBox = me.parents('li').find('textarea'),
+                            data = JSON.parse(valBox.html());;
+
+                            $('table[data-id="' + id + '"]').remove();
+                           
+                            //回填数据
+                            for(var i=0; i < data.length; i++){
+                                if(data[i]['id'] == id){
+                                    data.splice(i,1);
+                                }
+                                
+                            } 
+                            valBox.html(JSON.stringify(data));
+
+                    }
+            });
+            //切换编辑完成
+            $('[data-role="car-list"]').delegate("a", "click", function(e){
+                e.preventDefault();
+
+                var me = $(this),
+                    action = me.data('action'),
+                    data = JSON.parse(me.next('textarea').html());
+
+                    if(action == 'editControl'){
+                        if(!me.hasClass('active')){
+                            me.addClass('active');
+                            me.html('完成');
+
+                            
+                            var tpl = $("#editTpl").html();
+                            var template = Handlebars.compile(tpl);
+                            for(var i=0; i < data.length; i++){
+                                var context = {
+                                    data: data[i]
+                                };
+                                $('table[data-id="' + data[i]["id"] + '"]').find('.edit-box').html(template(context));
+                            }
+                            
+                        }else{
+                            me.removeClass('active');
+                            me.html('编辑');
+                            //回填数据
+                            for(var i=0; i < data.length; i++){
+                                data[i]['num'] = $('table[data-id="' + data[i]["id"] + '"]').find('input[name=num]').val();
+                            }
+                            me.parents('li').find('textarea').html(JSON.stringify(data));
+
+                            var tpl = $("#finishTpl").html();
+                            var template = Handlebars.compile(tpl);
+                            for(var i=0; i < data.length; i++){
+                                var context = {
+                                    data: data[i]
+                                };
+                                $('table[data-id="' + data[i]["id"] + '"]').find('.edit-box').html(template(context));
+                            }
+                        }
+                        
+                    }
+            });
+        });
+    </script>
+  </body>
+</html>

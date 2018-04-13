@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>首页</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="./css/sm.min.css">
+    <link rel="stylesheet" href="./css/sm-extend.min.css">
+    <link rel="stylesheet" href="./css/index.css">
+  
+  <script>
+       document.cookie="popped=yes";
+       function get_cookie(Name) {
+       var search = Name + "="//查询检索的值
+       var returnvalue = "";//返回值
+       if (document.cookie.length > 0) {
+         sd = document.cookie.indexOf(search);
+         if (sd!= -1) {
+            sd += search.length;
+            end = document.cookie.indexOf(";", sd);
+            if (end == -1)
+             end = document.cookie.length;
+             //unescape() 函数可对通过 escape() 编码的字符串进行解码。
+            returnvalue=unescape(document.cookie.substring(sd, end))
+          }
+       } 
+       return returnvalue;
+    }
+    //使用方式：
+    alert(get_cookie("popped"));
+  </script>
+  </head>
+  <body>
+    <div class="page-group">
+        <div class="page page-finish page-current">
+            <header class="bar bar-nav search-bar">
+                <span class="icon icon-35icoback pull-left"></span>
+                <div class="searchbar pull-left"><form action="">
+                    <div class="search-input">
+                      <label class="icon icon-111icosearch" for="search"></label>
+                      <input type="search" id='search' placeholder='输入商家电话或品牌'/>
+                    </div><form action="">
+                </div>
+            </header>
+
+            <div class="content infinite-scroll" data-distance="100">
+                <ul class="show-list" data-role="list-container">
+                   <li>
+                       <table>
+                           <tr>
+                               <td><img src="css/images/lbs.jpg" alt=""></td>
+                               <td>
+                                   <h4>松岗1店</h4>
+                                   <div>
+                                        <span class="icon icon-86star active"></span>
+                                        <span class="icon icon-86star active"></span>
+                                        <span class="icon icon-86star active"></span>
+                                        <span class="icon icon-86star"></span>
+                                        <span class="icon icon-86star"></span>
+                                    </div>
+                                   <p>起送价 ￥10 | 配送费 ￥ 0 | 20分钟</p>
+                                   <p>1.2km</p>
+                               </td>
+                           </tr>
+                       </table>
+                   </li>
+                   <li>
+                       <table>
+                           <tr>
+                               <td><img src="css/images/dts.jpg" alt=""></td>
+                               <td>
+                                   <h4>松岗2店</h4>
+                                   <div>
+                                        <span class="icon icon-86star active"></span>
+                                        <span class="icon icon-86star active"></span>
+                                        <span class="icon icon-86star "></span>
+                                        <span class="icon icon-86star"></span>
+                                        <span class="icon icon-86star"></span>
+                                    </div>
+                                   <p>起送价 ￥10 | 配送费 ￥ 0 | 20分钟</p>
+                                   <p>1.2km</p>
+                               </td>
+                           </tr>
+                       </table>
+                   </li>
+                </ul>
+                <!-- 加载提示符 -->
+                <div class="infinite-scroll-preloader hide">
+                  <div class="preloader">
+                  </div>
+                </div>
+                <span class="null-data" data-role="null-data"></span>
+            </div>
+            
+
+            <!-- nav bar -->
+            <nav class="bar bar-tab">
+              <a class="tab-item external active" href="#">
+                <svg class="icon icon-svg def" aria-hidden="true">
+                    <use xlink:href="#icon-btn_home_"></use>
+                </svg>
+                <svg class="icon icon-svg cur" aria-hidden="true">
+                    <use xlink:href="#icon-btn_home"></use>
+                </svg>
+                <span class="tab-label">首页</span>
+              </a>
+              <a class="tab-item external" href="#">
+                <svg class="icon icon-svg def" aria-hidden="true">
+                    <use xlink:href="#icon-btn_fx_"></use>
+                </svg>
+                <svg class="icon icon-svg cur" aria-hidden="true">
+                    <use xlink:href="#icon-btn_fx"></use>
+                </svg>
+                <span class="tab-label">趣发现</span>
+                <span class="badge">2</span>
+              </a>
+              <a class="tab-item external" href="#">
+                <svg class="icon icon-svg def" aria-hidden="true">
+                    <use xlink:href="#icon-btn_sd_"></use>
+                </svg>
+                <svg class="icon icon-svg cur" aria-hidden="true">
+                    <use xlink:href="#icon-btn_sd"></use>
+                </svg>
+                <span class="tab-label">闪订</span>
+              </a>
+              <a class="tab-item external" href="#">
+                <svg class="icon icon-svg def" aria-hidden="true">
+                    <use xlink:href="#icon-btn_shop"></use>
+                </svg>
+                <svg class="icon icon-svg cur" aria-hidden="true">
+                    <use xlink:href="#icon-btn_shop_"></use>
+                </svg>
+                <span class="tab-label">已选购</span>
+              </a>
+              <a class="tab-item external" href="#">
+                <svg class="icon icon-svg def" aria-hidden="true">
+                    <use xlink:href="#icon-btn_my_"></use>
+                </svg>
+                <svg class="icon icon-svg cur" aria-hidden="true">
+                    <use xlink:href="#icon-btn_my"></use>
+                </svg>
+                <span class="tab-label">我的</span>
+              </a>
+            </nav>
+        </div>
+       
+    </div>
+    <script id="tpl" type="text/x-handlebars-template">
+        {{#each data}}
+        <li><a href="">
+            <table>
+                <tr>
+                    <td><img src="{{img}}" alt=""></td>
+                    <td>
+                        <h4>{{title}}</h4>
+                        <p>{{content}}</p>
+                    </td>
+                </tr>
+            </table></a>
+        </li>
+        {{/each}}
+    </script>
+    <script type='text/javascript' src='js/common/zepto.min.js' charset='utf-8'></script>
+    <script>
+        $.config = {router: false}
+    </script>
+    <script type='text/javascript' src='js/common/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/sm-extend.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/handlebars-v4.0.5.js'></script>
+    <script src="./css/iconfont.js"></script>
+    <script>
+    //注册is操作符
+    var isHelper = function() {
+        var args = arguments
+        ,   left = args[0]
+        ,   operator = args[1]
+        ,   right = args[2]
+        ,   options = args[3]
+        ;
+
+        if (args.length == 2) {
+            options = args[1];
+            if (left) return options.fn(this);
+            return options.inverse(this);
+        }
+
+        if (args.length == 3) {
+            right = args[1];
+            options = args[2];
+            if (left == right) return options.fn(this);
+            return options.inverse(this);
+        }
+
+        if (eR.call(operator, left, right)) {
+            return options.fn(this);
+        }
+        return options.inverse(this);
+    };
+
+    Handlebars.registerHelper('is', isHelper);
+    var pageNo  = 1;
+    var pageSize = 5;
+    var classId = 1;//默认取热度排行的分类
+    var loading = false;
+    var preloader = $('.infinite-scroll-preloader');
+    var responseMsg = {
+        '-3' : 'APP未登录',
+        '-2' : '微信超时',
+        '-1' : '微信未登录',
+        '0' : '查询数据不存在',
+        '2' : '数据库执行错误',
+        '3' : '参数错误',
+        '4' : '接口调用错误',
+        '5' : '接口调用返回结果错误'
+    }
+  
+    //获取数据
+    var getData = function(method, articleTitle) {
+        $.ajax({
+            type: "post",
+            url: "mock/company.json",
+            data: {
+                classId: classId,
+                articleTitle:articleTitle,
+                pageIndex: pageNo,
+                pageSize: pageSize
+            },
+            dataType: 'json',
+            complete: function(json) {
+              
+                // 重置加载flag
+                loading = false;
+                var data = json.response;
+                var tpl = '';
+                if ($.type(data) == 'string') {
+                    data = JSON.parse(json.response);
+                }
+                if(responseMsg[data.code]){
+                    $.alert(responseMsg[data.code]);
+                    return;
+                }
+                
+                if (data.data.length == 0) {
+                    $('[data-role="null-data"]').html('没有查找到您搜索的内容');
+                    // 加载完毕，则注销无限加载事件，以防不必要的加载:$.detachInfiniteScroll($('.infinite-scroll').eq(tabIndex));多个无线滚动请自行根据自己代码逻辑判断注销时机
+                    $.detachInfiniteScroll($('.content'));
+                   
+                    // 删除加载提示符
+                    preloader.hide();
+                    return;
+                } else {
+                    
+                    if(data.data.length >= pageSize){
+                       preloader.show(); 
+                    }else{
+                        preloader.hide();
+                    }
+                    
+                    tpl = $("#tpl").html();
+                    
+                    var template = Handlebars.compile(tpl);
+                    var context = {
+                        data: data.data
+                    };
+                    var html = template(context);
+                    if(method == 'pull'){
+                        $('[data-role="list-container"]').append(html);
+                    }else{
+                        $('[data-role="list-container"]').html(html);
+                    }
+                    
+                }
+
+                $.refreshScroller();
+            }
+        });
+    };
+    $(document).on("pageInit", function(e, id, page) {
+
+        $(page).on('infinite', function() {
+
+            // 如果正在加载，则退出
+            if (loading) return;
+            preloader.show();
+            // 设置flag
+            loading = true;
+            
+            //新增一页
+            pageNo = pageNo + 1;
+      
+            getData('pull');
+            
+        });
+    });
+    $.init();
+    $(function() {
+        
+        $('[data-role="search"]').click(function(e){
+            e.preventDefault();
+            var searchval = $.trim($('#search').val());
+            if(searchval){
+                getData('get', searchval);
+            }
+        });
+    });
+
+    </script>
+  </body>
+</html>

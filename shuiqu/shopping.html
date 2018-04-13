@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>洞庭山</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="./css/sm.min.css">
+    <link rel="stylesheet" href="./css/sm-extend.min.css">
+    <link rel="stylesheet" href="./css/dts.css">
+    
+  </head>
+  <body>
+    <div class="page-group">
+        <div class="page page-finish page-current">
+            <header class="bar bar-nav">
+              <a class="icon icon-left pull-left">返回</a>
+              <a href="" class="pull-right edit-a open-edit">编辑</a>
+              <h1 class="title">标题</h1>
+            </header>
+
+            <div class="content">
+                <ul class="cart-list">
+                    <li>
+                        <table>
+                            <td>
+                                <label class="label-checkbox item-content">
+                                    <input type="checkbox" name="cart-item">
+                                    <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                </label>
+                            </td>
+                            <td class="pics"><img src="images/shop1.jpg" alt=""></td>
+                            <td class="cart-cont">
+                                <p>珍品洞庭山4L*2瓶</p>
+                                <p class="cart-price no-money">￥ 28.00</p>
+                                <p>结算方式：<span class="icon icon-139dianzipiao"></span></p>
+                            </td>
+                            <td class="cart-no">X 1</td>
+                        </table>
+                        <div class="bot-info">
+                            <p>
+                             &bull; 余电子票<span class="red">10</span>张
+                                <a href="" class="icon icon-33go pull-right"></a>
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <table>
+                            <td>
+                                <label class="label-checkbox item-content">
+                                    <input type="checkbox" name="cart-item">
+                                    <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                </label>
+                            </td>
+                            <td class="pics"><img src="images/shop1.jpg" alt=""></td>
+                            <td class="cart-cont">
+                                <p>优质洞庭山4L*2瓶</p>
+                                <p class="cart-price no-money">￥ 22.00</p>
+                                <p>结算方式：<span class="icon icon-137shuipiao"></span></p>
+                            </td>
+                            <td class="cart-no">X 1</td>
+                        </table>
+                        <div class="bot-info">
+                            
+                        </div>
+                    </li>
+                    <li>
+                        <table>
+                            <td>
+                                <label class="label-checkbox item-content">
+                                    <input type="checkbox" name="cart-item">
+                                    <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                </label>
+                            </td>
+                            <td class="pics"><img src="images/shop1.jpg" alt=""></td>
+                            <td class="cart-cont">
+                                <p>珍品洞庭山14L</p>
+                                <p class="cart-price">￥ 28.00</p>
+                                <p>结算方式：<span class="icon icon-135fukuan"></span></p>
+                            </td>
+                            <td class="cart-no">X 1</td>
+                        </table>
+                        <div class="bot-info">
+                            <p>
+                             &bull; 已使用优惠券优惠<span class="red">-￥10</span>
+                                <a href="" class="icon icon-33go pull-right"></a>
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <nav class="bar bar-tab pay-bar">
+                <table class="pay-box">
+                    <tr>
+                        <td class="choose-all">
+                            <label class="label-checkbox item-content" data-role="choose-all">
+                                <input type="checkbox" value="1" />
+                                <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                            </label>全选
+                        </td>
+                        <td class="total-money">
+                            <p>合计：<span class="red">￥686.00</span></p>
+                            <p>已优惠：<span class="red">-￥10.00</span></p>
+                            <p>电子票：<span class="red">1</span> 水票：<span class="red">1</span></p>
+                        </td>
+                        <td class="go-pay"><a href="">结算(4)</a></td>
+                    </tr>
+                </table>
+            </nav>
+        </div>
+        <div class="page popup-edit">
+            <header class="bar bar-nav">
+              <a class="icon icon-left pull-left close-edit">返回</a>
+              <a href="" data-role="finish" class="pull-right edit-a close-edit">完成</a>
+              <h1 class="title">标题</h1>
+            </header>
+            <input type="hidden" name="finish-edit" value="">
+            <div class="content">
+                <ul class="cart-list" data-action="edit-cart">
+                    <li>
+                        <table>
+                            <td class="check">
+                                <label class="label-checkbox item-content">
+                                    <input data-id="001" type="checkbox" name="edit-cart-item" value="1">
+                                    <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                </label>
+                            </td>
+                            <td class="pics"><img src="images/shop1.jpg" alt=""></td>
+                            <td class="cart-cont edit-cont">
+                                <p>珍品洞庭山4L*2瓶</p>
+                                <p class="cart-price no-money">
+                                    ￥ 28.00
+                                    <span class="count-box">
+                                        <em class="icon icon-22jian" data-action="minus"></em>
+                                        <i class="count-num">1</i>
+                                        <em class="icon icon-23jia" data-action="add"></em>
+                                        <input name="numbox" data-max="3" type="hidden" value="1">
+                                    </span>
+                                </p>
+                                <p>结算方式：</p>
+                                <p>
+                                    <span data-role="pay-type" class="icon icon-139dianzipiao" data-action="dianzipiao"></span>
+                                    <input name="payType" type="hidden" value="3">
+                                </p>
+                            </td>
+                        </table>
+                        <div class="bot-info">
+                            <p>
+                             &bull; 余电子票<span class="red">10</span>张
+                                <a href="" class="icon icon-33go pull-right"></a>
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <table>
+                            <td class="check">
+                                <label class="label-checkbox item-content">
+                                    <input data-id="002" type="checkbox" name="edit-cart-item" value="1">
+                                    <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                </label>
+                            </td>
+                            <td class="pics"><img src="images/shop1.jpg" alt=""></td>
+                            <td class="cart-cont edit-cont">
+                                <p>优质洞庭山4L*2瓶</p>
+                                <p class="cart-price no-money">
+                                    ￥ 22.00
+                                    <span class="count-box">
+                                        <em class="icon icon-22jian" data-action="minus"></em>
+                                        <i class="count-num">1</i>
+                                        <em class="icon icon-23jia" data-action="add"></em>
+                                        <input name="numbox" data-max="4" type="hidden" value="1">
+                                    </span>
+                                </p>
+                                <p>结算方式：</p>
+                                <p>
+                                    <span data-role="pay-type" data-action="shuipiao" class="icon icon-137shuipiao"></span>
+                                    <span data-role="pay-type" data-action="fukuan" class="icon icon-135fukuan off"></span>
+                                    <input type="hidden" name="payType" value="1">
+                                </p>
+                            </td>
+                        </table>
+                        <div class="bot-info">
+                            
+                        </div>
+                    </li>
+                    <li>
+                        <table>
+                            <td class="check">
+                                <label class="label-checkbox item-content">
+                                    <input data-id="003" type="checkbox" name="edit-cart-item" value="1">
+                                    <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                </label>
+                            </td>
+                            <td class="pics"><img src="images/shop1.jpg" alt=""></td>
+                            <td class="cart-cont edit-cont">
+                                <p>珍品洞庭山14L</p>
+                                <p class="cart-price">
+                                    ￥ 28.00
+                                    <span class="count-box">
+                                        <em class="icon icon-22jian" data-action="minus"></em>
+                                        <i class="count-num">1</i>
+                                        <em class="icon icon-23jia" data-action="add"></em>
+                                        <input name="numbox" data-max="2" type="hidden" value="1">
+                                    </span>
+                                </p>
+                                <p>结算方式：</p>
+                                <p>
+                                    <span data-role="pay-type" data-action="shuipiao" class="icon icon-137shuipiao off"></span>
+                                    <span data-role="pay-type" data-action="fukuan" class="icon icon-135fukuan"></span>
+                                    <input type="hidden" name="payType" value="2">
+                                </p>
+                            </td>
+                        </table>
+                        <div class="bot-info">
+                            <p>
+                             &bull; 已使用优惠券优惠<span class="red">-￥10</span>
+                                <a href="" class="icon icon-33go pull-right"></a>
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <nav class="bar bar-tab">
+                <table class="pay-box">
+                    <tr>
+                        <td class="choose-all">
+                            <label class="label-checkbox item-content" data-role="edit-choose-all">
+                                <input type="checkbox" value="1" />
+                                <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                            </label>全选
+                        </td>
+                        <td class="go-pay delete"><a href="">删除</a></td>
+                    </tr>
+                </table>
+            </nav>
+        </div>
+        
+    </div>
+
+    <script type='text/javascript' src='js/common/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/sm-extend.min.js' charset='utf-8'></script>
+    <script>
+        $.init();
+        $(function() {
+            //切换编辑状态
+            var finish = $('.page-finish');
+            var edit = $('.popup-edit');
+            $(document).on('click','.open-edit', function () {
+                finish.removeClass('page-current');
+                edit.addClass('page-current');
+            });
+            $('.close-edit').on('click', function(){
+                
+                edit.removeClass('page-current');
+                finish.addClass('page-current');
+                //判断是否为完成按钮
+                if($(this).data('role') == 'finish'){
+                    var editCart = $('[data-action="edit-cart"]'),
+                        element = $('[data-action="edit-cart"] li')
+                        carLength = element.length,
+                        result = [];
+
+                        for(var i =0; i < carLength; i++){
+                            result.push({
+                                num : element.eq(i).find('input[name="numbox"]').val(),
+                                id : element.eq(i).find('input[name="edit-cart-item"]').data('id'),
+                                payType : element.eq(i).find('input[name="payType"]').val(),
+                                isSelected : element.eq(i).find('input[name="edit-cart-item"]:checked').val()
+                            });
+                        }
+                        $('input[name=finish-edit]').val(JSON.stringify(result));
+
+                }
+                
+
+            });
+            //完成状态的全选
+            var chooseAll = $('[data-role="choose-all"]');
+            var items = $('.cart-list li label input[name=cart-item]');
+
+            chooseAll.on('click', function(e){
+                e.preventDefault();
+                //切换商品列表是否选择
+                if($(this).find('input:checked').length == 0){
+                    items.attr("checked",true);
+                }else{
+                    items.removeAttr("checked");
+                }
+                //切换自身是否选中
+                if($(this).children('input').attr('checked')){
+                    $(this).children('input').removeAttr("checked");
+                    
+                }else{
+                    $(this).children('input').attr("checked",true);
+                }
+                
+            });
+            
+            
+            //编辑全选
+            var chooseAllEdit = $('[data-role="edit-choose-all"]');
+            var editItems = $('.cart-list li input[name="edit-cart-item"]');
+
+            chooseAllEdit.on('click', function(e){
+                e.preventDefault();
+                //切换商品列表是否选择
+                if($(this).find('input:checked').length == 0){
+                    editItems.attr("checked","true");
+                }else{
+                    editItems.removeAttr("checked");
+                }
+                //切换自身是否选中
+                if($(this).children('input').attr('checked')){
+                    $(this).children('input').removeAttr("checked");
+                    
+                }else{
+                    $(this).children('input').attr("checked",true);
+                }
+            });
+            $('.cart-list li label').on('click', function(e){
+
+                e.preventDefault();
+                if($(this).children('input').attr('checked')){
+                    $(this).children('input').removeAttr("checked");
+                    //完成状态
+                    if($(this).children('input').attr("name") == "cart-item")
+                        chooseAll.children('input').removeAttr("checked");
+                    //编辑状态
+                    if($(this).children('input').attr("name") == "edit-cart-item")
+                        chooseAllEdit.children('input').removeAttr("checked");
+                }else{
+                    $(this).children('input').attr("checked",true);
+                    //完成状态
+                    if($(this).parents('ul').find('input[name=cart-item]').length == $(this).parents('ul').find('input[name=cart-item]:checked').length){
+                        chooseAll.children('input').attr("checked",true);
+                    }
+                    //编辑状态
+                    if($(this).parents('ul').find('input[name=edit-cart-item]').length == $(this).parents('ul').find('input[name=edit-cart-item]:checked').length){
+                        chooseAllEdit.children('input').attr("checked",true);
+                    }
+                    
+                }
+                
+            });
+            //选择支付方式
+            $('[data-action="edit-cart"]').delegate("span", "click", function(e){
+                e.preventDefault();
+
+                var me = $(this),
+                    action = me.data('action');
+
+                    if(action == 'dianzipiao'){
+                        me.siblings('input').val(3);
+                        $.alert('您的账户中尚有未使用的电子票，您在购买相应商品时，系统将优先使用电子票方式结算');
+                    }else if(action == 'shuipiao'){
+                        if(me.hasClass('off')){
+                            me.removeClass('off');
+                            me.siblings('span').addClass('off');
+                            me.siblings('input').val(2);
+                            me.parents('td').find('.cart-price').addClass('no-money');
+                        }
+                        
+                    }else if(action == 'fukuan'){
+                        if(me.hasClass('off')){
+                            me.removeClass('off');
+                            me.siblings('span').addClass('off');
+                            me.siblings('input').val(1);
+                            me.parents('td').find('.cart-price').removeClass('no-money');
+                        }
+                        
+                    }
+            });
+            //数量加减
+            $('[data-action="edit-cart"]').delegate("em", "click", function(e){
+                e.preventDefault();
+
+                var me = $(this),
+                    numbox = me.siblings('input'),
+                    max = numbox.data('max'),
+                    show = me.siblings('i'),
+                    action = me.data('action'),
+                    numValue = 0;
+
+                    if(action == 'add'){
+                        if(numbox.val() < max){
+                            numValue = parseInt(numbox.val()) + 1;
+                        }else{
+                            numValue = max;
+                        }
+
+                    }else if(action == 'minus'){
+                        if(numbox.val() >= 1){
+                            numValue = parseInt(numbox.val()) - 1;
+                        }
+                        
+                    }
+                    numbox.val(numValue);
+                    show.html(numValue);
+            });
+        });
+    </script>
+  </body>
+</html>

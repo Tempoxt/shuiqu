@@ -1,0 +1,28 @@
+/*body,h1,h2,h3,ul,li,p{margin:0;padding:0;}
+body{font:14px/1.7 Arial,"\5b8b\4f53";}
+h1,h2,h3{font:bold 36px/2 "\5fae\8f6f\96c5\9ed1";}
+h1{padding:0 20px;background:#333;color:#fff;}
+h2{font-size:20px;}
+h3{font-size:16px;}
+ul{list-style-type:none;}
+*/
+.wrap{padding:1rem;}
+
+/**
+ * 横向滚动
+ * ------------------------------ */
+.scroll_horizontal{position:relative;width:100%;height:11rem;padding:0.5rem;background-color:#fff;}
+.scroll_horizontal .box{overflow:hidden;position:relative;width:100%;height:22rem;margin:0 auto;}
+.scroll_horizontal .list{overflow:hidden;width:130%;}
+.scroll_horizontal .list li{float:left;width:30%;padding-left: 1rem}
+.scroll_horizontal .list li img{float:left;width: 100%;}
+.scroll_horizontal .prev,
+.scroll_horizontal .next{position:absolute;top:50%;margin-top:-1.25rem;width:2rem;height:2.5rem;background-image:url(./images/control.png);background-repeat:no-repeat;font:0/0 Arial;cursor:pointer;}
+.scroll_horizontal .prev{left:0.25rem;background-position:0 0;}
+.scroll_horizontal .next{right:0.25rem;background-position:-2rem 0;}
+.scroll_horizontal .prev:hover{background-position:0 -2.5rem;}
+.scroll_horizontal .next:hover{background-position:-2rem -2.5rem;}
+
+
+
+/*#acts{margin-top:20px;}*/

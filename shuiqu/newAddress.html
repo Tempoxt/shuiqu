@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>新增地址</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="./css/sm.min.css">
+    <link rel="stylesheet" href="./css/sm-extend.min.css">
+    <link rel="stylesheet" href="./css/index.css">
+    
+  </head>
+  <body>
+    <div class="page-group">
+        <div class="page page-finish page-current">
+            <header class="bar bar-nav light-nav">
+                <span class="icon icon-35icoback pull-left"></span>  
+                <h1 class="title">新增地址</h1>
+            </header>
+
+            <div class="content">
+                <div class="list-block new-add-list">
+                    <ul>
+                      <!-- Text inputs -->
+                      <li>
+                        <div class="item-content">
+                          <div class="item-inner">
+                            <div class="item-title label">联系人</div>
+                            <div class="item-input">
+                              <input type="text" placeholder="您的姓名">
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                      <li class="align-top map-wrap">
+                        <div class="item-content">
+                          <div class="item-inner">
+                            <div class="item-title label">收货地址</div>
+                            <div class="item-input">
+                              <i class="icon icon-ico_awwor_right"></i>
+                              <textarea placeholder="请选择小区、大厦或街道"></textarea>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="item-content">
+                          <div class="item-inner">
+                            <div class="item-title label"></div>
+                            <div class="item-input">
+                                <input type="text" placeholder="请输入门牌号等详细地址">
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="item-content">
+                          <div class="item-inner">
+                            <div class="item-title label">手机</div>
+                            <div class="item-input">
+                                <input type="text" placeholder="配送人员联系您的方式">
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                      
+                    </ul>
+                </div>
+                <div class="tag-box">
+                    <table>
+                        <tr>
+                            <td>地址标签</td>
+                            <td>
+                                <a href="">家庭</a> 
+                                <a href="">单位</a>
+                                <a href="">俱乐部</a>
+                            </td>
+                            <td><span class="icon icon-83shoppingbtnnumadd add-tag"></span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <!-- Block button in standard bar fixed above the footer -->
+            <div class="bar bar-footer order-bar">
+              <a href="#" class="button button-fill btn-yello">保存地址</a>
+            </div>
+
+            
+        </div>
+       
+    </div>
+
+
+    <script type='text/javascript' src='js/common/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/sm-extend.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/handlebars-v4.0.5.js'></script>
+    <script src="./css/iconfont.js"></script>
+    <script>
+    
+        $.init();
+        $(function() {
+           $(document).on('click', '.add-tag',function () {
+              $.prompt('请填写您需要添加的地址标签', '地址标签',
+                function (value) {
+                  $.alert('标签是 "' + value + '". You clicked Ok button');
+                },
+                function (value) {
+                  $.alert('标签是 "' + value + '". You clicked Cancel button');
+                }
+              );
+          });
+        });
+    </script>
+  </body>
+</html>

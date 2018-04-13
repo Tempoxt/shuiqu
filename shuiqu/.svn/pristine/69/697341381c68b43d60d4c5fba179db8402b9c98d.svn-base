@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>评价</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="./css/sm.min.css">
+    <link rel="stylesheet" href="./css/sm-extend.min.css">
+    <link rel="stylesheet" href="./css/index.css">
+    
+  </head>
+  <body>
+    <div class="page-group order-list-wrap">
+        <div class="page page-finish page-current">
+            <header class="bar bar-nav light-nav">
+                <a href="" class="icon icon-35icoback pull-left"></a>  
+                <h1 class="title">评价</h1>
+            </header>
+
+            <div class="content" data-role="server-eva-wrap">
+                <div class="server-eva">
+                    <table>
+                        <tr>
+                            <td><img src="css/images/jt.jpg" alt=""><span>送水员：李军</span></td>
+                            <td>
+                                <p><em>总体评价</em>
+                                    <span class="icon icon-86star" data-id="1" data-action="choose-score"></span>
+                                    <span class="icon icon-86star" data-id="2" data-action="choose-score"></span>
+                                    <span class="icon icon-86star" data-id="3" data-action="choose-score"></span>
+                                    <span class="icon icon-86star" data-id="4" data-action="choose-score"></span>
+                                    <span class="icon icon-86star" data-id="5" data-action="choose-score"></span><input type="hidden"></p>
+                                <p><em>配送速度</em>
+                                    <span class="icon icon-86star" data-id="1" data-action="choose-score"></span>
+                                    <span class="icon icon-86star" data-id="2" data-action="choose-score"></span>
+                                    <span class="icon icon-86star" data-id="3" data-action="choose-score"></span>
+                                    <span class="icon icon-86star" data-id="4" data-action="choose-score"></span>
+                                    <span class="icon icon-86star" data-id="5" data-action="choose-score"></span><input type="hidden"></p>
+                                <p><em>服务态度</em>
+                                    <span class="icon icon-86star" data-id="1" data-action="choose-score"></span>
+                                    <span class="icon icon-86star" data-id="2" data-action="choose-score"></span>
+                                    <span class="icon icon-86star" data-id="3" data-action="choose-score"></span>
+                                    <span class="icon icon-86star" data-id="4" data-action="choose-score"></span>
+                                    <span class="icon icon-86star" data-id="5" data-action="choose-score"></span><input type="hidden"></p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="server-cont">
+                    <textarea name="" placeholder="请写下对送水员服务的感受，长度在5~200之间"></textarea>
+                </div>
+                <div class="goods-eva">
+                    <ul>
+                        <li>
+                            <h5>乐百氏新一代纯净水18L</h5>
+                            <table>
+                                <tr>
+                                    <td><img src="http://7xlmry.com1.z0.glb.clouddn.com/Upload/Product/images/20151229/151229115656463024.png" alt=""></td>
+                                    <td><textarea name="" placeholder="请写下对商品的评价，对他人帮助很大哦"></textarea></td>
+                                </tr>
+                            </table>
+                            <div class="goods-star">
+                                <span class="icon icon-86star" data-id="1" data-action="choose-score"></span>
+                                <span class="icon icon-86star" data-id="2" data-action="choose-score"></span>
+                                <span class="icon icon-86star" data-id="3" data-action="choose-score"></span>
+                                <span class="icon icon-86star" data-id="4" data-action="choose-score"></span>
+                                <span class="icon icon-86star" data-id="5" data-action="choose-score"></span>
+                                <input type="hidden">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Block button in standard bar fixed above the footer -->
+            <div class="bar bar-footer order-bar">
+                <p><a href="#" class="button button-fill btn-yello">发表评价</a></p>
+            </div>
+            
+        </div>
+       
+    </div>
+
+    <script type='text/javascript' src='js/common/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/sm-extend.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/handlebars-v4.0.5.js'></script>
+    <script src="./css/iconfont.js"></script>
+    <script>
+        $(function() {
+            //星星打分
+            $('[data-role="server-eva-wrap"]').delegate(".icon", "click", function(e){
+                e.preventDefault();
+                var me = $(this),
+                    action = me.data('action');
+
+                    if(action == 'choose-score'){
+                        var id = me.data('id');
+                        var grade = parseInt(id) * 2;
+                        me.siblings('input').val(grade);
+                        me.siblings('.icon').removeClass('active');
+                        me.addClass('active');
+                        for(i=0; i<=id; i++){
+                            me.siblings('[data-id="' + i +'"]').addClass('active');
+                        }
+                    }
+            });
+        });
+        $.init();
+    </script>
+  </body>
+</html>

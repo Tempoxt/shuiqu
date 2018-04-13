@@ -1,0 +1,16 @@
+{
+	"code":1,
+	"data": [{
+		"title": "洞庭山1",
+		"content":"好水养人",
+		"img":"css/images/dts.jpg"
+	}, {
+		"title": "景田2",
+		"content":"水中贵族 景田百岁山",
+		"img":"css/images/jt.jpg"
+	}, {
+		"title": "乐百氏3",
+		"content":"健康生活从“乐百氏”开始 ",
+		"img":"css/images/lbs.jpg"
+	}]
+}

@@ -1,0 +1,59 @@
+//全站默认字体大小
+$fontSize: 12px;
+//主题背景颜色
+$mainBgColor: #cf1731;
+//
+$lightColor: #cf1701;
+$red: #ff0000;
+ul{
+ list-style: none;
+ padding: 0;  
+ margin: 0; 
+}
+h3,h4,h5,h6,
+p{
+	margin: 0;
+}
+.button.btn-gray{
+    background: #7E8699;
+}
+.button.btn-yello.active,
+.button.btn-yello:hover,
+.button.btn-yello{
+    background: #cf1731 !important;
+    color: #fff !important;
+}
+.hide{
+	display: none;
+}
+.no-bg-input{
+	border:none;
+	background: none;
+}
+.wihte-bg{
+	background: #fff;
+}
+
+//CheckBox
+label.label-checkbox{
+    display: inline-block;
+}
+label.label-checkbox input[type="radio"]:checked + .item-media i.icon-form-checkbox,
+label.label-checkbox input[type="checkbox"]:checked + .item-media i.icon-form-checkbox{
+    background-color: $mainBgColor;
+}
+
+.pb3{
+	padding-bottom: 3rem;
+}
+//swiper
+.swiper-container-horizontal{
+	position: relative;
+}
+.swiper-slide{
+	background: #fff;
+}
+.swiper-slide img{
+	width: 60%;
+	margin: 0 auto;
+}

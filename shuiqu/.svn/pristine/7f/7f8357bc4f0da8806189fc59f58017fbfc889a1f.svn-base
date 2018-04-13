@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>我的</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="./css/sm.min.css">
+    <link rel="stylesheet" href="./css/sm-extend.min.css">
+    <link rel="stylesheet" href="./css/index.css">
+    
+  </head>
+  <body>
+    <div class="page-group">
+        <div class="page page-current">
+            
+            <div class="content">
+                <header class="my-bar">
+                  <table>
+                      <tr>
+                          <td>
+                              <div class="photo-box">
+                                  <img src="images/sm1.jpg" alt="">
+                              </div>
+                          </td>
+                          <td>
+                              <p>账号：133****3423</p>
+                              <p>昵称：韩梅梅</p>
+                          </td>
+                      </tr>
+                  </table>
+                </header>
+                <table class="choose-bar">
+                    <tr>
+                        <td>
+                            <p>0</p>
+                            <p>积分</p>
+                        </td>
+                        <td>
+                            <p>0</p>
+                            <p>优惠券</p>
+                        </td>
+                        <td>
+                            <p>0</p>
+                            <p>礼品券</p>
+                        </td>
+                    </tr>
+                </table>
+                <div class="go-ahead for-order">
+                    <a class="open-detail" href="">我的订单<span class="icon icon-ico_awwor_right"></span><span>查看全部订单</span></a>
+                </div>
+                <table class="order-status">
+                    <tr>
+                        <td><a href="">
+                            <p><span class="icon icon-57meorderstatus1"></span></p>
+                            <p>待付款</p></a>
+                        </td>
+                        <td><a href="">
+                            <p><span class="icon icon-58meorderstatus2"></span></p>
+                            <p>待配送</p></a>
+                        </td>
+                        <td><a href="">
+                            <p><span class="icon icon-59meorderstatus3"></span></p>
+                            <p>配送中</p>
+                            <span class="badge"></span></a>
+                        </td>
+                        <td><a href="">
+                            <p><span class="icon icon-60meorderstatus4"></span></p>
+                            <p>待评价</p>
+                            <span class="badge"></span></a>
+                        </td>
+                    </tr>
+                </table>
+                <div class="list-block mt1em my-list">
+                    <ul>
+                      <li>
+                        <a class="item-content item-link" href="">
+                        <div class="item-media"><i class="icon icon-62meorderstatus10"></i></div>
+                        <div class="item-inner">
+                          <div class="item-title">消费习惯</div>
+                          <div class="item-after"></div>
+                        </div></a>
+                      </li>
+                      <li>
+                        <a class="item-content item-link" href="/weixin/address">
+                        <div class="item-media"><i class="icon icon-53meicolocation"></i></div>
+                        <div class="item-inner">
+                          <div class="item-title">地址管理</div>
+                          <div class="item-after"></div>
+                        </div></a>
+                      </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- nav bar -->
+            <nav class="bar bar-tab">
+              <a class="tab-item external active" href="#">
+                <svg class="icon icon-svg def" aria-hidden="true">
+                    <use xlink:href="#icon-btn_home_"></use>
+                </svg>
+                <svg class="icon icon-svg cur" aria-hidden="true">
+                    <use xlink:href="#icon-btn_home"></use>
+                </svg>
+                <span class="tab-label">首页</span>
+              </a>
+              <a class="tab-item external" href="#">
+                <svg class="icon icon-svg def" aria-hidden="true">
+                    <use xlink:href="#icon-btn_fx_"></use>
+                </svg>
+                <svg class="icon icon-svg cur" aria-hidden="true">
+                    <use xlink:href="#icon-btn_fx"></use>
+                </svg>
+                <span class="tab-label">趣发现</span>
+                <span class="badge">2</span>
+              </a>
+              <a class="tab-item external" href="#">
+                <svg class="icon icon-svg def" aria-hidden="true">
+                    <use xlink:href="#icon-btn_sd_"></use>
+                </svg>
+                <svg class="icon icon-svg cur" aria-hidden="true">
+                    <use xlink:href="#icon-btn_sd"></use>
+                </svg>
+                <span class="tab-label">闪订</span>
+              </a>
+              <a class="tab-item external" href="#">
+                <svg class="icon icon-svg def" aria-hidden="true">
+                    <use xlink:href="#icon-btn_shop"></use>
+                </svg>
+                <svg class="icon icon-svg cur" aria-hidden="true">
+                    <use xlink:href="#icon-btn_shop_"></use>
+                </svg>
+                <span class="tab-label">已选购</span>
+              </a>
+              <a class="tab-item external" href="#">
+                <svg class="icon icon-svg def" aria-hidden="true">
+                    <use xlink:href="#icon-btn_my_"></use>
+                </svg>
+                <svg class="icon icon-svg cur" aria-hidden="true">
+                    <use xlink:href="#icon-btn_my"></use>
+                </svg>
+                <span class="tab-label">我的</span>
+              </a>
+            </nav>
+        </div>
+        
+        
+    </div>
+
+    <script type='text/javascript' src='js/common/zepto.min.js' charset='utf-8'></script>
+    <script>
+        $.config = {router: false}
+    </script>
+    <script type='text/javascript' src='js/common/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/sm-extend.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/handlebars-v4.0.5.js'></script>
+    <script src="./css/iconfont.js"></script>
+    <script>
+        $.init();
+        $(function() {
+            $('[data-role="product-bar"] a').click(function(){
+                $('[data-role="product-bar"] a').removeClass('active');
+                $(this).addClass('active');
+            });
+        });
+    </script>
+  </body>
+</html>

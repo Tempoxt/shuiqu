@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>兑换优惠码</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="./css/sm.min.css">
+    <link rel="stylesheet" href="./css/sm-extend.min.css">
+    <link rel="stylesheet" href="./css/index.css">
+    
+  </head>
+  <body>
+    <div class="page-group">
+        <div class="page page-finish page-current">
+            <header class="bar bar-nav light-nav">
+                <a class="icon icon-35icoback pull-left" href="/weixin/home"></a>  
+                <h1 class="title">兑换优惠码</h1>
+            </header>
+
+            <div class="content img-code-box">
+                <div class="img-box">
+                    <img src="http://7xlmry.com1.z0.glb.clouddn.com/youli.png" alt="">
+                </div>
+                <div class="img-code-form reg-list">
+                    <ul>
+                        <li class="input">
+                            <label for="">优惠码</label>
+                            <input name="code_no" type="text" placeholder="请输入优惠券编码">
+                        </li>
+                        <li>
+                            <div class="row">
+                              <div class="col-50"><a href="/weixin/home" class="button button-big button-fill btn-gray">跳过</a></div>
+                              <div class="col-50"><a href="#" data-action="get-code" class="button button-big button-fill btn-yello">获取</a></div>
+                            </div>
+                        </li>
+                        <li class="notice">
+                            <h5>提示</h5>
+                            <p>1、此劵不可兑换成现金</p>
+                            <p>2、请在活动时间范围内使用此劵</p>
+                            <p>3、此劵领取后在我的优惠券中查看</p>
+                            <p>4、此劵解释权归水趣生活所有</p>
+                        </li>
+                    </ul>
+
+                </div>    
+            </div>
+            
+
+            
+        </div>
+       
+    </div>
+
+
+    <script type='text/javascript' src='js/common/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/sm-extend.min.js' charset='utf-8'></script>
+    <script src="./css/iconfont.js"></script>
+    <script>
+        $(function() {
+           
+            
+        });
+        $.init();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+{
+	"code":1,
+	"data": [{
+		"shopId":"1",
+		"shopName": "松岗1店",
+		"grade":"2",
+		"pictureUrl":"css/images/dts.jpg",
+		"minSendPrice":"12",
+		"freight":"12",
+		"sendOnTime":"21"
+
+	}, {
+		"shopId":"2",
+		"shopName": "松岗2店",
+		"grade":"5",
+		"pictureUrl":"css/images/dts.jpg",
+		"minSendPrice":"12",
+		"freight":"12",
+		"sendOnTime":"21"
+	}, {
+		"shopId":"3",
+		"shopName": "松岗3店",
+		"grade":"8",
+		"pictureUrl":"css/images/dts.jpg",
+		"minSendPrice":"12",
+		"freight":"12",
+		"sendOnTime":"21"
+	}]
+}

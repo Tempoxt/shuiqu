@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>附近水店</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="./css/sm.min.css">
+    <link rel="stylesheet" href="./css/sm-extend.min.css">
+    <link rel="stylesheet" href="./css/index.css">
+    
+  </head>
+  <body>
+    <div class="page-group">
+        <div class="page page-finish page-current">
+            <header class="bar bar-nav light-nav">
+                <span class="icon icon-35icoback pull-left"></span>  
+                <h1 class="title">附近水店</h1>
+            </header>
+
+            <div class="content">
+                <ul class="show-list has-border" data-role="list-container">
+                   <li>
+                        <a href="">
+                            <table>
+                               <tr>
+                                   <td><img src="css/images/lbs.jpg" alt=""></td>
+                                   <td>
+                                       <h4>松岗1店</h4>
+                                       <div>
+                                            <span class="icon icon-86star active"></span>
+                                            <span class="icon icon-86star active"></span>
+                                            <span class="icon icon-86star active"></span>
+                                            <span class="icon icon-86star"></span>
+                                            <span class="icon icon-86star"></span>
+                                        </div>
+                                       <p>起送价 ￥10 | 配送费 ￥ 0 | 20分钟</p>
+                                       <p>1.2km</p>
+                                   </td>
+                               </tr>
+                            </table>
+                        </a>
+                       
+                   </li>
+                   <li>
+                        <a href="">
+                            <table>
+                               <tr>
+                                   <td><img src="css/images/dts.jpg" alt=""></td>
+                                   <td>
+                                       <h4>松岗2店</h4>
+                                       <div>
+                                            <span class="icon icon-86star active"></span>
+                                            <span class="icon icon-86star active"></span>
+                                            <span class="icon icon-86star "></span>
+                                            <span class="icon icon-86star"></span>
+                                            <span class="icon icon-86star"></span>
+                                        </div>
+                                       <p>起送价 ￥10 | 配送费 ￥ 0 | 20分钟</p>
+                                       <p>1.2km</p>
+                                   </td>
+                               </tr>
+                            </table>
+                        </a>
+                   </li>
+                </ul>
+            </div>
+  
+        </div>
+       
+    </div>
+
+    <script type='text/javascript' src='js/common/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/sm-extend.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='js/common/handlebars-v4.0.5.js'></script>
+    <script src="./css/iconfont.js"></script>
+    <script>
+    
+        $.init();
+        $(function() {
+            
+        });
+    </script>
+  </body>
+</html>
