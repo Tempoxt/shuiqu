@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+#parse("control/$!webStyle/version.vm")
+#set($currentPage = "home")
+###parse("control/$!webStyle/indexCss.vm")
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+#if($!webStyle == "shuiqu")
+    <title>$!{session.getAttribute('liteappName')}</title>
+#else
+    <title>大力水手</title>
+#end
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+    <link rel="shortcut icon" href="/files/images/$!webStyle/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="/files/common/css/$!webStyle/sm.min.css?v=$version">
+    <link rel="stylesheet" href="/files/common/css/$!webStyle/sm-extend.min.css">
+    <link rel="stylesheet" href="/files/common/css/$!webStyle/index.css?v=$version">
+</head>
+<body>
+    <div class="page-group">
+        <div class="page page-finish page-current">
+            <div class="content">
+                <header class="bar bar-nav top-nav" id="bar">
+                    <a href="/weixin/city"><span data-role="street"></span></a>
+                    <div class="searchbar">
+                        <div class="search-input">
+                            <a href="/weixin/searchShopOrProduct">
+                                <svg class="icon icon-svg title-icon" aria-hidden="true" style="width: 1.2rem;left: 85%;">
+                                    <use xlink:href="#icon-111icosearch"></use>
+                                </svg>
+                                <input type="search" name="brand" id='search' placeholder='输入商家电话或品牌' />
+                            </a>
+                        </div>
+                    </div>
+                </header>
+                <div id="swiper-container" class="swiper-container" data-space-between='0'>
+                    <div class="swiper-wrapper" data-role="swiper-wrap">
+                        
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+                <div class="notice-box" data-role="noticeBox">
+                    
+                </div>
+                <div class="home-wrap infinite-scroll">
+                    <ul class="fresh" data-role="fresh">
+                        
+                    </ul>
+                    <ul class="company">
+                        
+                    </ul>
+                    
+                </div>
+            </div>
+            
+
+            <!-- 底部导航栏 -->
+            #parse("control/$!webStyle/nav.vm")
+        </div>
+        <!-- 防伪码验证结果 -->
+        <div class="popup popup-validate"> 
+          <div class="content-block" data-role="validate">
+            
+          </div>
+        </div>
+    </div>
+<script id="swiper" type="text/x-handlebars-template">         
+    {{#each data.ads}}   
+        {{#is linkUrl}}
+        <a href="{{linkUrl}}" class="swiper-slide"><img src="{{pictureUrl}}" alt=""></a>
+        {{else}}
+        <a href="#" class="swiper-slide"><img src="{{pictureUrl}}" alt=""></a>
+        {{/is}}
+    {{/each}}
+</script>
+<script id="noticeBox" type="text/x-handlebars-template">
+    <svg class="icon icon-svg title-icon" aria-hidden="true" style="width: 1rem;height: 1rem;">
+        <use xlink:href="#icon-65notice"></use>
+    </svg>
+    上线城市<em data-role="cityno">{{data.city}}</em>个 企业<em data-role="commpanyno">{{data.enterPrise}}</em>家 水店<em data-role="storeno">{{data.shop}}</em>间 <button id="clearCache" style="border:0;border-radius: 0;height:100%;background-color: transparent;">&nbsp;</button>
+</script>
+<script id="fresh" type="text/x-handlebars-template">
+    <li>
+        <a href="/weixin/imaCode">
+            <table>
+                <tr>
+                    <td>
+                        <svg class="icon icon-svg title-icon" aria-hidden="true">
+                            <use xlink:href="#icon-home_ico_gift"></use>
+                        </svg>          
+                    </td>
+                    <td>
+                        <h4>开户有礼</h4>
+                        <p class="red">新用户专享权利</p>
+                    </td>
+                </tr>
+            </table>
+        </a>
+    </li>
+    <li>
+        <a id="scanQRCode0">
+            <table>
+                <tr>
+                    <td>
+                        <svg class="icon icon-svg title-icon" aria-hidden="true">
+                            <use xlink:href="#icon-btn_code"></use>
+                        </svg>
+                    </td>
+                    <td>
+                        <h4>水趣防伪</h4>
+                        <p>辨别真伪</p>
+                    </td>
+                </tr>
+            </table>
+        </a>
+    </li>
+</script>
+<script id="tpl" type="text/x-handlebars-template">
+    {{#each data}}
+    <li><a href="/weixin/shops?shopJoint={{shopJoint}}">
+        <table>
+            <tr>
+                <td><img src="{{logoUrl}}" alt=""></td>
+                <td>
+                    <h4>{{brandName}}</h4>
+                    <p>{{brandTerm}}</p>
+                </td>
+            </tr>
+        </table></a>
+    </li>
+    {{/each}}
+</script>
+<script id="shopTpl" type="text/x-handlebars-template">
+    {{#each data}}
+    <li style="margin-bottom: 0;">
+        <a data-url="" data-name="{{shopName}}" href="/weixin/products?eid={{eid}}&shopId={{shopId}}">
+            <table>
+               <tr>
+                   <td style="width: 22%;"><img src="{{pictureUrl}}" style="height:5rem;" alt=""></td>
+                   <td>
+                       <h4>{{shopName}}</h4>
+                       <div data-grade="{{grade}}">
+                            {{{showShopStars grade}}}
+                        </div>
+                       <p >起送价 ￥{{minSendPrice}} | 配送费 ￥ {{freight}} | {{sendOnTime}}分钟</p>
+                       <p style="height: 1.5em;">{{#is distance '>=' 1000}}{{ceil distance}}km{{/is}}{{#is distance '<' 1000}}{{parseInt distance}}m{{/is}}</p>
+                   </td>
+               </tr>
+            </table>
+        </a>
+   </li>
+    {{/each}}
+</script>
+<script id="validateTpl" type="text/x-handlebars-template">
+    <header class="bar bar-nav light-nav">
+        <span class="icon icon-35icoback pull-left close-popup bar-left"></span>  
+        <h1 class="title">防伪码验证</h1>
+    </header>
+    {{#is data.tag "1"}}
+    <div class="content">
+        <div class="validate-banner">
+            <img src="{{data.codeInfo.companyLogo}}" alt="">
+        </div>
+        <div class="validate-content">
+            <div class="validate-status">
+                <svg class="icon icon-svg" aria-hidden="true" >
+                    <use xlink:href="#icon-code_on"></use>
+                </svg>
+            </div>
+            <div class="tips">水趣防伪溯源认证提示您：本产品编码<span>{{data.codeInfo.code}}，</span>为{{data.codeInfo.companyName}}的正品，请放心使用，谢谢查询。</div>
+            <div class="modal modal-out" data-role="validate-detail">
+                <div class="modal-inner">
+                    <div class="modal-text">
+                        <p>品名：{{data.codeInfo.productName}}</p>
+                        <p>品牌：{{data.codeInfo.productBrand}}</p>
+                        <p>班次：{{data.codeInfo.classes}}</p>
+                        <p>时间：{{data.codeInfo.madeDate}}</p>
+                        <p>天气：{{data.codeInfo.water}}</p>
+                        <p>产地：{{data.codeInfo.beltlineAddress}}</p>
+                        <svg class="icon icon-svg close-win" aria-hidden="true" data-role="close-win">
+                            <use xlink:href="#icon-close1"></use>
+                        </svg>
+                    </div>
+                </div>   
+            </div>
+            <div class="modal-overlay" data-role="modal-overlay"></div>       
+        </div>
+        <div class="show-picture"><img src="{{data.codeInfo.productImage}}" alt=""></div>
+        <a href="#" data-role="show-detail" class="button button-fill btn-yello show-detail">查看详情</a>
+    </div>
+    {{else}}
+        {{#is data.tag "0"}}
+        <div class="content">
+            <div class="validate-banner">
+                <img src="{{data.codeInfo.companyLogo}}" alt="">
+            </div>
+            <div class="validate-content">
+                <div class="validate-status">
+                    <svg class="icon icon-svg" aria-hidden="true" >
+                        <use xlink:href="#icon-code_off"></use>
+                    </svg>
+                </div>
+                <div class="tips">水趣防伪溯源认证提示您：本产品编码<span>{{data.codeInfo.code}}，</span>已被查询，请谨防假冒。<span class="first-query">首次查询时间：{{data.codeInfo.fristDate}}</span></div>
+                <div class="modal modal-out" data-role="validate-detail">
+                    <div class="modal-inner">
+                        <div class="modal-text">
+                            <p>品名：{{data.codeInfo.productName}}</p>
+                            <p>品牌：{{data.codeInfo.productBrand}}</p>
+                            <p>班次：{{data.codeInfo.classes}}</p>
+                            <p>时间：{{data.codeInfo.madeDate}}</p>
+                            <p>天气：{{data.codeInfo.water}}</p>
+                            <p>产地：{{data.codeInfo.beltlineAddress}}</p>
+                            <svg class="icon icon-svg close-win" aria-hidden="true" data-role="close-win">
+                                <use xlink:href="#icon-close1"></use>
+                            </svg>
+                        </div>
+                    </div>   
+                </div>
+                <div class="modal-overlay" data-role="modal-overlay"></div>
+            </div>
+            <div class="show-picture"><img src="{{data.codeInfo.productImage}}"></div>
+            <a href="#" data-role="show-detail" class="button button-fill btn-yello show-detail">查看详情</a>
+        </div>
+        {{else}}
+        <div class="content content-query-fail">
+            <i class="icon icon-no_code"></i><span>很遗憾！查询不到该消息！</span>
+        </div>
+        {{/is}}
+    {{/is}}
+</script>
+#*加载JS文件*# 
+###parse("control/$!webStyle/publicJs.vm")
+    #if($!webStyle == "shuiqu")
+    <script type='text/javascript' src='https://cdnqiniu.shuiqoo.cn/zepto.min.js' charset='utf-8'></script>
+    <script>
+          $.config = {router: false}
+    </script>
+    <script type='text/javascript' src='https://cdnqiniu.shuiqoo.cn/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='https://cdnqiniu.shuiqoo.cn/sm-extend.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='https://cdnqiniu.shuiqoo.cn/handlebars-v4.0.5.js' charset='utf-8'></script>
+    #else
+    <script type='text/javascript' src='/files/common/js/zepto.min.js' charset='utf-8'></script>
+    <script>
+          $.config = {router: false}
+    </script>
+    <script type='text/javascript' src='/files/common/js/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='/files/common/js/sm-extend.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='/files/common/js/handlebars-v4.0.5.js' charset='utf-8'></script>
+    #end
+    <script src="/files/common/css/$!webStyle/homeIconfont.js"></script>
+    <script src="/files/js/$!webStyle/common.js?v=$version"></script>
+    <!-- <script src="https://cdnqiniu.shuiqoo.cn/common.js?v=$version"></script> -->
+#parse("control/$!webStyle/globalJs.vm")
+<script type="text/javascript">
+    // 截取url参数
+    function GetQueryString(name){
+         var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+         var r = window.location.search.substr(1).match(reg);
+         if(r!=null)return  unescape(r[2]); return null;
+    }
+    var appid = "";
+    /*if(!appid){
+        appid=localStorage.getItem("authorizer_appid");
+    }else{
+        localStorage.setItem("authorizer_appid",appid);
+    }*/
+    
+    $.ajax({
+        type: "get",
+        url: "/weixin/checkWeiXinLogin",
+        dataType: 'json',
+        async:false,
+        complete: function(json) {
+            
+            var data = json.response;
+            var status = json.status;
+            
+            if(status != 200){
+                $.alert('网络异常9.2，状态为' + status);
+                return;
+            }
+            if ($.type(data) == 'string') {
+                data = JSON.parse(data);
+            }
+            if(data.data){
+                appid = data.data.appid;
+            }
+            if(data.code != 'E00000'){
+                if(data.code == "-1"){
+                    // window.location.href = "/weixin/bind";
+                }else{
+                    $.alert(data.message);
+                    return;
+                }
+            }else{
+                appid = data.data.appid;
+            }
+            
+        }
+    });
+    // alert(appid);
+    /*$.ajax({
+        type: "post",
+        url: "/weixin/setAuthorizerAppid",
+        data: {
+            authorizer_appid:appid
+        },
+        async:false,
+        dataType: 'json',
+        complete: function(json) {
+
+            // 重置加载flag
+            loading = false;
+            var data = json.response;
+                
+            var status = json.status;
+
+            
+            if(status != 200){
+                $.alert('网络异常1.1，状态为' + status);
+                flag =0;
+                return;
+            }
+            if ($.type(data) == 'string') {
+                data = JSON.parse(json.response);
+            }
+            if(data.code != 'E00000'){
+                $.alert(data.message)
+                return;
+            }else{
+                // $.alert(data.data.authorizer_appid);
+            }
+        }
+    });*/
+    var responseMsg = {
+        '-3' : 'APP未登录',
+        '-2' : '微信超时',
+        '-1' : '微信未登录',
+        '0' : '查询数据不存在',
+        '2' : '数据库执行错误',
+        '3' : '参数错误',
+        '4' : '接口调用错误',
+        '5' : '接口调用返回结果错误'
+    };
+  
+    var pageSize = 3,
+        loading = false,
+        pageNo = 1,
+        canload = false,
+        lat = 0,
+        lon = 0;
+
+
+    //获取微信定位坐标
+    function getWxLocation(){
+        // debugger;
+        var resMsg = "";
+        setTimeout(function(){
+            if(!resMsg){
+
+                $('[data-role="street"]').html('选城市');
+                $.hidePreloader();
+                // $('[data-role="location"]').css({"backgroundColor":"#FAD603"});
+                // $('[data-role="location"]').addClass('public-color');
+                // locationFlag = 0;
+                $.alert('暂未获取定位，可手动选取城市后再搜索详细地址。');
+            }
+        },10000);
+
+        wx.getLocation({
+          complete: function (res) {
+            $.hidePreloader();
+            // $.alert('微信坐标：' + JSON.stringify(res));
+            resMsg = res.errMsg;
+            if(res.errMsg == "getLocation:ok"){
+                $.ajax({
+                    url: "/weixin/changeWxLocationToBaidu?lat=" +  res.latitude + "&lon=" +  res.longitude,
+                    type: "get",
+                    async:false,
+                    dataType: "json",
+                    complete: function(result) {
+                       // $.alert('changeWxLocationToBaidu：' + JSON.stringify(result));
+                       var data = result.response;
+                       var status = result.status;
+                        if(status != 200){
+                            $.alert('网络异常9.3，状态为' + status);
+                            return;
+                        }
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if(data.code != "E00000"){
+                            $.alert('定位失败:' + data.code);
+                            if(data.code == -1){
+
+                                $.alert(data.message, function(){
+                                    
+                                    // window.location.href = "/weixin/bind";
+                                });
+                            }else{
+
+                                $.alert(data.message);
+                                return;
+                            }
+                        }else{
+                            // debugger;
+                            
+                            
+                            localStorage.setItem("wxlocation"+appid,JSON.stringify(data));
+                            var location = JSON.parse(localStorage.getItem("wxlocation"+appid));
+                            if(location && (location.lat)){
+                                lat = location.lat;
+                                lon = location.lon;
+                                if(location.street){
+                                    $('[data-role="street"]').html(location.street + '&gt;');
+                                }else{
+                                    $('[data-role="street"]').html(location.city + '&gt;');
+                                }
+                                // alert(111);
+                                var loc = lat+','+lon;
+                                getData(lat, lon);
+                                getCityBrand(lat, lon);
+                                saveCity(location.cityId,loc);
+                                // $.alert(location.lat);
+                            }
+
+                            $.hidePreloader();
+                        }
+                    }
+                });
+            }else{
+                 $.alert('暂未获取定位，可手动选取城市后再搜索详细地址!!');
+                // $('[data-role="street"]').html(old);
+                // getNowLocation();
+            }
+            
+          },
+          cancel: function (res) {
+            $.hidePreloader();
+            $.alert('用户拒绝授权获取地理位置');
+          }
+        });
+
+    }
+    //保存当前城市定位
+    function saveCity(id,loc){
+        // if(id == ""){
+        //     // getWxLocation();
+            
+        //     getWxLocationNow();
+        //     return;
+        // }
+        // alert(id);
+        $.ajax({
+            type: "get",
+            url: "/weixin/saveCity?cityId="+id+"&location="+loc,
+            dataType: 'json',
+            complete: function(json) {
+                var data = json.response;
+                var status = json.status;
+                if(status != 200){
+                    $.alert('网络异常9.1，状态为' + status);
+                    return;
+                }
+                if ($.type(data) == 'string') {
+                    data = JSON.parse(data);
+                }
+                if(data.code != 'E00000'){
+                    
+                    if(data.code == "-1"){
+                        $.alert(data.message, function(){
+                            
+                            // window.location.href = "/weixin/bind";
+                        }); 
+
+                    }else{
+                        $.alert(data.message);
+                        return;
+                    }
+                    
+                }else{
+                    // $.toast("定位成功");
+                    // alert(loc);
+                }
+                
+            }
+        });
+    }
+    var getData = function(lat,lon,method) {
+        var classId = $('.switch-wrap').attr('data-active-class');
+        var tagId = $('.tabs').attr('data-active-tag');
+        $.ajax({
+            type: "post",
+            url: "/weixin/getSysAds",
+            data: {
+                location:lat+","+lon
+            },
+            async:false,
+            dataType: 'json',
+            complete: function(json) {
+
+                // 重置加载flag
+                loading = false;
+                var data = json.response;
+                    
+                var status = json.status;
+
+                
+                if(status != 200){
+                    $.alert('网络异常1.1，状态为' + status);
+                    flag =0;
+                    return;
+                }
+                if ($.type(data) == 'string') {
+                    data = JSON.parse(json.response);
+                }
+                if(data.code != 'E00000'){
+                    if(data.code == "-1"){
+                       
+                        // window.location.href = "/weixin/bind";
+                    }else if(data.code == 'L00002'){
+
+                    }else{
+                        $.alert(data.message);
+                        return;
+                    }
+                }else{
+
+                    // console.log(data);
+                    var tpl = $("#swiper").html();
+                   
+                    var template = Handlebars.compile(tpl);
+                    var context = {
+                        data: data.data
+                    };
+                    var html = template(context);
+                    $("[data-role='swiper-wrap']").html(html);
+    
+                    $("#swiper-container").swiper({
+                        autoplay: 2000,
+                        autoplayDisableOnInteraction: false,
+                        pagination: '.swiper-pagination'
+                    });
+
+                    // $.reinitSwiper(0);
+                    $.reinitSwiper('#swiper-container');
+                    
+
+                     
+                }
+                
+            }
+        });
+        $.ajax({
+            type: "get",
+            url: "/weixin/getLocationBrandJson?lat=" + lat + "&lon=" + lon,
+            data: {},
+            dataType: 'json',
+            complete: function(json) {
+                // 重置加载flag
+                loading = false;
+                var data = json.response;
+                    
+                var status = json.status;
+                if(status != 200){
+                    $.alert('网络异常1.1，状态为' + status);
+                    flag =0;
+                    return;
+                }
+                if ($.type(data) == 'string') {
+                    data = JSON.parse(json.response);
+                }
+                if(data.code != 'E00000'){
+                    if(data.code == "-1"){
+                        
+                        // window.location.href = "/weixin/bind";
+                    }else if(data.code == 'L00002'){
+
+                    }else{
+                        $.alert(data.message);
+                        return;
+                    }
+                }
+
+                if (data.data.brandCount == 0) {
+                        //$('[data-role="null-data"]').html('没有更多内容了，请稍后刷新');
+                        // 加载完毕，则注销无限加载事件，以防不必要的加载:$.detachInfiniteScroll($('.infinite-scroll').eq(tabIndex));多个无线滚动请自行根据自己代码逻辑判断注销时机
+                        //$.detachInfiniteScroll();
+                        //canload = false;
+                        // 删除加载提示符
+                        //$('.infinite-scroll-preloader').hide();
+                        $(".company").before('<div class="defaut-wrap"><span class="icon icon-default"></span><h2 class="def-note">附近没有水店</h2><p><a href="/weixin/seller" class="button button-fill btn-yello">我想成为水趣合作伙伴！</a></p></div>');
+                        return;
+                    } else if(data.data.brandCount == 1 ){
+                        var shopMap = data.data.brands[0].shopJoint;
+                        var location = JSON.parse(localStorage.getItem("wxlocation"+appid));
+                        var lat = "";
+                        var lon = "";
+                        //$.alert(localStorage.getItem("wxlocation"));
+                        if(location && location.lat){
+                            lat = location.lat;
+                            lon = location.lon;
+                        }
+                        $.ajax({
+                            type: "get",
+                            url: "/weixin/getBrandShopList?shopMap=" + shopMap + "&location=" + lat + "," + lon,
+                            dataType: 'json',
+                            complete: function(json) {
+                              
+                                var data = json.response;
+                                //$.alert(data);
+                                var status = json.status;
+                                if(status != 200){
+                                    $.alert('网络异常8.1，状态为' + status);
+                                    return;
+                                }
+                                if ($.type(data) == 'string') {
+                                    data = JSON.parse(data);
+                                }
+                                if(data.code != 'E00000'){
+                                    if(data.code == "-1"){
+                                        window.location.href = "/weixin/bind";
+                                    }else{
+                                        $.alert(data.message);
+                                        return;
+                                    }
+                                }else{
+                                    //console.log(data.data);
+                                    var tpl = $("#shopTpl").html();
+                                    var template = Handlebars.compile(tpl);
+                                    var context = {
+                                        data: data.data.shops
+                                    };
+                                    var cont = template(context);
+                                    if(method == 'pull'){
+                                        $('.company').append(cont);
+                                    }else{
+                                        $('.company').html(cont);
+                                    }
+                                    
+                                }
+                                
+                            }
+                        });
+                    }else {
+                        canload = true;
+                        if(data.data.brands.length >= pageSize){
+                           $('.infinite-scroll-preloader').show(); 
+                        }else{
+                            $('.infinite-scroll-preloader').hide();
+                        }
+                        var tpl = $("#tpl").html();
+                       
+                        var template = Handlebars.compile(tpl);
+                        var context = {
+                            data: data.data.brands
+                        };
+                        var html = template(context);
+                        if(method == 'pull'){
+                            $('.company').append(html);
+                        }else{
+                            $('.company').html(html);
+                        }
+                        
+                    }
+                    $.refreshScroller();
+               
+            }
+        });
+    };
+    //扫描二维码并返回结果
+    $('[data-role="fresh"]').delegate('#scanQRCode0','click',function () {
+        wx.scanQRCode({
+            needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+            scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+            success: function (res) { 
+                var codeUrl = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+                $.ajax({
+                    type: "post",
+                    url: "/weixin/verifyCodeByApp",
+                    data:{
+                        codeUrl:codeUrl
+                    },
+                    dataType: 'json',
+                    complete: function(json) {
+                        var data = json.response;
+                        var status = json.status;
+                        if(status != 200){
+                            $.alert('网络异常，状态为3.2' + status);
+                            return;
+                        }
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }if(data.code != 'E00000'){
+                            // $.alert(data.message);
+                            var context = {
+                                data: data.data
+                            };
+                            var validateTpl = $("#validateTpl").html();
+                       
+                            var validateTemplate = Handlebars.compile(validateTpl);
+                            var validateCont = validateTemplate(context);
+
+                            $('[data-role="validate"]').html(validateCont);
+                            $.popup(".popup-validate");
+                        }else{
+                            var context = {
+                                data: data.data
+                            };
+                            if(data.data.tag == 1 ){
+                                
+                                var validateTpl = $("#validateTpl").html();
+                       
+                                var validateTemplate = Handlebars.compile(validateTpl);
+                                var validateCont = validateTemplate(context);
+
+                                $('[data-role="validate"]').html(validateCont);
+                                $.popup(".popup-validate");
+                            }else if(data.data.tag == 0){
+                                
+                                
+                                var validateTpl = $("#validateTpl").html();
+                       
+                                var validateTemplate = Handlebars.compile(validateTpl);
+                                var validateCont = validateTemplate(context);
+
+                                $('[data-role="validate"]').html(validateCont);
+                                $.popup(".popup-validate");
+
+                            }else{
+                                
+                                var validateTpl = $("#validateTpl").html();
+                       
+                                var validateTemplate = Handlebars.compile(validateTpl);
+                                var validateCont = validateTemplate(context);
+
+                                $('[data-role="validate"]').html(validateCont);
+                                $.popup(".popup-validate");
+                            }
+                            $('[data-role="show-detail"]').on('click',function(e){
+                                e.preventDefault();
+                                $("[data-role='validate-detail']").show().removeClass("modal-out").addClass("modal-in");
+                                $('[data-role="modal-overlay"]').addClass("modal-overlay-visible");
+                            })
+                            $('[data-role="close-win"]').on('click',function(e){
+                                e.preventDefault();
+                                $("[data-role='validate-detail']").removeClass("modal-in").addClass("modal-out").hide();
+                                $('[data-role="modal-overlay"]').removeClass("modal-overlay-visible");
+                            });
+                        }
+                      
+                    }
+                });
+            
+            }
+        }); 
+    });
+    //获取城市水店等信息
+    function getCityBrand(lat, lon){
+       // var cityno = $('[data-role="cityno"]');
+       // var commpanyno = $('[data-role="commpanyno"]');
+       // var storeno = $('[data-role="storeno"]'); 
+
+        $.ajax({
+            type: "get",
+            url: "/weixin/getStatisticsShopJson?location=" + lat + "," + lon,
+            async:false,
+            data: {},
+            dataType: 'json',
+            complete: function(json) {
+                
+                var data = json.response;
+                var status = json.status;
+                if(status != 200){
+                    $.alert('网络异常，状态为' + status);
+                    return;
+                }
+                if ($.type(data) == 'string') {
+                    data = JSON.parse(json.response);
+                }
+                if(data.code != 'E00000'){
+                    if(data.code == "-1"){
+                        
+                        // window.location.href = "/weixin/bind";
+                    }else{
+                        $.alert(data.message);
+                        return;
+                    }
+                }else{
+                    // cityno.html(data.data.city);
+                    // commpanyno.html(data.data.enterPrise);
+                    // storeno.html(data.data.shop);
+
+                    var context = {
+                        data: data.data
+                    };
+                    var tpl = $("#noticeBox").html();
+                    var template = Handlebars.compile(tpl);
+                    var cont = template(context);
+                    $('[data-role="noticeBox"]').html(cont).css({'background':"#fff"});
+                   $("#clearCache").on('click',function(){
+                        localStorage.clear();
+                        // $.alert('清除成功');
+                   });
+                   var freshTpl = $("#fresh").html();
+                   $('[data-role="fresh"]').html(freshTpl);
+                }
+               
+            }
+        });
+    }
+
+        $(function() {
+            
+            var location = JSON.parse(localStorage.getItem("wxlocation"+appid));
+            console.log("wxlocation"+appid);
+            if(location && (location.lat)){
+                lat = location.lat;
+                lon = location.lon;
+                if(location.street){
+                    $('[data-role="street"]').html(location.street + '&gt;');
+                }else{
+                    $('[data-role="street"]').html(location.city + '&gt;');
+                }
+
+                getData(lat, lon);
+                getCityBrand(lat, lon);
+                $.hidePreloader();
+                
+            }
+            else{
+                $.ajax({
+                    type: "get",
+                    url: "/weixin/checkCity",
+                    data: {},
+                    dataType: 'json',
+                    complete: function(json) {
+                       
+                        var data = json.response;
+                        
+                        var status = json.status;
+                        if(status != 200){
+                            $.alert('网络异常，状态为' + status);
+                            return;
+                        }
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(json.response);
+                        }
+                        if(data.code != 'E00000'){
+                            if(data.code == "-1"){
+                               
+                                // window.location.href = "/weixin/bind";
+                            }else{
+                                // $.alert(data.message);
+                                // return;
+                                $('[data-role="street"]').html("定位中...");
+                                $.showPreloader('正在获取坐标');
+                                 wx.ready(function() {
+                                    // 1 判断当前版本是否支持指定 JS 接口，支持批量判断
+                                    wx.checkJsApi({
+                                        jsApiList: [
+                                            'getNetworkType',
+                                            'previewImage'
+                                        ],
+                                        success: function(res) {
+                                            
+                                            
+                                            getWxLocation();
+                                        },
+                                        fail: function(res) {
+                                            alert("不支持最新SDK");
+                                            
+                                        }
+                                   });
+                                }); 
+                            }
+                        }else{
+
+                            // console.log(data);
+                            if(data.data.location){
+                                var arr = data.data.location.split(",");
+                                lat = arr[0];
+                                lon = arr[1];
+                                // lat = data.data.location.lat;
+                                // lon = data.data.location.lon;
+                                
+                                $('[data-role="street"]').html(data.data.cityName + '&gt;');
+                                
+                                // console.log(data.data);
+                                getData(lat,lon);
+                                getCityBrand(lat,lon);
+                                var location ={code:data.code,lat:lat,lon:lon,city:data.data.cityName,cityId:data.data.cityId,street:""}
+                                localStorage.setItem("wxlocation"+appid,JSON.stringify(location));
+                                $.hidePreloader();
+                            }else{
+                                
+                                $('[data-role="street"]').html("定位中...");
+                                wx.ready(function() {
+                                    // 1 判断当前版本是否支持指定 JS 接口，支持批量判断
+                                    wx.checkJsApi({
+                                        jsApiList: [
+                                            'getNetworkType',
+                                            'previewImage'
+                                        ],
+                                        success: function(res) {
+                                            $.showPreloader('正在获取坐标');
+                                            
+                                            getWxLocation();
+                                        },
+                                        fail: function(res) {
+                                            alert("不支持最新SDK");
+                                            
+                                        }
+                                   });
+                                }); 
+                            }
+                            
+                        }
+                       
+                    }
+                });
+            }
+
+        });
+    </script>
+  </body>
+</html>

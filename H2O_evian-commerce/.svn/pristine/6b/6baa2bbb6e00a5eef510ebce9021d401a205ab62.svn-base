@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "overtime")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/shopCss.vm")
+<body>
+  	<div class="page-group">
+		<div class="page page-finish page-current">
+			<header class="bar bar-nav theme-dark">
+	            <a href="/weixin/home" class="icon icon-35icoback pull-left icon-white bar-left"></a>  
+	            <h1 class="title">水趣</h1>
+	        </header>
+	        <div class="content content-overtime">
+	        	#if($!webStyle == "shuiqu")
+	        	<div class="banner" data-role="banner" style="background: url('/files/images/shuiqu/banner.png') no-repeat;background-size:100% auto;"></div>
+	        	#else
+				<div class="banner" data-role="banner" style="background: url('/files/images/dalishuishou/banner.png') no-repeat;background-size:100% auto;"></div>
+	        	#end
+	        	<svg class="icon icon-svg title-icon" aria-hidden="true">
+                      <use href="#icon-cry"></use>
+                </svg>
+	            <p>本期活动已结束,敬请期待下期活动!</p>
+	        </div>
+	        
+	    </div>
+	</div>
+	<script id="bannerTpl" type="text/x-handlebars-template">
+		<table>
+			<tr><td><img src="{{data.photo}}" alt=""></td><td>您的好友:{{data.nickname}}</td></tr>
+		</table>
+	</script>
+    #*加载JS文件*# 
+    #parse("control/$!webStyle/publicJs.vm")
+	#parse("control/$!webStyle/globalJs.vm")
+	<script>
+		$.init();
+	</script>
+</body>
+</html>

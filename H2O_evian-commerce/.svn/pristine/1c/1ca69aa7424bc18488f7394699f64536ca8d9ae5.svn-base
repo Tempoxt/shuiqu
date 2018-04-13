@@ -1,0 +1,32 @@
+package com.eviano2o.util;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class SysParamCache {
+	static Map<String, String> cache = new HashMap<String, String>();
+
+	public static void setCache(String key, String obj) {
+		cache.put(key, obj);
+	}
+
+	public static String getCache(String key) {
+		return cache.get(key);
+	}
+
+	public static void removeCache(String key) {
+		cache.remove(key);
+	}
+
+	public static void clearCache() {
+		cache.clear();
+	}
+
+	public static Boolean isNullObj() {
+		return cache == null || cache.size() == 0 || cache.isEmpty();
+	}
+
+	public static Map<String, String> getAllParam(){
+		return cache;
+	}
+}

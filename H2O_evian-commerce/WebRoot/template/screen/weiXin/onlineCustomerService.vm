@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "onlineCustomerService")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/shopCss.vm")
+<body>
+#*加载JS文件*# 
+#parse("control/$!webStyle/publicJs.vm")
+<script src="/files/js/$!webStyle/app.js"></script>
+<!-- <script src="https://cdn.shuiqoo.cn/$!webStyle/echarts.min.js"></script> -->
+#parse("control/$!webStyle/globalJs.vm")
+
+	<div class="page-group">
+		<div class="page page-finish page-current page-onlineCustomerService">
+            <header class="bar bar-nav light-nav">
+                <a class="icon icon-35icoback pull-left bar-left closeTuike" href="#"></a>  
+                <h1 class="title">在线客服</h1>
+            </header>
+            <div class="content img-code-box">
+                <ul class="tuikeShops-list tab active" data-role="tuikeShops-list">
+                	<li>
+                		<div class="content-padded">
+	                        <div class="row">
+	                        	<div class="col">
+	                        		<span>常见问题</span>
+	                        	</div>
+	                        </div>
+	                    </div>
+                	</li>
+                	<li>
+                		<div class="content-padded">
+	                        <div class="row">
+	                        	<div class="col">
+	                        		<span>1.如何查看我的订单？</span>
+	                        	</div>
+	                        </div>
+	                    </div>
+                	</li>
+                	<li>
+                		<div class="content-padded">
+	                        <div class="row">
+	                        	<div class="col">
+	                        		<span>2.如果支付失败怎么办？</span>
+	                        	</div>
+	                        </div>
+	                    </div>
+                	</li>
+                	<li>
+                		<div class="content-padded">
+	                        <div class="row">
+	                        	<div class="col">
+	                        		<span>3.如果支付成功没开门怎么办？</span>
+	                        	</div>
+	                        </div>
+	                    </div>
+                	</li>
+                	<li>
+                		<div class="content-padded">
+	                        <div class="row">
+	                        	<div class="col">
+	                        		<span>4.如何订单申诉？</span>
+	                        	</div>
+	                        </div>
+	                    </div>
+                	</li>
+                	<li>
+                		<div class="content-padded">
+	                        <div class="row">
+	                        	<div class="col">
+	                        		<span>5.如果支付失败怎么办？</span>
+	                        	</div>
+	                        </div>
+	                    </div>
+                	</li>
+                	<li>
+                		<div class="content-padded">
+	                        <div class="row">
+	                        	<div class="col">
+	                        		<span>6.如果支付成功没开门怎么办？</span>
+	                        	</div>
+	                        </div>
+	                    </div>
+                	</li>
+                </ul>
+                <p class="helpTS">如需更多帮助请点击下方在线客服按钮。</p>
+                <a href="#" class="button  btn-yello btn-125 tuikeShop" name="tuikeShop" data-role="btn">在线客服</a>
+            </div>
+        </div>
+    </div>
+</body>
+    
+    <script type="text/javascript">
+    	
+	 
+    </script>
+</html>

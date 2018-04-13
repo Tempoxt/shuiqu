@@ -1,0 +1,72 @@
+#parse("control/found/foundCss.vm")
+<body>
+<div class="page-group">
+    <div class="page page-current">
+        <header class="bar bar-nav">
+            <table width="100%" class="search-wrap">
+              <tr>
+                  <td width="10%"><a href="/found/class" class="icon icon-dizhi"></a></td>
+                  <td width="75%"><input type="search" id='search' class="search" placeholder='输入关键字...'/></td>
+                  <td width="15%"><span class="icon icon-sousuo" data-role="search"></span></td>
+              </tr>
+          </table>
+        </header>
+
+        <div class="content infinite-scroll" data-distance="100">
+            <ul class="show-list" data-role="list-container">
+               
+            </ul>
+            <!-- 加载提示符 -->
+            <div class="infinite-scroll-preloader hide">
+              <div class="preloader">
+              </div>
+            </div>
+            <span class="null-data" data-role="null-data"></span>
+        </div>
+
+    </div>
+    
+</div>
+<script id="tpl" type="text/x-handlebars-template">
+{{#each data}} 
+    <li data-article-id="{{articleId}}">
+        <h4><img class="util-left" src="{{logoUrl}}" alt="">{{auchor}}：</h4>
+        <a href="/found/articleDetail?articleId={{articleId}}">
+            <h5>{{articleTitle}}</h5>
+            <p>{{articleSummary}}</p>
+        </a>
+        <div class="bottom-operate">
+            <div class="mwt_border util-left">
+                {{className}}
+            </div>
+            
+        </div>
+    </li>
+{{/each}}
+</script>
+<script id="appTpl" type="text/x-handlebars-template">
+{{#each data}} 
+    <li data-article-id="{{articleId}}">
+        <h4><img class="util-left" src="{{logoUrl}}" alt="">{{auchor}}：</h4>
+        <a href="/found/articleDetail?articleId={{articleId}}">
+            <h5>{{articleTitle}}</h5>
+            <p>{{articleSummary}}</p>
+        </a>
+        <div class="bottom-operate">
+            <div class="mwt_border util-left">
+                {{className}}
+            </div>
+            
+        </div>
+    </li>
+{{/each}}
+</script>
+<script type='text/javascript' src='/files/common/js/zepto.min.js' charset='utf-8'></script>
+<script>
+    $.config = {router: false}
+</script>
+<script type='text/javascript' src='/files/common/js/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='/files/common/js/sm-extend.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='/files/common/js/handlebars-v4.0.5.js'></script>
+<script type='text/javascript' src='/files/js/found/search.js'></script>
+</body>

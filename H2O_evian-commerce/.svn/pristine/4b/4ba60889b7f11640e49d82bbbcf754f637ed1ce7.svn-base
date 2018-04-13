@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/indexCss.vm")
+<body>
+    <div class="page-group">
+        <div class="page page-finish page-current">
+            <header class="bar bar-nav light-nav">
+                <a href="/weixin/home" class="icon icon-35icoback pull-left  bar-left"></a>  
+                <h1 class="title">可使用优惠券水店</h1>
+            </header>
+
+            <div class="content">
+                <ul class="show-list has-border" data-role="list-container">
+                   
+                </ul>
+            </div>
+  
+        </div>
+       
+    </div>
+    <script id="tpl" type="text/x-handlebars-template">
+        {{#each data}}
+        <li>
+            <a data-url="/weixin/codeProducts?shopId={{shopId}}&codeid={{../codeid}}" data-name="{{shopName}}" href="">
+                <table>
+                   <tr>
+                       <td><img src="{{pictureUrl}}" alt=""></td>
+                       <td>
+                           <h4>{{shopName}}</h4>
+                           <div data-grade="{{grade}}">
+                                {{{showstars grade}}}
+                            </div>
+                           <p>起送价 ￥{{minSendPrice}} | 配送费 ￥ {{freight}} | {{sendOnTime}}分钟</p>
+                           <p>{{ceil distance}}km</p>
+                       </td>
+                   </tr>
+                </table>
+            </a>
+       </li>
+        {{/each}}
+    </script>
+    #*加载JS文件*# 
+    #parse("control/$!webStyle/publicJs.vm")
+    #parse("control/$!webStyle/globalJs.vm")
+    <script>
+        $(function() {
+        
+            var location = localStorage.getItem("couponLocation");
+            var code_id = localStorage.getItem("couponCode");
+            var cityId = localStorage.getItem("couponCityId");
+         
+            $.ajax({
+                type: "get",
+                url: "/weixin/voucherToShopByLocation?cityId=" + cityId + "&location=" + location + "&code_id=" + code_id,
+                dataType: 'json',
+                complete: function(json) {
+                  
+                    var data = json.response;
+                    var status = json.status;
+                    if(status != 200){
+                        $.alert('网络异常6.1，状态为' + status);
+                        return;
+                    }
+                    if ($.type(data) == 'string') {
+                        data = JSON.parse(data);
+                    }
+                    if(data.code != 'E00000'){
+                        if(data.code == "-1"){
+                            window.location.href = "/weixin/bind";
+                        }else{
+                            $.alert(data.message);
+                            return;
+                        }
+                    }else{
+                        //console.log(data.data);
+                        var tpl = $("#tpl").html();
+                        var template = Handlebars.compile(tpl);
+                        var context = {
+                            data: data.data.shops,
+                            codeid: code_id
+                        };
+                        var cont = template(context);
+                        
+                        $('[data-role="list-container"]').html(cont);
+                        
+                    }
+                    
+                }
+            });
+            $('[data-role="list-container"]').delegate("a", "click", function(e){
+                e.preventDefault();
+                var me = $(this),
+                    url = me.data('url'),
+                    shopName = me.data('name');
+
+                    localStorage.setItem("shopName", shopName);
+                    window.location.href = url;
+            });
+        });
+        $.init();
+    </script>
+  </body>
+</html>

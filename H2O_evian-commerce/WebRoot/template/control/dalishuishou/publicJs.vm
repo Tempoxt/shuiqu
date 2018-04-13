@@ -1,0 +1,18 @@
+<!-- <script type='text/javascript' src='https://cdn.shuiqoo.cn/$!webStyle/zepto.min.js' charset='utf-8'></script>
+    <script>
+          $.config = {router: false}
+    </script>
+    <script type='text/javascript' src='https://cdn.shuiqoo.cn/$!webStyle/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='https://cdn.shuiqoo.cn/$!webStyle/sm-extend.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='https://cdn.shuiqoo.cn/$!webStyle/handlebars-v4.0.5.js' charset='utf-8'></script>
+    <script src="https://cdn.shuiqoo.cn/$!webStyle/iconfont.js"></script>
+    <script src="https://cdn.shuiqoo.cn/$!webStyle/common.js"></script> -->
+    <script type='text/javascript' src='/files/common/js/zepto.min.js?v=$version' charset='utf-8'></script>
+    <script>
+          $.config = {router: false}
+    </script>
+    <script type='text/javascript' src='/files/common/js/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='/files/common/js/sm-extend.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='/files/common/js/handlebars-v4.0.5.js' charset='utf-8'></script>
+    <script src="/files/common/css/$!webStyle/iconfont.js"></script>
+    <script src="/files/js/$!webStyle/common.js?v=$version"></script>

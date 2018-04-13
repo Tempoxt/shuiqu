@@ -1,0 +1,44 @@
+<script id="tpl" type="text/x-handlebars-template">
+  {{#each data}} 
+      <li data-article-id="{{articleId}}">
+          <h4><img class="util-left" src="{{logoUrl}}" alt="">{{auchor}}：</h4>
+          <a href="/found/articleDetail?articleId={{articleId}}">
+              <h5>{{articleTitle}}</h5>
+              <p>{{articleSummary}}</p>
+              {{#each picList}}
+              <img src="{{picUrl}}" alt="">
+              {{/each}}
+          </a>
+          <div class="bottom-operate">
+              <div class="mwt_border util-left">
+                  {{className}}
+              </div>
+              <div class="util-right">
+                  <a href="/found/articleDetail?articleId={{articleId}}">
+                      <span class="icon icon-107comment"></span>
+                      <span data-role="comment" class="mr_5em"> {{commentCount}}</span>
+                  </a>
+                  {{#unless isLike}} 
+                  <a data-role="support"  class="needsclick" href="">
+                      <span data-role="support-icon" class="icon icon-108click needsclick"></span>
+                      <span data-role="support-count" class="needsclick"  data-val="{{likeCount}}">{{likeCount}}</span>
+                  </a>
+                  {{else}} 
+                  <a data-role="support" class="needsclick active" href="">
+                      <span data-role="support-icon" class="icon icon-108click needsclick"></span>
+                      <span data-role="support-count" class="needsclick"  data-val="{{likeCount}}">{{likeCount}}</span>
+                  </a>
+                  {{/unless}}
+              </div>
+          </div>
+      </li>
+  {{/each}}
+  </script>
+  <script type='text/javascript' src='/files/common/js/zepto.min.js' charset='utf-8'></script>
+  <script>
+      $.config = {router: false}
+  </script>
+  <script type='text/javascript' src='/files/common/js/sm.min.js' charset='utf-8'></script>
+  <script type='text/javascript' src='/files/common/js/sm-extend.min.js' charset='utf-8'></script>
+  <script type='text/javascript' src='/files/common/js/handlebars-v4.0.5.js'></script>
+  <script type='text/javascript' src='/files/js/found/index.js'></script>

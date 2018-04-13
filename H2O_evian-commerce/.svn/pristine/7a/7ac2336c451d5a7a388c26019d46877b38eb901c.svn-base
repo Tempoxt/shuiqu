@@ -1,0 +1,78 @@
+package com.eviano2o.controller.helper;
+
+import javax.servlet.http.HttpServletRequest;
+
+import net.sf.json.JSONObject;
+
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.ui.Model;
+
+import com.eviano2o.util.SysParamCache;
+import com.eviano2o.util.SysParamNames;
+
+/**
+ * 小程序店铺码模板生成
+ */
+public class LiteappTemplateShopCodeHelper extends BaseControllerHelper {
+	String shopCode;// 店铺码
+	Integer tid;// 模板id
+	Integer clientType;//来源（1：微信, 2：APP）
+	
+	public LiteappTemplateShopCodeHelper(Model model, HttpServletRequest request) {
+		super(model, request);
+		
+		shopCode = StringUtils.isEmpty(_request.getParameter("shopCode")) ? "0" : _request.getParameter("shopCode");
+		tid = Integer.valueOf(StringUtils.isEmpty(_request.getParameter("tid")) ? "0" : _request.getParameter("tid"));
+		clientType = Integer.valueOf(StringUtils.isEmpty(_request.getParameter("clientType")) ? "0" : _request.getParameter("clientType"));
+		logger.info("生成小程序模板参数-> tid:" +tid + "   shopCode:" + shopCode + "   clientType:" + clientType + "   openId:" + getSessionWeiXinId());
+	}
+
+	public void Init() {
+		if (tid.intValue() == 0 || shopCode == "0" || clientType.intValue() == 0) {
+			_result = formatJsonResult("E90000", "参数错误！");
+			return;
+		}
+
+		mackPic();
+	}
+	
+	private Boolean mackPic() {
+		
+		String makeResult = fileService.ShearTemplateLiteappShopCode(shopCode, clientType, getSessionWeiXinId(), tid, getSessionWXAppId());
+		if (StringUtils.isEmpty(makeResult)) {
+			_result = formatJsonResult("E90000", "生成模板失败！");
+			return false;
+		}
+		
+		JSONObject json = JSONObject.fromObject(makeResult);
+		if (json.has("code") && json.getString("code").equals("E00000")){
+			
+		}else{
+			_result = makeResult;
+			return false;
+		}
+		String viewTemplateUrl = "https://" + SysParamCache.getCache(SysParamNames.ParamFileManageDomain) + "/" + json.getString("data");
+		
+		
+		JSONObject resultJson = new JSONObject();
+		resultJson.put("code", "E00000");
+		resultJson.put("message", "生成成功！");
+		JSONObject resultJsonData = new JSONObject();
+		resultJsonData.put("shopCode", shopCode);
+		resultJsonData.put("url1", viewTemplateUrl);
+		resultJsonData.put("posterUrl", viewTemplateUrl);
+		resultJson.put("data", resultJsonData);
+
+		_result = resultJson.toString();
+		return true;
+	}
+
+	private static final Logger logger = LoggerFactory.getLogger(LiteappTemplateShopCodeHelper.class);
+
+	@Override
+	public String getResult() {
+		return _result;
+	}
+}

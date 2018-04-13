@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/indexCss.vm")
+<body>
+    <div class="page-group order-list-wrap">
+        <div class="page page-finish page-current page-evaluate">
+            <header class="bar bar-nav light-nav">
+                <a href="/weixin/orders?statusId=103&pageIndex=1" class="icon icon-35icoback pull-left bar-left"></a>  
+                <h1 class="title">评价</h1>
+            </header>
+
+            <div class="content" data-role="server-eva-wrap">
+                
+            </div>
+            <!-- Block button in standard bar fixed above the footer -->
+            <div class="bar bar-footer order-bar">
+                <p><a data-role="send-eva" href="#" class="button button-fill btn-yello">发表评价</a></p>
+            </div>
+            
+        </div>
+       
+    </div>
+    <script id="serverTpl" type="text/x-handlebars-template">
+        <div class="server-eva">
+            <table>
+                <tr>
+                    <td>
+                        {{#is data.staff.photo null}}
+                        <img src="/files/images/$!webStyle/default.png">
+                        {{else}}
+                        <img src="{{data.staff.photo}}">
+                        {{/is}}
+                        <!-- <span>送水员：{{data.staff.contacts}}</span> -->
+                    </td>
+                    <td id="evaluateList">
+                        {{#each data.orderTags}}
+                        <p><em data-projectid="{{projectId}}">{{projectName}}</em>
+                            {{#each projectGrades}}<span class="icon icon-86star active" data-id="{{grade}}" data-action="choose-score" data-gradeName="{{gradeName}}"></span>{{/each}}
+                            <input type="hidden" name="gradeTotal" value="5"><b>{{#each projectGrades}}{{#is grade '5'}}{{gradeName}}{{/is}}{{/each}}</b></p>
+                        {{/each}}
+                        <!-- <p><em>配送速度</em>
+                            <span class="icon icon-86star active" data-id="1" data-action="choose-score"></span>
+                            <span class="icon icon-86star active" data-id="2" data-action="choose-score"></span>
+                            <span class="icon icon-86star active" data-id="3" data-action="choose-score"></span>
+                            <span class="icon icon-86star active" data-id="4" data-action="choose-score"></span>
+                            <span class="icon icon-86star active" data-id="5" data-action="choose-score"></span><input type="hidden" name="gradeSpeed" value="5"></p>
+                        <p><em>服务态度</em>
+                            <span class="icon icon-86star active" data-id="1" data-action="choose-score"></span>
+                            <span class="icon icon-86star active" data-id="2" data-action="choose-score"></span>
+                            <span class="icon icon-86star active" data-id="3" data-action="choose-score"></span>
+                            <span class="icon icon-86star active" data-id="4" data-action="choose-score"></span>
+                            <span class="icon icon-86star active" data-id="5" data-action="choose-score"></span><input type="hidden" name="gradeServer" value="5"></p> -->
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="server-cont">
+            <textarea data-contactsId="{{data.staff.contactsId}}" name="orderEvaluate" placeholder="请写下对服务的感受，长度在5~200之间"></textarea>
+        </div>
+        <div class="goods-eva">
+            <ul>
+            {{#each data.goods}}
+                <li data-pid="{{pid}}">
+                    <h5>{{pname}}</h5>
+                    <table>
+                        <tr>
+                            <td>
+                                <img src="{{pictureUrl}}" alt="">
+                            </td>
+                            <td><textarea name="evaluate" placeholder="请写下对商品的评价，对他人帮助很大哦"></textarea></td>
+                        </tr>
+                    </table>
+                    <div class="goods-star">
+                        {{#each ../data.productTags}}
+                            {{#each projectGrades}}
+                            <span class="icon icon-86star active" data-id="{{grade}}" data-action="choose-score" data-gradename="{{gradeName}}"></span>
+                            {{/each}}
+                            <input type="hidden" name="gradeTotal" value="5">
+                            <b data-projectid="{{projectId}}" data-projectname="{{projectName}}">{{#each projectGrades}}{{#is grade '5'}}{{gradeName}}{{/is}}{{/each}}</b>
+                        {{/each}}
+                        <!-- <span class="icon icon-86star active" data-id="1" data-action="choose-score"></span>
+                        <span class="icon icon-86star active" data-id="2" data-action="choose-score"></span>
+                        <span class="icon icon-86star active" data-id="3" data-action="choose-score"></span>
+                        <span class="icon icon-86star active" data-id="4" data-action="choose-score"></span>
+                        <span class="icon icon-86star active" data-id="5" data-action="choose-score"></span> -->
+                    </div>
+                </li>
+            {{/each}}
+            </ul>
+        </div>
+    </script>
+    #*加载JS文件*# 
+    #parse("control/$!webStyle/publicJs.vm")
+    #parse("control/$!webStyle/globalJs.vm")
+    <script>
+        $(function() {
+            var orderId = getQueryString('orderId');
+            var shopId = getQueryString('shopId');
+            //获取订单数据
+            function getOrderData(orderId, shopId){
+                $.ajax({
+                  type: "get",
+                  url: "/weixin/toOrderEvaluate?orderId=" + orderId + "&shopId=" + shopId,
+                  dataType: 'json',
+                  complete: function(json) {
+                    
+                      var data = json.response;
+                      var status = json.status;
+                      if(status != 200){
+                            $.alert('网络异常，状态为13.1' + status);
+                            return;
+                      }
+                      if ($.type(data) == 'string') {
+                          data = JSON.parse(data);
+                      }
+                      if(data.code != 'E00000'){
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                                return;
+                            }
+                        
+                      }else{
+                          var context = {
+                              data: data.data
+                          };
+                          var serverTpl = $("#serverTpl").html();
+                          var serverTemplate = Handlebars.compile(serverTpl);
+                          var serverCont = serverTemplate(context);
+                          $('[data-role="server-eva-wrap"]').html(serverCont);
+                          
+                      }
+                      
+                  }
+                });
+            }
+            getOrderData(orderId, shopId);
+
+            //星星打分
+            $('[data-role="server-eva-wrap"]').delegate(".icon-86star", "click", function(e){
+                e.preventDefault();
+                var me = $(this),
+                    action = me.data('action');
+
+                    if(action == 'choose-score'){
+                        var id = me.data('id');
+                        var grade = parseInt(id);
+                        var gradeName = me.data('gradename');
+                        console.log(gradeName);
+                        me.siblings('input').val(grade);
+                        me.siblings('b').html(gradeName);
+                        me.siblings('.icon').removeClass('active');
+                        me.addClass('active');
+                        for(i=0; i<=id; i++){
+                            me.siblings('[data-id="' + i +'"]').addClass('active');
+                        }
+                        console.log(grade);
+                    }
+            });
+            //提交评价
+            $('[data-role="send-eva"]').click(function(e){
+                e.preventDefault();
+                var orderEvaluate = [];
+                for(var i=0,len=$("#evaluateList").find('p').length;i<len;i++){
+                    var projectId = $("#evaluateList").find('p').eq(i).find('em').data('projectid');
+                    var projectName = $("#evaluateList").find('p').eq(i).find('em').html();
+                    var grade = parseInt($("#evaluateList").find('p').eq(i).find('input').val());
+                    var gradeName = $("#evaluateList").find('p').eq(i).find('b').html();
+                    var content = $.trim($('[name=orderEvaluate]').val());
+                    orderEvaluate.push({projectId:projectId,projectName:projectName,grade:grade,gradeName:gradeName,content:content});
+                }
+                // console.log(orderEvaluate);
+                // var orderEva = $.trim($('[name=orderEvaluate]').val());
+                // var gradeTotal = $.trim($('[name=gradeTotal]').val());
+                // var gradeSpeed = $.trim($('[name=gradeSpeed]').val());
+                // var gradeServer = $.trim($('[name=gradeServer]').val());
+
+                // if(orderEva == ''){
+                //     $.alert('送水员服务评价不能为空。');
+                //     return;
+                // }
+                // if(!gradeTotal){
+                //     $.alert('请给我们本次服务一个总体评分。');
+                //     return;
+                // }
+                // if(!gradeSpeed){
+                //     $.alert('请为配送速度评分。');
+                //     return;
+                // }
+                // if(!gradeServer){
+                //     $.alert('请为服务态度评分。');
+                //     return;
+                // }
+                // if(!$('[name=grade]').val()){
+                //     $.alert('请为产品评分');
+                //     return;
+                // }
+                // for(var i=0,len=$('[name=grade]').length;i<len;i++){
+
+                // }
+                // var orderEvaluate = {
+                //     evaluate: orderEva,
+                //     gradeTotal: parseInt(gradeTotal),
+                //     gradeSpeed: parseInt(gradeSpeed),
+                //     gradeServer: parseInt(gradeServer),
+                //     tags: ""
+                // };
+                var productEvalutes = [];
+                var pIndex = 0;
+                $('.goods-eva li').each(function(index){
+                    var me = $(this);
+                    var projectId = parseInt(me.find('.goods-star b').data('projectid'));
+                    var projectName = me.find('.goods-star b').data('projectname');
+                    var grade = parseInt(me.find('.goods-star input').val());
+                    var gradeName = me.find('.goods-star b').html();
+                    var pid = parseInt(me.data('pid'));
+                    var content = $.trim(me.find('[name="evaluate"]').val());
+                    var pics = [];
+                    if(grade || content){
+                        productEvalutes.push({projectId:projectId,projectName:projectName,grade:grade,gradeName:gradeName,pid:pid,content:content,pics:pics});
+                    }
+                    // var me = $(this);
+                    // var pEvaluate = $.trim( me.find('[name=evaluate]').val() ); 
+                    // var pGrade = $.trim( me.find('[name=grade]').val() );
+                    // var pid = me.data('pid');
+                    // if(pEvaluate || pGrade){
+                    //     productEvalutes[pIndex] = {
+                    //         evaluate: pEvaluate,
+                    //         grade: parseInt(pGrade),
+                    //         pid: parseInt(pid),
+                    //         tags: ""
+                    //     };
+                    //     pIndex++;
+                    // }
+                });
+                
+                $.ajax({
+                      type: "post",
+                      url: "/weixin/addOrderEvaluate",
+                      data: {
+                        orderId: orderId,
+                        shopId: shopId,
+                        orderEvaluate: JSON.stringify(orderEvaluate),
+                        productEvalutes: JSON.stringify(productEvalutes)
+                      },
+                      dataType: 'json',
+                      complete: function(json) {
+                        
+                          var data = json.response;
+                          var status = json.status;
+                          if(status != 200){
+                            $.alert('网络异常，状态为13.2' + status);
+                            return;
+                          }
+                          if ($.type(data) == 'string') {
+                              data = JSON.parse(data);
+                          }
+                          if(data.code != 'E00000'){
+                                if(data.code == "-1"){
+                                    window.location.href = "/weixin/bind";
+                                }else{
+                                    $.alert(data.message);
+                                    return;
+                                }
+                          }else{
+                              $.alert('订单评价成功！', function(){
+                                 window.location.href = "/weixin/orders?statusId=103&pageIndex=1";
+                              });
+                          }
+                          
+                      }
+                });
+            });
+        });
+        $.init();
+    </script>
+  </body>
+</html>

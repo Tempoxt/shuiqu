@@ -1,0 +1,272 @@
+package com.eviano2o.controller.helper;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.ui.Model;
+
+import com.eviano2o.bean.weixin.ClientModel;
+import com.eviano2o.bean.weixin.SysParamModel;
+import com.eviano2o.bean.weixin.WxCityInfoModel;
+import com.eviano2o.service.BackstageApiService;
+import com.eviano2o.service.WeiXinService;
+import com.eviano2o.util.MD5Util;
+import com.eviano2o.util.SessionConstantDefine;
+import com.eviano2o.util.SysParamCache;
+import com.eviano2o.util.SysParamNames;
+import com.eviano2o.util.WebStyle;
+import com.eviano2o.util.WxJsTicketUtil;
+import com.eviano2o.util.WxTokenAndJsticketCache;
+
+public abstract class BaseControllerHelper{
+	
+	protected Map<String, Object> _params;
+	
+	protected Model _model;
+	protected HttpServletRequest _request;
+	protected HttpServletResponse _response;
+	
+	protected String _result;
+	
+	protected WeiXinService weiXinService = new WeiXinService();
+	protected BackstageApiService baService = new BackstageApiService();
+	protected BackstageApiService fileService = new BackstageApiService();
+	//protected FileManageSpiService fileService = new FileManageSpiService();
+	
+	protected static final Logger logger = LoggerFactory.getLogger(BaseControllerHelper.class);
+	
+	public BaseControllerHelper(Model model, HttpServletRequest request){
+		_model = model;
+		_request = request;
+		getSysParamMap();
+		WxJsTicketUtil.sign(_model, currentUrl());
+		setShareParam();
+	}
+	public BaseControllerHelper(Model model, HttpServletRequest request, HttpServletResponse response){
+		_model = model;
+		_request = request;
+		_response = response;
+		getSysParamMap();
+		WxJsTicketUtil.sign(_model, currentUrl());
+		setShareParam();
+	}
+	
+	/** 微信分享 */
+	protected void setShareParam(){
+		_model.addAttribute("shareTitle", "水趣");
+		_model.addAttribute("shareLink", "https://"+getSysParamMapValue(SysParamNames.ParamWXWebSit)+"/weixin/searchRedirect?state=");
+		_model.addAttribute("shareDesc", "让每个健康水品牌都发出自己的声音");
+		_model.addAttribute("shareImgUrl", "http://7xlmry.com1.z0.glb.clouddn.com/Upload/Product/images/20170221/170221101525126643.png");
+		_model.addAttribute("webStyle", WebStyle.getStyle());
+	}
+	
+	/** 将所有参数加入Model中*/
+	public void setParamToModel(){
+		if(!(_params.isEmpty())){
+			for (Map.Entry<String, Object> entry : _params.entrySet()) {  
+				_model.addAttribute(entry.getKey(), entry.getValue());
+			}
+		}
+	}
+	
+	/** 初始化方法*/
+	public abstract void Init();
+
+	/** 返回结果字符串*/
+	public abstract String getResult();
+	
+	/**
+	 * @Description: 返回session中的用户信息
+	 * @params:
+	 * @author lideguang
+	 * @createTime 2016年9月19日 下午1:49:50
+	 * @lastEdit
+	 */
+	protected ClientModel getSessionClient() {
+		if (_request.getSession().getAttribute(SessionConstantDefine.CLIENT_INFO) == null)
+			return (ClientModel) _request.getSession().getAttribute(SessionConstantDefine.CLIENT_INFO);
+		return (ClientModel) _request.getSession().getAttribute(SessionConstantDefine.CLIENT_INFO);
+	}
+
+	/**
+	 * 获取用户ID
+	 * 
+	 * @Description:
+	 * @params:
+	 * @author lideguang
+	 * @createTime 2016年9月19日 下午2:05:35
+	 * @lastEdit
+	 */
+	protected Integer getSessionClientId() {
+		// return 49;
+		if (getSessionClient() == null)
+			return null;
+		return getSessionClient().getUserId();
+	}
+
+	/**
+	 * 获取用户identityCode
+	 * 
+	 * @Description:
+	 * @params:
+	 * @author lideguang
+	 * @createTime 2016年9月19日 下午2:05:35
+	 * @lastEdit
+	 */
+	protected String getSessionClientIdentityCode() {
+		if (getSessionClient() == null)
+			return null;
+		return getSessionClient().getClientId();
+	}
+
+	
+	/**
+	 * 获取用户微信ID
+	 * 
+	 * @Description:
+	 * @params:
+	 * @author lideguang
+	 * @createTime 2016年9月19日 下午2:05:35
+	 * @lastEdit
+	 */
+	protected String getSessionWeiXinId() {
+		if (_request.getSession().getAttribute(SessionConstantDefine.WX_OPENID) == null)
+			return null;
+		return _request.getSession().getAttribute(SessionConstantDefine.WX_OPENID).toString();
+	}
+	
+
+	/**
+	 * 获取appID
+	 * 
+	 * @Description:
+	 * @params:
+	 * @author lideguang
+	 * @createTime 2018年1月8日 9:53:35
+	 * @lastEdit
+	 */
+	protected String getSessionWXAppId() {
+		if (_request.getSession().getAttribute(SessionConstantDefine.WX_APPID) == null)
+			return null;
+		return _request.getSession().getAttribute(SessionConstantDefine.WX_APPID).toString();
+	}
+	
+	/* @Description: 返回session中的用户所属城市
+	 * @params:
+	 * @author lideguang
+	 * @createTime 2016年01月06日 下午5:49:50
+	 * @lastEdit
+	 */
+	protected WxCityInfoModel getSessionCity() {
+		if(((WxCityInfoModel) _request.getSession().getAttribute(SessionConstantDefine.WX_CITY)) == null)
+			return (WxCityInfoModel)_request.getSession().getAttribute(SessionConstantDefine.WX_CITY);
+		return (WxCityInfoModel) _request.getSession().getAttribute(SessionConstantDefine.WX_CITY);
+	}
+	
+	/** 系统参数集合 缓存*/
+	protected Map<String, String> getSysParamMap(){
+		//System.out.println("缓存："+SysParamCache.isNullObj());
+		if(SysParamCache.isNullObj()){
+			String dataStr = weiXinService.getSysPram();
+			if(StringUtils.isEmpty(dataStr)){
+				logger.error("[ex:{}]", new Object[] { "获取配置参数失败" });
+				return null;
+			}
+			JSONArray json = JSONArray.fromObject(dataStr);
+			//System.out.print(json);
+			List<SysParamModel> sysParamList = (List<SysParamModel>) JSONArray.toCollection(json, SysParamModel.class);
+			SysParamCache.clearCache();
+			for(SysParamModel p : sysParamList){
+				SysParamCache.setCache(p.getSysParam(), p.getSysValue());
+			}
+		}
+		return SysParamCache.getAllParam();
+	}
+	
+	/** 系统参数值*/
+	protected String getSysParamMapValue(String sysParam){
+		if(getSysParamMap() != null && getSysParamMap().containsKey(sysParam))
+			return getSysParamMap().get(sysParam);
+		return "";
+	}
+
+	/** 返回统一格式JSON字符串 */
+	protected String formatJsonResult(String code, String message) {
+		return "{\"code\":\"" + code + "\",\"message\":\"" + message + "\",\"data\":\"\"}";
+	}
+
+	/** 当前网址 */
+	protected String currentUrl(){
+		String url = _request.getRequestURL().toString();
+		if(_request.getQueryString()!=null) //判断请求参数是否为空  
+			url+="?"+_request.getQueryString();   // 参数
+		return url;
+	}
+
+	/** IP */
+	public String getIp() {
+	    String ip = _request.getHeader("x-forwarded-for");
+	    if(null == ip || 0 == ip.length() || "unknown".equalsIgnoreCase(ip)) {
+	        ip = _request.getHeader("Proxy-Client-IP");
+	    }
+	    if(null == ip || 0 == ip.length() || "unknown".equalsIgnoreCase(ip)) {
+	        ip = _request.getHeader("WL-Proxy-Client-IP");
+	    }
+	    if(null == ip || 0 == ip.length() || "unknown".equalsIgnoreCase(ip)) {
+	        ip = _request.getHeader("X-Real-IP");
+	    }
+	    if(null == ip || 0 == ip.length() || "unknown".equalsIgnoreCase(ip)) {
+	        ip = _request.getRemoteAddr();
+	    }
+	    return ip;
+	}
+
+
+	/** 微信关注用户资料下载 */
+	public void getWXUserInfo(String openId, String qrscene, Integer shareId){
+		new DownloadWXUserInfo(_request, WxTokenAndJsticketCache.getAccess_token(), openId, qrscene, shareId, _request.getSession().getServletContext().getRealPath("/"), getSessionWXAppId()).doDownload(0);
+		//String isDown = weiXinService.existsSubscribe(openId);
+		//if(!StringUtils.isEmpty(isDown)){
+		//	JSONObject j = JSONObject.fromObject(isDown);
+		//	if(j.has("code") && j.getString("code").equals("E00000") && j.getJSONObject("data").getBoolean("exists") == true){
+		//	}else{
+		//		new DownloadWXUserInfo(_request, WxTokenAndJsticketCache.getAccess_token(), openId, qrscene, shareId, _request.getSession().getServletContext().getRealPath("/")).doDownload();
+
+		//	}
+		//}
+	}
+	
+
+	/** 微信关注用户资料下载 */
+	public void getWXUserInfoNoDownload(String openId, String qrscene, Integer shareId){
+		String isDown = weiXinService.existsSubscribe(openId,getSessionWXAppId());
+		if(!StringUtils.isEmpty(isDown)){
+			JSONObject j = JSONObject.fromObject(isDown);
+			if(j.has("code") && j.getString("code").equals("E00000") && j.getJSONObject("data").getBoolean("exists") == true){
+			}else{
+				new DownloadWXUserInfo(_request, WxTokenAndJsticketCache.getAccess_token(), openId, qrscene, shareId, _request.getSession().getServletContext().getRealPath("/"), getSessionWXAppId()).doDownload(0);
+
+			}
+		}
+	}
+	
+	
+	   public String create_nonce_str() {
+	        String guid = UUID.randomUUID().toString();
+	        return MD5Util.md5(guid).toUpperCase();
+	    }
+	    
+	    public String create_timestamp() {
+	        return Long.toString(System.currentTimeMillis() / 1000);
+	    }
+}

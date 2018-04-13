@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "forgetCash")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/shopCss.vm")
+<body>
+  	<div class="page-group">
+		<div class="page page-finish page-current">
+			<header class="bar bar-nav light-nav">
+	            <a href="/weixin/everyShop" class="icon icon-35icoback pull-left bar-left"></a>  
+	            <h1 class="title">忘记提现密码</h1>
+	        </header>
+	        <div class="content content-forgetCash">
+	            <div class="list-block new-forget-list">
+				    <ul>
+				    	<li>
+					      <div class="item-content">
+					        <div class="item-inner">
+					          <div class="item-title label">手机号：</div>
+					          <div class="item-input">
+					            <input type="text" name="mappingTel" disabled></div>
+					        </div>
+					      </div>
+				    	</li>
+				    	<li>
+				      <div class="item-content">
+				        <div class="item-inner">
+				          <div class="item-title label">验证码：</div>
+				          <div class="item-input">
+				            <input type="text" name="smsCode" placeholder="请输入短信验证码"></div>
+				            <input class="button button-fill btn-yello btn-getCode" data-role="getCode" value="获取验证码">
+				        </div>
+				      </div>
+				    	</li>
+				    	<li>
+				      <div class="item-content">
+				        <div class="item-inner">
+				          <div class="item-title label">新提现密码：</div>
+				          <div class="item-input">
+				            <input type="password" name="dealPass" placeholder="6位数字"></div>
+				        </div>
+				      </div>
+				    	</li>
+				    	<li>
+				      <div class="item-content">
+				        <div class="item-inner">
+				          <div class="item-title label">确认新提现密码：</div>
+				          <div class="item-input">
+				            <input type="password" name="dealPass2" placeholder="6位数字"></div>
+				        </div>
+				      </div>
+				    	</li>
+				    </ul>
+				  	<p>
+				    	<a href="#" class="button button-fill btn-yello button-confirm" data-role="button-confirm">确认提交</a>
+				  	</p>
+				</div>
+	        </div>        
+	    </div>
+	</div>
+	#*加载JS文件*# 
+    #parse("control/$!webStyle/publicJs.vm")
+	#parse("control/$!webStyle/globalJs.vm")
+	<script>
+        $(function(){
+            //通过localStorage获取手机号
+			var mappingTelDid = JSON.parse(localStorage.getItem("mappingTelDid"));
+			$('input[name=mappingTel]').val(mappingTelDid);
+			//获取验证码
+			$('[data-role="getCode"]').on('click',function(e){
+				e.preventDefault();
+				var me = $(this);
+				$.ajax({
+                        type: "post",
+                        url: "/weixin/findEarningPassSmsCode",
+                        dataType: 'json',
+                        complete: function(json) {
+                          
+                            var data = json.response;
+                            
+                            var status = json.status;
+                            if(status != 200){
+                                $.alert('网络异常，状态为12.1' + status);
+                                return;
+                            }    
+                            if ($.type(data) == 'string') {
+                                data = JSON.parse(data);
+                            }
+                            if(data.code != 'E00000' && data.code != 'E90001' ){
+                                if(data.code == "-1"){
+                                    window.location.href = "/weixin/bind";
+                                }else{
+                                    $.alert(data.message);
+                                    me.prop("disabled", false);
+                                    return;
+                                }
+                                
+                            }else{
+                                $('[data-role="getCode"]').html(data.message);
+                                //倒计时
+                                var wait=parseInt(data.message);
+                                  
+                                function time(o) {  
+                                    if (wait == 0) {  
+                                        o.removeAttr("disabled");            
+                                        o.val("获取验证码");
+                                        $('[data-role="getCode"]').css("background","#FAD600");
+                                        wait = parseInt(data.message);  
+                                    } else {  
+                                        o.prop("disabled", true);
+                                        $('[data-role="getCode"]').css("background","#ccc");  
+                                        o.val("重新发送("+wait+")s");  
+                                        wait--;  
+                                        setTimeout(function() {  
+                                            time(o)  
+                                        },1000)  
+                                    }  
+                                } 
+                                time($('[data-role="getCode"]')); 
+                            }
+                                
+                        }
+                });
+			})
+			//获取用户提交的表单数据
+			var flag=0;
+            $('[data-role="button-confirm"]').on('click',function(e){
+                e.preventDefault();
+                flag++;
+                console.log(flag);
+                if(flag > 1){
+                    return;
+                }  
+                var smsCode = $.trim($('input[name=smsCode]').val());
+                var dealPass = $.trim($('input[name=dealPass]').val());
+                var dealPass2 = $.trim($('input[name=dealPass2]').val());
+                $('.err-msg').remove();
+                if(smsCode == ""){
+                    $('input[name=smsCode]').parents('.item-content').after('<p class="err-msg">验证码不能为空</p>');
+                    flag=0;
+                    return;
+                }
+                if(dealPass == "" || /^\d{6}$/.test(dealPass)==false){
+                    $('input[name=dealPass]').parents('.item-content').after('<p class="err-msg">新提现密码不正确</p>');
+                    flag=0;
+                    return;
+                }
+                if(dealPass2 == "" || /^\d{6}$/.test(dealPass2)==false){
+                    $('input[name=dealPass2]').parents('.item-content').after('<p class="err-msg">确认密码不正确</p>');
+                    flag=0;
+                    return;
+                }
+                if(dealPass != dealPass2){
+                	$('input[name=dealPass2]').parents('.item-content').after('<p class="err-msg">两次密码不一致</p>');
+                    flag=0;
+                    return;
+                }
+                $.ajax({
+                    type: "post",
+                    url: "/weixin/findEarningpass",
+                    data: {
+                        smsCode: smsCode,
+                        dealPass: dealPass
+                    },
+                    dataType: 'json',
+                    complete: function(json) {  
+                        var status = json.status;
+                        if(status != 200){
+                            $.alert('网络异常，状态为22.2' + status);
+                            flag=0;
+                            return;
+                        }
+                        var data = json.response;
+                       
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if(data.code != 'E00000'){
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                                flag=0;
+                                return;
+                            }
+                        }else{
+                            flag=0;
+                            $.alert('找回提现密码成功',function(){
+                            	window.location.href="/weixin/home";
+                            });
+                            
+                        }
+                    }
+                });
+            });
+            $('.new-forget-list input').on('change', function(){
+                $(this).parents('li').find('.err-msg').remove();
+            }); 
+		})
+        $.init();
+    </script>
+</body>
+</html>

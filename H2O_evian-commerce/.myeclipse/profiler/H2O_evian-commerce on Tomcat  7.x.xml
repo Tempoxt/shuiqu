@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<entry key="app_preset_prof_preset_name">H2O_evian-commerce on Tomcat  7.x Launch Configuration</entry>
+<entry key="app_preset_prof_preset_filter_s"/>
+<entry key="app_preset_prof_preset_filter_p">com.eviano2o.bean.backstageApi.*,
+com.eviano2o.bean.found.*,
+com.eviano2o.bean.request.*,
+com.eviano2o.bean.weixin.*,
+com.eviano2o.controller.*,
+com.eviano2o.filter.*,
+com.eviano2o.impl.*,
+com.eviano2o.service.*,
+com.eviano2o.servlet.*,
+com.eviano2o.util.*,
+com.eviano2o.wxpay.*</entry>
+<entry key="app_preset_prof_preset_alloc_p">10</entry>
+<entry key="app_preset_"/>
+<entry key="app_preset_prof_preset_samplingRefreshRate_s">1000</entry>
+<entry key="app_preset_prof_preset_stacks_p">false</entry>
+<entry key="app_preset_prof_preset_roots_p">com.eviano2o.bean.backstageApi.**
+com.eviano2o.bean.found.**
+com.eviano2o.bean.request.**
+com.eviano2o.bean.weixin.**
+com.eviano2o.controller.**
+com.eviano2o.filter.**
+com.eviano2o.impl.**
+com.eviano2o.service.**
+com.eviano2o.servlet.**
+com.eviano2o.util.**
+com.eviano2o.wxpay.**
+</entry>
+<entry key="profiler.settings.instrument.empty.methods">false</entry>
+<entry key="myeclipse.profiling.mode">1</entry>
+<entry key="profiler.settings.istrument.getter.setter.methods">false</entry>
+<entry key="app_preset_prof_preset_samplingRate_s">100</entry>
+<entry key="app_preset_prof_preset_filterMode_s">true</entry>
+<entry key="app_preset_prof_preset_selector"/>
+<entry key="app_preset_prof_preset_refreshRate_s">1000</entry>
+<entry key="app_preset_prof_preset_runnables_p">true</entry>
+<entry key="app_preset_prof_preset_filterMode_p">false</entry>
+<entry key="app_preset_prof_preset_memoryMode_p">true</entry>
+</properties>

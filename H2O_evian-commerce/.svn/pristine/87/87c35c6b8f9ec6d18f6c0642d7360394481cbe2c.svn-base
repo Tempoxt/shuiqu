@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "register")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/shopCss.vm")
+<body>
+  	<div class="page-group">
+		<div class="page page-finish page-current">
+			<!-- <header class="bar bar-nav theme-dark">
+	            <a href="/weixin/home" class="icon icon-35icoback pull-left icon-white bar-left"></a>  
+	            <h1 class="title">水趣</h1>
+	        </header> -->
+	        <div class="content content-register">
+	        	#if($!webStyle == "shuiqu")
+	        	<div class="banner" data-role="banner" style="background: url('/files/images/shuiqu/banner.png') no-repeat;background-size:100% auto;">
+	        		
+	        	</div>
+	        	#else
+	        	<div class="banner" data-role="banner" style="background: url('/files/images/dalishuishou/banner.png') no-repeat;background-size:100% auto;">
+	        		
+	        	</div>
+	        	#end
+	            <div class="list-block new-register-list">
+				    <ul>
+					    <li>
+					      <div class="item-content">
+					        <div class="item-inner">					          	
+					          <div class="item-input">
+					          	<i class="icon icon-ico_tel"></i>
+					            <input type="text" name="cellphone" placeholder="请输入您的手机号" maxlength="11"></div>
+					        </div>
+					      </div>
+					    </li>
+					    <li>
+					      <div class="item-content">
+					        <div class="item-inner">    
+					          <div class="item-input">
+					          	<i class="icon icon-ico_mima"></i>
+					            <input type="text" name="code" placeholder="请输入手机验证码" maxlength="6">
+					            <input class="button button-fill btn-yello btn-confirm" data-role="getCode" value="获取验证码" readonly="readonly">
+					          </div>
+					        </div>
+					      </div>
+					    </li>
+				    </ul>
+				  
+				  	<p class="wrap-receive">
+				    	<a href="#" class="button button-fill btn-yello btn-receive" data-role="btn-receive">领取注册大礼</a>
+				    </p>
+				    <p class="tips">点击"确定"按钮，即表示同意<a href="/weixin/registerAgreement">"水趣用户协议"</a></p>
+				</div>
+				<div class="footer"><a class="open-activity">活动规则</a></div>
+	        </div>
+	        
+	    </div>
+	</div>
+	<!-- 活动规则 start-->
+    <div class="popup popup-activity">
+        <div class="content-block">
+            <div class="content" data-role="lookRemark">
+                
+            </div>
+            <div class="bar bar-footer">
+                <a href="#" class="button button-fill btn-yello close-popup">关闭</a>
+            </div>
+        </div>     
+    </div>
+    <!-- 活动规则 end-->
+	<script type='text/javascript' src='/files/common/js/zepto.min.js' charset='utf-8'></script>
+	<script id="bannerTpl" type="text/x-handlebars-template">
+		<table>
+			<tr><td><img src="{{data.photo}}" alt=""></td><td>您的好友:{{data.nickname}}</td></tr>
+		</table>
+	</script>
+	<script id="lookRemarkTpl" type="text/x-handlebars-template">
+		<h4>活动规则</h4>
+        {{{data.lookRemark}}}
+	</script>
+	<script>
+          $.config = {router: false}
+    </script>
+	#*加载JS文件*# 
+	#parse("control/$!webStyle/publicJs.vm")
+	#parse("control/$!webStyle/globalJs.vm")
+	<script>
+		$(function() {
+			//判断是否注册
+			$.ajax({
+				type: "post",
+				url: "/weixin/getShareRecordToRegedit",
+				data: {
+					shareId: $!{shareId}
+				},
+				dataType: 'json',
+				complete: function(json) {
+
+					var data = json.response;
+
+					var status = json.status;
+					if (status != 200) {
+						$.alert('网络异常，状态为12.1' + status);
+						return;
+					}
+					if ($.type(data) == 'string') {
+						data = JSON.parse(data);
+					}
+
+					if (data.code != 'E00000') {
+						if(data.code == "-1"){
+                            window.location.href = "/weixin/bind";
+                        }else{
+                            $.alert(data.message);
+                            return;
+                        }
+					} else {
+						
+						// 如果未注册且活动有效，停留在当前注册页面
+						if (data.data.ifwxUser == false && data.data.overtime == false) {
+							var context = {
+								data: data.data
+							};
+							//渲染用户头像和昵称
+							var bannerTpl = $("#bannerTpl").html();
+							var bannerTemplate = Handlebars.compile(bannerTpl);
+							var bannerCont = bannerTemplate(context);
+							$('[data-role="banner"]').html(bannerCont);
+							//渲染活动说明
+							var lookRemarkTpl = $("#lookRemarkTpl").html();
+							var lookRemarkTemplate = Handlebars.compile(lookRemarkTpl);
+							var lookRemarkCont = lookRemarkTemplate(context);
+							$('[data-role="lookRemark"]').html(lookRemarkCont);
+							
+						}else{
+							//活动过期，跳到过期页面
+							window.location.href = "/weixin/overtime";
+						}
+					}
+
+				}
+			});
+			//获取验证码
+			$('[data-role="getCode"]').on('click', function(e) {
+				e.preventDefault();
+				$('.err-msg').remove();
+				var cellphone = $.trim($('input[name=cellphone]').val());
+				if (cellphone == "") {
+					$('input[name=cellphone]').parents('.item-content').after('<p class="err-msg">手机号不能为空</p>');
+					return;
+				}
+				var me = $(this);
+				$.ajax({
+					type: "post",
+					url: "/weixin/getCode",
+					data: {
+						cellphone: cellphone
+					},
+					dataType: 'json',
+					complete: function(json) {
+
+						var data = json.response;
+
+						var status = json.status;
+						if (status != 200) {
+							$.alert('网络异常，状态为12.1' + status);
+							return;
+						}
+						if ($.type(data) == 'string') {
+							data = JSON.parse(data);
+						}
+						if (data.code != 'E00000' && data.code != 'E90001') {
+							if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+								me.prop("disabled", false);
+								return;
+                            }
+						} else {
+							// debugger;
+							//倒计时
+							var wait = parseInt(data.message);
+
+							function time(o) {
+								if (wait == 0) {
+									o.removeAttr("disabled");
+									$('[data-role="getCode"]').removeClass("gray-color");
+									o.val("获取验证码");
+									wait = parseInt(data.message);
+								} else {
+									o.prop("disabled", true);
+									$('[data-role="getCode"]').addClass("gray-color");
+									o.val("重新发送("+wait+")s");
+									wait--;
+									setTimeout(function() {
+											time(o)
+									},1000)
+								}
+							}
+							time($('[data-role="getCode"]'));
+						}
+
+					}
+				});
+			});
+			//领取注册大礼
+			var flag=0;
+			$('[data-role="btn-receive"]').on('click', function(e) {
+				e.preventDefault();
+				$('.err-msg').remove();
+				flag++;
+				console.log(flag);
+                if(flag > 1){
+                    return;
+                }
+				var cellphone = $.trim($('input[name=cellphone]').val());
+				var code = $.trim($('input[name=code]').val());
+				if (cellphone == "") {
+					$('input[name=cellphone]').parents('.item-content').after('<p class="err-msg">手机号不能为空</p>');
+					flag=0;
+					return;
+				}
+				if (code == "") {
+					$('input[name=code]').parents('.item-content').after('<p class="err-msg">验证码不能为空</p>');
+					flag=0;
+					return;
+				}
+				$.ajax({
+					type: "post",
+					url: "/weixin/shareComplateRegedit",
+					data: {
+						shareId: $!{shareId},
+						cellphone: cellphone,
+						code: code
+					},
+					dataType: 'json',
+					complete: function(json) {
+
+						var data = json.response;
+
+						var status = json.status;
+						if (status != 200) {
+							$.alert('网络异常，状态为12.1' + status);
+							flag=0;
+							return;
+						}
+						if ($.type(data) == 'string') {
+							data = JSON.parse(data);
+						}
+						if (data.code != 'E00000') {
+							if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+								flag=0;
+								return;
+                            }
+						} else {
+							flag=0;
+							localStorage.setItem('userTel',cellphone);
+							window.location.href = "/weixin/unboundWeixin";
+						}
+
+					}
+				});
+			})
+			$(document).on('click', '.open-activity', function() {
+				$.popup('.popup-activity');
+			});
+		});
+		$.init();
+    </script>
+</body>
+</html>

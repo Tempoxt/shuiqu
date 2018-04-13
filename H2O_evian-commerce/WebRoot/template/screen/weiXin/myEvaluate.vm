@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "myEvaluate")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/shopCss.vm")
+<body>
+	<div class="page-group store-wrap">
+        <div class="page page-finish page-current page-myEvaluate">
+            <header class="bar bar-nav light-nav">
+                <a href="/weixin/account" class="icon icon-35icoback pull-left bar-left" id="go-back"></a>  
+                <h1 class="title">我的评论</h1>
+            </header>
+            <div class="content">
+            	<ul class="evaluate-list infinite-scroll" data-role="evaluate-list" data-distance="50">
+                                
+                </ul>
+                <!-- 加载提示符 拖拉加载，暂不开放 -->
+                <div class="infinite-scroll-preloader">
+                    <div class="preloader">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 查看图片详情 -->
+        <div class="popup popup-imgDetail">
+            <div class="content-block">
+                <header class="bar bar-nav light-nav">
+                    <span class="icon icon-35icoback pull-left close-popup bar-left"></span>  
+                    <h1 class="title">查看图片详情</h1>
+                </header>
+                <div class="content">
+                    <img src="" style="width: 100%;">
+                </div>        
+            </div>
+        </div>
+    </div>
+    <script id="evaluateTpl" type="text/x-handlebars-template">
+        {{#each data}}
+        <li>
+            <table class="info">
+                <tr>
+                    <td>
+                        {{#unless photo}}
+                        <img src="/files/images/$!webStyle/default.png" alt="">
+                        {{else}}
+                        <img src="{{photo}}" alt="">
+                        {{/unless}}
+                        
+                    </td>
+                    <td>
+                        <h5>{{userName}}<span class="time">{{createDate}}</span></h5>
+                        <div class="stars" data-grade="{{grade}}">
+                            <div><span class="pinzhi">{{projectName}}&nbsp;&nbsp;</span>{{{showstars grade }}}<span class="pinzhi-text">&nbsp;&nbsp;{{tags}}</span></div>
+                        </div>
+                        <!-- <p>评价内容：{{content}}</p> -->
+                    </td>
+
+                </tr>
+            </table>
+            <p>评价内容：{{content}}</p>
+            {{#is pics.length}}
+                <p class="pics">{{#each pics}}<img src="{{this}}" />{{/each}}</p>
+            {{/is}}
+            {{#is replyContent}}
+                <p class="replyContent"> <span class="triangle"></span>{{replyContent}}</p>
+            {{/is}}
+            <div class="evaluate">
+            	<!-- <div class="productInfo"> -->
+        		{{#unless photo}}
+                	<img src="/files/images/$!webStyle/default.png">
+                {{else}}
+                	<img src="{{pictureUrl}}">
+                {{/unless}}
+                <div class="detail">
+                	<div>{{pname}}</div>
+        			<div>￥{{price}}</div>
+                </div>
+        	</div>
+            <!-- </div>   -->
+        </li>
+        {{/each}}
+    </script>
+    #*加载JS文件*# 
+    #parse("control/$!webStyle/publicJs.vm")
+    <script type='text/javascript' src='/files/common/js/selector.js' charset='utf-8'></script>
+    <!-- <script type='text/javascript' src='https://cdn.shuiqoo.cn/$!webStyle/selector.js' charset='utf-8'></script> -->
+    #parse("control/$!webStyle/globalJs.vm")
+    <script>
+    	var pageIndex = 1;
+    	var getData = function(method) {
+            $.ajax({
+                type: "get",
+                url: "/weixin/getMyEvaluates",
+                data: {
+                    pageIndex: pageIndex
+                },
+                async:false,
+                dataType: 'json',
+                complete: function(json) {
+                  
+                    var data = json.response;
+                    var status = json.status;
+                    if(status != 200){
+                        $.alert('网络异常，状态为19.2' + status);
+                        return;
+                    }
+                    if ($.type(data) == 'string') {
+                        data = JSON.parse(data);
+                    }
+                    if(data.code != 'E00000'){
+                        if(data.code == "-1"){
+                            window.location.href = "/weixin/bind";
+                        }else{
+                            $.alert(data.message);
+                            return;
+                        }
+                    }else{
+                        // setTimeout(function(){
+                        //    $('.infinite-scroll-preloader').show(); 
+                        // },1000);
+                        if(data.data.count>0){
+                             
+                            var evaluateTpl = $("#evaluateTpl").html();
+                            var template = Handlebars.compile(evaluateTpl);
+                            var context = {
+                                data: data.data.evaluates
+                            };
+                            var cont = template(context);
+
+                            // $('[data-role="evaluate-list"]').html(cont);
+                            if(method == 'pull'){ 
+                                $('[data-role="evaluate-list"]').append(cont);
+                                $('.infinite-scroll-preloader').hide();
+                            }else{
+                                $('[data-role="evaluate-list"]').html(cont);
+                            }
+                            loading = false;
+
+                            if(data.data.count <= 10){
+                                $('.infinite-scroll-preloader').remove();
+                                loading = true;
+                            }
+                        }else{
+                            loading = true;
+                            $('.infinite-scroll-preloader').remove();
+                        }
+                        $.refreshScroller();
+                    }
+                    
+                    
+                }
+            });
+        };
+        getData();
+        $(document).on("pageInit", function(e, id, page) {
+            
+            $(page).on('infinite', function() {
+                // debugger;
+                // console.log(loading);
+                // 如果正在加载，则退出
+                if (loading) return;
+
+                // 设置flag
+                loading = true;
+                
+                //新增一页
+                pageIndex = pageIndex + 1;
+
+                getData('pull');
+
+            });
+        });
+        $(document).on('click', '.pics img', function() {
+            $.popup('.popup-imgDetail');
+            $(".popup-imgDetail .content img").attr('src',$(this).attr('src'));
+        });
+        $.init();
+    </script>
+</body>
+</html>

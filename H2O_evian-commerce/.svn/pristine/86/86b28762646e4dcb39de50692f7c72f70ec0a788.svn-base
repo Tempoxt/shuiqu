@@ -1,0 +1,48 @@
+<nav class="bar bar-tab" style="z-index: 1000;">
+  <a class="tab-item external #if($currentPage == 'home') active #end" href="/weixin/home">
+    <svg class="icon icon-svg def" aria-hidden="true">
+        <use xlink:href="#icon-btn_home_"></use>
+    </svg>
+    <svg class="icon icon-svg cur" aria-hidden="true">
+        <use xlink:href="#icon-btn_home"></use>
+    </svg>
+    <span class="tab-label">首页</span>
+  </a>
+  <a class="tab-item external" href="/found/class">
+    <svg class="icon icon-svg def" aria-hidden="true">
+        <use xlink:href="#icon-btn_fx_"></use>
+    </svg>
+    <svg class="icon icon-svg cur" aria-hidden="true">
+        <use xlink:href="#icon-btn_fx"></use>
+    </svg>
+    <span class="tab-label">趣发现</span>
+    <!-- <span class="badge">2</span> -->
+  </a>
+  <a class="tab-item external #if($currentPage == 'quickShopping') active #end" href="/weixin/quickShopping">
+    <svg class="icon icon-svg def" aria-hidden="true">
+        <use xlink:href="#icon-btn_sd_"></use>
+    </svg>
+    <svg class="icon icon-svg cur" aria-hidden="true">
+        <use xlink:href="#icon-btn_sd"></use>
+    </svg>
+    <span class="tab-label">闪订</span>
+  </a>
+  <a class="tab-item external #if($currentPage == 'shoppingCar') active #end" href="/weixin/shoppingCar">
+    <svg class="icon icon-svg def" aria-hidden="true">
+        <use xlink:href="#icon-btn_shop"></use>
+    </svg>
+    <svg class="icon icon-svg cur" aria-hidden="true">
+        <use xlink:href="#icon-btn_shop_"></use>
+    </svg>
+    <span class="tab-label" data-role="purchased">已选购</span>
+  </a>
+  <a class="tab-item external #if($currentPage == 'account') active #end" href="/weixin/account">
+    <svg class="icon icon-svg def" aria-hidden="true">
+        <use xlink:href="#icon-btn_my_"></use>
+    </svg>
+    <svg class="icon icon-svg cur" aria-hidden="true">
+        <use xlink:href="#icon-btn_my"></use>
+    </svg>
+    <span class="tab-label">我的</span>
+  </a>
+</nav>

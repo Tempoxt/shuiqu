@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+#parse("control/$!webStyle/version.vm")
+#set($currentPage = "interestAntifake")
+#parse("control/$!webStyle/indexCss.vm")
+<body>
+    <div class="page-group">
+        <div class="page page-finish page-current page-interestAntifake">
+            <header class="bar bar-nav light-nav">
+                <a href="javascript:history.go(-1);" class="icon icon-35icoback pull-left bar-left" id="go-back"></a>  
+                <h1 class="title">水趣防伪</h1>
+            </header>
+            <div class="content img-code-box infinite-scroll infinite-scroll-bottom" style="background-color: #EFEFF4;">
+                <ul class="interestAntifake-list tab active " data-role="interestAntifake-list" data-distance="100">
+                    <li style="background-color: #FFF;padding-left: 10px;padding-right: 10px;"><img src="/files/images/Group@3x.png" style="width: 50%;"><span><a id="scanQRCode0" href="#" class="button pull-right button-warning" style="background-color: #FFC400;border: none;color: #000;width: 20%;margin-top: 3%;">开始扫码</a></span></li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+<script type='text/javascript' src='/files/common/js/zepto.min.js' charset='utf-8'></script>
+
+#*加载JS文件*# 
+#parse("control/$!webStyle/publicJs.vm")
+#parse("control/$!webStyle/globalJs.vm")
+<script id="validateTpl0" type="text/x-handlebars-template">
+    <li style="background-color: #EFEFF4;padding-top: 8%;padding-bottom: 2%;padding-left: 10px;padding-right: 10px;"><p>{{#is data.brands}}已开通水趣防伪认证的品牌{{else}}防伪识别正在调试中{{/is}}</p></li>
+    <li>
+        <div class="content-padded" style="margin: 0;margin-right: -20px;">
+            <div class="row" >
+                {{#each data.brands}}
+                <div class="col-50" style="height: 100px;background-color: #FFF;margin-bottom: 1px;{{addOne @index}}">
+                    <div style="display: inline-block;width: 60%;">
+                        <img src="{{pictureUrl}}" style="width: 100%;height: 3rem;">
+                        <p style="font-size: 0.6rem;text-align: center;color: #666666;">批次：{{initDate}}</p>
+                    </div>
+                    <div style="display: inline-block;width: 36%;">
+                        {{#is isPreferential}}
+                            <p><img src="/files/images/hongbao@3x.png" style="width: 26%;vertical-align: middle;"><span style="font-size: 0.6rem;margin-left: 5%;color: #666666;">红包</span></p>
+                        {{/is}}
+                        {{#is isTraceability}}
+                            <p><img src="/files/images/fangwei@3x.png" style="width: 26%;vertical-align: middle;"><span style="font-size: 0.6rem;margin-left: 5%;color: #666666;">防伪</span></p>
+                        {{/is}}
+                        {{#is isRedPackets}}
+                            <p><img src="/files/images/youhuiquan@3x.png" style="width: 26%;vertical-align: middle;"><span style="font-size: 0.6rem;margin-left: 5%;color: #666666;">优惠券</span></p>
+                        {{/is}}
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </li>
+</script>
+<script id="validateTpl" type="text/x-handlebars-template">
+    <header class="bar bar-nav light-nav">
+        <span class="icon icon-35icoback pull-left close-popup bar-left"></span>  
+        <h1 class="title">防伪码验证</h1>
+    </header>
+    {{#is data.tag "1"}}
+    <div class="content">
+        <div class="validate-banner">
+            <img src="{{data.codeInfo.companyLogo}}" alt="">
+        </div>
+        <div class="validate-content">
+            <div class="validate-status">
+                <svg class="icon icon-svg" aria-hidden="true" >
+                    <use xlink:href="#icon-code_on"></use>
+                </svg>
+            </div>
+            <div class="tips">水趣防伪溯源认证提示您：本产品编码<span>{{data.codeInfo.code}}，</span>为{{data.codeInfo.companyName}}的正品，请放心使用，谢谢查询。</div>
+            <div class="modal modal-out" data-role="validate-detail">
+                <div class="modal-inner">
+                    <div class="modal-text">
+                        <p>品名：{{data.codeInfo.productName}}</p>
+                        <p>品牌：{{data.codeInfo.productBrand}}</p>
+                        <p>班次：{{data.codeInfo.classes}}</p>
+                        <p>时间：{{data.codeInfo.madeDate}}</p>
+                        <p>天气：{{data.codeInfo.water}}</p>
+                        <p>产地：{{data.codeInfo.beltlineAddress}}</p>
+                        <svg class="icon icon-svg close-win" aria-hidden="true" data-role="close-win">
+                            <use xlink:href="#icon-close1"></use>
+                        </svg>
+                    </div>
+                </div>   
+            </div>
+            <div class="modal-overlay" data-role="modal-overlay"></div>       
+        </div>
+        <div class="show-picture"><img src="{{data.codeInfo.productImage}}" alt=""></div>
+        <a href="#" data-role="show-detail" class="button button-fill btn-yello show-detail">查看详情</a>
+    </div>
+    {{else}}
+        {{#is data.tag "0"}}
+        <div class="content">
+            <div class="validate-banner">
+                <img src="{{data.codeInfo.companyLogo}}" alt="">
+            </div>
+            <div class="validate-content">
+                <div class="validate-status">
+                    <svg class="icon icon-svg" aria-hidden="true" >
+                        <use xlink:href="#icon-code_off"></use>
+                    </svg>
+                </div>
+                <div class="tips">水趣防伪溯源认证提示您：本产品编码<span>{{data.codeInfo.code}}，</span>已被查询，请谨防假冒。<span class="first-query">首次查询时间：{{data.codeInfo.fristDate}}</span></div>
+                <div class="modal modal-out" data-role="validate-detail">
+                    <div class="modal-inner">
+                        <div class="modal-text">
+                            <p>品名：{{data.codeInfo.productName}}</p>
+                            <p>品牌：{{data.codeInfo.productBrand}}</p>
+                            <p>班次：{{data.codeInfo.classes}}</p>
+                            <p>时间：{{data.codeInfo.madeDate}}</p>
+                            <p>天气：{{data.codeInfo.water}}</p>
+                            <p>产地：{{data.codeInfo.beltlineAddress}}</p>
+                            <svg class="icon icon-svg close-win" aria-hidden="true" data-role="close-win">
+                                <use xlink:href="#icon-close1"></use>
+                            </svg>
+                        </div>
+                    </div>   
+                </div>
+                <div class="modal-overlay" data-role="modal-overlay"></div>
+            </div>
+            <div class="show-picture"><img src="{{data.codeInfo.productImage}}"></div>
+            <a href="#" data-role="show-detail" class="button button-fill btn-yello show-detail">查看详情</a>
+        </div>
+        {{else}}
+        <div class="content content-query-fail">
+            <i class="icon icon-no_code"></i><span>很遗憾！查询不到该消息！</span>
+        </div>
+        {{/is}}
+    {{/is}}
+</script>
+<script>
+    var appid = "";
+    $.ajax({
+        type: "get",
+        url: "/weixin/checkWeiXinLogin",
+        dataType: 'json',
+        async:false,
+        complete: function(json) {
+            
+            var data = json.response;
+            var status = json.status;
+            
+            if(status != 200){
+                $.alert('网络异常9.2，状态为' + status);
+                return;
+            }
+            if ($.type(data) == 'string') {
+                data = JSON.parse(data);
+            }
+            if(data.data){
+                appid = data.data.appid;
+            }
+            if(data.code != 'E00000'){
+                if(data.code == "-1"){
+                    // window.location.href = "/weixin/bind";
+                }else{
+                    $.alert(data.message);
+                    return;
+                }
+            }else{
+                appid = data.data.appid;
+            }
+            
+        }
+    });
+    // var aaa =localStorage.getItem("wxlocation"+appid);
+    // alert("wxlocation"+appid+" = "+aaa);
+    var location1 = JSON.parse(localStorage.getItem("wxlocation"+appid));
+    if(location1 && (location1.lat)){
+        lat = location1.lat;
+        lon = location1.lon;
+        var loc = lat+','+lon;
+        $.ajax({
+            type: "post",
+            url: "/weixin/getEnterPriseAntifake",
+            dataType: 'json',
+            data:{
+                // citycode:tuikeEid,
+                // location:loc,
+            },
+            complete: function(json) {
+              
+                var data = json.response;
+                
+                var status = json.status;
+                if(status != 200){
+                    $.alert('网络异常，状态为12.1' + status);
+                    return;
+                }    
+                if ($.type(data) == 'string') {
+                    data = JSON.parse(data);
+                }
+                if(data.code != 'E00000'){
+                  $.alert(data.message);
+                }else{
+                  var context = {
+                        data: data.data
+                    };
+                    var validateTpl0 = $("#validateTpl0").html();
+                    var validate0Template = Handlebars.compile(validateTpl0);
+                    Handlebars.registerHelper("addOne",function(index,options){
+                        if(index%2==0){
+                            return "";
+                        }else{
+                            return "margin-left:1px;";
+
+                        }
+                    });
+                    var validate0Cont = validate0Template(context);
+                    $('[data-role="interestAntifake-list"]').append(validate0Cont);
+                }
+            }
+        });
+        
+    }
+    //扫描二维码并返回结果
+    $('#scanQRCode0').click(function(){
+        wx.scanQRCode({
+            needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+            scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+            success: function (res) { 
+                var codeUrl = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+                $.ajax({
+                    type: "post",
+                    url: "/weixin/verifyCodeByApp",
+                    data:{
+                        codeUrl:codeUrl
+                    },
+                    dataType: 'json',
+                    complete: function(json) {
+                        var data = json.response;
+                        var status = json.status;
+                        if(status != 200){
+                            $.alert('网络异常，状态为3.2' + status);
+                            return;
+                        }
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }if(data.code != 'E00000'){
+                            // $.alert(data.message);
+                            var context = {
+                                data: data.data
+                            };
+                            var validateTpl = $("#validateTpl").html();
+                       
+                            var validateTemplate = Handlebars.compile(validateTpl);
+                            var validateCont = validateTemplate(context);
+
+                            $('[data-role="validate"]').html(validateCont);
+                            $.popup(".popup-validate");
+                        }else{
+                            var context = {
+                                data: data.data
+                            };
+                            if(data.data.tag == 1 ){
+                                
+                                var validateTpl = $("#validateTpl").html();
+                       
+                                var validateTemplate = Handlebars.compile(validateTpl);
+                                var validateCont = validateTemplate(context);
+
+                                $('[data-role="validate"]').html(validateCont);
+                                $.popup(".popup-validate");
+                            }else if(data.data.tag == 0){
+                                
+                                
+                                var validateTpl = $("#validateTpl").html();
+                       
+                                var validateTemplate = Handlebars.compile(validateTpl);
+                                var validateCont = validateTemplate(context);
+
+                                $('[data-role="validate"]').html(validateCont);
+                                $.popup(".popup-validate");
+
+                            }else{
+                                
+                                var validateTpl = $("#validateTpl").html();
+                       
+                                var validateTemplate = Handlebars.compile(validateTpl);
+                                var validateCont = validateTemplate(context);
+
+                                $('[data-role="validate"]').html(validateCont);
+                                $.popup(".popup-validate");
+                            }
+                            $('[data-role="show-detail"]').on('click',function(e){
+                                e.preventDefault();
+                                $("[data-role='validate-detail']").show().removeClass("modal-out").addClass("modal-in");
+                                $('[data-role="modal-overlay"]').addClass("modal-overlay-visible");
+                            })
+                            $('[data-role="close-win"]').on('click',function(e){
+                                e.preventDefault();
+                                $("[data-role='validate-detail']").removeClass("modal-in").addClass("modal-out").hide();
+                                $('[data-role="modal-overlay"]').removeClass("modal-overlay-visible");
+                            });
+                        }
+                      
+                    }
+                });
+            
+            }
+        }); 
+    });
+</script>
+</body>
+</html>

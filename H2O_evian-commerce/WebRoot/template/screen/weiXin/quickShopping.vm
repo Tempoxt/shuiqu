@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+#parse("control/$!webStyle/version.vm")
+#set($currentPage = "quickShopping")
+#parse("control/$!webStyle/indexCss.vm")
+<body>
+    <div class="page-group">
+        <div class="page page-finish page-current">
+            <header class="bar bar-nav light-nav" style="padding: 0;">
+                <h1 class="title">闪订</h1>
+            </header>
+
+            <div class="content">
+                <ul class="car-list" data-role="car-list">
+                    
+                </ul>
+            </div>
+            <!-- Block button in standard bar fixed above the footer -->
+            <div class="bar bar-footer-secondary">
+              <table data-id="3">
+                  <tr>
+                      <td>
+                        <label class="label-checkbox item-content" data-role="choose-all" id="chooseAll">
+                            <input type="checkbox" value="1" />
+                            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                        </label>
+                        共<span>￥ <em data-role="total">0</em></span> 水票<span data-role="ticket">0</span> 电子票<span data-role="eticket">0</span>
+                      </td>
+                      <td class="go-buy">
+                          <p><a data-role="submit-to" href="#" class="button button-fill btn-yello">选好了</a></p>
+                      </td>
+                  </tr>
+              </table>
+            </div>
+
+            <!-- nav bar -->
+            #parse("control/$!webStyle/nav.vm")
+        </div>
+    </div>
+    <form action="/weixin/quickShoppingConfirm"  method="POST">
+        <input type="hidden" name="quickSpJson">
+    </form>
+    <script id="enterpriseTpl" type="text/x-handlebars-template">
+        {{#each enterprises}}
+        {{#is check true}}
+        <a class="togglea" href="#" >{{eName}}<span class="icon icon-63navbaricoarrowdown"></span></a>
+        {{/is}}
+        {{/each}}
+        <ul class="togglemenu">
+            {{#each enterprises}}
+            <li><a href="#" data-eid="{{eid}}" data-eName="{{eName}}">{{eName}}</a></li>
+            {{/each}}
+        </ul>     
+    </script>
+    <script id="itemTpl" type="text/x-handlebars-template">
+    {{#each data}}
+    
+        <li data-shop-id="{{shopId}}" data-eid="{{eid}}" >
+            <h3>
+                <label class="label-checkbox item-content" data-role="store-choose">
+                    <input type="checkbox" value="1" name="cart-item" />
+                    <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                </label>
+                {{shopName}}
+                <a data-action="editControl" href="#" data-json="" class="button button-fill btn-yello">编辑</a>
+                <textarea name="" id="" class="hide">
+                [{{#each habits}}{"id":{{pid}},
+                      "img":"{{pictureUrl}}",
+                      "name":"{{pname}}",
+                      "price":{{vipPrice}},
+                      "number":{{number}},
+                      "hashTicket":{{hashTicket}},
+                      "surplusNum":{{surplusNum}},
+                      "repertoryNum":{{repertoryNum}},
+                      "curValue":{{#is hashTicket true}}1{{else}}{{#is surplusNum '>' 0}}{{#is surplusNum '>=' number}}2{{else}}1{{/is}}{{else}}1{{/is}}{{/is}},
+                      "curName":"{{#is hashTicket true}}现金{{else}}{{#is surplusNum '>' 0}}{{#is surplusNum '>=' number}}电子票{{else}}现金{{/is}}{{else}}现金{{/is}}{{/is}}",
+                      "payType":{{#is hashTicket true}}[{"name":"现金","value":1}]{{else}}{{#is surplusNum '>' 0}}[{"name":"电子票","value":2},{"name":"现金","value":1}]{{else}}{{#is ifTicket true}}[{"name":"现金","value":1},{"name":"水票","value":3}]{{else}}[{"name":"现金","value":1}]{{/is}}{{/is}}{{/is}}
+                  }{{#is @last false}},{{/is}}{{/each}}]
+                </textarea>
+            </h3>
+            <div class="car-cont">
+            {{#each habits}}
+            
+                <table data-id="{{pid}}">
+                    <tr>
+                        <td>
+                            <label class="label-checkbox item-content">
+                                <input type="checkbox" value="1" name="cart-child" />
+                                <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                            </label>
+                        </td>
+                        <td>
+                            <img src="{{pictureUrl}}" alt="">
+                        </td>
+                        <td class="edit-box" data-surplusNum="{{surplusNum}}">
+                            <h4 data-price="{{vipPrice}}" data-num="{{number}}" data-cur="{{#is hashTicket true}}1{{else}}{{#is surplusNum '>' 0}}{{#is surplusNum '>=' number}}2{{else}}1{{/is}}{{else}}1{{/is}}{{/is}}" class="pname">{{pname}}</h4>
+                            <p data-price="{{vipPrice}}" data-num="{{number}}" data-cur="{{#is hashTicket true}}1{{else}}{{#is surplusNum '>' 0}}{{#is surplusNum '>=' number}}2{{else}}1{{/is}}{{else}}1{{/is}}{{/is}}" class="price {{#is surplusNum '>' 0}}{{#is surplusNum '>=' number}}no-money{{/is}}{{/is}}">￥ {{vipPrice}}</p>
+                            <p>
+                                <span>数量：<em>{{number}}</em></span>
+                                <span>结算方式：
+                                {{#is hashTicket true}}
+                                  <em>现金</em>
+                                {{else}}
+                                    {{#is surplusNum '>' 0}}
+                                        {{#is surplusNum '>=' number}}
+                                            <em>电子票</em>
+                                        {{else}}
+                                            <em>现金</em>
+                                        {{/is}}
+                                    {{else}}
+                                        <em>现金</em>    
+                                    {{/is}}
+                                {{/is}} 
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+
+                {{/each}}
+            </div>
+        </li>
+    
+    {{/each}}
+    </script>
+    <script id="editTpl" type="text/x-handlebars-template">
+        <h4 data-price="{{data.price}}" data-num="{{data.number}}" data-cur="{{data.curValue}}" class="pname">{{data.name}}</h4>
+        <p class="car-count">
+            <em data-action="minus">
+                <svg class="icon-svg" aria-hidden="true">
+                    <use xlink:href="#icon-shopping_btn_num_minus"></use>
+                </svg>
+            </em>
+            
+            <input type="hidden" name="num" value="{{data.number}}"><i>{{data.number}}</i>
+            
+            
+            <em data-action="add">
+                <svg class="icon-svg" aria-hidden="true">
+                   <use xlink:href="#icon-shopping_btn_num_add"></use>
+                </svg> 
+            </em>
+            
+        </p>
+        <p class="car-btn">
+            <input type="hidden" name="payType" value="{{data.curValue}}" data-name="{{data.curName}}">
+            {{#each data.payType}}
+                {{#is value 1}}
+                <span data-role="pay-type" data-action="xianjin" class="icon icon-btn_xj1 {{#is ../data.curValue 1}}active{{/is}}"></span>
+                {{/is}}
+                {{#is value 2}}
+                <span data-role="pay-type" data-action="dianzipiao" class="icon icon-btn_dzp- {{#is ../data.curValue 2}}active{{/is}}"></span>
+                {{/is}}
+                {{#is value 3}}
+                <span data-role="pay-type" data-action="shuipiao" class="icon icon-btn_sp1 {{#is ../data.curValue 3}}active{{/is}}"></span>
+                {{/is}}
+            {{/each}}
+        </p>
+        <span data-id="{{data.id}}" data-action="delete-item" class="icon icon-11addressdel"></span>
+    </script>
+    <script id="finishTpl" type="text/x-handlebars-template">
+        <h4 data-price="{{data.price}}" data-num="{{data.number}}" data-cur="{{data.curValue}}" class="pname">{{data.name}}</h4>
+        <p data-price="{{data.price}}" data-num="{{data.number}}" data-cur="{{data.curValue}}" class="price {{#is data.curValue 2}}no-money{{/is}} {{#is data.curValue 3}}no-money{{/is}}">￥ {{data.price}}</p>
+        <p>
+            <span>数量：<em>{{data.number}}</em></span>
+            <span>结算方式：<em>{{data.curName}}</em></span>
+        </p>
+    </script>
+    #*加载JS文件*# 
+    #parse("control/$!webStyle/publicJs.vm")
+    #parse("control/$!webStyle/globalJs.vm")
+    <script>
+    $.init();
+    $(function() {
+        //购物车有商品就在导航栏加小红点标记
+        $.ajax({
+            type: "get",
+            url: "/weixin/getShopCartProductJson",
+            dataType: 'json',
+            complete: function(json) {
+            
+                var data = json.response;
+                var status = json.status;
+                if(status != 200){
+                    $.alert('网络异常，状态为3.2' + status);
+                    return;
+                }
+                if ($.type(data) == 'string') {
+                    data = JSON.parse(data);
+                }
+                if(data.code != 'E00000'){
+                    if(data.code == "-1"){
+                        window.location.href = "/weixin/bind";
+                    }else{
+                        $.alert(data.message);
+                        return;
+                    }
+                  
+                }else{
+                    if(data.data.shopcarts.length>=1){
+                        $('[data-role="purchased"]').after('<span class="badge"></span>');
+                    }
+                }
+              
+            }
+        });        
+        //获取所有数据
+        var getAllData = function(){
+            $('[data-role="car-list"] li').each(function(){
+                if($(this).find('.ischecked').length){
+                    $(this).addClass('ischoosed');
+                }else{
+                    $(this).removeClass('ischoosed');
+                }
+            });
+            var allData = [];
+            $('.ischoosed').each(function(index){
+                // debugger;
+                var shopId = $(this).data('shopId');
+                var eid    = $(this).data('eid');
+                var habits = [];
+
+                $(this).find('.ischecked').each(function(index){
+
+                    var pid = $(this).parents('table').data('id');
+                    var me = $(this).parents('table').find('.pname');
+                    // console.log(pid);
+
+                    if(me.length > 0){
+                        var buyType = me.data('cur');
+                        var price = me.data('price');
+                        var number = me.data('num');
+
+                        habits[index] = {
+                            pid : pid,
+                            buyType : buyType,
+                            price : price,
+                            number : number
+                        };
+                    }
+                });
+           
+                allData[index] = {
+                    shopId : shopId,
+                    eid : eid,
+                    habits : habits
+                };             
+            })
+            return allData;
+        };
+        //页面计算金额
+        var calculate = function(){
+            var allData = getAllData();
+            var total = 0;
+            var ticket = 0;
+            var eticket = 0;
+
+            for(var i=0; i < allData.length; i++){
+                var habits = allData[i]['habits'];
+                // debugger;
+                // console.log(JSON.stringify(habits));
+                for(var j=0; j < habits.length; j++){
+                    if(habits[j]['buyType'] == 1){
+                        
+                        total = total + parseFloat(habits[j]['price'])*parseFloat(habits[j]['number']);
+                        if(habits[j]['money']){
+                            total = total - parseFloat(habits[j]['money']);
+                        }
+                    }else if(habits[j]['buyType'] == 2){
+
+                        eticket = eticket + parseInt(habits[j]['number']);
+
+                    }else if(habits[j]['buyType'] == 3){
+                        ticket = ticket + parseInt(habits[j]['number']);
+                    }
+
+                }
+                
+            }
+            $('[data-role="total"]').html(Math.round(total*100)/100);
+            $('[data-role="ticket"]').html(ticket);
+            $('[data-role="eticket"]').html(eticket);
+        };
+        //全选切换
+        $('.bar-footer-secondary').delegate('#chooseAll','click',function(e){
+            e.preventDefault();
+            chooseAllOperate();
+        });
+        //单选切换
+        $('[data-role="car-list"]').delegate("label", "click", function(e){
+
+            e.preventDefault();
+            var chooseAll = $('[data-role="choose-all"]');
+            if($(this).children('input').attr('checked')){
+                $(this).children('input').removeAttr("checked");
+                //完成状态
+                if($(this).children('input').attr("name") == "cart-item"){
+                    chooseAll.children('input').removeAttr("checked");
+                    $(this).parents('li').find('[name="cart-child"]').removeAttr("checked");
+                    $(this).parents('li').find('[name="cart-child"]').removeClass("ischecked");
+                }
+                if($(this).children('input').attr("name") == "cart-child"){
+                    chooseAll.children('input').removeAttr("checked");
+                    $(this).children('input').removeClass("ischecked");
+                    $(this).parents('li').find('[data-role="store-choose"] input').removeAttr("checked");
+                }
+                    
+                    
+            }else{
+                $(this).children('input').attr("checked",true);
+                
+                if($(this).children('input').attr("name") == "cart-item"){
+                    $(this).parents('li').find('[name="cart-child"]').attr("checked",true);
+                    $(this).parents('li').find('[name="cart-child"]').addClass("ischecked");
+                }
+                if($(this).children('input').attr("name") == "cart-child"){
+                    $(this).children('input').addClass("ischecked");
+                }
+                if($(this).parents('li').find('input[name=cart-child]').length == $(this).parents('li').find('input[name=cart-child]:checked').length){
+
+                    $(this).parents('li').find('[data-role="store-choose"] input').attr("checked",true);
+                }
+                //完成状态
+                if($(this).parents('ul').find('input[name=cart-item]').length == $(this).parents('ul').find('input[name=cart-item]:checked').length){
+                    chooseAll.children('input').attr("checked",true);
+                }
+            }
+            calculate();
+        });
+        //切换选中状态并计算
+        var chooseAllOperate = function(){
+            //全局全选
+            var chooseAll = $('[data-role="choose-all"]');
+            var items = $('.car-list li label input[name=cart-item]');
+            var children = $('.car-list li label input[name=cart-child]');
+            
+            // //切换商品列表是否选择
+            if(chooseAll.find('input:checked').length == 0){
+                
+                items.attr("checked",true);
+                children.attr("checked",true);
+                children.addClass("ischecked");
+                
+            }else{
+
+                items.removeAttr("checked");
+                children.removeAttr("checked");
+                children.removeClass("ischecked");
+            }
+            //切换自身是否选中
+            if(chooseAll.children('input').attr('checked')){
+                // debugger;
+                chooseAll.children('input').removeAttr("checked");
+               
+            }else{
+                // debugger;
+                chooseAll.children('input').attr("checked",true);
+            }
+            calculate();
+            
+            
+            // $('[data-role="car-list"]').delegate("label", "click", function(e){
+
+            //     e.preventDefault();
+            //     if($(this).children('input').attr('checked')){
+            //         $(this).children('input').removeAttr("checked");
+            //         //完成状态
+            //         if($(this).children('input').attr("name") == "cart-item"){
+            //             chooseAll.children('input').removeAttr("checked");
+            //             $(this).parents('li').find('[name="cart-child"]').removeAttr("checked");
+            //             $(this).parents('li').find('[name="cart-child"]').removeClass("ischecked");
+            //         }
+            //         if($(this).children('input').attr("name") == "cart-child"){
+            //             chooseAll.children('input').removeAttr("checked");
+            //             $(this).children('input').removeClass("ischecked");
+            //             $(this).parents('li').find('[data-role="store-choose"] input').removeAttr("checked");
+            //         }
+                        
+                        
+            //     }else{
+            //         $(this).children('input').attr("checked",true);
+                    
+            //         if($(this).children('input').attr("name") == "cart-item"){
+            //             $(this).parents('li').find('[name="cart-child"]').attr("checked",true);
+            //             $(this).parents('li').find('[name="cart-child"]').addClass("ischecked");
+            //         }
+            //         if($(this).children('input').attr("name") == "cart-child"){
+            //             $(this).children('input').addClass("ischecked");
+            //         }
+            //         if($(this).parents('li').find('input[name=cart-child]').length == $(this).parents('li').find('input[name=cart-child]:checked').length){
+
+            //             $(this).parents('li').find('[data-role="store-choose"] input').attr("checked",true);
+            //         }
+            //         //完成状态
+            //         if($(this).parents('ul').find('input[name=cart-item]').length == $(this).parents('ul').find('input[name=cart-item]:checked').length){
+            //             chooseAll.children('input').attr("checked",true);
+            //         }
+            //     }
+            //     calculate();
+            // });
+        };
+        //全选
+        // var chooseAll = function(){
+        //     //全局全选
+        //     var chooseAll = $('[data-role="choose-all"]');
+        //     var items = $('.car-list li label input[name=cart-item]');
+        //     var children = $('.car-list li label input[name=cart-child]');
+
+        //     chooseAll.on('click', function(e){
+        //         e.preventDefault();
+        //         items.attr("checked",true);
+        //         children.attr("checked",true);
+        //         children.addClass("ischecked");
+        //         // $(this).children('input').attr("checked",true);
+        //         // //切换商品列表是否选择
+        //         // if($(this).find('input:checked').length == 0){
+                    
+        //         //     items.attr("checked",true);
+        //         //     children.attr("checked",true);
+        //         //     children.addClass("ischecked");
+                    
+        //         // }else{
+
+        //         //     items.removeAttr("checked");
+        //         //     children.removeAttr("checked");
+        //         //     children.removeClass("ischecked");
+        //         // }
+        //         // //切换自身是否选中
+        //         // if($(this).children('input').attr('checked')){
+        //         //     debugger;
+        //         //     $(this).children('input').removeAttr("checked");
+                   
+        //         // }else{
+        //         //     debugger;
+        //         //     $(this).children('input').attr("checked",true);
+        //         // }
+        //         calculate();
+        //     });
+        //     $('[data-role="car-list"]').delegate("label", "click", function(e){
+
+        //         e.preventDefault();
+        //         if($(this).children('input').attr('checked')){
+        //             $(this).children('input').removeAttr("checked");
+        //             //完成状态
+        //             if($(this).children('input').attr("name") == "cart-item"){
+        //                 chooseAll.children('input').removeAttr("checked");
+        //                 $(this).parents('li').find('[name="cart-child"]').removeAttr("checked");
+        //                 $(this).parents('li').find('[name="cart-child"]').removeClass("ischecked");
+        //             }
+        //             if($(this).children('input').attr("name") == "cart-child"){
+        //                 chooseAll.children('input').removeAttr("checked");
+        //                 $(this).children('input').removeClass("ischecked");
+        //                 $(this).parents('li').find('[data-role="store-choose"] input').removeAttr("checked");
+        //             }
+                        
+                        
+        //         }else{
+        //             $(this).children('input').attr("checked",true);
+                    
+        //             if($(this).children('input').attr("name") == "cart-item"){
+        //                 $(this).parents('li').find('[name="cart-child"]').attr("checked",true);
+        //                 $(this).parents('li').find('[name="cart-child"]').addClass("ischecked");
+        //             }
+        //             if($(this).children('input').attr("name") == "cart-child"){
+        //                 $(this).children('input').addClass("ischecked");
+        //             }
+        //             if($(this).parents('li').find('input[name=cart-child]').length == $(this).parents('li').find('input[name=cart-child]:checked').length){
+
+        //                 $(this).parents('li').find('[data-role="store-choose"] input').attr("checked",true);
+        //             }
+        //             //完成状态
+        //             if($(this).parents('ul').find('input[name=cart-item]').length == $(this).parents('ul').find('input[name=cart-item]:checked').length){
+        //                 chooseAll.children('input').attr("checked",true);
+        //             }
+        //         }
+        //         calculate();
+        //     });
+        // };
+        //判断是否登录
+        $.ajax({
+            type: "get",
+            url: "/weixin/checkWeiXinLogin",
+            dataType: 'json',
+            complete: function(json) {
+            
+                var data = json.response;
+                var status = json.status;
+                if(status != 200){
+                    $.alert('网络异常，状态为20.1' + status);
+                    return;
+                }
+                if ($.type(data) == 'string') {
+                    data = JSON.parse(data);
+                }
+                if(data.code != 'E00000'){
+                    if(data.code == "-1"){
+                        window.location.href = "/weixin/bind";
+                    }else{
+                        $.alert(data.message);
+                        return;
+                    }
+                  
+                }else{
+                    
+                    //获取消费习惯购物车商品   
+                    $.ajax({
+                        type: "get",
+                        url: "/weixin/quickShoppingJson",
+                        dataType: 'json',
+                        complete: function(result) {
+                        
+                            var data = result.response;
+                            var status = result.status;
+                            if(status != 200){
+                                $.alert('网络异常，状态为20.2' + status);
+                                return;
+                            }
+                            if ($.type(data) == 'string') {
+                                data = JSON.parse(data);
+                            }
+                            if(data.code != 'E00000'){
+                                if(data.code == "-1"){
+                                    window.location.href = "/weixin/bind";
+                                }else{
+                                    $.alert(data.message);
+                                    return;
+                                }
+                              
+                            }else{
+                                // debugger;
+                                if(data.data.count > 0){
+                                    var context = {
+                                      data: data.data.quickWaterList
+                                    };
+
+                                    var itemTpl = $("#itemTpl").html();
+                                    var itemTemplate = Handlebars.compile(itemTpl);
+                                    var itemCont = itemTemplate(context);
+                                    $('[data-role="car-list"]').html(itemCont);
+
+                                    // debugger;
+                                    // console.log(Context['enterprises'].length);
+                                  
+                                    // var etnTpl = $("#enterpriseTpl").html();
+                                    // var etnTemplate = Handlebars.compile(etnTpl);
+                                    // var entCont = etnTemplate(context);
+                                    // $('[data-role="enterprise-name"]').html(entCont);
+                                 
+                                    // if(context['enterprises'].length==1){
+                                    //     $('.togglea span').remove();
+                                    //     $('.togglemenu li').remove();
+                                    // }
+
+
+
+                                    // var tpl = $("#itemTpl").html();
+                                    // var template = Handlebars.compile(tpl);
+                                    // var context = {
+                                    //     data: data.data.quickWaterList,
+                                    //     enterprises:data.data.enterprises
+                                    // };
+                                    // console.log(JSON.stringify(context['data']));
+                                    // var cont = template(context);
+                                    
+                                    // $('[data-role="car-list"]').html(cont);
+                                    // debugger;
+                                    // chooseAllOperate();
+
+
+                                    //默认全选商品
+                                    var items = $('.car-list li label input[name=cart-item]');
+                                    var children = $('.car-list li label input[name=cart-child]');
+                                    items.attr("checked",true);
+                                    children.attr("checked",true);
+                                    children.addClass("ischecked");
+                                    $('[data-role="choose-all"]').children('input').attr("checked",true);
+                                    calculate();
+                                    // $('[data-role="choose-all"]').trigger('click');
+                                }else{
+                                    $('.bar-footer-secondary').hide();
+                                    $('[data-role="car-list"]').before('<div class="defaut-wrap"><span class="icon icon-88tipicoorder"></span><h2 class="def-note">可前往商品详情页添加消费习惯!</h2><p><a href="/weixin/home/" class="button button-fill btn-yello">确定</a></p></div>');
+                                }
+                                
+                            }
+                          
+                        }
+                    });
+                }
+              
+            }
+        });
+        
+        //选择企业重新获取购物车商品
+        // $('[data-role="enterprise-name"]').delegate(".togglea","click",function(e){
+        //     e.preventDefault();
+        //     $('.togglea span').toggleClass('active');
+        //     $('.togglemenu li').toggleClass('active');
+        //     $('.togglemenu li a').on('click',function(e){
+        //         e.preventDefault();
+        //         var eid = $(this).data('eid');
+        //         $.ajax({
+        //               type: "get",
+        //               url: "/weixin/getShopCartProductJson?eid="+eid,
+        //               dataType: 'json',
+        //               complete: function(json) {
+                        
+        //                   var data = json.response;
+        //                   var status = json.status;
+        //                     if(status != 200){
+        //                         $.alert('网络异常，状态为3.2' + status);
+        //                         return;
+        //                     }
+        //                   if ($.type(data) == 'string') {
+        //                       data = JSON.parse(data);
+        //                   }
+        //                   if(data.code != 'E00000'){
+        //                       $.alert(data.message, function () {
+        //                          window.location.href = "/weixin/bind";
+        //                       });
+                              
+        //                   }else{
+        //                         // debugger;
+        //                         if(data.data.count > 0){
+        //                             var context = {
+        //                               data: data.data.quickWaterList,
+        //                               enterprises:data.data.enterprises
+        //                             };
+
+        //                             var itemTpl = $("#itemTpl").html();
+        //                             var itemTemplate = Handlebars.compile(itemTpl);
+        //                             var itemCont = itemTemplate(context);
+        //                             $('[data-role="car-list"]').html(itemCont);
+
+        //                             // debugger;
+        //                             // console.log(Context['enterprises'].length);
+                                  
+        //                             var etnTpl = $("#enterpriseTpl").html();
+        //                             var etnTemplate = Handlebars.compile(etnTpl);
+        //                             var entCont = etnTemplate(context);
+        //                             $('[data-role="enterprise-name"]').html(entCont);
+        //                         }else{
+        //                             $('.bar-footer-secondary').hide();
+        //                             $('[data-role="car-list"]').before('<div class="defaut-wrap"><span class="icon icon-88tipicoorder"></span><h2 class="def-note">购物车暂无商品，快去买买买！</h2><p><a href="/weixin/home/" class="button button-fill btn-yello">确定</a></p></div>');
+        //                         }
+        //                         window.location.reload();
+        //                   }
+                          
+        //               }
+        //         });
+        //     });
+
+        // });
+        //数量加减
+        $('[data-role="car-list"]').delegate("em", "click", function(e){
+            e.preventDefault();
+
+            var me = $(this),
+                numbox = me.siblings('input'),
+                eTicketMax = me.parents('.edit-box').data('surplusnum'),
+                show = me.siblings('i'),
+                action = me.data('action'),
+                numValue = 0;
+                var payType = me.parent().siblings('.car-btn').find('input[type="hidden"]').val();
+
+                //获取本地购物车数据
+                var data = JSON.parse(me.parents('.car-cont').siblings('h3').find('textarea').html());
+                var shopId = me.parents('li').data('shopId');
+
+                //暂时不做库存的判断，且快速订水接口未提供最大购买数量的属性
+                if(action == 'add'){
+                    //if(numbox.val() < max){
+                        
+                    numValue = parseInt(numbox.val()) + 1;
+                    if(eTicketMax && numValue>eTicketMax && payType=="2"){
+                        numValue = eTicketMax;
+                        $.alert('购买数量超过电子票数量'); 
+                    }
+                    /*}else{
+                        numValue = max;
+                    }*/
+
+                }else if(action == 'minus'){
+                    if(numbox.val() > 1){
+                        numValue = parseInt(numbox.val()) - 1;
+                    }else if(numbox.val() == 1){
+                        numValue = 1;
+                    }
+                    
+                }
+                numbox.val(numValue);
+                show.html(numValue);
+
+
+                for(var i=0; i < data.length; i++){
+                    
+                    if(me.parents('table[data-id="' + data[i]["id"] + '"]').find('input[name=num]').val()){
+                    //     debugger;
+                        data[i]['number'] = me.parents('table[data-id="' + data[i]["id"] + '"]').find('input[name=num]').val();
+                        data[i]['curValue'] = me.parents('table[data-id="' + data[i]["id"] + '"]').find('input[name=payType]').val();
+                        data[i]['curName'] = me.parents('table[data-id="' + data[i]["id"] + '"]').find('input[name=payType]').attr('data-name');
+
+
+                        me.parents('.edit-box').find('.pname').attr('data-num',data[i]['number']);
+                        // console.log(data[i]['number']);
+                        // console.log(data);
+                    }
+                    
+                    
+                }
+                
+                me.parents('li').find('textarea').html(JSON.stringify(data));
+                
+                //重新计算金额
+                calculate();
+        });
+         //选择支付方式
+        $('[data-role="car-list"]').delegate("span", "click", function(e){
+            e.preventDefault();
+
+            var me = $(this),
+                action = me.data('action'),
+                numbox = me.parents('.car-btn').siblings('.car-count').find('input[type="hidden"]').val(),
+                eTicketMax = me.parents('.edit-box').data('surplusnum');
+                // console.log(numbox,eTicketMax);
+
+                if(action == 'shuipiao'){
+                    if(!me.hasClass('active')){
+                        me.addClass('active');
+                        me.siblings('span').removeClass('active');
+                        me.siblings('input').val(3).attr('data-name','水票');
+                        me.parents('.edit-box').find('.pname').data('cur','3');
+                    }
+                    
+                }else if(action == 'dianzipiao'){
+                    if(numbox && numbox>eTicketMax){
+                        $.alert("电子票余量不足");
+                    }else if(!me.hasClass('active')){
+                        me.addClass('active');
+                        me.siblings('span').removeClass('active');
+                        me.siblings('input').val(2).attr('data-name','电子票');
+                        me.parents('.edit-box').find('.pname').data('cur','2');
+                    }
+                    
+                }else if(action == 'xianjin'){
+                    if(!me.hasClass('active')){
+                        me.addClass('active');
+                        me.siblings('span').removeClass('active');
+                        me.siblings('input').val(1).attr('data-name','现金');
+                        me.parents('.edit-box').find('.pname').data('cur','1');
+                    }
+                    
+                }else if(action == 'delete-item'){
+                    var id = me.data('id'),
+                        valBox = me.parents('li').find('textarea'),
+                        data = JSON.parse(valBox.html());
+                        // console.log(id);
+                        // for(var i=0;i<me.parents('li').length;i++){
+                        //     for(j=0;j<me.parents('li').find('table').length;j++){
+
+                        //     }
+                        // }
+                        if(me.parents('li').length >= 1){
+                            if(me.parents('li').find('table').length==1){
+                                me.parents('li').remove();
+                                console.log(me.parents('li').length);
+                                if($('[data-role="car-list"]').find('li').length==0){
+                                    
+                                    $('.bar-footer-secondary').remove();
+                                    $('[data-role="car-list"]').before('<div class="defaut-wrap"><span class="icon icon-88tipicoorder"></span><h2 class="def-note">可前往商品详情页添加消费习惯!</h2><p><a href="/weixin/home/" class="button button-fill btn-yello">确定</a></p></div>');
+                                }
+                                
+                            }else if(me.parents('li').find('table').length>1){
+                                me.parents('table').remove();
+                            }else{
+                                me.parents('table').remove();
+                            }
+                            
+                            // $('table[data-id="' + id + '"]').remove();
+                            //回填数据
+                            for(var i=0; i < data.length; i++){
+                              if(data[i]['id'] == id){
+                                  data.splice(i,1);
+                              }
+                              console.log(data);  
+
+                            } 
+                            valBox.html(JSON.stringify(data));
+                            calculate();
+                        }
+                        
+
+                }
+        });
+        //切换编辑完成
+        $('[data-role="car-list"]:not(.defaut-wrap)').delegate("a", "click", function(e){
+            e.preventDefault();
+
+            var me = $(this),
+                action = me.data('action'),
+                //str = me.next('textarea').html();
+               
+                //data = '[' + data.Substring(0,data.Length-1) + ']',
+                data = JSON.parse(me.next('textarea').html());
+
+                if(action == 'editControl'){
+                    if(!me.hasClass('active')){
+                        me.addClass('active');
+                        me.html('完成');
+
+                        
+                        var tpl = $("#editTpl").html();
+                        var template = Handlebars.compile(tpl);
+                        for(var i=0; i < data.length; i++){
+                            var context = {
+                                data: data[i]
+                            };
+                            me.parents('li').find('table[data-id="' + data[i]["id"] + '"] .edit-box').html(template(context));
+                        }
+                        
+                    }else{
+                        me.removeClass('active');
+                        me.html('编辑');
+                        //回填数据
+                        for(var i=0; i < data.length; i++){
+                            data[i]['number'] = $('table[data-id="' + data[i]["id"] + '"]').find('input[name=num]').val();
+                            data[i]['curValue'] = $('table[data-id="' + data[i]["id"] + '"]').find('input[name=payType]').val();
+                            data[i]['curName'] = $('table[data-id="' + data[i]["id"] + '"]').find('input[name=payType]').data('name');
+                        }
+                        me.parents('li').find('textarea').html(JSON.stringify(data));
+
+                        var tpl = $("#finishTpl").html();
+                        var template = Handlebars.compile(tpl);
+                        for(var i=0; i < data.length; i++){
+                            var context = {
+                                data: data[i]
+                            };
+                            me.parents('li').find('table[data-id="' + data[i]["id"] + '"] .edit-box').html(template(context));
+                        }
+                        calculate();
+                    }
+                    
+                }
+        });
+        
+        //提交数据到确认订单
+        $('[data-role="submit-to"]').click(function(e){
+            e.preventDefault();
+            // if($('[data-action="editControl"]').hasClass('active')){
+            //     $.alert('闪订中的商品需完成编辑才能去结算！');
+            //     return;
+            // }
+            var allData = getAllData();
+            if(allData.length == 0){
+                $.alert('请选中商品后再提交订单。');
+                return;
+            }
+            $('input[name=quickSpJson]').val(JSON.stringify(allData));
+            localStorage.setItem("quickShoppingCarData",JSON.stringify(allData));
+            // console.log(JSON.stringify(allData));
+            // return;
+            $('form').submit();
+        });
+    });
+    </script>
+  </script>
+</body>
+</html>

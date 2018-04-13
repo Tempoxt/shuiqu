@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "orderDistributor")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/shopCss.vm")
+<body>
+    <div class="page-group">
+        <div class="page page-finish page-current page-orderDistributor">
+            <header class="bar bar-nav light-nav">
+                <a href="javascript:history.go(-1);" class="icon icon-35icoback pull-left bar-left" id="go-back"></a>  
+                <h1 class="title">订单查询</h1>
+            </header>
+            <div class="content">
+			  <div class="buttons-tab">
+			    <a id="untreated" href="#tab1" class="tab-link active button">未处理</a> 
+			    <a id="processed" href="#tab2" class="tab-link button">已处理</a>
+			  </div>
+			    <div class="tabs">
+		          <ul id="tab1" class="tab active">
+		          	<li>
+		          		<div class="content-padded">
+                            <div class="row">
+                                    <div class="listCount">01</div>
+                                <div class="col">
+                                	<div class="content-padded">
+                                		<div class="row">
+                                			<div class="col-70">
+			                                	QY171110000001
+			                                </div>
+			                                <div class="col-30">
+			                                	2017-10-11 12:23
+			                                </div>
+			                            </div>
+			                            <div class="row details">
+                                			<ul>
+                                				<li>怡宝纯净水18L 3桶</li>
+                                				<li>清江尚品饮用纯净水18L 3桶</li>
+                                				<li>乐百氏饮用纯净水18.9L 3桶</li>
+                                			</ul>
+                                			<ul>
+                                				<li>
+                                					<span>陈先生</span>
+                                					<span>1380013800</span>
+                                				</li>
+                                				<li>
+                                					宝安区松岗街道桃花源松岗分园A栋19-1
+                                				</li>
+                                			</ul>
+			                            </div>
+			                            <div class="row">
+			                            	<div class="col-30">
+			                            		<a href="#" class="button btn-yello btn-125 tuiHui">订单退回</a>
+			                            	</div>
+			                            	<div class="col-30 pull-right">
+			                            		<a href="#" class="button btn-yello btn-125">确认送达</a>
+			                            	</div>
+			                            </div>
+			                        </div>
+                                </div>
+                            </div>
+                        </div>
+		          	</li>
+		          	<li>
+		          		<div class="content-padded">
+                            <div class="row">
+                                    <div class="listCount">02</div>
+                                <div class="col">
+                                	<div class="content-padded">
+                                		<div class="row">
+                                			<div class="col-70">
+			                                	QY171110000001
+			                                </div>
+			                                <div class="col-30">
+			                                	2017-10-11 12:23
+			                                </div>
+			                            </div>
+			                            <div class="row details">
+                                			<ul>
+                                				<li>怡宝纯净水18L 3桶</li>
+                                				<li>清江尚品饮用纯净水18L 3桶</li>
+                                				<li>乐百氏饮用纯净水18.9L 3桶</li>
+                                			</ul>
+                                			<ul>
+                                				<li>
+                                					<span>陈先生</span>
+                                					<span>1380013800</span>
+                                				</li>
+                                				<li>
+                                					宝安区松岗街道桃花源松岗分园A栋19-1
+                                				</li>
+                                			</ul>
+			                            </div>
+			                            <div class="row">
+			                            	<div class="col-30">
+			                            		<a href="#" class="button btn-yello btn-125 tuiHui">订单退回</a>
+			                            	</div>
+			                            	<div class="col-30 pull-right">
+			                            		<a href="#" class="button btn-yello btn-125">确认送达</a>
+			                            	</div>
+			                            </div>
+			                        </div>
+                                </div>
+                            </div>
+                        </div>
+		          	</li>
+		          	<li>
+		          		<div class="content-padded">
+                            <div class="row">
+                                    <div class="listCount">03</div>
+                                <div class="col">
+                                	<div class="content-padded">
+                                		<div class="row">
+                                			<div class="col-70">
+			                                	QY171110000001
+			                                </div>
+			                                <div class="col-30">
+			                                	2017-10-11 12:23
+			                                </div>
+			                            </div>
+			                            <div class="row details">
+                                			<ul>
+                                				<li>怡宝纯净水18L 3桶</li>
+                                				<li>清江尚品饮用纯净水18L 3桶</li>
+                                				<li>乐百氏饮用纯净水18.9L 3桶</li>
+                                			</ul>
+                                			<ul>
+                                				<li>
+                                					<span>陈先生</span>
+                                					<span>1380013800</span>
+                                				</li>
+                                				<li>
+                                					宝安区松岗街道桃花源松岗分园A栋19-1
+                                				</li>
+                                			</ul>
+			                            </div>
+			                            <div class="row">
+			                            	<div class="col-30">
+			                            		<a href="#" class="button btn-yello btn-125 tuiHui">订单退回</a>
+			                            	</div>
+			                            	<div class="col-30 pull-right">
+			                            		<a href="#" class="button btn-yello btn-125">确认送达</a>
+			                            	</div>
+			                            </div>
+			                        </div>
+                                </div>
+                            </div>
+                        </div>
+		          	</li>
+		          </ul>
+		          <ul id="tab2" class="tab">
+		          	<li>
+		          		<div class="content-padded">
+                            <div class="row">
+                                    <div class="listCount">01</div>
+                                <div class="col">
+                                	<div class="content-padded">
+                                		<div class="row">
+                                			<div class="col-70">
+			                                	QY171110000001
+			                                </div>
+			                                <div class="col-30">
+			                                	2017-10-11 12:23
+			                                </div>
+			                            </div>
+			                            <div class="row details">
+                                			<ul>
+                                				<li>怡宝纯净水18L 3桶</li>
+                                				<li>清江尚品饮用纯净水18L 3桶</li>
+                                				<li>乐百氏饮用纯净水18.9L 3桶</li>
+                                			</ul>
+                                			<ul>
+                                				<li>
+                                					<span>陈先生</span>
+                                					<span>1380013800</span>
+                                				</li>
+                                				<li>
+                                					宝安区松岗街道桃花源松岗分园A栋19-1
+                                				</li>
+                                			</ul>
+			                            </div>
+			                        </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="result">已送达</div>
+		          	</li>
+		          	<li>
+		          		<div class="content-padded">
+                            <div class="row">
+                                    <div class="listCount" style="background-color: #B4B4B4;">02</div>
+                                <div class="col">
+                                	<div class="content-padded">
+                                		<div class="row">
+                                			<div class="col-70">
+			                                	QY171110000001
+			                                </div>
+			                                <div class="col-30">
+			                                	2017-10-11 12:23
+			                                </div>
+			                            </div>
+			                            <div class="row details">
+                                			<ul>
+                                				<li>怡宝纯净水18L 3桶</li>
+                                				<li>清江尚品饮用纯净水18L 3桶</li>
+                                				<li>乐百氏饮用纯净水18.9L 3桶</li>
+                                			</ul>
+                                			<ul>
+                                				<li>
+                                					<span>陈先生</span>
+                                					<span>1380013800</span>
+                                				</li>
+                                				<li>
+                                					宝安区松岗街道桃花源松岗分园A栋19-1
+                                				</li>
+                                			</ul>
+			                            </div>
+			                        </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="result">已退单</div>
+		          	</li>
+		          	<li>
+		          		<div class="content-padded">
+                            <div class="row">
+                                    <div class="listCount">03</div>
+                                <div class="col">
+                                	<div class="content-padded">
+                                		<div class="row">
+                                			<div class="col-70">
+			                                	QY171110000001
+			                                </div>
+			                                <div class="col-30">
+			                                	2017-10-11 12:23
+			                                </div>
+			                            </div>
+			                            <div class="row details">
+                                			<ul>
+                                				<li>怡宝纯净水18L 3桶</li>
+                                				<li>清江尚品饮用纯净水18L 3桶</li>
+                                				<li>乐百氏饮用纯净水18.9L 3桶</li>
+                                			</ul>
+                                			<ul>
+                                				<li>
+                                					<span>陈先生</span>
+                                					<span>1380013800</span>
+                                				</li>
+                                				<li>
+                                					宝安区松岗街道桃花源松岗分园A栋19-1
+                                				</li>
+                                			</ul>
+			                            </div>
+			                        </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="result">已送达</div>
+		          	</li>
+		          </ul>
+			    </div>
+			</div>
+        </div>
+    </div>
+</body>
+</html>
+#*加载JS文件*# 
+#parse("control/$!webStyle/publicJs.vm")
+<script type='text/javascript' src='/files/common/js/selector.js' charset='utf-8'></script>
+<!-- <script type='text/javascript' src='https://cdn.shuiqoo.cn/$!webStyle/selector.js' charset='utf-8'></script> -->
+#parse("control/$!webStyle/globalJs.vm")
+<script id="nsNumHeaderTab" type="text/x-handlebars-template">
+    ({{data.nsNum}})
+</script>
+<script id="sNumHeaderTab" type="text/x-handlebars-template">
+    ({{data.sNum}})
+</script>
+<script id="untreatedTab" type="text/x-handlebars-template">
+    {{#each data.orders}}
+    	<li>
+      		<div class="content-padded">
+                <div class="row">
+                        <div class="listCount">{{addOne @index}}</div>
+                    <div class="col">
+                    	<div class="content-padded">
+                    		<div class="row">
+                    			<div class="col-50">
+                                	{{orderNo}}
+                                </div>
+                                <div class="col-50" style="text-align: right;">
+                                	{{dateCreated}}
+                                </div>
+                            </div>
+                            <div class="row details">
+                    			<ul>
+                            		{{#each goods}}
+	                    				<li>{{pname}} {{number}}桶</li>
+                    				{{/each}}
+                    			</ul>
+                    			<ul>
+                    				<li>
+                    					<span>{{contacts}}</span>
+                    					<span>{{phone}}</span>
+                    				</li>
+                    				<li>
+                    					{{sendAddress}}
+                    				</li>
+                    			</ul>
+                            </div>
+                            <div class="row">
+                            	<div class="col-30">
+                            		<a href="#" class="button btn-yello btn-125 tuiHui">订单退回</a>
+                            	</div>
+                            	<div class="col-30 pull-right">
+                            		<a href="#" class="button btn-yello btn-125">确认送达</a>
+                            	</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+      	</li>
+    {{/each}}
+</script>
+<script id="processedTab" type="text/x-handlebars-template">
+    {{#each data.orders}}
+    	<li>
+      		<div class="content-padded">
+                <div class="row">
+                        <div class="listCount">{{addOne @index}}</div>
+                    <div class="col">
+                    	<div class="content-padded">
+                    		<div class="row">
+                    			<div class="col-70">
+                                	{{orderNo}}
+                                </div>
+                                <div class="col-30">
+                                	{{dateCreated}}
+                                </div>
+                            </div>
+                            <div class="row details">
+                    			<ul>
+                    				{{#each goods}}
+                    				<li>{{pname}} {{number}}桶</li>
+                    				{{/each}}
+                    			</ul>
+                    			<ul>
+                    				<li>
+                    					<span>{{contacts}}</span>
+                    					<span>{{phone}}</span>
+                    				</li>
+                    				<li>
+                    					{{sendAddress}}
+                    				</li>
+                    			</ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="result">{{orderStatus}}</div>
+      	</li>
+    {{/each}}
+</script>
+<script type="text/javascript">
+	var type = 0;
+	var isClick = false;
+	$.ajax({
+        type: "post",
+        url: "/weixin/queryWXsendOrder",
+        dataType: 'json',
+        data:{
+        	status:type,
+        	lastId:0
+        },
+        async:false,
+        complete: function(json) {
+            var data = json.response;
+            var status = json.status;
+            if (status != 200) {
+                $.alert('网络异常，状态为22.1' + status);
+                return;
+            }
+            if ($.type(data) == 'string') {
+                data = JSON.parse(data);
+            }
+            if (data.code != 'E00000') {
+                $.alert(data.message);
+                return;
+            } else {
+            	var context = {
+                    data: data.data
+                };
+                var nsNumHeaderTab = $("#nsNumHeaderTab").html();
+                var nsNumHeaderTemplate = Handlebars.compile(nsNumHeaderTab);
+                var nsNumHeaderCont = nsNumHeaderTemplate(context);
+                $('#untreated').append(nsNumHeaderCont);
+
+                var sNumHeaderTab = $("#sNumHeaderTab").html();
+                var sNumHeaderTemplate = Handlebars.compile(sNumHeaderTab);
+                var sNumHeaderCont = sNumHeaderTemplate(context);
+                $('#processed').append(sNumHeaderCont);
+
+                 var handleHelper = Handlebars.registerHelper("addOne",function(index){
+			         //返回+1之后的结果
+			         return index+1;
+		         });
+
+                var untreatedTab = $("#untreatedTab").html();
+                var untreatedTemplate = Handlebars.compile(untreatedTab);
+                var untreatedCont = untreatedTemplate(context);
+                $('#tab1').html(untreatedCont);
+            }
+        }
+    });
+	$('#untreated').click(function(){ type=0; });
+    $('#processed').click(function(){
+    	type = 1;
+    	if(!isClick){
+	    	$.ajax({
+			    type: "post",
+			    url: "/weixin/queryWXsendOrder",
+			    dataType: 'json',
+			    data:{
+			    	status:type,
+			    	lastId:0
+			    },
+			    async:false,
+			    complete: function(json) {
+			        var data = json.response;
+			        var status = json.status;
+			        if (status != 200) {
+			            $.alert('网络异常，状态为22.1' + status);
+			            return;
+			        }
+			        if ($.type(data) == 'string') {
+			            data = JSON.parse(data);
+			        }
+			        if (data.code != 'E00000') {
+			            $.alert(data.message);
+			            return;
+			        } else {
+			        	var context = {
+			                data: data.data
+			            };
+
+			            var handleHelper = Handlebars.registerHelper("addOne",function(index){
+					         //返回+1之后的结果
+					         return index+1;
+				         });
+
+			            var processedTab = $("#processedTab").html();
+			            var processedTemplate = Handlebars.compile(processedTab);
+			            var processedCont = processedTemplate(context,function(index){
+			            	return index+1;
+			            });
+			            $('#tab2').html(processedCont);
+			            isClick = true;
+			        }
+			    }
+			});
+    	}
+    });
+</script>

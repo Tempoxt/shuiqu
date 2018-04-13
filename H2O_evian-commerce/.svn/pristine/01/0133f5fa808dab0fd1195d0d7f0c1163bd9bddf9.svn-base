@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "editCashAccount")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/shopCss.vm")
+<body>
+  <div class="page-group">
+		<div class="page page-finish page-current">
+			<header class="bar bar-nav light-nav">
+	            <a href="javascript:history.go(-1);" class="icon icon-35icoback pull-left bar-left"></a>  
+	            <h1 class="title">实名认证</h1>
+	        </header>
+	        <div class="content content-addCash">
+	        	
+	            <div class="list-block new-form-list">
+				  <ul>
+				    <li style="height: 100px;line-height: 100px;">
+                      <div class="item-content">
+                        <!-- <div class="item-inner"> -->
+                          <div class="item-title label" style="font-size: 20px;font-weight: 600;">真实姓名：</div>
+                          <div class="item-input">
+                            <input type="text" name="bankName" placeholder="请填写姓名" style="font-size: 18px;font-weight: 600;">
+                          </div>
+                        <!-- </div> -->
+                      </div>
+                    </li>
+                    <li style="height: 100px;line-height: 60px;">
+                      <div class="item-content">
+                        <div class="item-inner">
+                          <div class="item-title label" style="font-size: 20px;font-weight: 600;">提现账户：</div>
+                          <div class="item-input">
+                            <span style="margin: 0 0.5rem;" class="icon icon-weixinzhifu"></span><span style="font-size: 18px;font-weight: 600;">微信零钱</span>
+                        </div>
+                      </div>
+                    </li>
+                    
+				  </ul>
+
+                      <ul>
+                        <li>
+                          <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">提现密码：</div>
+                                <div class="item-input">
+                                    <input type="password" maxlength="6" name="dealPass" placeholder="请确认提现密码（6位数字）">
+                                </div>
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">确认提现密码：</div>
+                                <div class="item-input">
+                                    <input type="password" maxlength="6" name="dealPass2" placeholder="请确认提现密码（6位数字）">
+                                </div>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                      
+                    
+				  <!-- <ul style="display:none;">
+				    <li>
+				      <div class="item-content">
+				        <div class="item-inner">
+				          <div class="item-title label">账号：</div>
+				          <div class="item-input">
+				            <input type="text" name="yinhangNumber" placeholder="您的银行卡号"></div>
+				        </div>
+				      </div>
+				    </li>
+				    <li>
+				      <div class="item-content">
+				        <div class="item-inner">
+				          <div class="item-title label">姓名：</div>
+				          <div class="item-input">
+				            <input type="text" name="yinhangName" placeholder="您的真实姓名"></div>
+				        </div>
+				      </div>
+				    </li>
+				    <li>
+				      <div class="item-content">
+				        <div class="item-inner">
+				          <div class="item-title label">银行：</div>
+				          <div class="item-input">
+				            <input type="text" name="kaihuhang" placeholder="您的开户银行"></div>
+				        </div>
+				      </div>
+				    </li>
+				  </ul> -->
+				  <p>
+				    <a href="#" class="button button-fill btn-yello" data-role="btn-ok">提交实名认证</a></p>
+                  <!-- <p class="edit-forget"><a href="/weixin/editCash" class="pull-left">修改提现密码</a><a href="/weixin/forgetCash" class="pull-right">忘记提现密码</a></p> -->
+				</div>
+	        </div>
+	        
+	    </div>
+	</div>
+	#*加载JS文件*# 
+    #parse("control/$!webStyle/publicJs.vm")
+    #parse("control/$!webStyle/globalJs.vm")
+    <script>
+        $(function(){
+            var bankNameDid ;
+            var cashNoDid  ;
+            var alipayNameDid ;
+            var theSubbranchDid ;
+            var mappingTelDid ;
+            var identityIdDid ;
+            var alipayName ;
+                $.ajax({
+                    type: "post",
+                    url: "/weixin/myLiteAppEarningInfo",
+                    data: {
+                        type:2
+                    },
+                    dataType: 'json',
+                    async:false,
+                    complete: function(json) {
+                      
+                        var status = json.status;
+                        if(status != 200){
+                            $.alert('网络异常，状态为22.2' + status);
+                            return;
+                        }
+                        var data = json.response;
+                       
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if(data.code != 'E00000'){
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                                return;
+                            }
+                        }else{
+                            if(data.data.earningAccount){
+                                var ear = data.data.earningAccount;
+                                console.log(ear.openBank);
+                                bankNameDid   = ear.openBank;
+                                cashNoDid   = ear.bankNo;
+                                alipayNameDid = ear.bankName;
+                                theSubbranchDid = ear.openSmallBank;
+                                mappingTelDid = ear.mappingTel;
+                                identityIdDid = ear.identityId;
+                                alipayName = ear.alipayName;
+                            }
+                        }
+                    }
+                });
+            // cashNoDid = cashNoDid.replace(/^(?:\d+)(.{4})$/,"**** **** **** $1");
+            if(alipayName){
+                $('input[name=bankName]').val(alipayName);
+            }      
+            /*if(cashNoDid !=""){
+                $('input[name=cashNo]').val(cashNoDid.replace(/^(?:\d+)(.{4})$/,"**** **** **** $1"));
+            }
+            $('input[name=alipayName]').val(alipayNameDid);
+            $('input[name=theSubbranch]').val(theSubbranchDid);
+            $('input[name=mappingTel]').val(mappingTelDid);*/
+            /*if(identityIdDid !=""){
+                $('input[name=identityId]').val(identityIdDid.replace(/^(.{6})(?:\d+)(.{4})$/,"$1****$2"));
+            }*/
+            //获取用户提交的表单数据
+            var flag=0;
+            $('[data-role="btn-ok"]').on('click',function(e){
+                e.preventDefault();
+                flag++;
+                console.log(flag);
+                if(flag > 1){
+                    return;
+                }
+                          
+                var bankName   = $.trim($('input[name=bankName]').val());
+                var cashNo   = $.trim($('input[name=cashNo]').val());
+                if(cashNo && cashNo==cashNoDid.replace(/^(?:\d+)(.{4})$/,"**** **** **** $1")){
+                    cashNo=cashNoDid
+                }
+                var alipayName = $.trim($('input[name=alipayName]').val());
+                var theSubbranch = $.trim($('input[name=theSubbranch]').val());
+                var mappingTel = $.trim($('input[name=mappingTel]').val());
+                var identityId = $.trim($('input[name=identityId]').val());
+
+                if(identityId && identityId==identityIdDid.replace(/^(.{6})(?:\d+)(.{4})$/,"$1****$2")){
+                    identityId=identityIdDid
+                }
+                var dealPass   = $.trim($('input[name=dealPass]').val());
+                var dealPass2   = $.trim($('input[name=dealPass2]').val());
+                $('.err-msg').remove();
+                if(bankName == ""){
+                    $('input[name=bankName]').parents('.item-content').after('<p class="err-msg">姓名不能为空</p>');
+                    flag=0;
+                    return;
+                }
+                if(dealPass == "" || /^\d{6}$/.test(dealPass)==false){
+                // alert(dealPass);
+                    $('input[name=dealPass]').parents('.item-content').after('<p class="err-msg">提现密码不符合要求(只能输入六位数字)</p>');
+                    flag=0;
+                    return;
+                }
+                if(dealPass2!=dealPass){
+                    $('input[name=dealPass]').parents('.item-content').after('<p class="err-msg">确认密码不正确</p>');
+                    flag=0;
+                    return;
+                }
+                $.ajax({
+                    type: "post",
+                    url: "/weixin/saveEarningWXAutonym",
+                    data: {
+                        // 银行卡号
+                        autonym:bankName,
+                        // 账户名称
+                        isAutonym:true,
+                        // 开户行
+                        dealPass:dealPass
+                    },
+                    dataType: 'json',
+                    complete: function(json) {
+                      
+                        var status = json.status;
+                        if(status != 200){
+                            $.alert('网络异常，状态为22.2' + status);
+                            flag=0;
+                            return;
+                        }
+                        var data = json.response;
+                       
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if(data.code != 'E00000'){
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                                flag=0;
+                                return;
+                            }
+                        }else{
+                            flag=0;
+                            $.alert('认证成功',function(){
+                                window.location.href="/weixin/everyShopNew";
+                            });
+                        }
+                    }
+                });
+            });
+            $('.new-edit-list input').on('change', function(){
+                $(this).parents('li').find('.err-msg').remove();
+            });
+        })
+        $.init();
+    </script>
+</body>
+</html>

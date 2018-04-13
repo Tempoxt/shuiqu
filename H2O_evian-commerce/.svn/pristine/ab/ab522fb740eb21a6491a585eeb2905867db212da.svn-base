@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "tuiKeRetrievePwd")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/shopCss.vm")
+<body>
+#*加载JS文件*# 
+#parse("control/$!webStyle/publicJs.vm")
+<script src="/files/js/$!webStyle/app.js"></script>
+<!-- <script src="https://cdn.shuiqoo.cn/$!webStyle/echarts.min.js"></script> -->
+#parse("control/$!webStyle/globalJs.vm")
+<style type="text/css">
+    .yzmHui {
+        padding-bottom: 4px;
+        background-color: #DDDDDD; }
+        .yzmCai {
+        padding-bottom: 4px;
+        background-color: #f9d600; }
+    .button{
+        border: none;
+    }
+    input{
+        border: 1px #B7B4B4 solid;
+        height: 28px;
+        width: 221px;
+        font-size: 16px;
+    }
+    .page-shopCodeDetaul ul li{
+        border-bottom: none;
+    }
+    li{
+        margin-bottom:5%; 
+    }
+</style>
+
+	<div class="page-group">
+		<div class="page page-finish page-current page-shopCodeDetaul">
+            <header class="bar bar-nav light-nav">
+                <a href="javascript:history.go(-1);" class="icon icon-35icoback pull-left bar-left" id="go-back"></a>  
+                <h1 class="title"></h1>
+            </header>
+            <div class="content img-code-box infinite-scroll infinite-scroll-bottom" style="background-color: #FFF">
+                <ul class="tuikeShops-list tab active "  data-role="shopCodeDetaul-list" data-distance="100">
+                    <li style="margin-top: 10%;">
+                       <div class="content-padded">
+                            <div class="row" >
+                                <div class="col-75">
+                                    <input type="tel" name="phone" placeholder="请输入推客手机号码"/>
+                                </div>
+                            </div>
+                        </div>
+                   </li>
+                   <li>
+                       <div class="content-padded">
+                            <div class="row" >
+                                <div class="col">
+                                    <input type="password" name="pwd0" style="margin-right: 2%;" placeholder="请输入原密码"/><a class="pull-right " href="/weixin/tuiKeRetrievePwd?page=forget" style="color: #f9d600;font-size: 14px;width: 23%;">忘记密码？</a>
+                                </div>
+                            </div>
+                        </div>
+                   </li>
+                    <li>
+                       <div class="content-padded">
+                            <div class="row" >
+                                <div class="col">
+                                    <input type="tel" name="code" style="margin-right: 2%;" placeholder="请输入验证码"/>
+                                    <a href="#" style="width: 23%;font-size: 70%;padding-left: 5px;padding-right: 5px;" id="yhPhoneBtn" class="button btn-yello btn-125 pull-right yzmHui" data-role="btn" data-isEnable="false">获取验证码</a>
+                                </div>
+                            </div>
+                        </div>
+                   </li>
+                   <li>
+                       <div class="content-padded">
+                            <div class="row" >
+                                <div class="col-75">
+                                    <input type="password" name="pwd" placeholder="请输入新密码"/>
+                                </div>
+                            </div>
+                        </div>
+                   </li>
+                   <li style="margin-bottom: 10%;">
+                       <div class="content-padded">
+                            <div class="row" >
+                                <div class="col-75">
+                                    <input type="password" name="pwd2" placeholder="请确认新密码"/>
+                                </div>
+                            </div>
+                        </div>
+                   </li>
+                   <li>
+                       <div class="content-padded">
+                            <div class="row" >
+                                <div class="col-100">
+                                    <a href="#" style="width: 80%;margin: auto;" id="yhSubmitBtn" class="button btn-yello btn-125 yzmHui"  data-role="btn" >提交</a>
+                                </div>
+                            </div>
+                        </div>
+                   </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script id="reprotsTpl" type="text/x-handlebars-template">
+	
+</script>
+<script type="text/javascript">
+    var page = GetQueryString("page");
+    if(page=="forget"){
+        $('.title').html("忘记密码");
+        $('[name="phone"]').parent().parent().parent().parent().remove();
+        $('[name="pwd0"]').parent().parent().parent().parent().remove();
+        $('[name="code"]').parent().parent().parent().parent().css("margin-top","10%");
+    }else if(page=="amend"){
+        $('.title').html("修改密码");
+    }
+    
+    $("#yhPhoneBtn").click(function(){
+        if($("#yhPhoneBtn").attr("data-isEnable") == "false"){
+            if(page=="forget"){
+                $.ajax({
+                    type: "post",
+                    url: "/weixin/findEarningPassSmsCode",
+                    data: {
+                        
+                    },
+                    dataType: 'json',
+                    complete: function(json) {
+                      
+                        var data = json.response;
+                        
+                        var status = json.status;
+                        if(status != 200){
+                            $.alert('网络异常，状态为12.1' + status);
+                            return;
+                        }    
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if(data.code != 'E00000' && data.code != 'E90001' ){
+                            $.alert(data.message);
+                        }else{
+                            //倒计时
+                            var wait=parseInt("29");
+                              
+                            function time(o) {  
+                                if (wait == 0) {  
+                                    o.html("获取验证码");
+                                    wait = parseInt("29");
+                                            o.attr("data-isEnable","false");
+                                            /*o.removeClass("yzmHui");
+                                            o.addClass("yzmCai");*/
+                                            o.css("background","#FAD600");
+                                } else {  
+                                    o.attr("data-isEnable","true");
+                                    /*o.removeClass("yzmCai");
+                                    o.addClass("yzmHui");*/
+                                    o.css("background","#DDDDDD");
+                                    o.html(""+wait+"s");  
+                                    wait--;  
+                                    setTimeout(function() {  
+                                        time(o)  
+                                    },  
+                                    1000)  
+                                }  
+                            } 
+                            time($("#yhPhoneBtn")); 
+                        }
+                    }
+                });
+            }else if(page=="amend"){
+                $.ajax({
+                    type: "post",
+                    url: "/weixin/createEarningpassSms",
+                    data: {
+                        
+                    },
+                    dataType: 'json',
+                    complete: function(json) {
+                      
+                        var data = json.response;
+                        
+                        var status = json.status;
+                        if(status != 200){
+                            $.alert('网络异常，状态为12.1' + status);
+                            return;
+                        }    
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if(data.code != 'E00000' && data.code != 'E90001' ){
+                            $.alert(data.message);
+                        }else{
+                            //倒计时
+                            var wait=parseInt("29");
+                              
+                            function time(o) {  
+                                if (wait == 0) {  
+                                    o.html("获取验证码");
+                                    wait = parseInt("29");
+                                            o.attr("data-isEnable","false");
+                                            /*o.removeClass("yzmHui");
+                                            o.addClass("yzmCai");*/
+                                            o.css("background","#FAD600");
+                                } else {  
+                                    o.attr("data-isEnable","true");
+                                    /*o.removeClass("yzmCai");
+                                    o.addClass("yzmHui");*/
+                                    o.css("background","#DDDDDD");
+                                    o.html(""+wait+"s");  
+                                    wait--;  
+                                    setTimeout(function() {  
+                                        time(o)  
+                                    },  
+                                    1000)  
+                                }  
+                            } 
+                            time($("#yhPhoneBtn")); 
+                        }
+                    }
+                });
+            }
+
+
+
+        }
+    });
+
+
+    $('#yhSubmitBtn').click(function(){
+        if(page=="amend"){
+            if($('[name="pwd0"]').val()==""||$('[name="pwd0"]').val().length!=6){
+                $.alert("请输入6位原密码");
+                return;
+            }
+            if($('[name="phone"]').val()==""||$('[name="phone"]').val().length!=11){
+                $.alert("请输入正确的推客手机号码");
+                return;
+            }
+            if($('[name="pwd0"]').val()==$('[name="pwd"]').val()){
+                $.alert("原密码和新密码不能一样");
+                return;
+            }
+        }
+        if($('[name="code"]').val()==""){
+            $.alert("请输入验证码");
+            return;
+        }
+        if($('[name="pwd"]').val()==""||$('[name="pwd"]').val().length!=6){
+            $.alert("请输入6位新密码");
+            return;
+        }
+        if($('[name="pwd2"]').val()==""||$('[name="pwd2"]').val().length!=6){
+            $.alert("请确认6位新密码");
+            return;
+        }
+        if(page=="forget"){
+            $.ajax({
+                type: "post",
+                url: "/weixin/findEarningpass",
+                data: {
+                    smsCode:$('[name="code"]').val(),
+                    dealPass:$('[name="pwd"]').val()
+                },
+                dataType: 'json',
+                complete: function(json) {
+                  
+                    var data = json.response;
+                    
+                    var status = json.status;
+                    if(status != 200){
+                        $.alert('网络异常，状态为12.1' + status);
+                        return;
+                    }    
+                    if ($.type(data) == 'string') {
+                        data = JSON.parse(data);
+                    }
+                    if(data.code != 'E00000' && data.code != 'E90001' ){
+                        $.alert(data.message);
+                    }else{
+                        $.alert("修改成功！")
+                        window.location.href = "/weixin/everyShopNew";
+                    }
+                }
+            });
+        }else if(page=="amend"){
+            $.ajax({
+                type: "post",
+                url: "/weixin/updateEarningpass",
+                data: {
+                    smsCode:$('[name="code"]').val(),
+                    dealPass:$('[name="pwd"]').val(),
+                    mappingTel:$('[name="phone"]').val(),
+                    oldPass:$('[name="pwd0"]').val()
+                },
+                dataType: 'json',
+                complete: function(json) {
+                  
+                    var data = json.response;
+                    
+                    var status = json.status;
+                    if(status != 200){
+                        $.alert('网络异常，状态为12.1' + status);
+                        return;
+                    }    
+                    if ($.type(data) == 'string') {
+                        data = JSON.parse(data);
+                    }
+                    if(data.code != 'E00000' && data.code != 'E90001' ){
+                        $.alert(data.message);
+                    }else{
+                        $.alert("修改成功！")
+                        window.location.href = "/weixin/everyShopNew";
+                    }
+                }
+            });
+        }
+
+    });
+
+	// 截取url参数
+    function GetQueryString(name){
+	     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+	     var r = window.location.search.substr(1).match(reg);
+	     if(r!=null)return  unescape(r[2]); return null;
+	}
+
+$.init();
+</script>
+</html>

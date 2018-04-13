@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="en">
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/indexCss.vm")
+<body>
+    <div class="page-group order-list-wrap">
+        <div class="page page-finish page-current">
+            <header class="bar bar-nav light-nav">
+                <a href="javascript:history.back();" class="icon icon-35icoback pull-left bar-left"></a>  
+                <h1 class="title">订单详情</h1>
+            </header>
+
+            <div class="content">
+                <div class="buttons-tab">
+                    <a href="#tab2" class="tab-link active button">订单详情</a>
+                    <a href="#tab1" class="tab-link  button">订单状态</a>
+                </div>
+                <div class="content-block">
+                    <div class="tabs">
+                      <div id="tab1" class="tab">
+                        <div class="content-block order-status-wrap"  data-role="logs-wrap">
+                            
+                        </div>
+                      </div>
+                      <div id="tab2" class="tab active">
+                        <div class="content-block order-detail-box" data-role="detail-info-wrap">
+                          
+                        </div>
+                      </div>
+                      
+                    </div>
+                </div>
+            </div>
+            <!-- Block button in standard bar fixed above the footer -->
+            <div class="bar bar-footer order-bar" data-role="btn-wrap">
+                
+            </div>
+            
+        </div>
+        <!--送水员信息-->
+        <div class="popup popup-papers3-about">
+            <div class="content-block content-papers3" data-role="content-papers3">
+                        
+            </div>
+        </div>
+        <!-- 取消订单 -->
+        <div class="popup popup-cancel-order">
+            <header class="bar bar-nav light-nav">
+                <span class="icon icon-35icoback pull-left close-popup bar-left"></span>  
+                <h1 class="title">取消订单</h1>
+            </header>
+            <div class="content content-cancel-order" data-role="content-cancel-order">
+              
+            </div>
+        </div>
+        <!-- 我要退货 -->
+        <div class="popup popup-returned-purchase" data-role="tuikuanReason">
+            
+        </div>
+        <!-- 查看退货 -->
+        <div class="popup popup-show-purchase" data-role="show-purchase">
+            
+        </div>
+        <!-- 我要催单 -->
+        <div class="popup popup-urge-order" data-role="show-urgeOrder">
+            <!-- <header class="bar bar-nav light-nav">
+                <span class="icon icon-35icoback pull-left close-popup bar-left"></span>  
+                <h1 class="title">我要催单</h1>
+            </header> -->
+        </div>
+    </div>
+    <script id="urgeTpl" type="text/x-handlebars-template">
+        <header class="bar bar-nav light-nav">
+            <span class="icon icon-35icoback pull-left close-popup bar-left"></span>  
+            <h1 class="title">我要催单</h1>
+        </header>
+        <div class="content content-urge">
+            <ul>
+                {{#each data.urgeMsgs}}
+                <li>
+                    <span>{{this}}</span>
+                    <label class="label-checkbox">
+                        <input type="radio" value="{{this}}" name="urgeMsgs" />
+                        <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                    </label>
+                </li>
+                {{/each}}
+            </ul>
+            <a href="#" class="button button-fill btn-yello" id="confirm-urgeWater">提交</a>
+        </div>
+    </script>
+    <script id="reasonTpl" type="text/x-handlebars-template">
+        <header class="bar bar-nav light-nav" data-role="header">
+                <span class="icon icon-35icoback pull-left close-popup bar-left"></span>  
+                <h1 class="title">申请退货</h1>
+                <a href="tel:{{data.enterpriseService.tel}}" class="icon icon-kefu pull-right icon-color"></a>
+        </header>
+        <div class="content content-returned-purchase" data-role="content-returned-purchase">
+            <div class="card">
+                <div class="card-header">退货退款服务说明:</div>
+                <div class="card-content">
+                  <div class="card-content-inner" style="overflow: hidden;" data-role="tuihuoDescripe1">提交退货申请-客服受理沟通-确认退款金额-办理退款业务-退款到账完成</div>
+                </div>
+            </div>
+            <ul class="tuikuan-type">
+                <li>
+                    <span>申请类型:</span>
+                </li>
+                <li>
+                    <span>我要退款（无需退货）</span>
+                    <label class="label-checkbox">
+                        <input type="radio" value="我要退款（无需退货）" name="th_type" checked>
+                        <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                    </label>
+                </li>
+                <li>
+                    <span>我要退货</span>
+                    <label class="label-checkbox">
+                        <input type="radio" value="我要退货" name="th_type" >
+                        <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                    </label>
+                </li>
+            </ul>
+            <ul class="tuikuan-reason">
+                <li>
+                    <span>申请原因:</span>
+                </li>
+                <li class="item-content item-link">
+                    <div class="item-inner reason-box">
+                        <div class="item-input">
+                            <select name="th_reason" data-role="select-reason">
+                                {{#each data.th_reasons}}
+                                <option value="{{this}}">{{this}}</option>
+                                {{/each}}
+                            </select>  
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <ul class="tuikuan-explain">
+                <li>
+                    <div class="item-title label">留言:</div>
+                    <div class="item-content">
+                      <div class="item-inner">
+                        
+                        <div class="item-input">
+                            <textarea name="th_remark" id="" cols="30" rows="5" placeholder="请输入留言"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="bar bar-footer">
+            <a href="#" class="button button-fill btn-yello" id="apply-tuihuo">提交申请</a>
+        </div>
+        <!-- <li>
+            <span>申请原因:</span>
+        </li>
+        <li class="item-content item-link">
+            <div class="item-inner reason-box">
+                <div class="item-input">
+                    <select name="th_reason" data-role="select-reason">
+                        {{#each data.th_reasons}}
+                        <option value="{{this}}">{{this}}</option>
+                        {{/each}}
+                    </select>  
+                </div>
+            </div>
+        </li> -->
+    </script>
+    <script id="btnsTpl" type="text/x-handlebars-template">
+        <p class="order-control">
+        {{#is data.cancelEnabled true}}
+        <a href="#" data-id="{{orderId}}" data-action="cancel-order" class="button button-fill btn-yello ctrl-btn">取消订单</a>
+        {{/is}}
+        {{#is data.ifOpenTH true}}
+        <a href="#" data-id="{{orderId}}" data-action="returned-purchase" class="button button-fill btn-yello ctrl-btn">我要退货</a>
+        {{/is}}
+        {{#is data.th_orderId '>' 0}}
+        <a href="#" data-id="{{orderId}}" data-action="show-purchase" class="button button-fill btn-yello ctrl-btn">查看退货</a>
+        {{/is}}
+        <!-- {{#is data.evaluateEnabled true}}
+        <a href="/weixin/evaluate?orderId={{orderId}}&shopId={{data.shopId}}" class="button button-fill btn-yello">去评价</a>
+        {{/is}} -->
+        {{#is data.payEnabled true}}
+        <a href="#" data-id="{{orderId}}" data-action="goon-pay" class="button button-fill btn-yello ctrl-btn" data-ordergroup="{{orderGroup}}">继续支付</a>
+        {{/is}}
+        <!-- {{#is data.delEnabled true}}
+        <a href="#" data-id="{{orderId}}" data-action="delete-order" class="button button-fill btn-yello ctrl-btn">删除订单</a>
+        {{/is}} -->
+        <!-- {{#is data.reapEnabled true}}
+        <a href="#" data-id="{{orderId}}" data-shopid="{{data.shopId}}" data-action="confirm-arrived" class="button button-fill btn-yello ctrl-btn">确定收货</a> -->
+        {{/is}}
+        </p>
+    </script>
+    <script id="detailTpl" type="text/x-handlebars-template">
+        <h4 class="detail-tit">商家信息</h4>
+        <div class="store-tel">
+            <a href="tel:{{data.tel}}" style="display: block;" class="shopTel">
+            <span class="icon icon-73ordericostore"></span>
+            水店电话：{{data.tel}}
+            <svg class="icon icon-svg" aria-hidden="true">
+                <use xlink:href="#icon-btn_tel1"></use>
+            </svg></a>
+        </div>
+        <h4 class="detail-tit">商品信息</h4>
+        <ul class="order-detail-goods">
+        
+            <li>
+              <div class="store-tit">
+                <a href="/weixin/products?shopId={{data.shopId}}" style="display: block;">
+                <table>
+                    <tr>
+                        <td><img src="{{data.pictureUrl}}" alt=""></td>
+                        <td>{{data.shopName}}<span class="icon icon-ico_awwor_right"></span></td>
+                    </tr>
+                </table></a>
+              </div>
+              {{#each data.details}}
+              <table class="goods-item">
+                <tr>
+                  <td>{{pname}}</td>
+                  <td rowspan="2">
+                    <a href="#" data-action="add-habit" data-shopid="{{../data.shopId}}" data-pid="{{pid}}">
+                        <svg  class="icon icon-svg" aria-hidden="true">
+                            <use xlink:href="#icon-btn_sp_habit"></use>
+                        </svg>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span>单价：￥{{price}}</span>
+                    <span>数量：{{number}}</span>
+                    <span>{{#is settlementType "现金"}}金额：￥{{sum ../data.details 'total'}}{{else}}结算：{{settlementType}}{{/is}}</span>
+                  </td>
+                </tr>
+              </table>
+              {{/each}}
+           
+              <table class="shop-info">
+                <tr>
+                  <td>商品：</td>
+                  <td>￥{{sum data.details 'total'}}</td>
+                </tr>
+                <tr>
+                  <td>运费：</td>
+                  {{#is data.freight '0'}}
+                  <td>免运费</td>
+                  {{else}}  
+                  <td>￥{{data.freight}}</td>
+                  {{/is}}
+                </tr>
+                <tr>
+                  <td>优惠：</td>
+                  <td>-￥{{sum data.details 'voucherMoney'}}</td>
+                </tr>
+                <tr>
+                  <td>水票：</td>
+                  <td><span data-role="ticket-no"></span>张</td>
+                </tr>
+                <tr>
+                  <td>电子票：</td>
+                  <td><span data-role="eticket-no"></span>张</td>
+                </tr>
+                <tr>
+                    <td class="sum-row" colspan="2"><p>共{{sum data.details 'number'}}件商品<span>应付款：<em>￥{{data.receivableTotal}}</em></span></p></td>
+                </tr>
+              </table>
+            </li>
+        
+        </ul>
+        <h4 class="detail-tit">订单信息</h4>
+        <div class="detail-show-wrap">
+          <p>订单号：{{data.orderNo}}</p>
+          <p>订单状态：{{data.status}}</p>
+          {{#is data.payStyle}}
+          <p>支付方式：{{data.payStyle}}</p>
+          {{/is}}
+          {{#is data.dateCreated}}
+          <p>创建时间：{{data.dateCreated}}</p>
+          {{/is}}
+          {{#is data.appointmentTime}}
+          <p>预约时间：{{data.appointmentTime}}</p>
+          {{/is}}
+          {{#is data.paymentDate}}
+          <p>付款时间：{{data.paymentDate}}</p>
+          {{/is}}
+          {{#is data.deliverTime}}
+          <p>发货时间：{{data.deliverTime}}</p>
+          {{/is}}
+          {{#is data.orderRemark}}
+          <p>客户留言：{{data.orderRemark}}</p>
+          {{/is}}
+        </div>
+        <h4 class="detail-tit">地址信息</h4>
+        <div class="detail-show-wrap">
+          <p>联系人：{{data.contacts}}</p>
+          <p>联系电话：{{data.phone}}</p>
+          <p>配送地址：{{data.sendAddress}}</p>
+        </div>
+        {{#is data.invoiceMap}}
+        <h4 class="detail-tit">开票信息</h4>
+        <div class="detail-show-wrap">
+            <p>开票类型：{{data.invoiceMap.typeStr}}</p>
+            <p>开票金额：{{data.invoiceMap.money}}</p>
+            {{#is data.invoiceMap.invoiceName}}
+            <p>开票抬头：{{data.invoiceMap.invoiceName}}</p>
+            {{/is}}
+            {{#is data.invoiceMap.invoiceDetail}}
+            <p>开票明细：{{data.invoiceMap.invoiceDetail}}</p>
+            {{/is}}
+            {{#is data.invoiceMap.state "1"}}
+            <p>开票时间：{{data.invoiceMap.dateSend}}</p>
+            {{/is}}
+        </div>
+        {{/is}}    
+    </script>
+    <script id="logsTpl" type="text/x-handlebars-template">
+        
+        <div class="order-box">
+            <a href="{{data.shuiqoUrl}}" class="provide">本数据由<i>水趣云</i>提供<span class="nav noselect right icon icon-ico_awwor_right" ></span></a>
+            <table>
+                <tr>
+                    <td>
+                        <div>订单号：{{data.orderNo}}</div>
+                        <div>承运人：{{data.eName}}</div>
+                        <div>预计送达：{{data.sendTime}}</div>
+                    </td>
+                    <td>
+                        {{#is data.enableUrge true}}
+                        <a href="#" class="button button-fill btn-yello" data-role="urge-order">我要催单</a>
+                        {{/is}}
+                    </td>
+                </tr>
+                
+            </table>
+        </div>
+        <div class="order-status-flag"></div>
+        <ul class="order-status-list">
+            {{#each data.logisticsMaps}}
+                {{#is dataReson '0'}}
+                <li><i></i><span></span><em>{{logisticsDescribe}}</em></li>
+                {{else}}
+                    {{#is @first true}}
+                    {{#is location false}}
+                    <li>
+                        <i></i><span></span><em>{{logisticsDescribe}}</em>
+                        <div class="touxiang">
+                            {{#is photo ""}}
+                            <img src="/files/images/$!webStyle/default.png" alt="" data-role="papers-info">
+                            {{else}}
+                            <img src="{{photo}}" alt="" data-role="papers-info">
+                            {{/is}}
+                        </div>
+                    </li>
+                    {{else}}
+                    <li> 
+                        <i></i>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="tips">您的订单正在配送途中，请您准备签收（配送员:{{contacts}}，联系电话：<a href="tel:{{phone}}" style="color:#93D7F3" class="shopTel">{{phone}}</a>）感谢您的耐心等待。</div>
+                                <div class="touxiang">
+                                    {{#is photo ""}}
+                                    <img src="/files/images/$!webStyle/default.png" alt="" data-role="papers-info">
+                                    {{else}}
+                                    <img src="{{photo}}" alt="" data-role="papers-info">
+                                    {{/is}}
+                                    <!-- <img src="/files/images/ico_map_point.png" alt="" style="position: absolute;right: 0;bottom:0.5rem;width: 1.5rem;"> -->
+                                </div>
+                                <!-- <div class="paper3">
+                                    {{#is cards "||"}}
+                                    <span class="icon icon-btn_work"></span>
+                                    <span class="icon icon-btn_healthy"></span>
+                                    <span class="icon icon-btn_no_crime"></span>
+                                    {{else}}
+                                    <span class="icon icon-btn_work public-icon-color" data-role="work"></span>
+                                    <span class="icon icon-btn_healthy public-icon-color" data-role="healthy"></span>
+                                    <span class="icon icon-btn_no_crime public-icon-color" data-role="crime"></span>
+                                    {{/is}}  
+                                </div> -->
+                                <!-- <span class="pull-right " data-role="dateCreated">{{dateCreated}}</span> -->
+                            </div>
+                            <div class="card-content">
+                                <div class="card-content-inner" style="width: 100%;padding: 0.25rem 0;">
+                                    
+                                    
+                                    
+                                    <div class="papers-wrap">
+                                        
+                                        <div id="location-wrap" style="width:100%;height: 9.2rem;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    {{/is}}
+                    {{else}}
+                    <li><i></i><span></span><em>{{logisticsDescribe}}</em></li>
+                    {{/is}}
+                {{/is}}       
+            {{/each}}
+        </ul>   
+    </script>
+    <script id="papersTpl" type="text/x-handlebars-template">
+        {{#is data.hash true}}
+            <header class="bar bar-nav light-nav">
+                <span class="icon icon-35icoback pull-left close-popup bar-left"></span>  
+                <h1 class="title">宝安西乡店</h1>
+            </header>
+            <div class="content">
+                <div class="waterboys">
+                    <div class="big-photo">
+                        {{#is data.staffInfo.picture ""}}
+                        <img src="/files/images/ssy_icn.png" alt="">
+                        {{else}}
+                        <img src="{{data.staffInfo.picture}}" alt="">
+                        {{/is}}
+                        <span class="contacts-people">{{data.staffInfo.name}}</span>
+                        <span class="contacts-tel">{{data.staffInfo.phone}}</spam>
+                    </div>
+                    <div class="papers-detail">
+                        <p>
+                            <em class="appraise">总体评价</em>
+                            
+                            
+                                {{{showstars data.staffInfo.grade_total}}}
+                            
+                                                    
+                        </p>
+                        <p>
+                            <em class="speed">配送速度</em>
+                            
+                            
+                            {{{showstars data.staffInfo.grade_speed}}}
+                        </p>
+                        <p>
+                            <em class="attitude">服务态度</em>
+                            
+                            {{{showstars data.staffInfo.grade_service}}}
+                        </p>
+                        <div class="paper3">
+                        {{#is data.staffInfo.workCard ""}}
+                        <span class="icon icon-btn_work" style="text-align: left;"></span>
+                        <span class="icon icon-btn_healthy" style="text-align: center;"></span>
+                        <span class="icon icon-btn_no_crime" style="text-align: right;"></span>
+                        {{else}}
+                        <span class="icon icon-btn_work public-icon-color" data-role="work" style="text-align: left;"></span>
+                        <span class="icon icon-btn_healthy public-icon-color" data-role="healthy" style="text-align: center;"></span>
+                        <span class="icon icon-btn_no_crime public-icon-color" data-role="crime" style="text-align: right;"></span>
+                        {{/is}}
+                        </div> 
+                    </div>
+                </div>
+                <!-- <div class="dispath-record">
+                    <div class="dispath-duration">
+                        配送总时长
+                        <p><b>{{data.staffInfo.totalTime}}</b>天</p>
+                    </div>
+                    <div class="dispath-total">
+                        配送总量
+                        <p><b>{{data.staffInfo.totalOrder}}</b>单</p>
+                    </div>
+                    <div class="dispath-for-me">
+                        为我配送
+                        <p><b>{{data.staffInfo.myorderNum}}</b>次</p>
+                    </div>
+                </div> -->
+                <div class="show-papers" data-role="show-papers">
+                    <img src="" alt="" data-cards="{{cards}}" data-role="papers3" style="width: 100%;">
+                </div>
+            </div>
+        {{/is}}
+    </script>
+    <script id="cancelOrderTpl" type="text/x-handlebars-template">
+        <ul>
+            {{#each data.reasons}}
+            <li>
+                <span>{{this}}</span>
+                <label class="label-checkbox">
+                    <input type="radio" value="{{this}}" name="reason" />
+                    <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                </label>
+            </li>
+            {{/each}}
+            <li class="other-reason">
+                <input type="text" placeholder="其他原因(选填)" id="otherReason">
+            </li>
+
+        </ul>
+        <a href="#" class="button button-fill btn-yello" id="confirm-cancel">提交</a>
+    </script>
+    <script id="showTuihuoTpl" type="text/x-handlebars-template">
+        <header class="bar bar-nav light-nav">
+            <span class="icon icon-35icoback pull-left close-popup bar-left"></span>  
+            <h1 class="title">查看退货申请</h1>
+            <a href="tel:{{data.thDetail.tel}}" class="icon icon-kefu pull-right icon-color"></a>
+        </header>
+        <div class="content content-returned-purchase" data-role="content-returned-purchase">
+            <div class="card">
+                <div class="card-header">退货退款服务说明:</div>
+                <div class="card-content">
+                  <div class="card-content-inner" data-role="tuihuoDescripe2" style="overflow: hidden;">提交退货申请-客服受理沟通-确认退款金额-办理退款业务-退款到账完成</div>
+                </div>
+            </div>
+            <ul class="tuikuan-progress">
+                <li>
+                    <span>进度详情:</span><span class="icon icon-94refundgotop" id="arrowToggle"></span><span>
+                </li>
+                
+                <li>
+                    {{#each data.loggers}}
+                    <div class="progress-row">
+                        <div class="flag">
+                            <span></span>
+                        </div>
+                        <span class="logger">{{disposeDate}}&nbsp;&nbsp;&nbsp;&nbsp;{{logger}}</span>
+                    </div>
+                    {{/each}}
+                    
+                </li>
+                
+            </ul>
+            <ul class="tuikuan-type">
+                <li>
+                    <span>申请类型:{{data.thDetail.th_type}}</span>
+                </li>
+            </ul>
+            <ul class="tuikuan-reason">
+                <li>
+                    <span>申请原因:</span>
+                </li>
+                <li>
+                   <span>{{data.thDetail.th_reason}}</span> 
+                </li>
+            </ul>
+            <ul class="tuikuan-explain">
+                <li>
+                    <div class="item-title label">留言:</div>
+                    <div class="item-content">
+                        {{data.thDetail.th_remark}}
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!-- <div class="bar bar-footer">
+            <a href="#" class="button button-fill btn-yello" id="apply-tuihuo">取消退款</a>
+        </div> -->
+    </script>
+    #*加载JS文件*# 
+    #parse("control/$!webStyle/publicJs.vm")
+    <script type='text/javascript' src='/files/common/js/selector.js' charset='utf-8'></script>
+    <!-- <script type='text/javascript' src='https://cdn.shuiqoo.cn/$!webStyle/selector.js' charset='utf-8'></script> -->
+    #parse("control/$!webStyle/globalJs.vm")
+    <script>
+        
+        $(function() {
+            var orderId = getQueryString('orderId');
+            //获取物流信息
+            $.ajax({
+                type: "get",
+                url: "/weixin/getOrderLog?orderId=" + orderId,
+                dataType: 'json',
+                complete: function(json) {
+                  
+                    var data = json.response;
+                    var status = json.status;
+                    if(status != 200){
+                        $.alert('网络异常，状态为16.1' + status);
+                        return;
+                    }
+                    if ($.type(data) == 'string') {
+                        data = JSON.parse(data);
+                    }
+                    if(data.code != 'E00000'){
+                        if(data.code == "-1"){
+                            window.location.href = "/weixin/bind";
+                        }else{
+                            $.alert(data.message);
+                            return;
+                        }
+                    }else{
+                        
+                        var context = {
+                            data: data.data
+                        };
+                        var logsTpl = $("#logsTpl").html();
+                        var logsTemplate = Handlebars.compile(logsTpl);
+                        var logsCont = logsTemplate(context);
+                        $('[data-role="logs-wrap"]').html(logsCont);
+
+                        // 我要催单
+                        var urgeTpl = $("#urgeTpl").html();
+                        var urgeTemplate = Handlebars.compile(urgeTpl);
+                        var urgeCont = urgeTemplate(context);
+                        $('[data-role="show-urgeOrder"]').html(urgeCont);
+                        // var len = $('[data-role="dateCreated"]').length;
+                        // var timeStamp = [];
+                        // var date = [];
+                        // var res = []
+                        // for(var j=0;j<len;j++){
+                        //   timeStamp[j] = $('[data-role="dateCreated"]').eq(j).html();
+                        //   timeStamp[j]= parseInt(timeStamp[j]);
+                        //   date[j] = new Date(timeStamp[j]);
+                        //   // console.log(date[i]);
+                        //   var  h  = date[j].getHours();
+                        //   var  i  = date[j].getMinutes();
+                        //   if(i<10){
+                        //     i = '0'+i;
+                        //   }
+                        //   res[j] = h+":"+i;
+                        //   $('[data-role="dateCreated"]').eq(j).html(res[j])
+                        // }
+                        $('[data-role="urge-order"]').on('click',function(e){
+                            e.preventDefault();
+                            $.popup('.popup-urge-order');
+                            // $.alert('催单成功');
+                        });
+                        $('#confirm-urgeWater').on('click',function(e){
+                            e.preventDefault();
+                            var remark= $.trim($('[name="urgeMsgs"]:checked').val());
+                            if(remark){
+                                $.confirm("是否确认催单?",function(){
+                                    $.ajax({
+                                        type: "post",
+                                        url: "/weixin/ordercuishui",
+                                        data:{
+                                            orderId:orderId,
+                                            remark:remark
+                                        },
+                                        dataType: 'json',
+                                        complete: function(json) {
+                                            
+                                            var data = json.response;
+                                            var status = json.status;
+                                            if(status != 200){
+                                                $.alert('网络异常，状态为16.5' + status);
+                                                return;
+                                            }
+                                            if($.type(data) == 'string') {
+                                                data = JSON.parse(data);
+                                            }
+                                            if(data.code != 'E00000'){
+                                                if(data.code == "-1"){
+                                                    window.location.href = "/weixin/bind";
+                                                }else{
+                                                    $.alert(data.message);
+                                                    return;
+                                                }
+                                            }else{
+                                                $.alert('催单成功', function(){
+                                                    $.closeModal('.popup-urge-order');
+                                                });
+                                                  
+                                            }
+                                          
+                                        }
+                                    });
+                                })
+                                
+                            }else{
+                                $.toast('请选择您的催单消息');
+                            }
+                        });
+
+                        if(data.data.logisticsMaps[0].dataReson && data.data.logisticsMaps[0].cards){
+                            // $('[data-role="papers3"]').hide();
+                            if(data.data.logisticsMaps[0].location && data.data.logisticsMaps[0].cards){
+                                // var papers3 = $('[data-role="papers3"]').data('cards').split("|");
+                                var mapLocation = data.data.logisticsMaps[0].location.split("|");
+                                //送水员头像
+                                if(data.data.logisticsMaps[0].photo==""){
+                                    var touxiang = "/files/images/$RM01KZN.png";
+                                }else{
+                                    var touxiang = data.data.logisticsMaps[0].photo;
+                                }
+                                
+                                //水店坐标
+                                var shopL = mapLocation[0].split(",");
+                                //客户坐标
+                                var addresseeL = mapLocation[1].split(",");
+                                //送水员坐标
+                                var deliverymanL = mapLocation[2].split(",");
+                                
+                                // 百度地图API功能
+                                var map = new BMap.Map("location-wrap");
+                             
+                                var map_dian = "/files/images/icon_map_dian.png";
+                                var map_user = "/files/images/icon_map_user.png";
+                                
+                                var dianPoint = new BMap.Point(shopL[0],shopL[1]);
+                                var userPoint = new BMap.Point(addresseeL[0],addresseeL[1]);
+                                var point = new BMap.Point(deliverymanL[0],deliverymanL[1]);
+                                map.centerAndZoom(point, 16);
+                               
+                                function addMarker(photo,point){  // 创建图标对象   
+                                    var myIcon = new BMap.Icon(photo,new BMap.Size(24, 32), {    
+                                        // 指定定位位置。   
+                                        // 当标注显示在地图上时，其所指向的地理位置距离图标左上    
+                                        // 角各偏移10像素和25像素。您可以看到在本例中该位置即是   
+                                        // 图标中央下端的尖角位置。    
+                                        // offset: new BMap.Size(10, 25),    
+                                        // 设置图片偏移。   
+                                        // 当您需要从一幅较大的图片中截取某部分作为标注图标时，您   
+                                        // 需要指定大图的偏移位置，此做法与css sprites技术类似。    
+                                        // imageOffset: new BMap.Size(0, 0 - index * 25)   // 设置图片偏移    
+                                    });      
+                                        // 创建标注对象并添加到地图   
+                                    var marker = new BMap.Marker(point, {icon: myIcon});    
+                                    map.addOverlay(marker);    
+                                }
+                                // function addPhotoMarker(photo,point){  
+                                //     // 创建图标对象   
+                                //     var myIcon = new BMap.Icon(photo,new BMap.Size(30,30), {    
+                                            
+                                //     });      
+                                //         // 创建标注对象并添加到地图   
+                                //     var marker = new BMap.Marker(point,{icon: myIcon});
+                                //     marker.setTop(true);    
+                                //     map.addOverlay(marker);    
+                                // }
+                                var opts = {type: BMAP_NAVIGATION_CONTROL_ZOOM}    
+                                map.addControl(new BMap.NavigationControl(opts));    
+                                addMarker(map_dian,dianPoint);
+                                addMarker(map_user,userPoint);
+                                // addPhotoMarker(touxiang,point);
+
+
+                                // 复杂的自定义覆盖物
+                                function ComplexCustomOverlay(point){
+                                    this._point = point;
+                                       
+                                }
+                                ComplexCustomOverlay.prototype = new BMap.Overlay();
+                                ComplexCustomOverlay.prototype.initialize = function(map){
+                                    this._map = map;
+                                    var div = this._div = document.createElement("div");
+                                    div.style.position = "absolute";
+                                    div.style.zIndex = BMap.Overlay.getZIndex(this._point.lat);
+                                    div.style.height = "30px";
+                                    div.style.width="30px";
+                                     
+                                    var arrow = this._arrow = document.createElement("img");
+                                    arrow.src = touxiang;
+                                    arrow.style.width = "30px";
+                                    arrow.style.height = "30px";
+                                    arrow.style.border = "2px solid red";
+                                    arrow.style.top = "22px";
+                                    arrow.style.left = "10px";
+                                    div.appendChild(arrow);
+                                
+                              
+                                     
+                                    map.getPanes().labelPane.appendChild(div);       
+                                    return div;
+                                   
+                                }
+
+                                ComplexCustomOverlay.prototype.draw = function(){
+                                    var map = this._map;
+                                    var pixel = map.pointToOverlayPixel(this._point);
+                                    this._div.style.left = pixel.x - parseInt(this._arrow.style.left) + "px";
+                                    this._div.style.top  = pixel.y - 30 + "px";
+                                }
+
+                                var myCompOverlay = new ComplexCustomOverlay(new BMap.Point(deliverymanL[0],deliverymanL[1]));
+                                 
+                                map.addOverlay(myCompOverlay);//将标注添加到地图中
+                            }
+                            
+
+
+                            // $('[data-role="show-papers"]')
+
+                            $('[data-role="logs-wrap"]').delegate('[data-role="papers-info"]','click',function(e){
+                                // console.log(111);
+                                e.preventDefault();
+                                $.popup('.popup-papers3-about');
+                                $.ajax({
+                                    type: "post",
+                                    url: "/weixin/getStaffDetail",
+                                    data:{
+                                        eid:data.data.eid,
+                                        staffId:data.data.staffId
+                                    },
+                                    dataType: 'json',
+                                    complete: function(json) {
+                                      
+                                        var data = json.response;
+                                        var status = json.status;
+                                        if(status != 200){
+                                            $.alert('网络异常，状态为16.1' + status);
+                                            return;
+                                        }
+                                        if ($.type(data) == 'string') {
+                                            data = JSON.parse(data);
+                                        }
+                                        if(data.code != 'E00000'){
+                                            if(data.code == "-1"){
+                                                window.location.href = "/weixin/bind";
+                                            }else{
+                                                $.alert(data.message);
+                                                return;
+                                            }
+                                        }else{
+                                            var context ={
+                                                data:data.data
+                                            }
+                                            var papersTpl = $("#papersTpl").html();
+                                            var papersTemplate = Handlebars.compile(papersTpl);
+                                            var papersCont = papersTemplate(context);
+                                            $('[data-role="content-papers3"]').html(papersCont);
+
+                                            $('[data-role="papers3"]').attr("src",data.data.staffInfo.healthCard);
+                                            //证件照点击显示/隐藏
+                                            $('[data-role="work"]').on('click',function(){
+                                                
+                                                $('[data-role="papers3"]').attr("src",data.data.staffInfo.workCard);
+                                                
+                                            });
+                                            $('[data-role="healthy"]').on('click',function(){
+
+                                                $('[data-role="papers3"]').attr("src",data.data.staffInfo.healthCard);                    
+                                               
+                                            });
+                                            $('[data-role="crime"]').on('click',function(){
+
+                                                $('[data-role="papers3"]').attr("src",data.data.staffInfo.creditCard);
+                                              
+                                            });
+
+
+                                        }
+                                    }
+                            
+                                });
+                                
+                                
+                               
+                            })
+
+
+                            
+                        }
+                        
+                    }
+                    
+                }
+            });
+            //获取订单信息
+            $.ajax({
+                type: "get",
+                url: "/weixin/getOrderDetail?orderId=" + orderId,
+                dataType: 'json',
+                complete: function(json) {
+                  
+                    var data = json.response;
+                    var status = json.status;
+                    if(status != 200){
+                        $.alert('网络异常，状态为16.2' + status);
+                        return;
+                    }
+                    if ($.type(data) == 'string') {
+                        data = JSON.parse(data);
+                    }
+                    if(data.code != 'E00000'){
+                        if(data.code == "-1"){
+                            window.location.href = "/weixin/bind";
+                        }else{
+                            $.alert(data.message);
+                            return;
+                        }
+                    }else{
+                        var context = {
+                            data: data.data,
+                            orderId: orderId
+                        };
+                        var detailTpl = $("#detailTpl").html();
+                        var detailTemplate = Handlebars.compile(detailTpl);
+                        var detailCont = detailTemplate(context);
+                        $('[data-role="detail-info-wrap"]').html(detailCont);
+                        // var total,number,priceSum=0;
+                        // for(var i=0;i<data.data.details.length;i++){
+                        //     // console.log(data.data.details[i].total,data.data.details[i].number);
+                        //     priceSum += Number(data.data.details[i].total * data.data.details[i].number);
+                            
+                        // }
+                        // $('[data-role="totalMoney"]').html(priceSum);
+                        var btnsTpl = $("#btnsTpl").html();
+                        var btnsTemplate = Handlebars.compile(btnsTpl);
+                        var btnsCont = btnsTemplate(context);
+                        $('[data-role="btn-wrap"]').html(btnsCont);
+                        
+                        var details = data.data.details;
+                        var tSum = 0;
+                        var eSum = 0;
+                        for(var i=0; i<details.length; i++){
+                            if(details[i]['settlementType'] == "水票"){
+                                tSum = tSum + details[i]['number'];
+                            }
+                        }
+                        for(var i=0; i<details.length; i++){
+                            if(details[i]['settlementType'] == "电子票"){
+                                eSum = eSum + details[i]['number'];
+                            }
+                        }
+                        $('[data-role="ticket-no"]').html(tSum);
+                        $('[data-role="eticket-no"]').html(eSum);
+                    }
+                    
+                }
+            }); 
+
+            //添加商品消费习惯
+            $('[data-role="detail-info-wrap"]').delegate("a:not(.shopTel)", "click", function(e){
+                // e.preventDefault();
+                var me = $(this),
+                    shopId = me.data('shopid'),
+                    pid = me.data('pid'),
+                    action = me.data('action');
+
+                    if(action == 'add-habit'){
+                        $.prompt('填写您习惯订购该商品的数量', '消费习惯',
+                            function (value) {
+                             
+                                if($.trim(value)>0 && !isNaN(parseInt($.trim(value))) && $.trim(value) % 1==0){
+
+                                    var habit = {
+                                        shopId: shopId,
+                                        pid: pid,
+                                        number: value
+                                    };
+                                     $.ajax({
+                                        type: "get",
+                                        url: "/weixin/addClientHabit",
+                                        data: {
+                                            habit: JSON.stringify(habit) 
+                                        },
+                                        dataType: 'json',
+                                        complete: function(json) {
+                                          
+                                            var data = json.response;
+                                            var status = json.status;
+                                            if(status != 200){
+                                                $.alert('网络异常，状态为16.3' + status);
+                                                return;
+                                            }
+                                            if ($.type(data) == 'string') {
+                                                data = JSON.parse(data);
+                                            }
+                                            
+                                            if(data.code != 'E00000'){
+                                                if(data.code == "-1"){
+                                                    window.location.href = "/weixin/bind";
+                                                }else{
+                                                    $.alert(data.message);
+                                                    return;
+                                                }
+                                            }else{
+                                                $.alert('操作成功');
+                                            }
+                                            
+                                        }
+                                    });   
+                                }else if(isNaN(parseInt($.trim(value))) ){
+                                    $.alert('请输入数字！');
+                                }else if($.trim(value)<=0 || $.trim(value)%1 !=0){
+                                    $.alert('请输入正确的数量！');   
+                                }else{
+                                    $.alert('数量不能为空！');
+                                }
+                            },
+                            function (value) {
+                              //$.alert('标签是 "' + value + '". You clicked Cancel button');
+                            }
+                        );
+                    }
+            });
+            //订单操作
+            $('[data-role="btn-wrap"]').delegate(".ctrl-btn", "click", function(e){
+                e.preventDefault();
+
+                var me = $(this),
+                    action = me.data('action');
+
+                    if(action == 'confirm-arrived'){
+                        
+                        var orderId = me.data('id'),
+                            shopId  = me.data('shopid');
+                        $.ajax({
+                          type: "get",
+                          url: "/weixin/reapOrder?orderId=" + orderId,
+                          dataType: 'json',
+                          complete: function(json) {
+                            
+                              var data = json.response;
+                              var status = json.status;
+                              if(status != 200){
+                                  $.alert('网络异常，状态为16.4' + status);
+                                  return;
+                              }
+                              if ($.type(data) == 'string') {
+                                  data = JSON.parse(data);
+                              }
+                              if(data.code != 'E00000'){
+                                    if(data.code == "-1"){
+                                        window.location.href = "/weixin/bind";
+                                    }else{
+                                        $.alert(data.message);
+                                        return;
+                                    }
+                              }else{
+                                    $.alert('确认成功', function(){
+                                        //跳到评价页面
+                                        window.location.href="/weixin/evaluate?orderId="+orderId+"&shopId="+shopId;
+                                    });
+                                  
+                              }
+                              
+                          }
+                        });
+
+                    }else if(action == 'cancel-order'){
+                        //取消订单    
+                        var orderId = me.data('id');
+                        $.popup('.popup-cancel-order');
+                        $.ajax({
+                            type: "post",
+                            url: "/weixin/orderCancelReason",
+                            dataType: 'json',
+                            complete: function(json) {
+                            
+                                var data = json.response;
+                                var status = json.status;
+                                if(status != 200){
+                                    $.alert('网络异常，状态为16.5' + status);
+                                    return;
+                                }
+                                if ($.type(data) == 'string') {
+                                  data = JSON.parse(data);
+                                }
+                                if(data.code != 'E00000'){
+                                    if(data.code == "-1"){
+                                        window.location.href = "/weixin/bind";
+                                    }else{
+                                        $.alert(data.message);
+                                        return;
+                                    }
+                                }else{
+                                    // debugger;
+                                    var context = {
+                                        data: data.data
+                                    };
+                                    var cancelOrderlTpl = $("#cancelOrderTpl").html();
+                                    var cancelOrderTemplate = Handlebars.compile(cancelOrderlTpl);
+                                    var cancelOrderCont = cancelOrderTemplate(context);
+                                    $('[data-role="content-cancel-order"]').html(cancelOrderCont);
+                                    // $('.icon-form-checkbox').on('click',function(){
+                                    //     $(this).parent().siblings('input').attr("checked","checked");
+                                    // })
+                                    $('#confirm-cancel').on('click',function(e){
+                                        e.preventDefault();
+                                        var reason      = $.trim($('[name="reason"]:checked').val());
+                                        var otherReason = $.trim($('#otherReason').val());
+                                        if(reason || otherReason){
+                                            $.confirm("是否确认取消当前订单?",function(){
+                                                $.ajax({
+                                                    type: "post",
+                                                    url: "/weixin/cancelOrder",
+                                                    data:{
+                                                        orderId:orderId,
+                                                        reason:reason+","+otherReason,
+                                                    },
+                                                    dataType: 'json',
+                                                    complete: function(json) {
+                                                        
+                                                        var data = json.response;
+                                                        var status = json.status;
+                                                        if(status != 200){
+                                                            $.alert('网络异常，状态为16.5' + status);
+                                                            return;
+                                                        }
+                                                        if($.type(data) == 'string') {
+                                                            data = JSON.parse(data);
+                                                        }
+                                                        if(data.code != 'E00000'){
+                                                            if(data.code == "-1"){
+                                                                window.location.href = "/weixin/bind";
+                                                            }else{
+                                                                $.alert(data.message);
+                                                                return;
+                                                            }
+                                                        }else{
+                                                            $.alert('取消成功', function(){
+                                                                window.location.href="/weixin/orders?statusId=100";
+                                                            });
+                                                              
+                                                        }
+                                                      
+                                                    }
+                                                });
+                                            });
+                                        }else{
+                                            $.toast('请确认您的取消原因');
+                                        }
+                                    });
+                                }
+                              
+                            }
+                        });
+
+
+
+                       
+                    }else if(action == 'returned-purchase'){
+                        //申请退货   
+                        var orderId = me.data('id');
+                        $.popup('.popup-returned-purchase');
+                        $.ajax({
+                            type: "post",
+                            url: "/weixin/orderTuihuoParam",
+                            data:{
+                                orderId:orderId
+                            },
+                            dataType: 'json',
+                            complete: function(json) {
+                            
+                                var data = json.response;
+                                var status = json.status;
+                                if(status != 200){
+                                    $.alert('网络异常，状态为16.5' + status);
+                                    return;
+                                }
+                                if ($.type(data) == 'string') {
+                                  data = JSON.parse(data);
+                                }
+                                if(data.code != 'E00000'){
+                                    if(data.code == "-1"){
+                                        window.location.href = "/weixin/bind";
+                                    }else{
+                                        $.alert(data.message);
+                                        return;
+                                    }
+                                }else{
+                                    
+                                    var context = {
+                                        data: data.data
+                                    };
+                                    var reasonTpl = $("#reasonTpl").html();
+                                    var reasonTemplate = Handlebars.compile(reasonTpl);
+                                    var reasonCont = reasonTemplate(context);
+                                    $('[data-role="tuikuanReason"]').html(reasonCont);
+
+                                    $('[data-role="header"]').html();
+                                    
+                                    var result = data.data.th_describe.substring(data.data.th_describe.lastIndexOf(".")+1);
+                                    
+
+                                    if(result=="txt"){
+                                        $.ajax({
+                                            type: "get",
+                                            url:data.data.th_describe,
+                                            dataType:"txt",
+                                            success:function(result){
+                                                $("[data-role='tuihuoDescripe1']").html(result);
+                                            }
+
+                                        })
+                                    }else if(result=="html"){
+                                        $.ajax({
+                                            type: "get",
+                                            url:data.data.th_describe,
+                                            dataType:"html",
+                                            success:function(result){
+                                                $("[data-role='tuihuoDescripe1']").html(result);
+                                            }
+
+                                        })
+                                    }else{
+                                        $("[data-role='tuihuoDescripe1']").html('<img src='+data.data.th_describe+'>');
+                                    }
+
+                                    $("#apply-tuihuo").on("click",function(){
+                        
+                                        //退货类型
+                                        var th_type = $(".tuikuan-type [name='th_type']:checked").val();
+                                        //退货原因
+                                        var th_reason = $(".tuikuan-reason [name='th_reason']").val();
+                                        //退货备注
+                                        var th_remark = $(".tuikuan-explain [name='th_remark']").val();
+
+                                        var tuihuoFlag = 0;
+                                        if(th_type==""){
+                                            $.toast("退货类型不能为空");
+                                            tuihuoFlag = 1;
+                                            return;
+                                        }else if(th_reason==""){
+                                            $.toast("退货原因不能为空");
+                                            tuihuoFlag = 1;
+                                            return;
+                                        }else if(th_remark==""){
+                                            $.toast("退货备注不能为空");
+                                            tuihuoFlag = 1;
+                                            return;
+                                        }
+                                        var orderJson = {
+                                                    orderId:orderId,
+                                                    th_type:th_type,
+                                                    th_reason:th_reason,
+                                                    th_remark:th_remark
+                                            }
+                                        // console.log(orderJson);
+                                        // return;
+                                        $.ajax({
+                                            type: "post",
+                                            url: "/weixin/saveOrderTuiHuo",
+                                            data: {
+                                                orderJson:JSON.stringify(orderJson)
+                                            },
+                                            dataType: 'json',
+                                            complete: function(json) {
+                                              
+                                                var status = json.status;
+                                                if(status != 200){
+                                                    $.alert('网络异常，状态为11.6' + status);
+                                                    tuihuoFlag=0;
+                                                    return;
+                                                }
+                                                var data = json.response;
+                                               
+                                                if ($.type(data) == 'string') {
+                                                    data = JSON.parse(data);
+                                                }
+                                                if(data.code != 'E00000'){
+                                                    if(data.code == "-1"){
+                                                        window.location.href = "/weixin/bind";
+                                                    }else{
+                                                        $.alert(data.message);
+                                                        tuihuoFlag=0;
+                                                        return;
+                                                    }
+                                                }else{
+                                                    tuihuoFlag=0;
+                                                    $.alert("申请成功",function(){
+                                                        window.location.href="/weixin/account";
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    });
+                                    // debugger;
+                                    // var context = {
+                                    //     data: data.data
+                                    // };
+                                    // var cancelOrderlTpl = $("#cancelOrderTpl").html();
+                                    // var cancelOrderTemplate = Handlebars.compile(cancelOrderlTpl);
+                                    // var cancelOrderCont = cancelOrderTemplate(context);
+                                    // $('[data-role="content-cancel-order"]').html(cancelOrderCont);
+                                    // // $('.icon-form-checkbox').on('click',function(){
+                                    // //     $(this).parent().siblings('input').attr("checked","checked");
+                                    // // })
+                                    // $('#confirm-cancel').on('click',function(e){
+                                    //     e.preventDefault();
+                                    //     var reason      = $.trim($('[name="reason"]:checked').val());
+                                    //     var otherReason = $.trim($('#otherReason').val());
+                                    //     if(reason || otherReason){
+                                    //         $.ajax({
+                                    //             type: "post",
+                                    //             url: "/weixin/cancelOrder",
+                                    //             data:{
+                                    //                 orderId:orderId,
+                                    //                 reason:reason+","+otherReason,
+                                    //             },
+                                    //             dataType: 'json',
+                                    //             complete: function(json) {
+                                                    
+                                    //                 var data = json.response;
+                                    //                 var status = json.status;
+                                    //                 if(status != 200){
+                                    //                     $.alert('系统异常，状态为16.5' + status);
+                                    //                     return;
+                                    //                 }
+                                    //                 if($.type(data) == 'string') {
+                                    //                     data = JSON.parse(data);
+                                    //                 }
+                                    //                 if(data.code != 'E00000'){
+                                    //                     $.alert(data.message);
+                                    //                     return;
+                                    //                 }else{
+                                    //                     $.alert('取消成功', function(){
+                                    //                         window.location.href="/weixin/orders?statusId=100";
+                                    //                     });
+                                                          
+                                    //                 }
+                                                  
+                                    //             }
+                                    //         });
+                                    //     }else{
+                                    //         $.toast('请确认您的取消原因');
+                                    //     }
+                                    // });
+                                }
+                              
+                            }
+                        });                  
+                    }else if(action == 'show-purchase'){
+                        //查看退货申请
+                        $.showPreloader();  
+                        var orderId = me.data('id');
+                        $.popup('.popup-show-purchase');
+                        $.ajax({
+                            type: "post",
+                            url: "/weixin/orderTHDetail",
+                            data:{
+                                orderId:orderId
+                            },
+                            dataType: 'json',
+                            complete: function(json) {
+                            
+                                var data = json.response;
+                                var status = json.status;
+                                if(status != 200){
+                                    $.alert('网络异常，状态为16.5' + status);
+                                    return;
+                                }
+                                if ($.type(data) == 'string') {
+                                  data = JSON.parse(data);
+                                }
+                                if(data.code != 'E00000'){
+                                    if(data.code == "-1"){
+                                        window.location.href = "/weixin/bind";
+                                    }else{
+                                        $.alert(data.message);
+                                        return;
+                                    }
+                                }else{
+                                    $.hidePreloader();
+                                    var context = {
+                                        data: data.data
+                                    };
+                                    var showTuihuoTpl = $("#showTuihuoTpl").html();
+                                    var showTuihuoTemplate = Handlebars.compile(showTuihuoTpl);
+                                    var showTuihuoCont = showTuihuoTemplate(context);
+                                    $('[data-role="show-purchase"]').html(showTuihuoCont);
+                                    debugger;
+                                    var result = data.data.thDetail.th_describe.lastIndexOf(".").toLowerCase();
+                                    console.log(result);
+                                    if(data.data.thDetail.th_describe){
+                                        $.ajax({
+                                            type: "get",
+                                            url:data.data.thDetail.th_describe,
+                                            dataType:"txt",
+                                            success:function(result){
+                                                $("[data-role='tuihuoDescripe2']").html(result);
+                                            }
+
+                                        })
+                                    }
+                                    
+                                }
+                              
+                            }
+                        });
+                    }else if(action == 'delete-order'){
+                        //删除订单
+                        var orderId = me.data('id');
+                        $.ajax({
+                          type: "post",
+                          url: "/weixin/delOrder?orderId=" + orderId,
+                          dataType: 'json',
+                          complete: function(json) {
+                            
+                              var data = json.response;
+                              var status = json.status;
+                              if(status != 200){
+                                  $.alert('网络异常，状态为16.5' + status);
+                                  return;
+                              }
+                              if ($.type(data) == 'string') {
+                                  data = JSON.parse(data);
+                              }
+                              if(data.code != 'E00000'){
+                                    if(data.code == "-1"){
+                                        window.location.href = "/weixin/bind";
+                                    }else{
+                                        $.alert(data.message);
+                                        return;
+                                    }
+                              }else{
+                                  $.alert('删除成功', function(){
+                                        window.location.href="/weixin/orders?statusId=104";
+                                  });
+                                  
+                              }
+                              
+                          }
+                        });
+                    }else if(action == 'goon-pay'){
+                        
+                        var orderId = me.data('id');
+                        var orderGroup = me.data('ordergroup');
+                        $.ajax({
+                            url: "/weixin/payOrder?orderId="+orderId+"&orderGroup="+orderGroup,
+                            type: "get",
+                            dataType: "json",
+                            complete: function (result) {
+                                
+                                var status = result.status;
+                                if(status != 200){
+                                    $.alert('网络异常17.4，状态为' + status);
+                                    return;
+                                }
+                                var resp = result.response;
+                               
+                                if ($.type(resp) == 'string') {
+                                    resp = JSON.parse(resp);
+                                }
+                                if(resp.code != 'E00000'){
+                                    if(resp.code == "-1"){
+                                        window.location.href = "/weixin/bind";
+                                    }else{
+                                        $.alert(resp.message);
+                                        return;
+                                    }
+                                }else{
+                                    orderDetailSavePay(resp.appId, resp.timeStamp, resp.nonceStr, resp.package, resp.paySign);
+                                    
+                                }
+                            }
+                        });
+                    }
+            });
+            
+            $('[data-role="show-purchase"]').delegate("#arrowToggle",'click',function(e){
+                e.preventDefault();
+                if($(this).hasClass('icon-94refundgotop')){
+                    $(this).removeClass('icon-94refundgotop').addClass('icon-95refundgodown');
+                    $('.tuikuan-progress').find('li:last-child').hide();
+                }else if($(this).hasClass('icon-95refundgodown')){
+                    $(this).removeClass('icon-95refundgodown').addClass('icon-94refundgotop');
+                    $('.tuikuan-progress').find('li:last-child').show();
+                }
+                
+            });
+        });
+
+        $.init();
+    </script>
+  </body>
+</html>

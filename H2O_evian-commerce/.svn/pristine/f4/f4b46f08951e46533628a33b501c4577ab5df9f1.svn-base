@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/indexCss.vm")
+<body>
+ 	<div class="page-group">
+        <div class="page page-finish page-current page-seller" data-role="seller">
+            
+        </div>
+       
+    </div>
+    <script id="sellerTpl" type="text/x-handlebars-template">
+        <header class="bar bar-nav light-nav">
+            <a href="javascript:history.go(-1)" class="icon icon-35icoback pull-left bar-left"></a>   
+            <h1 class="title">合作伙伴申请</h1>
+        </header>
+        <div class="content">
+            <!-- 商家入驻填写表单 start -->
+            <div class="list-block new-form-list">
+                <ul>
+                    <li>
+                        <div class="item-content">
+                      <div class="item-inner">
+                        <div class="item-title label">联系人</div>
+                        <div class="item-input">
+                          <input type="text" name="linkman" value="{{data.register.linkman}}" {{#is data.exit true}}disabled{{/is}} placeholder="您的姓名" required>
+                        </div>
+                      </div>
+                        </div>
+                    </li>
+                    {{#is data.exit true}}
+                    <li>
+                        <div class="item-content">
+                      <div class="item-inner">
+                        <div class="item-title label">入驻城市</div>
+                        <div class="item-input">
+                          <input type="text" name="cityName" value="{{cityName}}" disabled>
+                        </div>
+                      </div>
+                        </div>
+                    </li>
+                    {{/is}}
+                    <li>
+                        <div class="item-content">
+                          <div class="item-inner">
+                            <div class="item-title label">商户名称</div>
+                            <div class="item-input">
+                              <input type="text" name="enterprise" value="{{data.register.enterprise}}" {{#is data.exit true}}disabled{{/is}} placeholder="入驻的商户（企业）名称" required>
+                            </div>
+                          </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                          <div class="item-inner">
+                            <div class="item-title label">经营品牌</div>
+                            <div class="item-input">
+                              <input type="text" name="brandName" value="{{data.register.brandName}}" {{#is data.exit true}}disabled{{/is}} placeholder="请输入您经营的品牌" required>
+                            </div>
+                          </div>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="item-content">
+                          <div class="item-inner">
+                            <div class="item-title label">联系方式</div>
+                            <div class="item-input">
+                                <input type="text" name="tel" value="{{data.register.tel}}" {{#is data.exit true}}disabled{{/is}} placeholder="客服人员联系您的方式" required maxlength="11">
+                            </div>
+                          </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                          <div class="item-inner">
+                            <div class="item-title label">邮箱地址</div>
+                            <div class="item-input">
+                              <input type="text" name="email" value="{{data.register.email}}" {{#is data.exit true}}disabled{{/is}} placeholder="您常用的邮箱（可选）">
+                            </div>
+                          </div>
+                        </div>
+                    </li>
+                    {{#is data.exit true}}
+                    <li>
+                        <div class="item-content">
+                          <div class="item-inner">
+                            <div class="item-title label">申请时间</div>
+                            <div class="item-input">
+                              <input type="text" name="dateCreated" value="{{data.register.dateCreated}}" disabled>
+                            </div>
+                          </div>
+                        </div>
+                    </li>
+                    {{/is}}
+                    {{#is data.exit true}}
+                    <li>
+                        <div class="item-title label" style="padding-left: 0.75rem;padding-top: 0.75rem;">客服回复</div>
+                        <div class="item-content">
+
+                          <div class="item-inner">
+                            
+                            <div class="item-input">
+                              <textarea name="replyContent" value="{{data.register.replyContent}}" disabled></textarea>
+                            </div>
+                          </div>
+                        </div>
+                    </li>
+                    {{/is}}
+                </ul>
+            </div>
+            <!-- 商家入驻填写表单 end -->
+        </div>
+        {{#is data.exit false}}
+        <div class="bar bar-footer order-bar">
+            <a href="#" data-role="save-blank" class="button button-fill btn-yello">提交</a>
+        </div>
+        {{/is}}
+        <!-- <ul>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">联系人</div>
+                <div class="item-input">
+                  <input type="text" name="linkman" value="{{data.register.linkman}}" {{#is data.exit true}}disabled{{/is}} placeholder="您的姓名" required>
+                </div>
+              </div>
+            </div>
+          </li>
+          {{#is data.exit true}}
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">入驻城市</div>
+                <div class="item-input">
+                  <input type="text" name="cityName" value="{{cityName}}" disabled>
+                </div>
+              </div>
+            </div>
+          </li>
+          {{/is}}
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">商户名称</div>
+                <div class="item-input">
+                  <input type="text" name="enterprise" value="{{data.register.enterprise}}" {{#is data.exit true}}disabled{{/is}} placeholder="入驻的商户（企业）名称" required>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">经营品牌</div>
+                <div class="item-input">
+                  <input type="text" name="brandName" value="{{data.register.brandName}}" {{#is data.exit true}}disabled{{/is}} placeholder="请输入您经营的品牌" required>
+                </div>
+              </div>
+            </div>
+          </li>
+
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">联系方式</div>
+                <div class="item-input">
+                    <input type="text" name="tel" value="{{data.register.tel}}" {{#is data.exit true}}disabled{{/is}} placeholder="客服人员联系您的方式" required maxlength="11">
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">邮箱地址</div>
+                <div class="item-input">
+                  <input type="text" name="email" value="{{data.register.email}}" {{#is data.exit true}}disabled{{/is}} placeholder="您常用的邮箱（可选）">
+                </div>
+              </div>
+            </div>
+          </li>
+          {{#is data.exit true}}
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">申请时间</div>
+                <div class="item-input">
+                  <input type="text" name="dateCreated" value="{{data.register.dateCreated}}" disabled>
+                </div>
+              </div>
+            </div>
+          </li>
+          {{/is}}
+          {{#is data.exit true}}
+          <li>
+          <div class="item-title label" style="padding-left: 0.75rem;padding-top: 0.75rem;">客服回复</div>
+            <div class="item-content">
+
+              <div class="item-inner">
+                
+                <div class="item-input">
+                  <textarea name="replyContent" value="{{data.register.replyContent}}" disabled></textarea>
+                </div>
+              </div>
+            </div>
+          </li>
+          {{/is}}
+        </ul>
+        {{#is data.exit false}}
+        <p><a href="#" data-role="save-blank" class="button button-fill btn-yello">提交</a></p>{{/is}} -->
+    </script>
+  #*加载JS文件*# 
+  #parse("control/$!webStyle/publicJs.vm")
+    #parse("control/$!webStyle/globalJs.vm")
+    <script>
+        $(function() {
+            //获取定位地址
+            var location = JSON.parse(localStorage.getItem("wxlocation"));
+            if(location && (location.lat)){
+                zuobiao = location.lat+','+location.lon;   
+            }
+            //获取商户入驻的信息
+            var getBlankEnterPrise = function(){
+                $.ajax({
+                    type: "post",
+                    url: "/weixin/getBlankEnterPrise",
+                    dataType: 'json',
+                    complete: function(json) {
+                        var data = json.response;
+                        var status = json.status;
+                        if(status != 200){
+                            $.alert('网络异常，状态为22.1' + status);
+                            return;
+                        }
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if(data.code != 'E00000'){
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                                return;
+                            }
+                        }else{
+                            var tpl = $("#sellerTpl").html();
+                            var template = Handlebars.compile(tpl);
+                            var context = {
+                                cityName:location.city,
+                                data: data.data
+                            };
+                            var cont = template(context);    
+                            $('[data-role="seller"]').html(cont);
+                        }
+                        
+                    }
+                });
+            };
+            getBlankEnterPrise();
+            //企业的入驻登记
+            var flag=0;
+            $('[data-role="seller"]').delegate('[data-role="save-blank"]', "click", function(e){
+                e.preventDefault();   
+                flag++;
+                console.log(flag);
+                if(flag > 1){
+                    return;
+                }          
+                var linkman = $.trim($('input[name=linkman]').val());
+                var enterprise = $.trim($('input[name=enterprise]').val());
+                var brandName = $.trim($('input[name=brandName]').val());
+                var tel = $.trim($('input[name=tel]').val());
+                var email = $.trim($('input[name=email]').val());
+                $('.err-msg').remove();
+                if(linkman == ""){
+                    $('input[name=linkman]').parents('.item-content').after('<p class="err-msg">联系人不能为空</p>');
+                    flag=0;
+                    return;
+                }
+                if(enterprise == ""){
+                    $('input[name=enterprise]').parents('.item-content').after('<p class="err-msg">商户名称不能为空</p>');
+                    flag=0;
+                    return;
+                }
+                if(brandName == ""){
+                    $('input[name=brandName]').parents('.item-content').after('<p class="err-msg">品牌名称不能为空</p>');
+                    flag=0;
+                    return;
+                }
+                if(tel == ""){
+                    $('input[name=tel]').parents('.item-content').after('<p class="err-msg">联系方式不能为空</p>');
+                    flag=0;
+                    return;
+                }
+                $.ajax({
+                    type: "post",
+                    url: "/weixin/saveBlankEnterPrise",
+                    data: {
+                        location:zuobiao,
+                        linkman: linkman,
+                        enterprise: enterprise,
+                        brandName: brandName,
+                        tel: tel,
+                        email: email
+                    },
+                    dataType: 'json',
+                    complete: function(json) {
+                      
+                        var status = json.status;
+                        if(status != 200){
+                            $.alert('网络异常，状态为22.2' + status);
+                            flag=0;
+                            return;
+                        }
+                        var data = json.response;
+                       
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if(data.code != 'E00000'){
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                                flag = 0;
+                                return;
+                            }
+                        }else{
+                            flag=0;
+                            $.alert('感谢您提交资料到水趣生活服务平台，我们将尽快安排人员与您取得联系',function(){
+                                window.location.href="/weixin/home";
+                            });
+                            
+                        }
+                    }
+                });
+            });
+            $('.new-form-list input').on('change', function(){
+                $(this).parents('li').find('.err-msg').remove();
+            });
+        });
+        $.init();
+    </script>
+</body>
+</html>

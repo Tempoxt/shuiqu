@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "boundWeixin")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/shopCss.vm")
+<body>
+  	<div class="page-group">
+		<div class="page page-finish page-current">
+			
+	        <div class="content content-register-gift theme-dark">
+	      		<div class="tips">
+	      			<span class="icon icon-xiaolian"></span>
+	      			<p>恭喜您，成功领取礼包！</p>
+	      		</div>
+	        	
+	            <div class="detail">
+	            	#if($!webStyle == "shuiqu")
+					<div class="qrCode" style="background: url('/files/images/shuiqu/download.png') no-repeat;background-size: 100% auto;"></div>
+
+					<p>
+					    <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.evian.daojia" class="button button-fill btn-yello">下载APP</a>
+					</p>
+					<p>
+					    <a href="/weixin/home" class="button button-fill btn-yello">前往水趣首页</a>
+					</p>
+				  	#else
+					<div class="qrCode" style="background: url('/files/images/dalishuishou/download.png') no-repeat;background-size: 100% auto;"></div>
+				  	<p>
+				    	<a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.evian.dlss" class="button button-fill btn-yello">下载APP</a>
+				  	</p>
+				  	<p>
+				    	<a href="/weixin/home" class="button button-fill btn-yello">前往大力水手首页</a>
+				  	</p>
+				  	#end
+				</div>
+				<div class="footer">温馨提示：APP登录密码是微信绑定短信验证码</div>
+	        </div>
+
+	        
+	    </div>
+	</div>
+	#*加载JS文件*# 
+    #parse("control/$!webStyle/publicJs.vm")
+	#parse("control/$!webStyle/globalJs.vm")
+	<script>
+		$(function(){
+			$('[data-role="close-win"]').on('click',function(){
+				// wx.closeWindow();
+				window.location.href="/weixin/everyShop"
+			})
+		})
+        $.init();
+    </script>
+</body>
+</html>

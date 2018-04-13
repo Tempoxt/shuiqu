@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "integralMall")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/shopCss.vm")
+<body>
+#*加载JS文件*# 
+#parse("control/$!webStyle/publicJs.vm")
+<script src="/files/js/$!webStyle/app.js"></script>
+<!-- <script src="https://cdn.shuiqoo.cn/$!webStyle/echarts.min.js"></script> -->
+#parse("control/$!webStyle/globalJs.vm")
+
+	<div class="page-group">
+		<div class="page page-finish page-current page-integralMall">
+            <header class="bar bar-nav light-nav">
+                <a class="icon icon-35icoback pull-left bar-left closeTuike" href="#"></a>  
+                <a class="icon icon-183help pull-right bar-right open-about" style="" href="/weixin/myIntegral"><span class="jfgz" >积分明细</span></a>
+                <a class="title icon pull-right bar-right" style="width: 3rem;bottom: 2px;"><span style="font-size: 70%;">积分:<span class="jfCount">0</span></span></a>
+            </header>
+            <div class="content img-code-box">
+            	<script type="text/javascript">
+            		var isApp=isAppFrame();
+            		if(isApp){
+            			$(".bar-nav").remove();
+            		}
+            		var tuikeEid="";
+            		// 点击关闭界面
+		            function closeWin() {
+		                WeixinJSBridge.invoke('closeWindow', {}, function(res) {
+		                    //res.err_msg(close_window:ok/close_window:error)
+		                });
+		            }
+		            function clickCloseTuike(){
+		              $(".closeTuike").click(function(){
+		                  closeWin();
+		              });
+		            }
+		            function clickCloseShop(){
+		                $(".button-fill").click(function(){
+		                    if(isApp){
+                                try {
+						        	app.ClosePage();
+							    } catch (e) {
+							        try {
+							            ClosePage();
+							        } catch (ee) {
+							        	// run('', '')
+							        }
+							    }
+                            }else{
+                                closeWin();
+                            }
+		                });
+		            }
+		            clickCloseTuike();
+		            // 截取url参数
+				    function GetQueryString(name){
+					     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+					     var r = window.location.search.substr(1).match(reg);
+					     if(r!=null)return  unescape(r[2]); return null;
+					}
+					 function getCookie(c_name)
+					{
+						if (document.cookie.length>0)
+						  {
+							  c_start=document.cookie.indexOf(c_name + "=")
+							  if (c_start!=-1)
+							    { 
+								    c_start=c_start + c_name.length+1 
+								    c_end=document.cookie.indexOf(";",c_start)
+							    if (c_end==-1) c_end=document.cookie.length
+							    	return unescape(document.cookie.substring(c_start,c_end))
+							    } 
+						  }
+						return ""
+					}
+					var appUserInfo = getCookie("appUserInfo");
+					/*if(!appUserInfo){
+						
+	                	if (window.stop)
+						window.stop();
+						else
+						document.execCommand("Stop");
+	                    $('.img-code-box').html('<div class="defaut-wrapp" style="padding: 5rem 1rem 1rem;color: #b7b8b7;" ><span class="icon icon-88tipicoorder" style="display: block;font-size: 3rem;width: 3rem;height: 3rem;margin: 0 auto 2rem;"></span><h2 class="def-note" style="font-size: 0.8rem;text-align: center;">您未登陆，不能访问</h2><p style="width: 5rem;margin: 0 auto;" class="closeTuike" ></p></div>');
+					}*/
+					// appUserInfo = JSON.parse(appUserInfo);
+					// appUserInfo = JSON.parse(appUserInfo);
+
+		            function isManager(a){
+
+		            	$.ajax({
+				            type: "post",
+				            url: "/weixin/getClientShareInfo",
+				            dataType: 'json',
+				            data:{
+				            	identityCode:a
+				            },
+				            async: false,
+				            complete: function(json) {
+				              
+				                var data = json.response;
+				                
+				                var status = json.status;
+				                if(status != 200){
+				                    $.alert('网络异常，状态为12.1' + status);
+				                    return;
+				                }    
+				                if ($.type(data) == 'string') {
+				                    data = JSON.parse(data);
+				                }
+				                if(data.code != 'E00000'){
+				                	/*停止加载页面*/
+				                	if (window.stop)
+									window.stop();
+									else
+									document.execCommand("Stop");
+				                    $('.img-code-box').html('<div class="defaut-wrapp" style="padding: 5rem 1rem 1rem;color: #b7b8b7;" ><span class="icon icon-88tipicoorder" style="display: block;font-size: 3rem;width: 3rem;height: 3rem;margin: 0 auto 2rem;"></span><h2 class="def-note" style="font-size: 0.8rem;text-align: center;">您不是推客经理，不能访问</h2><p style="width: 5rem;margin: 0 auto;" class="closeTuike" ><a href="#" class="button button-fill btn-yello">点击关闭</a></p></div>');
+							            clickCloseShop();
+				                }else{
+				                    if(data.data.isManager==false){
+				                    	/*停止加载页面*/
+				                    	if (window.stop){
+											window.stop();
+				                    	}else{
+											document.execCommand("Stop");
+				                    	}
+				                        $('.img-code-box').html('<div class="defaut-wrapp" style="padding: 5rem 1rem 1rem;color: #b7b8b7;" ><span class="icon icon-88tipicoorder" style="display: block;font-size: 3rem;width: 3rem;height: 3rem;margin: 0 auto 2rem;"></span><h2 class="def-note" style="font-size: 0.8rem;text-align: center;">您不是推客经理，不能访问</h2><p style="width: 5rem;margin: 0 auto;" class="closeTuike" ><a href="#" class="button button-fill btn-yello">点击关闭</a></p></div>');
+				                        	clickCloseShop();
+				                    }
+				                    tuikeEid=data.data.eid;
+				                }
+				            }
+				        });
+		            }
+
+		            
+		            if(!isApp){
+		            	// isManager();
+		            }
+				</script>
+				<div id="swiper-container" style="height: 6.5rem;padding-bottom: 0;" class="swiper-container img-box" data-space-between='0'>
+                    <div class="swiper-wrapper " data-role="swiper-wrap">
+                        
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+                <ul class="tuikeShops-list tab active infinite-scroll infinite-scroll-bottom" style="margin-top: 0;" data-role="tuikeShops-list" data-distance="100">
+                	<li style="background-color: #eee;">
+                		<div class="content-padded">
+	                        <div class="row">
+	                            <div class="col">
+	                            	<div class="buttons-tabDiv">
+		                            	<div class="buttons-tab">
+							                <a id="aTab1" href="#tab1" class="tab-link active button" id="order">全部</a>
+							                <a id="aTab2" href="#tab2" class="tab-link button" id="evaluates">桶装水</a>
+							                <a id="aTab3" href="#tab3" class="tab-link button" id="shopInfo">瓶装水</a>
+							                <a id="aTab4" href="#tab4" class="tab-link button" id="shopInfo">可兑换</a>
+							            </div>
+						            </div>
+	                            </div>
+	                        </div>
+	                        <div class="row" >
+	                            <div class="col">
+	                            	<div class="content-block tabsDiv infinite-scroll infinite-scroll-bottom" data-distance="100">
+	                            		<div class="tabs">
+	                            			<div id="tab1" class="tab active">
+	                            				<div class="content-block" >
+	                            					<ul>
+	                            						
+	                            					</ul>
+	                            				</div>
+	                            			</div>
+	                            			<div id="tab2" class="tab">
+	                            				<div class="content-block">
+	                            					<ul></ul>
+	                            				</div>
+	                            			</div>
+	                            			<div id="tab3" class="tab">
+	                            				<div class="content-block">
+	                            					<ul></ul>
+	                            				</div>
+	                            			</div>
+	                            			<div id="tab4" class="tab">
+	                            				<div class="content-block">
+	                            					<ul></ul>
+	                            				</div>
+	                            			</div>
+	                            		</div>
+	                            		<!-- 加载提示符 -->
+								        <!-- <div class="infinite-scroll-preloader">
+								            <div class="preloader"></div>
+								        </div> -->
+	                            	</div>
+	                            </div>
+	                        </div>
+	                    </div>
+                	</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="popup popup-about detailed">
+	  <div class="content-block integralRule ">
+	    <header class="bar bar-nav  light-nav">
+	        <span class="icon icon-35icoback pull-left close-popup bar-left"></span>
+	        <h1 class="title">券详情</h1>
+	    </header>
+	    <div class="content">
+	        <div class="dUrl" style="background:url('http://7xlmry.com1.z0.glb.clouddn.com/Upload/images/20170112/170112095236600530.png') 50% no-repeat;background-size: 155% auto;border-radius: 50%;width: 3rem;height: 3rem;position: relative;margin:auto;top: 2%; "></div>
+	        <div style="margin: -0.6rem 0.5rem 0 0.5rem;background-color: #FFF;height: 65%;padding-top: 10%;color:#000;">
+	        	<p class='dEName' style="text-align: center;font-size: 95%;margin-bottom: 1%;">水趣体验1</p>
+	        	<p class="dTypeName" style="text-align: center;font-size: 120%;font-weight: 600;margin-bottom: 1%;">10元优惠券</p>
+	        	<p style="text-align: center;font-size: 95%;">有效期：<span class="dTime"></span></p>
+	        	<ul style="margin: 25% 0.5rem 0 0.5rem;font-size: 120%;">
+	        		<li style="margin:1% 0;border-bottom: 1px #eee solid;">
+	        			<p>使用说明:<span class="dReamrk"></span></p>
+	        		</li>
+	        		<li style="margin:1% 0;border-bottom: 1px #eee solid;">
+	        			<p>服务热线:<span class="dTel"></span></p>
+	        		</li>
+	        		<li style="margin:1% 0;border-bottom: 1px #eee solid;">
+	        			<p>相关活动:<span></span></p>
+	        		</li>
+	        		<li style="margin:1% 0;">
+	        			<p>剩余数量:<span class="dSurplus_num"></span></p>
+	        		</li>
+	        	</ul>
+	        </div>
+	        <div style="position: fixed;width: 100%;height: 7%;background-color: #FFF;bottom: 0;margin-top: 30%;padding: 0.5rem;">
+	        	<span>积分：</span><span class="dIntegral">20</span> <a href="#" style="display: -webkit-inline-box;" class="button button-fill btn-yello pull-right bar-right dTypeId">立即兑换</a>
+	        </div>
+	    </div>
+	  </div>
+	</div>
+	<div class="popup popup-abou detailedEnd">
+	  <div class="content-block integralRule ">
+	    <header class="bar bar-nav  light-nav">
+	        <span class="icon icon-35icoback pull-left close-popup bar-left"></span>
+	        <h1 class="title">券兑换</h1>
+	    </header>
+	    <div class="content" style="background-color: #eee;">
+	       <p style="text-align:center;margin-top:40%;margin-bottom:5%;">积分兑换成功</p>
+	       <a style="width:80%;margin:auto;height:1.5rem;line-height:1.5rem;margin-bottom:5%;" href="#" class="button button-fill btn-yello">查看优惠券</a>
+	       <a style="width:80%;margin:auto;height:1.5rem;line-height:1.5rem;" href="/weixin/integralMall" class="button button-fill btn-yello">继续兑换</a>
+	    </div>
+	  </div>
+	</div>
+</body>
+    <script id="tab1Tpl" type="text/x-handlebars-template">
+    	{{#each data}}
+			<li>
+				<div class="content-padded">
+	                <div class="row">
+	                    <div class="col-20" style="background:url('{{pictureUrl}}') 50% no-repeat;background-size: 120% auto;">
+						
+	                    </div>
+	                    <div class="col-60">
+							<p><span>{{eName}}</span>专用</p>
+							<p>{{typeName}}</p>
+							<p>有效期至：<span>{{endTime}}</span></p>
+	                    </div>
+	                    <div class="col-20 detailedPopup" data-typeId="{{type_id}}" data-eName="{{eName}}" data-pictureUrl="{{pictureUrl}}" data-typeName="{{typeName}}" data-Time="{{beginTime}}-{{endTime}}" data-integral="{{integral}}" data-reamrk="{{reamrk}}" data-tel="{{tel}}" data-surplus_num="{{surplus_num}}">
+							<p>兑换</p> 
+							<p><span>{{integral}}</span>积分</p>
+	                    </div>
+	                </div>
+	            </div>
+			</li>
+		{{/each}}
+    </script>
+    <script id="swiper" type="text/x-handlebars-template">   
+    	{{#each data.ads}}
+	    	<a href="{{linkUrl}}"><img class="swiper-slide" src="{{adPic}}" alt=""></a>
+    	{{/each}}      
+	</script>
+    <script type="text/javascript">
+		    getHomeIntegralShop();
+
+		    $('.detailedPopup').click(function(){
+
+		    	$('.dEName').html($(this).attr('data-eName'));
+
+		    	$('.dTypeId').attr({"data-typeId":$(this).attr('data-typeId'),"data-integral":$(this).attr('data-integral'),"data-typeName":$(this).attr('data-typeName')});
+
+		    	$('.dUrl').css({"background":"url('"+$(this).attr('data-pictureUrl')+"') 50% no-repeat","background-size":"155% auto"});
+		    	
+		    	$('.dTypeName').html($(this).attr('data-typeName'));
+		    	
+		    	$('.dTime').html($(this).attr('data-Time'));
+		    	
+		    	$('.dIntegral').html($(this).attr('data-integral'));
+		    	
+		    	$('.dReamrk').html($(this).attr('data-reamrk'));
+		    	
+		    	$('.dTel').html($(this).attr('data-tel'));
+		    	
+		    	$('.dSurplus_num').html($(this).attr('data-surplus_num'));
+		    	
+		    	$.popup('.popup-about');
+		    });
+
+		    $('.dTypeId').click(function(){
+		    	$('body').append('<div class="copymodal-overlay copymodal-overlay-visible" data-role="copymodal-overlay" style="position: absolute;left: 0;top: 0;width: 100%;height: 100%;background: rgba(0,0,0,.5);z-index: 10600;visibility: hidden;opacity: 0;-webkit-transition-duration: .4s;transition-duration: .4s;visibility: visible;opacity: 2;"></div><div class="copymodal copymodal-in" style="display: block;margin-top: -20%;opacity: 2;transition-duration: .4s;width: 90%;position: absolute;z-index: 11000;left: 35.5%;margin-left: -5.7rem;top: 50%;text-align: center;border-radius: .35rem;transition-property: transform,opacity;background: #FFF;"><div class="copymodal-inner" style="border-radius: .35rem .35rem 0 0;position: relative;height: 7.5rem;padding-top: 3%;"><p style="font-weight:  600;margin: 0 5% 0 5%;border-bottom:  1px #eee solid;">积分兑换</p><p style="font-size: 90%;margin-top:  2%;">扣除'+$(this).attr("data-integral")+'积分，兑换'+$(this).attr("data-typeName")+'</p><p style="font-size:  90%;margin-bottom: 2%;">前往【我的】查看【优惠券】</p><a class="button button-fill btn-yello dhqx" style="background-color:  #eee;display: inline-block;width: 45%;margin: 2px;height:  1.8rem;line-height: 1.8rem;">取消</a><a class="button button-fill btn-yello dhqr" style="width: 45%;display: inline-block;margin: 2px;height:  1.8rem;line-height: 1.8rem;" data-typeId="'+$(this).attr("data-typeId")+'">确定</a></div></div>')
+		    	$('.dhqx').click(function(){$('[data-role="copymodal-overlay"]').remove();$('.copymodal-in').remove();});
+		    	$('.dhqr').click(function(){
+		    		// alert($(this).attr("data-typeId"));
+		    		saveIntegralOrder($(this).attr("data-typeId"));
+		    	});
+
+		    });
+
+		    function saveIntegralOrder(type_id,identityCode){
+		    	$.ajax({
+		            type: "post",
+		            url: "/weixin/saveIntegralOrder",
+		            dataType: 'json',
+		            async: false,
+		            data: {
+		            	identityCode:identityCode,
+		            	type_id:type_id
+	                },
+		            complete: function(json) {
+		                var data = json.response;
+		                
+		                var status = json.status;
+		                if(status != 200){
+		                    $.alert('网络异常，状态为12.1' + status);
+		                    return;
+		                }    
+		                if ($.type(data) == 'string') {
+		                    data = JSON.parse(data);
+		                }
+		                if(data.code != 'E00000'){
+		                	$.alert(data.message);
+		                	// $('[data-role="copymodal-overlay"]').remove();$('.copymodal-in').remove();
+		                	// $.popup('.detailedEnd');
+		                }else{
+		                	$('.dhqx').click(function(){$('[data-role="copymodal-overlay"]').remove();$('.copymodal-in').remove();});
+		                	$.popup('.detailedEnd');
+		                }
+		            }
+		        });
+		    }
+
+		    function getHomeIntegralShop(identityCode, eid){
+		    	$.ajax({
+		            type: "post",
+		            url: "/weixin/getHomeIntegralShop",
+		            dataType: 'json',
+		            async: false,
+		            data: {
+		            	identityCode:identityCode,
+		            	eid:eid
+	                },
+		            complete: function(json) {
+		                var data = json.response;
+		                
+		                var status = json.status;
+		                if(status != 200){
+		                    $.alert('网络异常，状态为12.1' + status);
+		                    return;
+		                }    
+		                if ($.type(data) == 'string') {
+		                    data = JSON.parse(data);
+		                }
+		                if(data.code != 'E00000'){
+		                	$.alert(data.message);
+		                }else{
+		                	// 加载图片
+		                	var tpl = $("#swiper").html();
+				            var template = Handlebars.compile(tpl);
+				            var context = {
+				                data: data.data
+				            };
+				            var html = template(context);
+				            $('[data-role="swiper-wrap"]').html(html);
+				            $("#swiper-container").swiper({
+				                autoplay: 2000,
+				                autoplayDisableOnInteraction: false,
+				                pagination: '.swiper-pagination'
+				            });
+
+				            // 加载积分
+				            if(data.data.account&&data.data.account.surplus){
+				            	$('.jfCount').html(data.data.account.surplus);
+				            }
+				            var notProturn = '<div class="defaut-wrapp" style="padding: 5rem 1rem 1rem;color: #b7b8b7;" ><span class="icon icon-88tipicoorder" style="display: block;font-size: 3rem;width: 3rem;height: 3rem;margin: 0 auto 2rem;"></span><h2 class="def-note" style="font-size: 0.8rem;text-align: center;">暂无积分兑换商品，敬请期待！</h2><p style="width: 5rem;margin: 0 auto;" class="closeTuike" ></p></div>';
+				            if(data.data.goods.length>=1){
+			            		var tab2Array=new Array();
+			            		var tab3Array=new Array();
+			            		var tab2Boo = true;
+			            		var tab3Boo = true;
+				            	for(var i=0;i<data.data.goods.length;i++){
+				            		if(data.data.goods[i].groupId==1){
+				            			tab2Boo = false;
+				            			tab2Array.push(data.data.goods[i]);
+				            		}
+				            		if(data.data.goods[i].groupId==2){
+				            			tab3Boo = false;
+				            			tab3Array.push(data.data.goods[i]);
+				            		}
+				            		if(i==data.data.goods.length-1){
+				            			var tab1Template = Handlebars.compile($("#tab1Tpl").html());
+
+				            			// 先给全部渲染
+				            			var context1 = {
+				                             data: data.data.goods
+				                        };
+				                        $('#tab1 ul').html(tab1Template(context1));
+
+
+				            			if(data.data.goods[i].groupId==1){
+				            				var context = {
+					                             data: tab2Array
+					                        };
+					                        var tab1Cont = tab1Template(context);
+					                        $('#tab2 ul').html(tab1Cont);
+				            			}
+				            			if(data.data.goods[i].groupId==2){
+				            				var context = {
+					                             data: tab3Array
+					                        };
+					                        var tab1Cont = tab1Template(context);
+					                        $('#tab3 ul').html(tab1Cont);
+				            			}
+				            			if(tab2Boo){
+				            				$("#tab2").html(notProturn);
+				            			}
+				            			if(tab3Boo){
+				            				$("#tab3").html(notProturn);
+				            			}
+				            			$("#tab4").html(notProturn);
+				            		}
+				            	}
+				            }else{
+				            	
+				            	$("#tab1").html(notProturn);
+				            	$("#tab2").html(notProturn);
+				            	$("#tab3").html(notProturn);
+				            	$("#tab4").html(notProturn);
+				            }
+		                }
+		            }
+		        });
+		    }
+    	// });
+    </script>
+</html>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "myClient")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/shopCss.vm")
+<body>
+  	<div class="page-group">
+		<div class="page page-finish page-current">
+			<header class="bar bar-nav light-nav">
+	            <a href="javascript:history.go(-1);" class="icon icon-35icoback pull-left bar-left"></a>  
+	            <h1 class="title">我的客户</h1>
+                <a href="http://mp.weixin.qq.com/s?__biz=MzIzMjU3MDMyMw==&mid=100000196&idx=1&sn=7a48e0650fb6c6ab84c3ff867295b9c6&scene=19#wechat_redirect" class="icon icon-help pull-right"></a>
+	        </header>
+            <div class="content myClient-content">
+                <div class="buttons-tab" data-role="myClient-tab">
+                    <a href="#tab1" class="tab-link active button" data-role="tab1" data-type="1"><span data-role="watch-tab">关注(0)</span></a>
+                    <a href="#tab2" class="tab-link button" data-role="tab2" data-type="2"><span data-role="register-tab">未成交(0)</span></a>
+                    <a href="#tab3" class="tab-link button" data-role="tab3" data-type="3"><span data-role="bargain-tab">成交(0)</span></a>
+                </div>
+                <div class="content-block no-p-m infinite-scroll" data-role="myClient-list"  data-distance="50">
+                    <div class="tabs">
+                        <ul id="tab1" class="tab active">
+                            
+                        </ul>
+                        <ul id="tab2" class="tab">
+                            
+                        </ul>
+                        <ul id="tab3" class="tab">
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+	    </div>
+	</div>
+    <script id="watchTab" type="text/x-handlebars-template">
+        关注({{data.count}})
+    </script>
+    <script id="registerTab" type="text/x-handlebars-template">
+        未成交({{data.count}})
+    </script>
+    <script id="bargainTab" type="text/x-handlebars-template">
+        成交({{data.count}})
+    </script>
+    <!-- 关注客户模板 -->
+    <script id="watch" type="text/x-handlebars-template">
+        {{#each data.clients}}
+            <li>
+                <div class="info-left">
+                    <div class="photo">
+                        {{#is photo ""}}<img src="/files/images/$!webStyle/default.png" >{{else}}<img src="{{photo}}">{{/is}}
+                    </div>
+                    <div class="nick-name">
+                        <h5>微信昵称：{{nickName}}</h5>
+                    </div>
+                </div>
+                <div class="info-right">
+                    <span>关注日期：{{date}}</span>
+                </div>
+            </li>
+        {{/each}}
+    </script>
+    <!-- 注册客户模板 -->
+    <script id="register" type="text/x-handlebars-template">
+        {{#each data.clients}}
+            <li>
+                <div class="info-left">
+                    <div class="photo">
+                        {{#is photo ""}}<img src="/files/images/$!webStyle/default.png" >{{else}}<img src="{{photo}}" class="default">{{/is}}
+                    </div>
+                    
+                    <div class="nick-name">
+                        <h5>微信昵称：{{nickName}}</h5>
+                        <span class="phone">{{account}}</span>
+                    </div>
+                </div>
+                <div class="info-right">
+                    <h5>{{#is uporder false}}无效{{/is}}{{#is uporder true}}有效{{/is}}</h5>
+                    <span>注册日期：{{date}}</span>
+                </div>
+            </li>
+        {{/each}}
+    </script>
+    <!-- 成交客户模板 -->
+    <script id="bargain" type="text/x-handlebars-template">
+        {{#each data.clients}}
+            <li>
+                <div class="info-left">
+                    <div class="photo">
+                        {{#is photo ""}}<img src="/files/images/$!webStyle/default.png">{{else}}<img src="{{photo}}">{{/is}}
+                    </div>
+                    <div class="nick-name">
+                        <h5>{{nickName}}</h5>
+                        <span class="pname">{{pname}}</span>
+                    </div>
+                </div>
+                <div class="info-right">
+                    <h5 class="account">{{account}}</h5>
+                    <span>最近订货：{{date}}</span>
+                </div>
+            </li>
+        {{/each}}
+    </script>
+    #*加载JS文件*# 
+    #parse("control/$!webStyle/publicJs.vm")
+    <script type='text/javascript' src='/files/common/js/selector.js' charset='utf-8'></script>
+    <!-- <script type='text/javascript' src='https://cdn.shuiqoo.cn/$!webStyle/selector.js' charset='utf-8'></script> -->
+    #parse("control/$!webStyle/globalJs.vm")
+    <script>
+        var pageSize = 10;
+        var pageIndex = 1;
+        var loading = false;
+        
+            //我的客户详情
+            var getDevelopClients = {
+                //关注客户
+                watch:function(method){
+                    $.ajax({
+                        type: "post",
+                        url: "/weixin/getDevelopClients",
+                        data: {
+                            type:1,
+                            pageIndex:pageIndex
+                        },
+                        dataType: 'json',
+                        complete: function(json) {
+                            var data = json.response;
+                            var status = json.status;
+                            if (status != 200) {
+                                $.alert('网络异常，状态为11.2' + status);
+                            }
+                            if ($.type(data) == 'string') {
+                                data = JSON.parse(data);
+                            }
+                            if (data.code != 'E00000') {
+                                if(data.code == "-1"){
+                                    window.location.href = "/weixin/bind";
+                                }else{
+                                    $.alert(data.message);
+                                    return;
+                                }
+                            } else {
+                                var context = {
+                                    data: data.data
+                                };
+                                var watchTab = $("#watchTab").html();
+                                var watchTabTemplate = Handlebars.compile(watchTab);
+                                var watchTabCont = watchTabTemplate(context);
+                                $('[data-role="watch-tab"]').html(watchTabCont);
+
+                                if(data.data.count>0){
+                                    var tpl = $("#watch").html();
+                                    var template = Handlebars.compile(tpl);
+                                    
+                                    var cont = template(context);
+
+                                    if(method=='pull'){
+                                        loading=false;
+                                        $('#tab1').append(cont);
+                                    }else{
+                                        $('#tab1').html(cont); 
+                                    }
+                                }else{
+                                    $('#tab1').html('<div style="text-align:center;"><i class="icon icon-default" style="color:#ddd;display:block;text-align:center;padding-top:8rem;"></i><span style="color:#bbb;font-size:0.6rem;">您还没有相关信息!</span></div>');
+                                }
+                                
+                            }
+                        }
+                    });
+                },
+                //注册客户
+                register:function(method){
+                    $.ajax({
+                        type: "post",
+                        url: "/weixin/getDevelopClients",
+                        async:false,
+                        data: {
+                            type:2,
+                            pageIndex:pageIndex
+                        },
+                        dataType: 'json',
+                        complete: function(json) {
+                            var data = json.response;
+                            var status = json.status;
+                            if (status != 200) {
+                                $.alert('网络异常，状态为11.2' + status);
+                            }
+                            if ($.type(data) == 'string') {
+                                data = JSON.parse(data);
+                            }
+                            if (data.code != 'E00000') {
+                                if(data.code == "-1"){
+                                    window.location.href = "/weixin/bind";
+                                }else{
+                                    $.alert(data.message);
+                                    flag=0;
+                                    return;
+                                }
+                            } else {
+                                var context = {
+                                    data: data.data
+                                };
+                                var registerTab = $("#registerTab").html();
+                                var registerTabTemplate = Handlebars.compile(registerTab);
+                                var registerTabCont = registerTabTemplate(context);
+                                $('[data-role="register-tab"]').html(registerTabCont);
+                                
+                                
+                                if(data.data.count>0){
+                                    var tpl = $("#register").html();
+                                    var template = Handlebars.compile(tpl);
+                                    // var context = {
+                                    //     data: data.data
+                                    // };
+                                    var cont = template(context);
+
+                                    if(method=='pull'){
+                                        loading=false;
+                                        $('#tab2').append(cont);
+                                    }else{
+                                        $('#tab2').html(cont); 
+                                    }
+                                    for(var i=0,len=$(".phone").length;i<len;i++){
+                                       if($('.phone').eq(i).html()!=""){
+                                           $('.phone').eq(i).html($('.phone').eq(i).html().replace(/(\d{3})\d{4}(\d{4})/,'$1****$2'));  
+                                       } 
+                                    }
+                                 
+                                }else{
+                                    $('#tab2').html('<div style="text-align:center;"><i class="icon icon-default" style="color:#ddd;display:block;text-align:center;padding-top:8rem;"></i><span style="color:#bbb;font-size:0.6rem;">您还没有相关信息!</span></div>');
+                                }
+                                
+                            }
+                        }
+                    });
+                },
+                //成交客户
+                bargain:function(method){
+                    $.ajax({
+                        type: "post",
+                        url: "/weixin/getDevelopClients",
+                        data: {
+                            type:3,
+                            pageIndex:pageIndex
+                        },
+                        dataType: 'json',
+                        complete: function(json) {
+                            var data = json.response;
+                            var status = json.status;
+                            if (status != 200) {
+                                $.alert('网络异常，状态为11.2' + status);
+                            }
+                            if ($.type(data) == 'string') {
+                                data = JSON.parse(data);
+                            }
+                            if (data.code != 'E00000') {
+                                if(data.code == "-1"){
+                                    window.location.href = "/weixin/bind";
+                                }else{
+                                    $.alert(data.message);
+                                    return;
+                                }
+                            } else {
+                                var context = {
+                                    data: data.data
+                                };
+                                var bargainTab = $("#bargainTab").html();
+                                var bargainTabTemplate = Handlebars.compile(bargainTab);
+                                var bargainTabCont = bargainTabTemplate(context);
+                                $('[data-role="bargain-tab"]').html(bargainTabCont);
+
+                                if(data.data.count>0){
+                                    var tpl = $("#bargain").html();
+                                    var template = Handlebars.compile(tpl);
+                                    // var context = {
+                                    //     data: data.data
+                                    // };
+                                    var cont = template(context);
+                                    if(method=='pull'){
+                                        $('#tab3').append(cont);
+                                    }else{
+                                        $('#tab3').html(cont); 
+                                    }
+                                    for(var i=0,len=$(".account").length;i<len;i++){
+                                       if($('.account').eq(i).html()!=""){
+                                           $('.account').eq(i).html($('.account').eq(i).html().replace(/(\d{3})\d{4}(\d{4})/,'$1****$2'));  
+                                       } 
+                                    }
+                                    
+                                }else{
+                                    $('#tab3').html('<div style="text-align:center;"><i class="icon icon-default" style="color:#ddd;display:block;text-align:center;padding-top:8rem;"></i><span style="color:#bbb;font-size:0.6rem;">您还没有相关信息!</span></div>');
+                                }
+                                
+                            }
+                        }
+                    });
+                }
+            }
+            getDevelopClients.watch();
+            getDevelopClients.register();
+            getDevelopClients.bargain();
+            $('.myClient-content').delegate('[data-role="myClient-tab"] a','click',function(){
+                pageIndex = 1;
+                
+            });
+
+        
+
+        $(document).on("pageInit", function(e, id, page) {
+            
+            $(page).on('infinite',function(){
+                // debugger;
+                var type = $('[data-role="myClient-tab"]').find('a.active').data('type');
+                // 如果正在加载，则退出
+                if (loading) return;
+                $('.infinite-scroll-preloader').show();
+                // 设置flag
+                loading = true;
+                
+                //新增一页
+                pageIndex = pageIndex + 1;
+                if(type==1){
+                    getDevelopClients.watch('pull');
+                }else if(type==2){
+                    getDevelopClients.register('pull');
+                }else if(type==3){
+                    getDevelopClients.bargain('pull');
+                }
+
+            });
+        });
+        $.init();
+    </script>
+</body>
+</html>

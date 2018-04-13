@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "shopApply.vm")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/shopCss.vm")
+<body>
+    <link rel="stylesheet" href="/files/common/css/$!webStyle/layout.css?v=$version">
+    <div class="page-group">
+        <div class="page page-finish page-current page-shopApply" data-role="cur">
+            <!-- <header class="bar bar-nav light-nav" style="background:#F9D601;">
+                <a href="/weixin/account" class="icon icon-35icoback pull-left bar-left"></a> 
+            </header>
+            <div class="content content-people" style="top: 2.1rem;z-index: 1000;overflow: hidden">
+                <img src="/files/images/everyShop.png" alt="" style="width:100%;height: 100%;">
+                <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.evian.daojia" class="button button-fill btn-yello" id="open-new" style="position:absolute;background:#322620;left:50%;width:6rem;margin-left:-3rem;bottom:2rem;color:#F9D601;height:1.8rem;line-height: 1.8rem;font-size: 0.7rem;padding: 0;">下载水趣APP</a> 
+                            
+            </div> -->
+            
+        </div>
+        <!-- 重新申请-->
+        <div class="popup popup-apply-agin">
+            <header class="bar bar-nav light-nav">
+                <a href="#" class="icon icon-35icoback pull-left bar-left close-popup"></a>   
+                <h1 class="title">水趣推客申请</h1>
+            </header>
+            <div class="content">
+                <div class="list-block" data-role="shopInfo-list">
+                    <ul class="apply-list">
+                        <li>
+                            <div class="item-content">
+                              <div class="item-inner">
+                                <div class="item-title label">姓名：</div>
+                                <div class="item-input">
+                                  <input type="text" name="fullname1" placeholder="您的姓名">
+                                </div>
+                              </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                              <div class="item-inner">
+                                <div class="item-title label">手机：</div>
+                                <div class="item-input" data-role="account">
+                                  
+                                </div>
+                              </div>
+                            </div>
+                        </li>
+                        <li class="item-content">
+                            <div class="item-inner">
+                              <div class="item-title label">企业：</div>
+                              <div class="item-input">
+                                  <input type="text" name="enterPrise" value="$!{session.getAttribute('userentinfo').ename}" placeholder="您的所属企业" readonly="readonly"> 
+                              </div>
+                            </div>
+                        </li>
+                        <li>
+                            
+                            <div class="item-content">
+                                
+                                <div class="item-inner">
+                                    <div class="item-title label">资源：</div>
+                                    <div class="item-input">
+                                      <textarea name="resource1" placeholder="填写您的水店等信息"></textarea> 
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bar bar-footer order-bar">
+              <a href="#" class="button button-fill btn-yello" id="enter-again">提交</a>
+            </div>
+        </div>
+    </div>
+    <script id="tpl" type="text/x-handlebars-template">
+        {{#is data.hash false}}
+            <header class="bar bar-nav light-nav">
+                <a href="/weixin/account" class="icon icon-35icoback pull-left bar-left white"></a>   
+                <h1 class="title">水趣推客申请</h1>
+            </header>
+            <div class="content">
+                <div class="list-block" data-role="shopInfo-list">
+                    <ul class="apply-list">
+                        <li>
+                            <div class="item-content">
+                              <div class="item-inner">
+                                <div class="item-title label">姓名：</div>
+                                <div class="item-input">
+                                  <input type="text" name="fullname" placeholder="您的姓名">
+                                </div>
+                              </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                              <div class="item-inner">
+                                <div class="item-title label">手机：</div>
+                                <div class="item-input" data-role="account">
+                                  
+                                </div>
+                              </div>
+                            </div>
+                        </li>
+                        <li class="item-content">
+                            <div class="item-inner">
+                              <div class="item-title label">企业：</div>
+                              <div class="item-input">
+                                  <!-- <input type="text" name="enterPrise" value="{{data.apply.ename}}" placeholder="您的所属企业" readonly="readonly"> -->
+                                  <input type="text" name="enterPrise" value="$!{session.getAttribute('userentinfo').ename}" placeholder="您的所属企业" readonly="readonly">
+                              </div>
+                            </div>
+                        </li>
+                        <li>  
+                            <div class="item-content">
+                                
+                                <div class="item-inner">
+                                    <div class="item-title label">资源：</div>
+                                    <div class="item-input">
+                                      <textarea name="resource" placeholder="填写您的水店等信息"></textarea> 
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+            <div class="bar bar-footer order-bar">
+              <a href="#" class="button button-fill btn-yello" id="enter-btn">提交</a>
+            </div>
+        {{else}}
+            {{#is data.apply.status "0"}}
+            <header class="bar bar-nav light-nav">
+                <a href="/weixin/account" class="icon icon-35icoback pull-left bar-left white"></a>   
+                <h1 class="title">水趣推客申请</h1>
+            </header>
+            <div class="content">
+                <div class="list-block" data-role="shopInfo-list">
+                    <ul class="verifing"><li style="font-weight: 550;">审核中，请耐心等待...</li></ul>
+                    <ul class="apply-list">
+                        <li>
+                            <div class="item-content">
+                              <div class="item-inner">
+                                <div class="item-title label">姓名：</div>
+                                <div class="item-input">
+                                  <input type="text" name="fullname" value="{{data.apply.fullname}}" placeholder="您的姓名" readonly="readonly">
+                                </div>
+                              </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                              <div class="item-inner">
+                                <div class="item-title label">手机：</div>
+                                <div class="item-input" data-role="account">
+                                  
+                                </div>
+                              </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                              <div class="item-inner">
+                                <div class="item-title label">企业：</div>
+                                <div class="item-input">
+                                  <!-- <input type="text" name="enterPrise" value="{{data.apply.ename}}" placeholder="您的所属企业" readonly="readonly"> -->
+                                  <input type="text" name="enterPrise" value="$!{session.getAttribute('userentinfo').ename}" placeholder="您的所属企业" readonly="readonly">
+                                </div>
+                              </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">    
+                                <div class="item-inner">
+                                    <div class="item-title label">资源：</div>
+                                    <div class="item-input">
+                                      <textarea name="resource" placeholder="填写您的水店等信息" readonly="readonly">{{data.apply.resourceRemark}}</textarea> 
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <p style="position: relative;left: 10px;top: 10px;">上级推广经理：{{#is data.apply.superior}} {{data.apply.superior}} {{else}} 无 {{/is}}</p> 
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            {{/is}}
+            {{#is data.apply.status "-1"}}
+            <header class="bar bar-nav light-nav">
+                <a href="/weixin/account" class="icon icon-35icoback pull-left bar-left white"></a>   
+                <h1 class="title">水趣推客申请</h1>
+            </header>
+            <div class="content">
+                <div class="list-block" data-role="shopInfo-list">
+                    <ul class="refuse">
+                        <li>拒绝原因：{{data.apply.remark}}</li>
+                    </ul>
+                    <ul class="apply-list">
+                        <li>
+                            <div class="item-content">
+                              <div class="item-inner">
+                                <div class="item-title label">姓名：</div>
+                                <div class="item-input">
+                                  <input type="text" name="fullname" value="{{data.apply.fullname}}" placeholder="您的姓名" readonly="readonly">
+                                </div>
+                              </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                              <div class="item-inner">
+                                <div class="item-title label">手机：</div>
+                                <div class="item-input" data-role="account">
+                                  
+                                </div>
+                              </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                              <div class="item-inner">
+                                <div class="item-title label">企业：</div>
+                                <div class="item-input">
+                                  <input type="text" name="enterPrise" value="$!{session.getAttribute('userentinfo').ename}" placeholder="您的所属企业" readonly="readonly">
+                                </div>
+                              </div>
+                            </div>
+                        </li>
+                        <li>
+                            
+                            <div class="item-content">
+                                
+                                <div class="item-inner">
+                                    <div class="item-title label" >资源：</div>
+                                    <div class="item-input">
+                                      <textarea name="resource" placeholder="填写您的水店等信息" readonly="readonly">{{data.apply.resourceRemark}}</textarea> 
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bar bar-footer order-bar">
+              <a href="#" class="button button-fill btn-yello" id="apply-again">重新申请</a>
+            </div>
+            {{/is}}
+        {{/is}}
+    </script>
+    <script id="accountTpl" type="text/x-handlebars-template">
+        <input type="text" name="tel" placeholder="您的联系方式" value="{{data}}" readonly="readonly">
+    </script>
+    <script id="enterpriceTpl" type="text/x-handlebars-template">
+        <option id="defaultOption">选择您所属的企业</option>
+        {{#each data.enterList}}
+        <option data-eid="{{eid}}">{{ename}}</option>
+        {{/each}}
+       
+    </script>
+    #*加载JS文件*# 
+    #parse("control/$!webStyle/publicJs.vm")
+    <script type='text/javascript' src='/files/common/js/selector.js' charset='utf-8'></script>
+    <script src="/files/common/js/jquery.cloud9carousel.js" charset='utf-8'></script>
+    <!-- <script type='text/javascript' src='https://cdn.shuiqoo.cn/$!webStyle/selector.js' charset='utf-8'></script>
+    <script src="https://cdn.shuiqoo.cn/$!webStyle/jquery.cloud9carousel.js" charset='utf-8'></script> -->
+    #parse("control/$!webStyle/globalJs.vm")
+    <script>
+
+        var appid = "";
+        $.ajax({
+            type: "get",
+            url: "/weixin/checkWeiXinLogin",
+            dataType: 'json',
+            async:false,
+            complete: function(json) {
+                
+                var data = json.response;
+                var status = json.status;
+                
+                if(status != 200){
+                    $.alert('网络异常9.2，状态为' + status);
+                    return;
+                }
+                if ($.type(data) == 'string') {
+                    data = JSON.parse(data);
+                }
+                if(data.data){
+                    appid = data.data.appid;
+                }
+                
+                if(data.code != 'E00000'){
+                    if(data.code == "-1"){
+                        // window.location.href = "/weixin/bind";
+                    }else{
+                        $.alert(data.message);
+                        return;
+                    }
+                }else{
+                    appid = data.data.appid
+                    console.log(data.data.appid);
+                    // var appid = res.data.data.appid;
+                }
+                
+            }
+        });
+        var wxlocation = JSON.parse(localStorage.getItem("wxlocation"+appid)),
+            dlocation = wxlocation.lat+","+wxlocation.lon;
+        $(function(){
+            $.ajax({
+                type: "post",
+                url: "/weixin/getShareApplyInfo",
+                async:false,
+                dataType: 'json',
+                complete: function(json) {
+                
+                    var data = json.response;
+                    var status = json.status;
+                    if(status != 200){
+                        $.alert('网络异常，状态为3.2' + status);
+                        return;
+                    }
+                    if ($.type(data) == 'string') {
+                        data = JSON.parse(data);
+                    }
+                    if(data.code != 'E00000'){
+                        if(data.code == "-1"){
+                            window.location.href = "/weixin/bind";
+                        }else{
+                            $.alert(data.message);
+                            return;
+                        }
+                      
+                    }else{
+                        var context = {
+                            data: data.data
+                        };
+                        var tpl = $("#tpl").html();
+                   
+                        var template = Handlebars.compile(tpl);
+                        var cont = template(context);
+
+                        $('[data-role="cur"]').html(cont);
+
+                        $.ajax({
+                            type: "get",
+                            url: "/weixin/getUserCellphone",
+                            dataType: 'json',
+                            complete: function(json) {
+                            
+                                var data = json.response;
+                                var status = json.status;
+                                if(status != 200){
+                                    $.alert('网络异常，状态为3.2' + status);
+                                    return;
+                                }
+                                if ($.type(data) == 'string') {
+                                    data = JSON.parse(data);
+                                }
+                                if(data.code != 'E00000'){
+                                    if(data.code == "-1"){
+                                        window.location.href = "/weixin/bind";
+                                    }else{
+                                        $.alert(data.message);
+                                        return;
+                                    }
+                                  
+                                }else{
+                                    var context = {
+                                        data: data.data
+                                    };
+                                    var accountTpl = $("#accountTpl").html();
+                                    var accountTemplate = Handlebars.compile(accountTpl);
+                                    var accountCont = accountTemplate(context);
+                                    $('[data-role="account"]').html(accountCont);
+                                }
+                            }
+                        })
+                        
+                        
+                        
+                        /*$.ajax({
+                            type: "post",
+                            url: "/weixin/getEnterPriseByLoc",
+                            async:false,
+                            data:{
+                                location:dlocation,
+                                citycode:0
+                            },
+                            dataType: 'json',
+                            complete: function(json) {
+                            
+                                var data = json.response;
+                                var status = json.status;
+                                if(status != 200){
+                                    $.alert('网络异常，状态为3.2' + status);
+                                    return;
+                                }
+                                if ($.type(data) == 'string') {
+                                    data = JSON.parse(data);
+                                }
+                                if(data.code != 'E00000'){
+                                    if(data.code == "-1"){
+                                        window.location.href = "/weixin/bind";
+                                    }else{
+                                        $.alert(data.message);
+                                        return;
+                                    }
+                                  
+                                }else{
+                                   
+                                    var context = {
+                                        data: data.data
+                                    };
+                                    var enterTpl = $("#enterpriceTpl").html();
+                                
+                                    var enterTemplate = Handlebars.compile(enterTpl);
+                                    var enterCont = enterTemplate(context);
+
+                                    $('[data-role="enterPrise"]').html(enterCont);
+
+
+                                    
+                                }
+                              
+                            }
+                        });*/
+                    }
+                  
+                }
+            });
+            $('[name="enterPrise1"]').on('change',function(){
+                $('#defaultOption').remove();
+            })
+            $('[name="enterPrise"]').on('change',function(){
+                $('#defaultOption').remove();
+            })
+            var flag = 0;
+            $('[data-role="cur"]').delegate('#enter-btn','click',function(e){
+                e.preventDefault();
+                flag++;
+                if(flag>1){
+                    return;
+                }
+                var fullname = $('[name="fullname"]').val();
+                var tel      = $('[name="tel"]').val();
+                // var eid = $('[name="enterPrise"]').find("option:selected").data("eid");
+                var eid = $!{session.getAttribute('userentinfo').eid};
+                var resource = $('[name="resource"]').val();
+
+                
+
+                $(".err-msg").remove();
+                if(fullname == ""){
+                    $('[name="fullname"]').parents('.item-content').after('<p class="err-msg">姓名不能为空</p>');
+                    flag=0;
+                    return;
+                }else if(tel == ""){
+                    $('[name="tel"]').parents('.item-content').after('<p class="err-msg">联系方式不能为空</p>');
+                    flag=0;
+                    return;
+                }else if(!eid ){
+                    $('[name="enterPrise"]').parents('.item-content').after('<p class="err-msg">请选择企业</p>');
+                    flag=0;
+                    return;
+                }else if(resource == ""){
+                    $('[name="resource"]').parents('.item-content').after('<p class="err-msg">资源不能为空</p>');
+                    flag=0;
+                    return;
+                }
+                $.ajax({
+                    type: "post",
+                    url: "/weixin/saveShareApplyInfo",
+                    data:{
+                        eid:eid,
+                        fullname:fullname,
+                        tel:tel,
+                        resource:resource,
+                        location:dlocation
+                    },
+                    dataType: 'json',
+                    complete: function(json) {
+                    
+                        var data = json.response;
+                        var status = json.status;
+                        if(status != 200){
+                            flag=0;
+                            $.alert('网络异常，状态为3.2' + status);
+                            return;
+                        }
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if(data.code != 'E00000'){
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                                flag=0;
+                                return;
+                            }
+                        }else{
+                            $.alert("保存成功",function(){
+                                window.location.href="/weixin/home";
+                            });
+                        }
+                      
+                    }
+                });
+            })
+
+            $('[data-role="cur"]').delegate('#apply-again','click',function(e){
+                e.preventDefault();
+                $.popup(".popup-apply-agin");
+                var flagAgain = 0;
+                $('#enter-again').on('click',function(e){
+
+                    e.preventDefault();
+                    flagAgain++;
+                    if(flagAgain>1){
+                        return;
+                    }
+                    var fullname = $('[name="fullname1"]').val();
+                    var tel      = $('[name="tel"]').val();
+                    // var eid = $('[name="enterPrise1"]').find("option:selected").data("eid");
+                    var eid = $!{session.getAttribute('userentinfo').eid};
+                    // if(eid !=""){
+                    //     eid = parseInt(eid);
+                    // }
+                    
+                    var resource = $('[name="resource1"]').val();
+                    $(".err-msg").remove();
+                    if(fullname == ""){
+                        $('[name="fullname1"]').parents('.item-content').after('<p class="err-msg">姓名不能为空</p>');
+                        flagAgain=0;
+                        return;
+                    }else if(tel == ""){
+                        $('[name="tel1"]').parents('.item-content').after('<p class="err-msg">联系方式不能为空</p>');
+                        flagAgain=0;
+                        return;
+                    }else if(eid === "" ){
+                        $('[name="enterPrise1"]').parents('.item-content').after('<p class="err-msg">企业不能为空</p>');
+                        flagAgain=0;
+                        return;
+                    }else if(resource == ""){
+                        $('[name="resource1"]').parents('.item-content').after('<p class="err-msg">资源不能为空</p>');
+                        flagAgain=0;
+                        return;
+                    }
+                    $.ajax({
+                        type: "post",
+                        url: "/weixin/saveShareApplyInfo",
+                        data:{
+                            eid:eid,
+                            fullname:fullname,
+                            tel:tel,
+                            resource:resource,
+                            location:dlocation
+                        },
+                        dataType: 'json',
+                        complete: function(json) {
+                        
+                            var data = json.response;
+                            var status = json.status;
+                            if(status != 200){
+                                flag1=0;
+                                $.alert('网络异常，状态为3.2' + status);
+                                return;
+                            }
+                            if ($.type(data) == 'string') {
+                                data = JSON.parse(data);
+                            }
+                            if(data.code != 'E00000'){
+                                if(data.code == "-1"){
+                                    window.location.href = "/weixin/bind";
+                                }else{
+                                    $.alert(data.message);
+                                    flag1 = 0;
+                                    return;
+                                }
+                            }else{
+                                $.alert("保存成功",function(){
+                                    window.location.href="/weixin/home";
+                                });
+                            }
+                          
+                        }
+                    });
+                })
+            })
+        })    
+        $.init();
+    </script>
+</body>
+</html>

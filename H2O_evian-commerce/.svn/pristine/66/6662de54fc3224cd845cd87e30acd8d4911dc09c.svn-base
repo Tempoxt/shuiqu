@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+ #parse("control/$!webStyle/version.vm")
+ #parse("control/$!webStyle/indexCss.vm")
+ <body>
+ <script>
+       document.title="成为会员";
+       function get_cookie(Name) {
+       var search = Name + "="//查询检索的值
+       var returnvalue = "";//返回值
+       if (document.cookie.length > 0) {
+         sd = document.cookie.indexOf(search);
+         if (sd!= -1) {
+            sd += search.length;
+            end = document.cookie.indexOf(";", sd);
+            if (end == -1)
+             end = document.cookie.length;
+             //unescape() 函数可对通过 escape() 编码的字符串进行解码。
+            returnvalue=unescape(document.cookie.substring(sd, end))
+          }
+       } 
+       return returnvalue;
+    }
+    //使用方式：
+    //alert("openid: " + get_cookie("openid"));
+</script>
+    <div class="page-group">
+        <div class="page page-finish page-current page-bind">
+
+            <div class="content">
+                #if($!webStyle == "shuiqu")
+                <div class="logo">
+                    <img src="/files/images/shuiqu/logo.png">
+                </div>
+                <div class="inputs">
+                    <div class="username">
+                        <label for="">手机号:</label>
+                        <input type="text" name="cellphone" class="cellphone" maxlength="11" placeholder="请输入手机号码" />
+                    </div>
+                    <div class="password">
+                        <label for="">验证码:</label>
+                        <input type="text" class="code" name="code" maxlength="6" placeholder="请输入验证码" />
+                        <input type="button" id="getCode" value="获取验证码" />
+                    </div>
+                </div>
+                <!-- #F9D600 -->
+                <div class="agree-notice">点击注册即表示同意<a href="/weixin/agreement">《水趣用户协议》</a></div>
+                <p class="submit-wrap">
+                    <input type="button" class="submit" id="submit" value="注册">
+                </p>
+                #else
+                <div class="logo">
+                    <img src="/files/images/dalishuishou/logo.png">
+                </div>
+                <div class="inputs">
+                    <div class="username">
+                        <label for="">手机号:</label>
+                        <input type="text" name="cellphone" class="cellphone" maxlength="11" placeholder="请输入手机号码" />
+                    </div>
+                    <div class="password">
+                        <label for="">验证码:</label>
+                        <input type="text" class="code" name="code" maxlength="6" placeholder="请输入验证码" />
+                        <input type="button" class="white-color" id="getCode" value="获取验证码"/>
+                    </div>
+                </div>
+                <!-- #F9D600 -->
+                <div class="agree-notice">点击注册即表示同意<a href="/weixin/agreement">《大力水手用户协议》</a></div>
+                <p class="submit-wrap">
+                    <input type="button" class="submit" id="submit" value="注册">
+                </p>
+                #end
+            </div>
+            
+        </div>
+       
+    </div>
+
+    <script type='text/javascript' src='/files/common/js/zepto.min.js' charset='utf-8'></script>
+    <script>
+      $.config = {router: false}
+    </script>
+    <script type='text/javascript' src='/files/common/js/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='/files/common/js/sm-extend.min.js' charset='utf-8'></script>
+    <!-- #if($!webStyle == "shuiqu")
+    <script type='text/javascript' src='http://ow3heuhv0.bkt.clouddn.com/zepto.min.js' charset='utf-8'></script>
+    <script>
+      $.config = {router: false}
+    </script>
+    <script type='text/javascript' src='http://ow3heuhv0.bkt.clouddn.com/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='http://ow3heuhv0.bkt.clouddn.com/sm-extend.min.js' charset='utf-8'></script>
+    #else
+    <script type='text/javascript' src='http://oy27drxeq.bkt.clouddn.com/zepto.min.js' charset='utf-8'></script>
+    <script>
+      $.config = {router: false}
+    </script>
+    <script type='text/javascript' src='http://oy27drxeq.bkt.clouddn.com/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='http://oy27drxeq.bkt.clouddn.com/sm-extend.min.js' charset='utf-8'></script>
+    #end -->
+    #parse("control/$!webStyle/globalJs.vm")
+    <script>
+        var appid = "";
+        $.ajax({
+            type: "get",
+            url: "/weixin/checkWeiXinLogin",
+            dataType: 'json',
+            async:false,
+            complete: function(json) {
+                
+                var data = json.response;
+                var status = json.status;
+                
+                if(status != 200){
+                    $.alert('网络异常9.2，状态为' + status);
+                    return;
+                }
+                if ($.type(data) == 'string') {
+                    data = JSON.parse(data);
+                }
+                if(data.data){
+                    appid = data.data.appid;
+                }
+                
+                if(data.code != 'E00000'){
+                    if(data.code == "-1"){
+                        // window.location.href = "/weixin/bind";
+                    }else{
+                        $.alert(data.message);
+                        return;
+                    }
+                }else{
+                    appid = data.data.appid
+                    console.log(data.data.appid);
+                    // var appid = res.data.data.appid;
+                }
+                
+            }
+        });
+        $(function() {
+            //默认不能点击注册按钮
+            $('#submit').attr('disabled','true');
+            //输入手机号校验状态
+            $('[name="cellphone"]').on('input',function(){
+                var cellphone = $.trim($(this).val());
+                var code = $.trim($('[name="code"]').val())
+                // console.log(code);
+                if(/^1[3|4|5|7|8][0-9]{9}$/.test(cellphone) && code){
+                    $('#submit').addClass('public-color');
+
+                    // console.log('ok');
+                    $('#submit').removeAttr("disabled");
+                }else{
+                    $('#submit').removeClass('public-color');
+                    $('#submit').css("background","#eee");
+                    
+                    // console.log('err');
+                    $('#submit').attr('disabled',true);
+                }
+            });
+            //输入验证码校验状态
+            $('[name="code"]').on('input',function(){
+                var code = $.trim($(this).val());
+                var cellphone = $.trim($('[name="cellphone"]').val());
+                // console.log(code);
+                if(/^1[3|4|5|7|8][0-9]{9}$/.test(cellphone) && code){
+                    $('#submit').addClass('public-color');
+                    $('#submit').removeAttr("disabled");
+                    // console.log('ok');
+                }else{
+                    $('#submit').removeClass('public-color');
+                    $('#submit').css("background","#eee");
+                    $('#submit').attr('disabled',true);
+                    // console.log('err');
+                }
+            });
+            //获取验证码
+            var flag = 0;
+            $("#getCode").on('click',function(e){
+                $('.err-msg').remove();
+                e.preventDefault();
+                flag++;
+                console.log(flag);
+                if(flag > 1){
+                    return;
+                }
+                var cellphone = $('[name="cellphone"]').val();
+                // console.log(cellphone);
+                if(cellphone==""){
+                    $('input[name=cellphone]').parents('.username').after('<p class="err-msg">手机号码不能为空</p>');
+                    flag=0;
+                    return;
+                }
+                else if(/^1[3|4|5|7|8][0-9]{9}$/.test(cellphone)==false){
+                    $('input[name=cellphone]').parents('.username').after('<p class="err-msg">手机号码不正确</p>');
+                    flag=0;
+                    return;
+                }else{
+                    $.ajax({
+                        type: "get",
+                        url: "/weixin/moblieMsg",
+                        data: {
+                            cellphone: cellphone
+                        },
+                        dataType: 'json',
+                        complete: function(json) {
+                          
+                            var data = json.response;
+                            
+                            var status = json.status;
+                            if(status != 200){
+                                $.alert('网络异常，状态为12.1' + status);
+                                return;
+                            }    
+                            if ($.type(data) == 'string') {
+                                data = JSON.parse(data);
+                            }
+                            if(data.code != 'E00000' && data.code != 'E90001' ){
+                                if(data.code == "-1"){
+                                    window.location.href = "/weixin/bind";
+                                }else{
+                                    $.alert(data.message);
+                                    $(this).prop("disabled", false);
+                                    flag=0;
+                                    return;
+                                }
+                            }else{
+                                $("#getCode").css("background","#eee");
+                                $("#getCode").attr('disabled',"true");
+                                //倒计时
+                                var wait=parseInt(data.message);
+                                  
+                                function time(o) {  
+                                    if (wait == 0) {  
+                                        o.removeAttr("disabled");
+                                        o.addClass('public-color');
+
+                                        o.val("获取验证码");
+                                        flag = 0;  
+                                        wait = parseInt(data.message);  
+                                    } else {  
+                                        o.prop("disabled", true);
+                                        o.removeClass('public-color');
+                                        o.removeClass('white-color');  
+                                        o.val(wait+"s");  
+                                        wait--;  
+                                        setTimeout(function() {  
+                                            time(o)  
+                                        },  
+                                        1000)  
+                                    }  
+                                } 
+                                time($("#getCode")); 
+                                
+                            }
+                            
+                        }
+                    });
+                }
+            });
+            //注册
+            var regFlag = 0;
+            $("#submit").on('click',function(e){
+                regFlag++;
+                console.log(regFlag);
+                if(regFlag > 1){
+                    return;
+                }
+                var cellphone = $.trim($('input[name=cellphone]').val());
+                var code = $.trim($('input[name=code]').val());
+                var lat = '', lon = '';
+                if(code == ''){
+                  $.alert('验证码不能为空');
+                  return false;
+                }
+                var location = JSON.parse(localStorage.getItem("wxlocation"+appid));
+                if(location && (location.lat)){
+                  lat = location.lat;
+                  lon = location.lon;
+                }else{
+                  window.location.href = "/weixin/city";
+                }
+                  
+                $.ajax({
+                    type: "get",
+                    url: "/weixin/saveBind",
+                    data: {
+                        cellphone: cellphone,
+                        code: code,
+                        location: lat + ',' + lon
+                    },
+                    dataType: 'json',
+                    complete: function(json) {
+                    
+                        var status = json.status;
+                        if(status != 200){
+                            $.alert('网络异常，状态为12.2' + status);
+                            return;
+                        }
+                        var data = json.response;
+                      
+                        if ($.type(data) == 'string') {
+                          data = JSON.parse(data);
+                        }
+
+                        if(data.code != 'E00000'){
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                                regFlag = 0;
+                                return;
+                            }
+                        }else{
+                            // debugger;
+                            console.log(cellphone);
+                            $.alert('绑定成功', function () {
+                              window.location.href = "/weixin/home";
+                            });
+
+                        }
+                      
+                    }
+                });
+            })
+            //   $('#agreeNote').on('click',function(){
+                
+            //     if($.trim($('input[name=cellphone]').val()) !="" && $('#agreeNote').is(':checked') ){
+            //       $('#getPhone').addClass('public-color');
+            //     }else{
+            //       $('#getPhone').removeClass('public-color');
+            //     }
+                
+            //   })
+            //   $('input[name=cellphone]').on('input',function(){
+            //     if($.trim($(this).val())==""){
+            //       $('#getPhone').removeClass('public-color');
+            //     }else if($.trim($(this).val())!="" && $('#agreeNote').is(':checked')){
+            //       $('#getPhone').addClass('public-color');
+            //     }
+            //   })
+              
+            // //获取验证码和绑定手机
+            // $('.reg-list').delegate("a.go-bind,input[type=button]", "click", function(e){
+            //     e.preventDefault();
+
+            //     var me = $(this),
+            //         action = me.data('action');
+
+            //         if(action == 'get-code'){
+            //             var cellphone = $.trim($('[data-role="mobile-code"] input[name=cellphone]').val());
+                        
+            //             if(cellphone == ''){
+            //               $.alert('手机号不能为空');
+            //               return false;
+            //             }
+            //             if(!$('[name=agreeNote]:checked').val()){
+            //           	  $.alert('请阅读并同意用户协议');
+            //               return false;
+            //             }
+                        
+
+                        
+            //             me.prop({"disabled":true});
+            //             $.ajax({
+            //                 type: "get",
+            //                 url: "/weixin/moblieMsg",
+            //                 data: {
+            //                     cellphone: cellphone
+            //                 },
+            //                 dataType: 'json',
+            //                 complete: function(json) {
+                              
+            //                     var data = json.response;
+                                
+            //                     var status = json.status;
+            //                     if(status != 200){
+            //                         $.alert('网络异常，状态为12.1' + status);
+            //                         return;
+            //                     }    
+            //                     if ($.type(data) == 'string') {
+            //                         data = JSON.parse(data);
+            //                     }
+            //                     if(data.code != 'E00000' && data.code != 'E90001' ){
+            //                         if(data.code == "-1"){
+            //                             window.location.href = "/weixin/bind";
+            //                         }else{
+            //                             $.alert(data.message);
+            //                             me.prop("disabled", false);
+            //                             return;
+            //                         }
+            //                     }else{
+            //                         $('[data-role="phone-no"]').html(cellphone);
+            //                         //倒计时
+            //                         var wait=parseInt(data.message);
+                                      
+            //                         function time(o) {  
+            //                             if (wait == 0) {  
+            //                                 o.removeAttr("disabled");
+            //                                 o.addClass('public-color');            
+            //                                 o.val("获取验证码");  
+            //                                 wait = parseInt(data.message);  
+            //                             } else {  
+            //                                 o.prop("disabled", true);
+            //                                 o.removeClass('public-color');  
+            //                                 o.val("重新发送(" + wait + ")s");  
+            //                                 wait--;  
+            //                                 setTimeout(function() {  
+            //                                     time(o)  
+            //                                 },  
+            //                                 1000)  
+            //                             }  
+            //                         } 
+            //                         time($('[data-role="count-contrl"]')); 
+            //                         $('.get-wrap').addClass('hide');
+            //                         $('.bind-wrap').removeClass('hide');
+            //                     }
+                                
+            //                 }
+            //             });
+                        
+            //         }else if(action == 'go-bind'){
+            //         	var cellphone = $.trim($('input[name=cellphone]').val());
+            //         	var code = $.trim($('input[name=code]').val());
+            //           var lat = '', lon = '';
+            //           if(code == ''){
+            //               $.alert('验证码不能为空');
+            //               return false;
+            //           }
+            //           var location = JSON.parse(localStorage.getItem("wxlocation"));
+            //           if(location && (location.lat)){
+            //               lat = location.lat;
+            //               lon = location.lon;
+            //           }else{
+            //               window.location.href = "/weixin/city";
+            //           }
+                      
+            //           $.ajax({
+            //               type: "get",
+            //               url: "/weixin/saveBind",
+            //               data: {
+            //                   cellphone: cellphone,
+            //                   code: code,
+            //                   location: lat + ',' + lon
+            //               },
+            //               dataType: 'json',
+            //               complete: function(json) {
+                            
+            //                   var status = json.status;
+            //                   if(status != 200){
+            //                       $.alert('网络异常，状态为12.2' + status);
+            //                       return;
+            //                   }
+            //                   var data = json.response;
+                              
+            //                   if ($.type(data) == 'string') {
+            //                       data = JSON.parse(data);
+            //                   }
+
+            //                   if(data.code != 'E00000'){
+            //                         if(data.code == "-1"){
+            //                             window.location.href = "/weixin/bind";
+            //                         }else{
+            //                             $.alert(data.message);
+            //                             return;
+            //                         }
+            //                   }else{
+            //                       // debugger;
+            //                       console.log(cellphone);
+            //                       $.alert('绑定成功', function () {
+            //                           localStorage.setItem('userTel',cellphone);
+            //                           window.location.href = "/weixin/home";
+            //                       });
+
+            //                   }
+                              
+            //               }
+            //           });
+                    
+
+                        
+            //         }
+            // });
+        });
+        $.init();
+    </script>
+</body>
+</html>

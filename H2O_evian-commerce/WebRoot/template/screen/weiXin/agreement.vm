@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/indexCss.vm")
+<body>
+
+    <div class="page-group">
+        <div class="page page-finish page-current">
+            <header class="bar bar-nav light-nav">
+                <a href="/weixin/bind" class="icon icon-35icoback pull-left  bar-left"></a>
+                <h1 class="title">用户协议</h1>
+            </header>
+
+            <div class="content">
+                
+                
+            </div>
+            
+        </div>
+       
+    </div>
+
+    <script type='text/javascript' src='/files/common/js/zepto.min.js' charset='utf-8'></script>
+    <script>
+      $.config = {router: false}
+    </script>
+    <script type='text/javascript' src='/files/common/js/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='/files/common/js/sm-extend.min.js' charset='utf-8'></script>
+    <!-- #if($!webStyle == "shuiqu")
+    <script type='text/javascript' src='http://ow3heuhv0.bkt.clouddn.com/zepto.min.js' charset='utf-8'></script>
+    <script>
+      $.config = {router: false}
+    </script>
+    <script type='text/javascript' src='http://ow3heuhv0.bkt.clouddn.com/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='http://ow3heuhv0.bkt.clouddn.com/sm-extend.min.js' charset='utf-8'></script>
+    #else
+    <script type='text/javascript' src='http://oy27drxeq.bkt.clouddn.com/zepto.min.js' charset='utf-8'></script>
+    <script>
+      $.config = {router: false}
+    </script>
+    <script type='text/javascript' src='http://oy27drxeq.bkt.clouddn.com/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='http://oy27drxeq.bkt.clouddn.com/sm-extend.min.js' charset='utf-8'></script>
+    #end -->
+    #parse("control/$!webStyle/globalJs.vm")
+    <script>
+        $(function() {
+            $.ajax({
+                type: "get",
+                url: "/weixin/registerAgreement",
+                dataType: 'html',
+                complete: function(result) {
+                  if(result){
+                    var popupHTML = result.response;
+                    // console.log(result);
+                    $('.content').html(popupHTML);
+                    
+                  } 
+                }
+            });
+           
+        });
+        
+       $.init(); 
+    </script>
+  </body>
+</html>

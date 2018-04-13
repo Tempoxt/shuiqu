@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "unboundWeixin")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/shopCss.vm")
+<body>
+  	<div class="page-group">
+		<div class="page page-finish page-current">
+	        <div class="content content-unboundWeixin theme-dark">
+	            <div class="list-block new-unboundWeixin-list">
+	            	#if($!webStyle == "shuiqu")
+	            	<svg class="icon icon-svg title-icon" aria-hidden="true">
+                      	<use href="#icon-duigou1-copy"></use>
+                  	</svg>
+	              	<!-- <div class="icon icon-duigou1-copy"></div> -->
+				  	<div class="tips">恭喜您！绑定成功！</div>
+				  	<p>
+				    	<a href="/weixin/home" class="button button-fill btn-yello">回首页</a>
+				  	</p>
+				  	<a class="login-tips" href="http://a.app.qq.com/o/simple.jsp?pkgname=com.evian.daojia">登录水趣APP更多优惠</a>
+				  	#else
+				  	<svg class="icon icon-svg title-icon" aria-hidden="true">
+                      	<use href="#icon-duigou1-copy"></use>
+                  	</svg>
+	              	<!-- <div class="icon icon-duigou1-copy"></div> -->
+				  	<div class="tips">恭喜您！绑定成功！</div>
+				  	<p>
+				    	<a href="/weixin/home" class="button button-fill btn-yello">回首页</a>
+				  	</p>
+				  	<a class="login-tips" href="http://a.app.qq.com/o/simple.jsp?pkgname=com.evian.dlss">登录APP更多优惠</a>
+				  	#end
+				</div>
+	        </div>
+	    </div>
+	</div>
+    #*加载JS文件*# 
+    #parse("control/$!webStyle/publicJs.vm")
+	#parse("control/$!webStyle/globalJs.vm")
+	<script>
+        $.init();
+    </script>
+</body>
+</html>

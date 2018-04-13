@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/indexCss.vm")
+<body>
+    <div class="page-group store-wrap">
+        <div class="page page-finish page-current">
+            <header class="bar bar-nav light-nav">
+                <a href="/weixin/home" class="icon icon-35icoback pull-left  bar-left"></a>  
+                <h1 class="title" data-role="store-name"></h1>
+            </header>
+            
+            <div class="content store-buy">
+                <div class="content-block">
+                    <div class="tab-cont only-p" data-role="product-list">
+                        
+                    </div>
+                </div>
+            </div>
+            <!-- Block button in standard bar fixed above the footer -->
+            <div class="bar bar-footer order-bar">
+              <a href="/weixin/shoppingCar" class="button button-fill btn-yello" style="top: 0;height:2.2rem;line-height: 2.2rem;font-size: 0.8rem;">去购物车结算</a>
+            </div>
+        </div>
+    </div>
+    
+    <script id="productTpl" type="text/x-handlebars-template">
+
+        <ul>
+            {{#each data}}
+            <li>
+                <a href="/weixin/productDetail?pid={{pid}}&shopId={{../shopId}}">
+                    <table>
+                        <tr>
+                            <td>
+                                <img src="{{pictureUrl}}" alt="">
+                            </td>
+                            <td>
+                                <h5>{{pname}}</h5>
+                                <p>销售{{salesNum}}份{{#is sellTag 1}}<i class="tag">热销</i>{{/is}}{{#is sellTag 2}}<i class="tag">推荐</i>{{/is}}{{#is sellTag 3}}<i class="tag">优惠</i>{{/is}}{{#is sellTag 4}}<i class="tag">套餐</i>{{/is}}</p>
+                                <div>
+                                    <span>￥ {{price}}</span>
+                                    <p class="car-count" data-action="add-cart" data-pid="{{pid}}">
+                                        <svg class="icon-svg" aria-hidden="true">
+                                            <use xlink:href="#icon-icon_num"></use>
+                                        </svg>
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </a>
+            </li>
+            {{/each}}
+        </ul>
+    </script>
+    #*加载JS文件*# 
+    #parse("control/$!webStyle/publicJs.vm")
+    #parse("control/$!webStyle/globalJs.vm")
+    <script>
+        $(function() {
+            var productBar = $('[data-role="product-bar"]');
+            productBar.delegate("a", "click", function(e){
+
+                $('[data-role="product-bar"] a').removeClass('active');
+                $(this).addClass('active');
+            });
+            var shopName = localStorage.getItem("shopName");
+            $('[data-role="store-name"]').html(shopName);
+            var shopId = getQueryString('shopId');
+            var code_id = getQueryString('codeid');
+            var geturl = "/weixin/voucherToGoods?shopId=" + shopId + "&code_id=" + code_id;
+            
+            $.ajax({
+                type: "get",
+                url: geturl,
+                dataType: 'json',
+                complete: function(json) {
+                  
+                    var data = json.response;
+                    var status = json.status;
+                    if(status != 200){
+                        $.alert('网络异常7.1，状态为' + status);
+                        return;
+                    }
+                    if ($.type(data) == 'string') {
+                        data = JSON.parse(data);
+                    }
+                    if(data.code != 'E00000'){
+                        if(data.code == "-1"){
+                            window.location.href = "/weixin/bind";
+                        }else{
+                            $.alert(data.message);
+                            return;
+                        }
+                    }else{
+                        console.log(data.data);
+                        var productTpl = $("#productTpl").html();
+                        var proTemplate = Handlebars.compile(productTpl);
+                        var context = {
+                            data: data.data.products,
+                            shopId: shopId
+                        };
+                        var proCont = proTemplate(context);
+                        
+                        $('[data-role="product-list"]').html(proCont);
+                        
+                    }
+                    
+                }
+            });
+           
+            
+            //加入购物车
+            $('[data-role="product-list"]').delegate("p", "click", function(e){
+                e.preventDefault();
+                var me = $(this),
+                    action = me.data('action');
+
+                    if(action == 'add-cart'){
+                        var pid = me.data('pid');
+                        var product = [{
+                            "shopId": shopId,
+                            "pid": pid,
+                            "number": 1
+                        }];
+
+                        $.ajax({
+                            type: "post",
+                            url: "/weixin/editShopCart",
+                            dataType: 'json',
+                            data:{
+                                products:JSON.stringify(product)
+                            },
+                            complete: function(json) {
+                              
+                                var data = json.response;
+                                var status = json.status;
+                                if(status != 200){
+                                    $.alert('网络异常，状态为7.2' + status);
+                                    return;
+                                }
+                                if ($.type(data) == 'string') {
+                                    data = JSON.parse(data);
+                                }
+                                if(data.code != 'E00000'){
+                                    if(data.code == "-1"){
+                                        window.location.href = "/weixin/bind";
+                                    }else{
+                                        $.alert(data.message);
+                                        return;
+                                    }
+                                }else{
+                                    
+                                    $.toast("添加成功");
+                                }
+                                
+                            }
+                        });
+                    }
+            });
+        });
+        $.init();
+    </script>
+</body>
+</html>

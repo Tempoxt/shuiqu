@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "myIntegral")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/shopCss.vm")
+<body>
+#*加载JS文件*# 
+#parse("control/$!webStyle/publicJs.vm")
+<script src="/files/js/$!webStyle/app.js"></script>
+<!-- <script src="https://cdn.shuiqoo.cn/$!webStyle/echarts.min.js"></script> -->
+#parse("control/$!webStyle/globalJs.vm")
+
+	<div class="page-group">
+		<div class="page page-finish page-current page-myIntegral">
+            <header class="bar bar-nav light-nav">
+                <a class="icon icon-35icoback pull-left bar-left closeTuike" href="#"></a>  
+                <a class="icon icon-183help pull-right bar-right open-about" style="" href="#"><span class="jfgz" >积分规则</span></a>
+                <h1 class="title">我的积分</h1>
+            </header>
+            <div class="content img-code-box">
+            	<script type="text/javascript">
+            		var isApp=isAppFrame();
+            		if(isApp){
+            			$(".bar-nav").remove();
+            		}
+            		var tuikeEid="";
+            		// 点击关闭界面
+		            function closeWin() {
+		                WeixinJSBridge.invoke('closeWindow', {}, function(res) {
+		                    //res.err_msg(close_window:ok/close_window:error)
+		                });
+		            }
+		            function clickCloseTuike(){
+		              $(".closeTuike").click(function(){
+		                  closeWin();
+		              });
+		            }
+		            function clickCloseShop(){
+		                $(".button-fill").click(function(){
+		                    if(isApp){
+                                try {
+						        	app.ClosePage();
+							    } catch (e) {
+							        try {
+							            ClosePage();
+							        } catch (ee) {
+							        	// run('', '')
+							        }
+							    }
+                            }else{
+                                closeWin();
+                            }
+		                });
+		            }
+		            clickCloseTuike();
+		            // 截取url参数
+				    function GetQueryString(name){
+					     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+					     var r = window.location.search.substr(1).match(reg);
+					     if(r!=null)return  unescape(r[2]); return null;
+					}
+					 function getCookie(c_name)
+					{
+						if (document.cookie.length>0)
+						  {
+							  c_start=document.cookie.indexOf(c_name + "=")
+							  if (c_start!=-1)
+							    { 
+								    c_start=c_start + c_name.length+1 
+								    c_end=document.cookie.indexOf(";",c_start)
+							    if (c_end==-1) c_end=document.cookie.length
+							    	return unescape(document.cookie.substring(c_start,c_end))
+							    } 
+						  }
+						return ""
+					}
+					var appUserInfo = getCookie("appUserInfo");
+					/*if(!appUserInfo){
+						
+	                	if (window.stop)
+						window.stop();
+						else
+						document.execCommand("Stop");
+	                    $('.img-code-box').html('<div class="defaut-wrapp" style="padding: 5rem 1rem 1rem;color: #b7b8b7;" ><span class="icon icon-88tipicoorder" style="display: block;font-size: 3rem;width: 3rem;height: 3rem;margin: 0 auto 2rem;"></span><h2 class="def-note" style="font-size: 0.8rem;text-align: center;">您未登陆，不能访问</h2><p style="width: 5rem;margin: 0 auto;" class="closeTuike" ></p></div>');
+					}*/
+					appUserInfo = JSON.parse(appUserInfo);
+					appUserInfo = JSON.parse(appUserInfo);
+
+		            function isManager(a){
+
+		            	$.ajax({
+				            type: "post",
+				            url: "/weixin/getClientShareInfo",
+				            dataType: 'json',
+				            data:{
+				            	identityCode:a
+				            },
+				            async: false,
+				            complete: function(json) {
+				              
+				                var data = json.response;
+				                
+				                var status = json.status;
+				                if(status != 200){
+				                    $.alert('网络异常，状态为12.1' + status);
+				                    return;
+				                }    
+				                if ($.type(data) == 'string') {
+				                    data = JSON.parse(data);
+				                }
+				                if(data.code != 'E00000'){
+				                	/*停止加载页面*/
+				                	if (window.stop)
+									window.stop();
+									else
+									document.execCommand("Stop");
+				                    $('.img-code-box').html('<div class="defaut-wrapp" style="padding: 5rem 1rem 1rem;color: #b7b8b7;" ><span class="icon icon-88tipicoorder" style="display: block;font-size: 3rem;width: 3rem;height: 3rem;margin: 0 auto 2rem;"></span><h2 class="def-note" style="font-size: 0.8rem;text-align: center;">您不是推客经理，不能访问</h2><p style="width: 5rem;margin: 0 auto;" class="closeTuike" ><a href="#" class="button button-fill btn-yello">点击关闭</a></p></div>');
+							            clickCloseShop();
+				                }else{
+				                    if(data.data.isManager==false){
+				                    	/*停止加载页面*/
+				                    	if (window.stop){
+											window.stop();
+				                    	}else{
+											document.execCommand("Stop");
+				                    	}
+				                        $('.img-code-box').html('<div class="defaut-wrapp" style="padding: 5rem 1rem 1rem;color: #b7b8b7;" ><span class="icon icon-88tipicoorder" style="display: block;font-size: 3rem;width: 3rem;height: 3rem;margin: 0 auto 2rem;"></span><h2 class="def-note" style="font-size: 0.8rem;text-align: center;">您不是推客经理，不能访问</h2><p style="width: 5rem;margin: 0 auto;" class="closeTuike" ><a href="#" class="button button-fill btn-yello">点击关闭</a></p></div>');
+				                        	clickCloseShop();
+				                    }
+				                    tuikeEid=data.data.eid;
+				                }
+				            }
+				        });
+		            }
+
+		            
+		            if(!isApp){
+		            	// isManager();
+		            }
+				</script>
+                <ul class="tuikeShops-list tab active infinite-scroll infinite-scroll-bottom" data-role="tuikeShops-list" data-distance="100">
+                	<li>
+                		<div class="content-padded">
+	                        <div class="row">
+	                        	<div class="col">
+	                        		<table>
+	                        			<!-- <tr>
+	                        				<td colspan="3"><div class="userPhoto" style="width: 3.5rem;height: 3.5rem;border-radius:50%;"></div></td>
+	                        				<td colspan="10">
+	                        					<div><span class="userName">李小仙</span></div>
+	                        					<div><span>可用积分:</span><span class="integral">105678</span><span> (价值10.56元)</span></div>
+	                        				</td>
+	                        			</tr> -->
+	                        			<tr>
+	                        				<td colspan="3"><div class="userPhoto"></div></td>
+	                        				<td colspan="10">
+	                        					<div><span class="userName"></span></div>
+	                        					<div><span>可用积分:</span><span class="integral"></span><span> (价值10.56元)</span></div>
+	                        				</td>
+	                        			</tr>
+	                        			<tr>
+	                        				<td class="love active"><img src="/files/images/heart-icon@3x.png"></td>
+	                        				<td class="love active"><img src="/files/images/heart-icon@3x.png"></td>
+	                        				<td class="love active"><img src="/files/images/heart-icon@3x.png"></td>
+	                        				<td class="love active"><img src="/files/images/heart-icon@3x.png"></td>
+	                        				<td class="love active"><img src="/files/images/heart-icon@3x.png"></td>
+	                        				<td class="love active"><img src="/files/images/heart-icon@3x.png"></td>
+	                        				<td class="love active"><img src="/files/images/heart-icon@3x.png"></td>
+	                        				<td colspan="6">
+				                                <!-- <a href="/weixin/tuiKeManagerShop" class="button  btn-yello btn-125 tuikeShop" name="tuikeShop" data-role="btn" style="font-weight: normal;padding: 0;line-height: 1.8rem;height: 40px;font-size: large;">去绑定店铺推客</a> -->
+				                                <a href="#" class="button  btn-yello btn-125 tuikeShop" name="tuikeShop" data-role="btn">签到领积分</a>
+	                        				</td>
+	                        			</tr>
+	                        		</table>
+	                        	</div>
+	                        </div>
+	                    </div>
+                	</li>
+                	<li>
+                		<div class="content-padded">
+	                        <div class="row">
+	                            <div class="col">
+	                            	<div class="buttons-tabDiv">
+		                            	<div class="buttons-tab">
+							                <a id="aTab1" href="#tab1" class="tab-link active button" id="order">全部</a>
+							                <a id="aTab2" href="#tab2" class="tab-link button" id="evaluates">收入</a>
+							                <a id="aTab3" href="#tab3" class="tab-link button" id="shopInfo">支出</a>
+							            </div>
+						            </div>
+	                            </div>
+	                        </div>
+	                        <div class="row" >
+	                            <div class="col">
+	                            	<div class="content-block tabsDiv infinite-scroll infinite-scroll-bottom" data-distance="100">
+	                            		<div class="tabs">
+	                            			<div id="tab1" class="tab active">
+	                            				<div class="content-block" >
+	                            					<ul>
+	                            						
+	                            					</ul>
+	                            				</div>
+	                            			</div>
+	                            			<div id="tab2" class="tab">
+	                            				<div class="content-block">
+	                            					<ul></ul>
+	                            				</div>
+	                            			</div>
+	                            			<div id="tab3" class="tab">
+	                            				<div class="content-block">
+	                            					<ul></ul>
+	                            				</div>
+	                            			</div>
+	                            		</div>
+	                            		<!-- 加载提示符 -->
+								        <div class="infinite-scroll-preloader">
+								            <div class="preloader"></div>
+								        </div>
+	                            	</div>
+	                            </div>
+	                        </div>
+	                    </div>
+                	</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+	<div class="popup popup-about">
+	  <div class="content-block integralRule ">
+	    <header class="bar bar-nav  light-nav">
+	        <span class="icon icon-35icoback pull-left close-popup bar-left"></span>
+	        <h1 class="title">积分规则</h1>
+	    </header>
+	    <div class="content">
+	        
+	    </div>
+	  </div>
+	</div>
+</body>
+    <script id="tab1Tpl" type="text/x-handlebars-template">
+    	{{#each data.integralRecords}}
+	    	<li>
+				<p>{{integral_remark}}</p>
+				<p>{{dateCreated}}</p>
+				{{#is typeId 1}}
+					<span class="deal_integralAdd">+{{deal_integral}}</span>
+				{{else}}
+					<span class="deal_integral">-{{deal_integral}}</span>
+				{{/is}}
+			</li>
+		{{/each}}
+    </script>
+    <script type="text/javascript">
+    	
+	   
+		// alert(typeof appUserInfo)
+		$(document).on('click','.open-about', function () {
+			getIntegralRule(appUserInfo.eid);
+		  $.popup('.popup-about');
+		});
+    	var isTab1 = true;
+        var isTab2 = true;
+        var isTab3 = true;
+
+        // 当前是什么页面
+        var myPage =0;
+
+        // 加载flag
+		var loading = false;
+    	$(function(){
+    		// 每次加载添加多少条目
+		    var itemsPerLoad = 20;
+
+		    // 第几页
+		    var tab1Page =1;
+		    var tab2Page =1;
+		    var tab3Page =1;
+
+        	//H5获取我的积分明细
+			if(isTab1){
+        		getIntegralRecord('tab1',"init",myPage,tab1Page,itemsPerLoad,appUserInfo.clientId,appUserInfo.eid);
+				isTab1=false;
+        	}
+
+        	$('#aTab1').click(function(){
+        		myPage=0;
+        		loading = false;
+        		$('.infinite-scroll-preloader').show();
+        	});
+
+            $('#aTab2').click(function(){
+            	myPage=1;
+            	loading = false;
+            	$('.infinite-scroll-preloader').show();
+            	if(isTab2){
+            		getIntegralRecord('tab2',"init",myPage,tab2Page,itemsPerLoad,appUserInfo.clientId,appUserInfo.eid);
+            		isTab2=false;
+            	}
+            });
+
+            $('#aTab3').click(function(){
+            	myPage=2;
+            	loading = false;
+            	$('.infinite-scroll-preloader').show();
+            	if(isTab3){
+            		getIntegralRecord('tab3',"init",myPage,tab3Page,itemsPerLoad,appUserInfo.clientId,appUserInfo.eid);
+            		isTab3=false;
+            	}
+            });
+
+
+		    // 最多可加载的条目
+		    var maxItems = 100;
+
+		    // 注册'infinite'事件处理函数
+		    $(document).on("pageInit", function(e, id, page) {
+            
+	            $(page).on('infinite',function(){
+			    	// 如果正在加载，则退出
+	          		if (loading){
+
+	          			return;
+	          		} 
+	          			
+
+	          		// 设置flag
+	          		loading = true;
+
+	          		// 模拟1s的加载过程
+	          		setTimeout(function() {
+	          			// 重置加载flag
+	              		loading = false;
+	              		if(myPage==0){
+	              			getIntegralRecord('tab1',"add",myPage,tab1Page,itemsPerLoad,appUserInfo.clientId,appUserInfo.eid);
+	              			tab1Page++;
+	              		}else if(myPage==1){
+	              			getIntegralRecord('tab2',"add",myPage,tab2Page,itemsPerLoad,appUserInfo.clientId,appUserInfo.eid);
+	              			tab2Page++;
+	              		}else if(myPage==2){
+	              			getIntegralRecord('tab3',"add",myPage,tab3Page,itemsPerLoad,appUserInfo.clientId,appUserInfo.eid);
+	              			tab3Page++;
+	              		}
+	              		//容器发生改变,如果是js滚动，需要刷新滚动
+	              		$.refreshScroller();
+
+	          		}, 1000);
+			    });
+	        });
+		    $.init();
+
+            //H5获取我的积分明细
+            function getIntegralRecord(type,or,typeId,pageIndex,pageSize,identityCode, eid){
+            	$.ajax({
+		            type: "post",
+		            url: "/weixin/getIntegralRecord",
+		            dataType: 'json',
+		            async: false,
+		            data: {
+		            	typeId:typeId,
+		            	pageIndex:pageIndex,
+		            	pageSize:pageSize,
+		            	identityCode:identityCode,
+		            	eid:eid
+	                },
+		            complete: function(json) {
+		                var data = json.response;
+		                
+		                var status = json.status;
+		                if(status != 200){
+		                    $.alert('网络异常，状态为12.1' + status);
+		                    return;
+		                }    
+		                if ($.type(data) == 'string') {
+		                    data = JSON.parse(data);
+		                }
+		                if(data.code != 'E00000'){
+		                	$.alert(data.message);
+		                }else{
+		                	$('.userName').html(data.data.nickName);
+		                	$('.userPhoto').css({'background':"url("+data.data.photo+") center center no-repeat",'background-size':'cover'});
+		                	$('.integral').html(data.data.surplus);
+		                	if(data.data.integralRecords&&data.data.integralRecords.length>0){
+		                		if(data.data.integralRecords.length!=20){
+		                			loading = true;
+		                			$('.infinite-scroll-preloader').hide();
+		                		}
+		                		var context = {
+	                            	data: data.data
+	                        	}
+	                        	var tab1Tpl = $("#tab1Tpl").html();
+		                        var tab1Template = Handlebars.compile(tab1Tpl);
+		                        var tab1Cont = tab1Template(context);
+		                        if("add"==or){
+		                        	$('#'+type+' ul').append(tab1Cont);
+		                        }else if("init"==or){
+		                        	$('#'+type+' ul').html(tab1Cont);
+		                        }
+		                	}else{
+		                		$('.infinite-scroll-preloader').hide();
+		                		loading = true;
+		                	}
+		                }
+		            }
+		        });
+            }
+    	});
+
+    	function getIntegralRule(eid){
+    		$.ajax({
+	            type: "post",
+	            url: "/weixin/getIntegralRule",
+	            dataType: 'json',
+	            async: false,
+	            data: {
+	            	eid:eid
+                },
+	            complete: function(json) {
+	                var data = json.response;
+	                
+	                var status = json.status;
+	                if(status != 200){
+	                    $.alert('网络异常，状态为12.1' + status);
+	                    return;
+	                }    
+	                if ($.type(data) == 'string') {
+	                    data = JSON.parse(data);
+	                }
+	                if(data.code != 'E00000'){
+	                	$.alert(data.message);
+	                }else{
+                		var context = {
+                        	data: data.data
+                    	}
+                        $('.integralRule .content').html(data.data.rule);
+	                }
+	            }
+	        });
+    	}
+    	$.init();
+    </script>
+</html>

@@ -1,0 +1,34 @@
+<!-- 腾讯云 -->
+<!-- <script type='text/javascript' src='https://cdn.shuiqoo.cn/$!webStyle/zepto.min.js' charset='utf-8'></script>
+    <script>
+          $.config = {router: false}
+    </script>
+    <script type='text/javascript' src='https://cdn.shuiqoo.cn/$!webStyle/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='https://cdn.shuiqoo.cn/$!webStyle/sm-extend.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='https://cdn.shuiqoo.cn/$!webStyle/handlebars-v4.0.5.js' charset='utf-8'></script>
+    <script src="https://cdn.shuiqoo.cn/$!webStyle/iconfont.js"></script>
+    <script src="https://cdn.shuiqoo.cn/$!webStyle/common.js"></script> -->
+
+    <!--本地-->
+    <script type='text/javascript' src='/files/common/js/zepto.min.js' charset='utf-8'></script>
+    <script>
+          $.config = {router: false}
+    </script>
+    <script type='text/javascript' src='/files/common/js/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='/files/common/js/sm-extend.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='/files/common/js/handlebars-v4.0.5.js' charset='utf-8'></script>
+    <script src="/files/common/css/$!webStyle/iconfont.js"></script> 
+    <script src="/files/js/$!webStyle/common.js?v=$version"></script>
+    
+    
+    <!-- 七牛云 -->
+    <!-- <script type='text/javascript' src='https://cdnqiniu.shuiqoo.cn/zepto.min.js' charset='utf-8'></script>
+	<script>
+          $.config = {router: false}
+    </script>
+    <script type='text/javascript' src='https://cdnqiniu.shuiqoo.cn/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='https://cdnqiniu.shuiqoo.cn/sm-extend.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='https://cdnqiniu.shuiqoo.cn/handlebars-v4.0.5.js' charset='utf-8'></script>
+    <script src="https://cdnqiniu.shuiqoo.cn/iconfont.js"></script>
+    <script src="https://cdnqiniu.shuiqoo.cn/common.js?v=$version"></script> -->
+    

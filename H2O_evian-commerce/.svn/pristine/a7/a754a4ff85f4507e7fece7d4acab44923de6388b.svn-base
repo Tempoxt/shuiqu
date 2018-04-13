@@ -1,0 +1,85 @@
+<nav class="bar bar-tab" style="z-index: 1000;">
+  <a class="tab-item external #if($currentPage == 'home') active #end" href="#if($currentPage == 'home')         # #else /weixin/home #end">
+    <svg class="icon icon-svg def" aria-hidden="true">
+        <use xlink:href="#icon-btn_home_"></use>
+    </svg>
+    <svg class="icon icon-svg cur" aria-hidden="true">
+        <use xlink:href="#icon-btn_home"></use>
+    </svg>
+    <span class="tab-label">首页</span>
+  </a>
+  <a class="tab-item external" href="/found/class">
+    <svg class="icon icon-svg def" aria-hidden="true">
+        <use xlink:href="#icon-btn_fx_1"></use>
+    </svg>
+    <svg class="icon icon-svg cur" aria-hidden="true">
+        <use xlink:href="#icon-btn_fx"></use>
+    </svg>
+    <span class="tab-label">趣发现</span>
+    <!-- <span class="badge">2</span> -->
+  </a>
+  <a class="tab-item external #if($currentPage == 'quickShopping') active #end" href="#if($currentPage == 'quickShopping') # #else /weixin/quickShopping #end">
+    <svg class="icon icon-svg def" aria-hidden="true">
+        <use xlink:href="#icon-btn_sd_"></use>
+    </svg>
+    <svg class="icon icon-svg cur" aria-hidden="true">
+        <use xlink:href="#icon-btn_sd"></use>
+    </svg>
+    <span class="tab-label">闪订</span>
+  </a>
+  <a class="tab-item external #if($currentPage == 'shoppingCar') active #end" href="#if($currentPage == 'shoppingCar') # #else /weixin/shoppingCar #end">
+    <svg class="icon icon-svg def" aria-hidden="true">
+        <use xlink:href="#icon-btn_shop"></use>
+    </svg>
+    <svg class="icon icon-svg cur" aria-hidden="true">
+        <use xlink:href="#icon-btn_shop_"></use>
+    </svg>
+    <span class="tab-label" data-role="purchased">已选购</span>
+  </a>
+  <a class="tab-item external #if($currentPage == 'account') active #end" href="#if($currentPage == 'account') # #else /weixin/account #end">
+    <svg class="icon icon-svg def" aria-hidden="true">
+        <use xlink:href="#icon-btn_my_"></use>
+    </svg>
+    <svg class="icon icon-svg cur" aria-hidden="true">
+        <use xlink:href="#icon-btn_my"></use>
+    </svg>
+    <span class="tab-label">我的</span>
+  </a>
+</nav>
+<!-- <script type='text/javascript' src='/files/common/js/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='/files/common/js/sm.min.js' charset='utf-8'></script>
+<script>
+    //获取购物车商品
+    $(function(){
+        $.ajax({
+            type: "get",
+            url: "/weixin/getShopCartProductJson",
+            dataType: 'json',
+            complete: function(json) {
+            
+                var data = json.response;
+                var status = json.status;
+                if(status != 200){
+                    $.alert('系统异常，状态为3.2' + status);
+                    return;
+                }
+                if ($.type(data) == 'string') {
+                    data = JSON.parse(data);
+                }
+                if(data.code != 'E00000'){
+                    $.alert(data.message, function () {
+                        window.location.href = "/weixin/bind";
+                    });
+                  
+                }else{
+                    if(data.data.shopcarts.length>=1){
+                        $('[data-role="purchased"]').after('<span class="badge"></span>');
+                    }
+                }
+              
+            }
+        });
+    })
+        
+
+</script> -->

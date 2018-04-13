@@ -1,0 +1,136 @@
+@charset "UTF-8";
+/*基础数据，可配置*/
+
+
+
+.button.btn-yello.active,
+.button.btn-yello:hover,
+.button.btn-yello {
+  background: #cf1731;
+  color: #fff; }
+
+
+label.label-checkbox input[type="radio"]:checked + .item-media i.icon-form-checkbox,
+label.label-checkbox input[type="checkbox"]:checked + .item-media i.icon-form-checkbox {
+  background-color: #cf1832; }
+
+
+.my-bar {
+  background: #cf1832;
+  color: #cf1832; }
+
+.choose-bar {
+  background: rgba(0,0,0,0.2);
+  color: #fff; }
+
+.icon-btn_xj1.active {
+  color: #cf1832; }
+.icon-btn_sp1.active {
+  color: #cf1832; }
+.icon-11addressdel {
+  color: #ff2727; }
+
+.icon-86star.active {
+  color: #cf1832; }
+
+.button-warning {
+  background: #cf1832;
+  color: #fff; }
+
+.bar-nav {
+  border: 0; }
+
+.bar-nav1 {
+  color: #000;
+  border: 0; }
+
+#getCode {
+  background-color: #cf1832 !important;
+  color: #fff;
+}
+.icon-btn_dzp-.active,.content-unboundWeixin .list-block .login-tips{
+  color: #cf1832;
+}
+.content-people .poster .tpl-box .wrap-title table .haibaoModel .active{
+  border-color:#cf1832;
+}
+.page-integralMall .img-code-box ul li:last-child .content-padded .row:last-child .tabs ul li .col-20{
+  background-color: #cf1832;
+}
+.page-integralMall .img-code-box ul li .buttons-tab .button.active{
+  color: #cf1832;
+  border-color: #cf1832;
+}
+.page-myIntegral .img-code-box ul li .buttons-tab .button.active{
+  color: #cf1832;
+  border-color: #cf1832;
+}
+.page-orderDistributor #tab1 li .row .listCount,.page-orderDistributor #tab2 li .row .listCount,.page-withdrawDeposit ul .withdrawBtn{
+  background-color: #cf1832;
+}
+
+/*地址管理*/
+/*地址管理*/
+
+    
+.address-manager .address-list li .bottom-ctrl table span {
+          font-size: 0.9rem;
+          margin-right: 0.2rem;
+          color: #cf1832; }
+     
+          .popup-new-address .content .new-add-list .tag-box table a.active {
+            color: #cf1832;
+            border-color: #cf1832; }
+       
+          .popup-edit-address .content .new-edit-list .tag-box table a.active {
+            color: #cf1832;
+            border-color: #cf1832; }
+       
+      .left-bar li a.active {
+        border-left: 3px solid #cf1832;
+        background: #fff;
+        color: #000; }
+
+
+
+/*我的*/
+.page-account .content .my-bar {
+  position: relative;
+  background: #cf1832;
+  padding: 1rem 1.5rem;
+  color: #fff; }
+ 
+.order-list-wrap .buttons-tab .button.active {
+  color: #cf1832;
+  border-color: #E8A44F; }
+    .order-list li h4 em {
+      color: #cf1832;
+      font-style: normal; }
+    
+      .order-list li .show-order table tr td em {
+        font-style: normal;
+        color: #cf1832;
+        border: 1px solid #cf1832;
+        display: inline-block;
+        border-radius: 0.3rem;
+        padding: 0 0.2rem;
+        line-height: 1.5em; }
+
+    .order-status-list li > i {
+      display: block;
+      width: 0.5rem;
+      height: 0.5rem;
+      background: #cf1832;
+      position: absolute;
+      top: 50%;
+      left: -1.2rem;
+      margin-top: -0.25rem;
+      border-radius: 50%; }
+   
+      .popup-papers3-about .content .waterboys .big-photo .contacts-people {
+        background: #cf1832;
+        display: inline-block;
+        width: 100%;
+        border-radius: 1rem;
+        font-size: 0.7rem; }
+     

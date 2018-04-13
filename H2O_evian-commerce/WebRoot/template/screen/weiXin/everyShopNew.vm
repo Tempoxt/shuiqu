@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "everyShop")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/shopCss.vm")
+<body>
+  	<link rel="stylesheet" href="/files/common/css/$!webStyle/layout.css?v=$version">
+    <div class="page-group">
+		<div class="page page-finish page-current" data-role="everyShopTpl">
+			
+	    </div> 
+	</div>
+    <script id="everyShopTpl" type="text/x-handlebars-template">
+        <header class="bar bar-nav light-nav" data-role="header">
+            <a href="/weixin/account" class="icon icon-35icoback pull-left bar-left"></a>
+            {{#is data.role '0'}}  
+            <h1 class="title">#if($!webStyle == "shuiqu")店铺推客#else大力水手推客#end</h1>
+            {{/is}}
+            {{#is data.role '1'}}  
+            <h1 class="title">#if($!webStyle == "shuiqu")店铺推广经理#else大力水手推广经理#end</h1>
+            {{/is}}
+            <a href="{{data.remarkUrl}}" class="icon icon-183help pull-right" style="font-size: 26px;">
+            </a>
+        </header>
+        <div class="content content-people" data-role="new-every-shop">
+            <!-- 账号信息 start -->
+            <div class="account" data-role="account">
+                {{#is data.role '0'}}
+                <h4>推客账号：<span>{{#is data.earningAccount}}{{#is data.earningAccount.ifAutonym true}}{{data.earningAccount.wxAutonym}}{{else}}{{data.account}}{{/is}}{{else}}{{data.account}}{{/is}}</span><span><img id="xiugaimima" style="width: 22px;margin-left: 35%;vertical-align: middle;position: absolute;" src="/files/images/xgmm-icon@3x.png"></span></h4>
+                {{/is}}
+                {{#is data.role '1'}}
+                <h4>经理账号：<span>{{#is data.earningAccount}}{{#is data.earningAccount.ifAutonym true}}{{data.earningAccount.wxAutonym}}{{else}}{{data.account}}{{/is}}{{else}}{{data.account}}{{/is}}</span><span><img id="xiugaimima" style="width: 22px;margin-left: 35%;vertical-align: middle;position: absolute;" src="/files/images/xgmm-icon@3x.png"></span></h4>
+                {{/is}}
+                {{#is earningAccount false}}
+                    {{#is data.earningAccount}}
+                    {{#is data.earningAccount.ifAutonym false}}
+                    <p><a href="/weixin/editWxAccount" style="width: 50%;" class="button button-fill btn-yello">微信实名认证</a></p>
+                    {{/is}}
+                    {{else}}
+                    <p><a href="/weixin/editWxAccount" style="width: 50%;" class="button button-fill btn-yello">微信实名认证</a></p>
+                    {{/is}}
+                {{else}}
+                <!-- <h4>提现账号：<span id="alipayNo">{{data.earningAccount.bankNo}}</span><i class="icon icon-yinhang icon-bao"></i><a href="/weixin/editWxAccount" class="icon icon-edit pull-right"></a></h4> -->
+                {{/is}}
+            </div>
+            <!-- 账号信息 end -->
+            <!-- 店铺收益 start -->
+            <div class="income" data-role="income">
+                <p class="tips">{{data.txTimeRemark}}</p>
+                <table class="icon pull-left">
+                    <tr>
+                        <td>
+                            <svg class="icon icon-svg pull-left" aria-hidden="true">
+                                <use xlink:href="#icon-shouyi1"></use>
+                            </svg>
+                        </td>
+                        <td>
+                            {{#is data.role '0'}} 
+                            <h5>推客收益</h5>
+                            {{/is}}
+                            {{#is data.role '1'}} 
+                            <h5>经理收益</h5>
+                            {{/is}}
+                            <p>{{data.lastSunDate}}</p>
+                        </td>
+                    </tr>
+                </table>   
+                #if($!webStyle == "shuiqu")
+                <a href="#" class="button pull-right btn-yello btn-125" data-role="tiXian" style="font-weight: normal;padding: 0;line-height: 1.4rem;">提现</a>
+                #else
+                <a href="#" class="button pull-right btn-yello btn-125" data-role="tiXian" style="font-weight: normal;padding: 0;line-height: 1.4rem;color: #fff;">提现</a>
+                #end
+                
+                
+                <div class="money">
+                    <div class="inner-item">
+                        <a href="/weixin/incomeBill">
+                        <h5>￥<span>{{data.earningsTotal}}</span></h5>
+                        <p>总收益</p></a>
+                    </div>
+                    <div class="inner-item"><a href1="/weixin/loginApp" href="#">
+                        <h5>￥<span>{{data.canBalance}}</span></h5>
+                        <p>可提余额</p></a>
+                    </div>
+                    {{#is data.role '1'}}
+                    <div class="inner-item"><a href="/weixin/myTeam">
+                        <h5><span>{{data.dynamicNum}}/{{data.shouyiNum}}</span></h5>
+                        <p>我的团队</p></a>
+                    </div>
+                    {{/is}}
+                    {{#is data.role '0'}}
+                    <div class="inner-item"><a href="/weixin/myTeam">
+                        <h5><span>{{data.dynamicNum}}/{{data.shouyiNum}}</span></h5>
+                        <p>我的客户</p></a>
+                    </div>
+                    {{/is}}
+                </div>
+            </div>
+            <!-- 店铺收益 end -->
+            <div class="poster">
+                <!-- 我的海报 start -->
+                <!-- <div class="wrap" data-role="wrap">
+                    <div class="wrap-title">
+                        <table class="icon pull-left">
+                                                <tr>
+                                                    <td>
+                                                        <svg class="icon icon-svg pull-left" aria-hidden="true">
+                                                            <use xlink:href="#icon-ico_pic"></use>
+                                                        </svg>
+                                                    </td>
+                                                    <td>
+                                                        <h5>我的海报</h5>
+                                                    </td>
+                                                </tr>
+                                            </table>  
+                                            <a href="#" class="button pull-right share-btn btn-yello no-active" id="sharePoster">分享</a>
+                    </div>          
+                                          <div id="showcase" class="noselect" data-role="showcase">
+                                              
+                                        </div>                    
+                                    </div> -->
+                <!-- 我的海报 end -->
+                <!-- 海报模板 start -->
+                <div class="tpl-box">
+                    <div class="wrap-title">
+                        <table class="icon pull-left">
+                            <tr>
+                                <td>
+                                    <svg class="icon icon-svg pull-left" aria-hidden="true">
+                                        <use xlink:href="#icon-ico_pic"></use>
+                                    </svg>
+                                </td>
+                                <td>
+                                    <h5>海报模板</h5>
+                                </td>
+                                <td >
+                                    <p class="haibaoModel"><a id="xitongModel" href="#" class="button button-round active" data-type="0">系统</a></p>
+                                </td>
+                                <td>
+                                    <p class="haibaoModel" style="margin: 0 0.2rem 0 0rem;"><a id="qiyeModel" href="#" class="button button-round" data-type="1">企业</a></p>
+                                </td>
+                            </tr>
+                        </table>
+                        {{#is data.role '0'}}  
+                        <a href="#" style="width: 24%;" class="button pull-right create-btn btn-yello no-active" id="createPoster">生成海报</a>
+                        {{/is}}
+                        {{#is data.role '1'}}  
+                        <a href="#" style="width: 24%;" class="button pull-right create-btn btn-yello no-active" id="createPoster">生成海报</a>
+                        {{/is}}
+                    </div>
+                    <div id="showcase2" class="noselect" data-role="showcase2">
+                        
+                    </div>
+                </div>
+                <!-- 海报模板 end -->
+            </div>
+                    
+        </div>
+    </script>
+    <!-- 系统模板 -->
+    <script id="showcase2Tpl" type="text/x-handlebars-template">
+   		{{#each data.templates}}
+        <div class="card" data-tid="{{tid}}">
+          	<img src="{{templatePreview}}">
+        </div>
+        {{/each}}
+    	<span class="nav noselect left icon icon-35icoback bar-left bar-left-black" id="left2">
+        </span>
+        <span class="nav noselect right icon icon-ico_awwor_right" id="right2">
+        </span>
+    </script>
+    <!-- 系统模板等于2时-->
+    <script id="system2" type="text/x-handlebars-template">
+        {{#each data.templates}}
+        <div class="card" data-tid="{{tid}}">
+            <img src="{{templatePreview}}">
+        </div>
+        {{/each}}
+    </script>
+    #*加载JS文件*# 
+    #parse("control/$!webStyle/publicJs.vm")
+    <!-- <script type='text/javascript' src='https://cdn.shuiqoo.cn/$!webStyle/animate.js' charset='utf-8'></script>
+    <script src="https://cdn.shuiqoo.cn/$!webStyle/jquery.cloud9carousel.js" charset='utf-8'></script> -->
+    <!-- <script type='text/javascript' src='/files/common/js/animate.js' charset='utf-8'></script> -->
+    <script src="/files/common/js/jquery.cloud9carousel.js" charset='utf-8'></script>
+	#parse("control/$!webStyle/globalJs.vm")
+    <div class="modal modal-out" style="top: 20%;width: 85%;left: 0;margin-left: 7.5%;" data-role="modal">
+        <div class="modal-inner" style="padding: 1rem;background: #fff;">
+            <div class="modal-text" style="height: 16rem;">
+                #if($!webStyle == "shuiqu")
+                <span>水趣推客提现是水趣APP专享奖励，请前往领取</span>
+                <img src="/files/images/wallet.png" alt="" style="display: block;width: 50%;margin: 1rem auto;">
+                <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.evian.daojia" class="button button-fill btn-yello" style="height: 1.8rem;line-height: 1.8rem;width: 80%;margin: 0 auto 0.8rem;">下载水趣APP</a>
+                <p style="font-size: 0.75rem;">打开水趣APP，直接领取 ></p>
+                #else
+                <span>大力水手推客提现是大力水手APP专享奖励，请前往领取</span>
+                <img src="/files/images/wallet.png" alt="" style="display: block;width: 50%;margin: 1rem auto;">
+                <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.evian.dlss" class="button button-fill btn-yello" style="height: 1.8rem;line-height: 1.8rem;width: 80%;margin: 0 auto 0.8rem;">下载大力水手APP</a>
+                <p style="font-size: 0.75rem;">打开大力水手APP，直接领取 ></p>
+                #end
+            </div>
+        </div>
+        <span class="close-modal" style="position: absolute;right: 0;
+        top: 0;font-size: 1.5rem;width: 1.5rem;height: 1.5rem;line-height: 1.5rem;" data-role="close-modal">&times;</span>
+    </div>
+    <div class="modal-overlay" data-role="modal-overlay"></div>
+    <script>   
+    // 截取url参数
+    function GetQueryString(name){
+         var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+         var r = window.location.search.substr(1).match(reg);
+         if(r!=null)return  unescape(r[2]); return null;
+    }
+
+
+    var appid = GetQueryString("authorizer_appid");
+    if(!appid){
+        appid=localStorage.getItem("authorizer_appid");
+    }else{
+        localStorage.setItem("authorizer_appid",appid);
+    }
+    
+    // alert(appid);
+   /* $.ajax({
+        type: "post",
+        url: "/weixin/setAuthorizerAppid",
+        data: {
+            authorizer_appid:appid
+        },
+        async:false,
+        dataType: 'json',
+        complete: function(json) {
+
+            // 重置加载flag
+            loading = false;
+            var data = json.response;
+                
+            var status = json.status;
+
+            
+            if(status != 200){
+                $.alert('网络异常1.1，状态为' + status);
+                flag =0;
+                return;
+            }
+            if ($.type(data) == 'string') {
+                data = JSON.parse(json.response);
+            }
+            if(data.code != 'E00000'){
+                $.alert(data.message)
+                return;
+            }else{
+                // $.alert(data.data.authorizer_appid);
+            }
+        }
+    });*/
+    // 是否可以点击提现按钮
+    var ifAutonymVal = false;
+
+	$(function() {
+
+
+
+        $.ajax({
+            type: "post",
+            url: "/weixin/getShareApplyInfo",
+            async:false,
+            dataType: 'json',
+            complete: function(json) {
+            
+                var data = json.response;
+                var status = json.status;
+                if(status != 200){
+                    $.alert('网络异常，状态为3.2' + status);
+                    return;
+                }
+                if ($.type(data) == 'string') {
+                    data = JSON.parse(data);
+                }
+                if(data.code != 'E00000'){
+                    if(data.code == "-1"){
+                        window.location.href = "/weixin/bind";
+                    }else{
+                        $.alert(data.message);
+                        return;
+                    }
+                  
+                }else{
+                    if(data.data.hash==false){
+                        window.location.href="/weixin/shopApply";
+                    }else{
+
+                        if(data.data.apply.status=="1"){
+                            // window.location.href="/weixin/everyShop";
+                            //获取我的账户情况
+                            // $.showPreloader();
+
+                            localStorage.setItem("fullname",data.data.apply.fullname);
+
+                            var myEarningInfo = function() {
+
+                                $.ajax({
+                                    type: "post",
+                                    url: "/weixin/myLiteAppEarningInfo",
+                                    dataType: 'json',
+                                    data:{
+                                        type:2
+                                    },
+                                    async:false,
+                                    complete: function(json) {
+                                        var data = json.response;
+                                        var status = json.status;
+                                        if (status != 200) {
+                                            $.alert('网络异常，状态为22.1' + status);
+                                            return;
+                                        }
+                                        if ($.type(data) == 'string') {
+                                            data = JSON.parse(data);
+                                        }
+                                        if (data.code != 'E00000') {
+                                            $.alert(data.message);
+                                            return;
+                                        } else {
+                                            // 隐藏银行卡号
+                                            if(data.data.earningAccount){
+                                                // 是否可以点击提现按钮
+                                                ifAutonymVal = data.data.canOutMoney;
+
+                                                if(data.data.earningAccount.bankNo){
+                                                data.data.earningAccount.bankNo = data.data.earningAccount.bankNo.replace(/^(?:\d+)(.{4})$/,"**** **** **** $1");
+                                                }
+                                            }
+                                            // 隐藏手机号
+                                            if(data.data.account){
+                                                data.data.account = data.data.account.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
+                                            }
+
+                                            var context = {
+                                                data: data.data,
+                                                earningAccount:false
+                                            };
+                                            
+                                            //有提现账号
+                                            if (data.data.earningAccount != undefined) {
+                                                context['earningAccount'] = true;
+                                                localStorage.setItem("alipayNoDid",data.data.earningAccount.alipayNo);
+                                                localStorage.setItem("alipayNameDid",data.data.earningAccount.alipayName);
+                                                localStorage.setItem("mappingTelDid",data.data.earningAccount.mappingTel);
+                                                localStorage.setItem("identityIdDid",data.data.earningAccount.identityId);
+                                            }
+                                            //水趣推客说明
+                                            // var headerTpl = $("#headerTpl").html();
+                                            // var headerTemplate = Handlebars.compile(headerTpl);
+                                            // var headerCont = headerTemplate(context);
+                                            // $('[data-role="header"]').html(headerCont);
+                                            // //账号信息
+                                            // var accountTpl = $("#accountTpl").html();
+                                            // var accountTemplate = Handlebars.compile(accountTpl);
+                                            // var accountCont = accountTemplate(context);
+                                            // $('[data-role="account"]').html(accountCont);
+                                            //如果有提现账号
+                                            
+                                            
+                                            //收益信息
+                                            // var incomeTpl = $("#incomeTpl").html();
+                                            // var incomeTemplate = Handlebars.compile(incomeTpl);
+                                            // var incomeCont = incomeTemplate(context);
+                                            // $('[data-role="income"]').html(incomeCont);
+
+                                            var everyShopTpl = $("#everyShopTpl").html();
+                                            var everyShopTemplate = Handlebars.compile(everyShopTpl);
+                                            var everyShopCont = everyShopTemplate(context);
+                                            $('[data-role="everyShopTpl"]').html(everyShopCont);
+                                            $('#xiugaimima').click(function(){
+                                                window.location.href = "/weixin/tuiKeRetrievePwd?page=amend";
+                                            });
+                                            if($('#alipayNo').length>0){
+                                                $('#alipayNo').html($('#alipayNo').html().replace(/(\d{3})\d{4}(\d{4})/,'$1****$2'));
+                                            }
+
+                                            $('[data-role="close-modal"]').on('click',function(e){
+                                                e.preventDefault();
+                                                $('[data-role="modal"]').removeClass('modal-in').addClass('modal-out').hide();
+                                                $('[data-role="modal-overlay"]').removeClass('modal-overlay-visible');  
+                                            });
+                                            $.hidePreloader();
+                                        }
+
+                                    }
+                                });
+                            };
+                            myEarningInfo();
+                            // $.hidePreloader();
+                        }else if(data.data.apply.status=="-1"){
+                            window.location.href="/weixin/shopApply";
+                        }else if(data.data.apply.status=="0"){
+                            window.location.href="/weixin/shopApply";
+                        }
+                    }
+                }
+              
+            }
+        });
+        if(!ifAutonymVal){
+            $('[data-role="tiXian"]').css("background-color","#D3D3D3");
+        }
+        
+        $('[data-role="tiXian"]').click(function(){
+            /*if(!ifAutonymVal){
+                $(this).css("background-color","#D3D3D3");
+            }else{
+                window.location.href = "/weixin/withdrawDeposit";
+            }*/
+                window.location.href = "/weixin/withdrawDeposit";
+        });
+
+        showHaibao(0);
+		
+        // 点击 系统/企业 海报切换
+        $(".haibaoModel a").click(function(){
+            // 生成推客海报按钮变成未选中状态
+            $("#createPoster").addClass('no-active');
+            // 如果有选中的图片取消选中的图片再切换
+            if($("#showcase2 div").hasClass("active")){
+                $("#showcase2 .active").trigger("click");
+            }
+            // 取消绑定的旋转木马插件的点击事件
+            $("#showcase2").unbind();
+            // 图标初始化
+            $(".haibaoModel a").removeClass("active");
+            // 图标变色
+            $(this).addClass("active");
+            // $("#showcase2").html("");
+            showHaibao($(this).attr("data-type"));
+        });
+		
+        function showHaibao(num){
+            $.ajax({
+                type: "post",
+                url: "/weixin/getSysEnterPriseTemplate",
+                data:{
+                    type:num
+                },
+                dataType: 'json',
+                async:false,
+                complete: function(json) {
+                    var data = json.response;
+                    var status = json.status;
+                    if (status != 200) {
+                        $.alert('网络异常，状态为22.7' + status);
+                        return;
+                    }
+                    if ($.type(data) == 'string') {
+                        data = JSON.parse(data);
+                    }
+                    if (data.code != 'E00000') {
+                        $.alert(data.message);
+                        return;
+                    }else{
+                        var context = {
+                            data: data.data,
+                            earningAccount:false
+                        }
+                        //系统海报信息
+                        var showcase2 = $("#showcase2");
+                        $("#showcase2").html("");
+                        //当系统模板数量为2时
+
+                        // data.data.sysTemplates参数要改
+                        if (data.data.templates.length==2){
+                            var system2 = $("#system2").html();
+                            var system2Tpl = Handlebars.compile(system2);
+                            // context参数要改
+                            var system2Cont = system2Tpl(context);
+                            $('[data-role="showcase2"]').html(system2Cont);
+                            $('[data-role="showcase2"]').css('margin','auto');
+                            $('[data-role="showcase2"] .card').eq(0).css({'display':'inline-block','margin':'1rem -45% 0'});
+                            $('[data-role="showcase2"] .card').eq(1).css({'display':'inline-block','margin':'1rem -20% 0'});
+
+                            $('[data-role="showcase2"] .card').on('click',function(){
+
+                                if($(this).hasClass('active')){
+                                    $(this).removeClass('active');  
+                                    
+                                }else{
+                                    $(this).addClass('active').siblings().removeClass('active');
+                                }
+                                if($('[data-role="showcase2"] .active').length==0){
+                                    $("#createPoster").addClass('no-active');
+                                }else{
+                                    $("#createPoster").removeClass('no-active');
+                                }
+                            });
+                        // data.data.sysTemplates参数要改
+                        }else if(data.data.templates.length > 0) {
+                            var showcase2Tpl = $("#showcase2Tpl").html();
+                            var showcase2Template = Handlebars.compile(showcase2Tpl);
+                            // context参数要改
+                            var showcase2Cont = showcase2Template(context);
+                            $('[data-role="showcase2"]').html(showcase2Cont);
+                            showcase2.css( 'visibility', 'hidden' );
+                            showcase2.Cloud9Carousel({
+                                yOrigin: 50,
+                                yRadius: -24,
+                                itemClass: "card",
+                                buttonLeft: $("#left2"),
+                                buttonRight: $("#right2"),
+                                bringToFront: true,
+                                goLink: 2,
+                                controlButton:'#createPoster',
+                                onLoaded: function() {
+                                    // alert(1);
+                                    showcase2.css( 'visibility', 'visible' )
+                                    // showcase2.css('display', 'none')
+                                    // showcase2.fadeIn(0)
+
+                                }
+                            });
+                        } else {
+                            $("#left2").hide();
+                            $("#right2").hide();
+                            $("#showcase2 .card").css({
+                                "margin": "0 auto",
+                                "position": "relative",
+                                "top": "1rem"
+                            });
+                            showcase2.html("<div style='padding: 1rem 5rem 1rem 5rem;color:#b7b8b7;'><span class='icon icon-no_code' style='font-size: 6rem;height: 140px;'></span><h4>暂无模板哦</h4></div>");
+                        }
+                    }
+                }
+            });
+        }
+
+	});
+	$(function() {
+		$(".poster").delegate("#sharePoster","click", function(e) {
+            alert(1);
+			e.preventDefault();
+			if ($("#showcase .card").hasClass("active")) {
+				//商品列表
+				var clientType = 1;
+				var shareId = $("#showcase .active").attr('data-share');
+				$.toast("正在发送中");
+				$.ajax({
+					type: "get",
+					url: "/weixin/makeAndSendPic?clientType=" + clientType + "&shareId=" + shareId,
+                    async:false,
+					dataType: 'json',
+					complete: function(json) {
+
+						var data = json.response;
+						var status = json.status;
+						if (status != 200) {
+							$.alert('网络异常，状态为11.2' + status);
+							$(this).show();
+						}
+						if ($.type(data) == 'string') {
+							data = JSON.parse(data);
+						}
+						if (data.code != 'E00000') {
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                                $(this).show();
+                            }
+							
+						} else {
+							$.alert("信息已经发送到您的微信中,请保存并分享到朋友圈", function() {
+								location.href = "/weixin/everyShopNew";
+							});
+
+						}
+
+					}
+				});
+			} else {
+				$.alert('请选中分享海报');
+			}
+
+		});
+	});
+	$(function() {
+		$('[data-role="everyShopTpl"]').delegate("#createPoster","click", function(e) {
+            $.showIndicator();
+            e.preventDefault();
+			if ($("#showcase2 .card").hasClass("active")) {
+                var tid = $("#showcase2 .card.active").data('tid');
+                $.ajax({
+                    type: "post",
+                    url: "/weixin/existsLiteAppCode",
+                    async:false,
+                    dataType: 'json',
+                    complete: function(json) {
+                        var data = json.response;
+                        var status = json.status;
+                        if (status != 200) {
+                            $.hidePreloader();
+                            $.alert('网络异常，状态为11.2' + status);
+                        }
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if (data.code != 'E00000') {
+                            $.hidePreloader();
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                            }
+                        } else {
+                            if(data.data.liteAppCode){
+
+                                if(data.data.liteAppCode.shopCode){
+                                    var dataShopCode = data.data.liteAppCode.shopCode;
+                                    $.ajax({
+                                        type: "post",
+                                        url: "/weixin/liteappTemplateShopCode?clientType=1",
+                                        async:false,
+                                        data: {
+                                            tid:tid,
+                                            shopCode:dataShopCode
+                                        },
+                                        dataType: 'json',
+                                        complete: function(json) {
+                                            var data = json.response;
+                                            var status = json.status;
+                                            if (status != 200) {
+                                                $.hidePreloader();
+                                                $.alert('网络异常，状态为11.2' + status);
+                                            }
+                                            if ($.type(data) == 'string') {
+                                                data = JSON.parse(data);
+                                            }
+                                            if (data.code != 'E00000') {
+                                                $.hidePreloader();
+                                                if(data.code == "-1"){
+                                                    window.location.href = "/weixin/bind";
+                                                }else{
+                                                    $.hideIndicator();
+                                                    $.alert(data.message);
+                                                }
+                                            } else {
+                                                $.hideIndicator();
+                                                $.alert("信息已经发送到您的微信中,请保存并分享到朋友圈", function() {
+                                                    location.href = "/weixin/everyShopNew";
+                                                });
+
+                                                /*if (data.data.posterUrl && data.data.posterUrl != null) { //已经发送信息
+                                                    
+                                                    $.hidePreloader();
+                                                    $.alert("信息已经发送到您的微信中,请保存并分享到朋友圈", function() {
+                                                        location.href = "/weixin/everyShop";
+                                                    });
+                                                } else { 
+                                                    debugger;
+                                                    console.log(typeof data.data.posterUrl);*/
+                                                    // $.hidePreloader();
+                                                    //生成海报预览图片,展示图片给用户选择发送
+                                                    
+                                                /*$("#showViewPic").attr("src",data.data.url1);
+                                                $.popup(".popup-pic");*/
+                                                
+                                                // $.alert($("#showViewPic").attr("src"));
+                                                
+                                            }
+                                            
+                                        }
+                                    });
+                                }else{
+                                    $.hideIndicator();
+                                    $.alert("请绑定店铺");
+                                }
+                            }else{
+                                $.hideIndicator();
+                                $.alert("请绑定店铺");
+                            }
+                        }
+                    }
+                });
+
+
+				
+			} else {
+                $.hideIndicator();
+				$.alert('请选中当前海报');
+			}
+
+		});
+	});
+	$.init();
+</script>
+</body>
+</html>

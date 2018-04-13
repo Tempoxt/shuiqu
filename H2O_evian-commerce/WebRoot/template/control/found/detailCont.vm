@@ -1,0 +1,30 @@
+
+<article class="topic-cont">
+    <h3>$!{detail.articleTitle}</h3>
+    <div class="intro"><span>$!{detail.getCreateTimeFormat()}</span><span>阅读 $!{detail.readCount}</span></div>
+
+    $!{detail.articleContent}
+</article>
+<footer class="more-detail line-top layout-box box-center-v">
+    <a href="javascript:void(0);" data-role="comment" data-name="文章" data-client-id="0" data-parent-id="0" class="box-col txt-s open-services"><i class="icon icon-107comment"></i><em class="num mct-d">评论</em></a>
+    #if($!{detail.isLike})
+        <a href="javascript:void(0);" data-role="like" class="box-col txt-s active"><i class="icon icon-108click"></i><em class="num mct-d">赞</em></a>
+    #else
+        <a href="javascript:void(0);" data-role="like" class="box-col txt-s"><i class="icon icon-108click"></i><em class="num mct-d">赞</em></a>
+    #end
+</footer>
+<div class="message-box infinite-scroll" data-distance="100">
+    <div class="message-title">
+        <div class="border-box">全部评论（$!{detail.commentCount}）<span class="util-right">赞 $!{detail.likeCount}</span></div>
+    </div>
+    <ul class="message-list" data-role="list-container">
+        
+    </ul>
+    <!-- 加载提示符 -->
+    <div class="infinite-scroll-preloader">
+        <div class="preloader">
+        </div>
+    </div>
+    <span class="null-data" data-role="null-data"></span>
+</div>
+

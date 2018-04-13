@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/indexCss.vm")
+<body>
+    <div class="page-group">
+        <div class="page page-finish page-current">
+            <header class="bar bar-nav light-nav" style="padding-right: 0.5rem;">
+                <a href="/weixin/account" class="icon icon-35icoback pull-left bar-left"></a>
+                <h1 class="title">消费习惯</h1>
+                <!-- <a href="#" data-action="save-habit" class="button button-fill btn-yello icon pull-right" style="font-size: 0.7rem;height: 1.35rem;padding: 0 0.5rem;">保存</a> -->
+            </header>
+
+            <div class="content">
+                <ul class="habit-list" data-role="car-list">
+                    
+                  
+                </ul>
+            </div>
+        
+
+         
+        </div>
+       
+    </div>
+    <script id="editTpl" type="text/x-handlebars-template">
+        <h4>{{data.name}}</h4>
+        <p class="car-count">
+            <em data-action="minus">
+                <svg class="icon-svg" aria-hidden="true">
+                    <use xlink:href="#icon-shopping_btn_num_minus"></use>
+                </svg>
+            </em>
+            
+            <input type="hidden" name="num" data-max="{{data.max}}" value="{{data.num}}">
+            <i>{{data.num}}</i>
+            <em data-action="add">
+                <svg class="icon-svg" aria-hidden="true">
+                   <use xlink:href="#icon-shopping_btn_num_add"></use>
+                </svg> 
+            </em>
+            
+        </p>
+        
+        <span data-id="{{data.id}}" data-action="delete-item" class="icon icon-11addressdel"></span>
+    </script>
+    <script id="finishTpl" type="text/x-handlebars-template">
+        <h4>{{data.name}}</h4>
+        <p class="price" data-num="{{data.num}}" data-price="{{data.price}}">￥ {{data.price}}<em class="pull-right">X{{data.num}}</em></p>
+    </script>
+    <script id="habitsTpl" type="text/x-handlebars-template">
+        {{#each data}}
+            <li data-shop-id="{{shopId}}">
+                <h3>{{shopName}}
+                    <a data-action="editControl" href="#" data-json="" class="button button-fill btn-yello">编辑</a>
+                    <textarea name="" id="" class="hide">
+                    [{{#each habits}}{"id":{{pid}},
+                      "img":"{{pictureUrl}}",
+                      "name":"{{pname}}",
+                      "price":{{price}},
+                      "num":{{number}} ,
+                      "max":{{repertoryNum}}
+                    }{{#is @last false}},{{/is}}{{/each}}]
+                    </textarea>
+                </h3>
+                <div class="car-cont">
+                    {{#each habits}}
+                    <table data-id="{{pid}}">
+                        <tr>
+                            <td>
+                                <img src="{{pictureUrl}}" alt="">
+                            </td>
+                            <td class="edit-box">
+                                <h4>{{pname}}</h4>
+                                <p class="price" data-num="{{number}}" data-price="{{price}}">￥ {{price}}<em class="pull-right">X{{number}}</em></p>
+                            </td>
+                        </tr>
+                    </table>
+                    {{/each}}
+                </div>
+            </li>
+        {{/each}}
+    </script>
+    #*加载JS文件*# 
+    #parse("control/$!webStyle/publicJs.vm")
+    #parse("control/$!webStyle/globalJs.vm")
+    <script>
+        $(function() {
+            //获取用户习惯
+            function getHabits(){
+                $.ajax({
+                    type: "post",
+                    url: "/weixin/getClientAllHibits",
+                    dataType: 'json',
+                    complete: function(json) {
+                      
+                        var data = json.response;
+                        var status = json.status;
+                        if(status != 200){
+                            $.alert('网络异常，状态为14.1' + status);
+                            return;
+                        }
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if(data.code != 'E00000'){
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                                return;
+                            }
+                        }else{
+                            if(data.data.count > 0){
+                                var context = {
+                                    data: data.data.habitList
+                                };
+                                var habitsTpl = $("#habitsTpl").html();
+                                var habitsTemplate = Handlebars.compile(habitsTpl);
+                                var habitsCont = habitsTemplate(context);
+                                $('[data-role="car-list"]').html(habitsCont);
+                            }else{
+                                $('[data-action="save-habit"]').hide();
+                                $('[data-role="car-list"]').html('<div class="defaut-wrap"><span class="icon icon-88tipicoorder"></span><h2 class="def-note">您还没有消费习惯，赶快去下单吧！</h2></div>');
+                            }
+                            
+                        }
+                        
+                    }
+                });
+            }
+            getHabits();
+            //获取所有数据
+            var getAllData = function(){
+                var allData = [];
+                $('[data-role="car-list"] li table').each(function(index){
+                    var shopId = $(this).parents('li').data('shopId');
+                    var pid = $(this).data('id');
+                    var me = $(this).find('.price');
+                    var price = me.data('price');
+                    var number = me.data('num');
+
+                    allData[index] = {
+                        pid : pid,
+                        shopId : shopId,
+                        number : number
+                    };
+               
+                       
+                });
+                
+                return allData;
+            };
+            //数量加减
+            $('[data-role="car-list"]').delegate("em", "click", function(e){
+                e.preventDefault();
+                //暂时不做库存的判断，且习惯接口未提供最大购买数量的属性
+                var me = $(this),
+                    numbox = me.siblings('input'),
+                    max = numbox.data('max'),
+                    show = me.siblings('i'),
+                    action = me.data('action'),
+                    numValue = 0;
+
+                    if(action == 'add'){
+                        //if(numbox.val() < max){
+                            numValue = parseInt(numbox.val()) + 1;
+                        /*}else{
+                            numValue = max;
+                        }*/
+
+                    }else if(action == 'minus'){
+                        if(numbox.val() > 1){
+                            numValue = parseInt(numbox.val()) - 1;
+                        }else if(numbox.val() == 1){
+                            numValue = 1;
+                        }
+                        
+                    }
+                    numbox.val(numValue);
+                    show.html(numValue);
+            });
+           
+             //删除消费习惯
+            $('[data-role="car-list"]').delegate("span", "click", function(e){
+                e.preventDefault();
+
+                var me = $(this),
+                    action = me.data('action');
+
+                    if(action == 'delete-item'){
+                        var id = me.data('id'),
+                            valBox = me.parents('li').find('textarea'),
+                            data = JSON.parse(valBox.html());;
+                            var shopId = me.parents('li').data('shopId');
+                            var number = me.siblings('.car-count').find('input').val();
+
+                            var habit = [{
+                                shopId : shopId,
+                                pid : id,
+                                number : parseInt(number)
+                            }];
+                            //提交数据
+                            $.ajax({
+                                type: "post",
+                                url: "/weixin/delClientHabits",
+                                data:{
+                                    habit:JSON.stringify(habit)
+                                },
+                                dataType: 'json',
+                                complete: function(json) {
+                                  
+                                    var data = json.response;
+                                    var status = json.status;
+                                    if(status != 200){
+                                        $.alert('网络异常，状态为14.2' + status);
+                                        return;
+                                    }
+                                    if ($.type(data) == 'string') {
+                                        data = JSON.parse(data);
+                                    }
+                                    if(data.code != 'E00000'){
+                                        if(data.code == "-1"){
+                                            window.location.href = "/weixin/bind";
+                                        }else{
+                                            $.alert(data.message);
+                                            return;
+                                        }
+                                    }else{
+                                        $.toast("删除成功");
+                                    }
+                                    
+                                }
+                            });
+                            $('table[data-id="' + id + '"]').remove();
+                           
+                            //回填数据
+                            for(var i=0; i < data.length; i++){
+                                if(data[i]['id'] == id){
+                                    data.splice(i,1);
+                                }
+                                
+                            } 
+                            valBox.html(JSON.stringify(data));
+
+                            if(data.length==0){
+                                window.location.reload();
+                            }
+
+                    }
+            });
+            //切换编辑完成
+            $('[data-role="car-list"]').delegate("a", "click", function(e){
+                e.preventDefault();
+                var me = $(this),
+                    action = me.data('action'),
+                    data = JSON.parse(me.next('textarea').html());
+
+                    if(action == 'editControl'){
+                        if(!me.hasClass('active')){
+                            me.addClass('active');
+                            me.html('完成');
+
+                            // $('[data-action="save-habit"]').hide();
+                            var tpl = $("#editTpl").html();
+                            var template = Handlebars.compile(tpl);
+                            for(var i=0; i < data.length; i++){
+                                var context = {
+                                    data: data[i]
+                                };
+                                $('table[data-id="' + data[i]["id"] + '"]').find('.edit-box').html(template(context));
+                            }
+                            
+                        }else{
+                            // debugger;
+                            me.removeClass('active');
+                            me.html('编辑');
+                            $('[data-action="save-habit"]').show();
+                            //回填数据
+                            for(var i=0; i < data.length; i++){
+                                data[i]['num'] = $('table[data-id="' + data[i]["id"] + '"]').find('input[name=num]').val();
+                            }
+                            me.parents('li').find('textarea').html(JSON.stringify(data));
+
+                            var tpl = $("#finishTpl").html();
+                            var template = Handlebars.compile(tpl);
+                            for(var i=0; i < data.length; i++){
+                                var context = {
+                                    data: data[i]
+                                };
+                                $('table[data-id="' + data[i]["id"] + '"]').find('.edit-box').html(template(context));
+                            }
+                            var allData = getAllData();
+                            $.ajax({
+                                type: "post",
+                                url: "/weixin/editClientHabits",
+                                data:{
+                                   habit:JSON.stringify(allData) 
+                                },
+                                dataType: 'json',
+                                complete: function(json) {
+                                  
+                                    var data = json.response;
+                                    var status = json.status;
+                                    if(status != 200){
+                                        $.alert('网络异常，状态为14.3' + status);
+                                        return;
+                                    }
+                                    if ($.type(data) == 'string') {
+                                        data = JSON.parse(data);
+                                    }
+                                    if(data.code != 'E00000'){
+                                        if(data.code == "-1"){
+                                            window.location.href = "/weixin/bind";
+                                        }else{
+                                            $.alert(data.message);
+                                            return;
+                                        }
+                                    }else{
+                                        $.alert("保存成功", function(){
+                                            // window.location.href = '/weixin/account';
+                                        });
+                                    }
+                                    
+                                }
+                            });
+                        }
+                        
+                    }
+            });
+            //保存消费习惯
+            // $('[data-action="save-habit"]').click(function(e){
+            //     e.preventDefault();
+
+            //     var allData = getAllData();
+            //     $.ajax({
+            //         type: "post",
+            //         url: "/weixin/editClientHabits",
+            //         data:{
+            //            habit:JSON.stringify(allData) 
+            //         },
+            //         dataType: 'json',
+            //         complete: function(json) {
+                      
+            //             var data = json.response;
+            //             var status = json.status;
+            //             if(status != 200){
+            //                 $.alert('系统异常，状态为14.3' + status);
+            //                 return;
+            //             }
+            //             if ($.type(data) == 'string') {
+            //                 data = JSON.parse(data);
+            //             }
+            //             if(data.code != 'E00000'){
+            //                 if(data.code == "-1"){
+            //                     window.location.href = "/weixin/bind";
+            //                 }else{
+            //                     $.alert(data.message);
+            //                     return;
+            //                 }
+            //             }else{
+            //                 $.alert("保存成功", function(){
+            //                     window.location.href = '/weixin/account';
+            //                 });
+            //             }
+                        
+            //         }
+            //     });
+            // });
+        });
+        $.init();
+    </script>
+  </body>
+</html>

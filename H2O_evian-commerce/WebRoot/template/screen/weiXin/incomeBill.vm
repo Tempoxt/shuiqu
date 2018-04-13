@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "incomeBill")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/shopCss.vm")
+<body>
+	<div class="page-group">
+		<div class="page page-finish page-current">
+			<header class="bar bar-nav light-nav">
+	            <a href="/weixin/everyShop" class="icon icon-35icoback pull-left bar-left"></a>  
+	            <h1 class="title">收益账单</h1>
+	        </header>
+	        <div class="content content-count">
+	        	<div class="count" data-role="count">
+	        		
+	        	</div>
+	        	<div class="sevenDays">
+				    <div class="item-title">近7天收益</div>
+				    <div class="item-charts" id="charts"></div>
+				</div>
+				<div class="client-list" data-role="client-list">
+					
+				</div>
+	        </div>
+	        
+	    </div>
+	</div>
+	<script id="countTpl" type="text/x-handlebars-template">
+    	<span class="time" id="time">截至{{data.totalMap.currentDate}}</span>
+		<div class="item-content">
+			<h4><span>￥</span>{{data.totalMap.totalMoney}}</h4>
+			<p>全部收益合计</p>
+		</div>
+    </script>
+    <script id="clientListTpl" type="text/x-handlebars-template">
+    	<table>
+			<tr>
+				<th>客户</th>
+				<th>日期</th>
+				<th>数量</th>
+				<th>收益额(元)</th>
+			</tr>
+			{{#each data.orderMaps}}
+			<tr>
+				<td>{{account}}</td>
+				<td>{{comeDate}}</td>
+				<td>{{sellMoney}}</td>
+				<td>{{getMoney}}</td>
+			</tr>
+			{{/each}}
+		</table>
+    </script>
+    #*加载JS文件*# 
+    #parse("control/$!webStyle/publicJs.vm")
+    <!-- <script src="https://cdn.shuiqoo.cn/$!webStyle/echarts.min.js"></script> -->
+    <script src="/files/common/js/echarts.min.js"></script>
+    #parse("control/$!webStyle/globalJs.vm")
+    <script>
+    	var dayMaps =[];
+    	$(function(){
+    		//获取我的客户详情
+            var getEarningsRecords = function() {
+                $.ajax({
+                    type: "post",
+                    url: "/weixin/getEarningsRecords",
+                    dataType: 'json',
+                    complete: function(json) {
+                        var data = json.response;
+                        var status = json.status;
+                        if (status != 200) {
+                            $.alert('网络异常，状态为11.2' + status);
+                        }
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if (data.code != 'E00000') {
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                                return;
+                            }
+                        } else {
+                        	var context = {
+                                data: data.data
+                            };
+                            dayMaps = data.data.dayMaps;
+
+                        	//全部收益合计
+                            var countTpl = $("#countTpl").html();
+                            var countTemplate = Handlebars.compile(countTpl);
+                            var countCont = countTemplate(context);
+                            $('[data-role="count"]').html(countCont);
+                            var cyrrenttime = $("#time").html().substr(0,13);
+                            $("#time").html(cyrrenttime);
+                            //客户列表信息
+                            var clientListTpl = $("#clientListTpl").html();
+                            var clientListTemplate = Handlebars.compile(clientListTpl);
+                            var clientListCont = clientListTemplate(context);
+                            $('[data-role="client-list"]').html(clientListCont);
+
+                            // 基于准备好的dom，初始化echarts实例
+                            document.getElementById('charts').style.width = window.innerWidth+'px';
+				        	var myChart  = echarts.init(document.getElementById('charts'));
+				        	var dayMoney = [];
+				        	var dayDate  = [];
+				        	var day      = []
+					        for(var i=0;i<dayMaps.length;i++){
+					        	dayMoney[i] = dayMaps[i]['dayMoney'];
+					        	dayDate[i]  = new Date(dayMaps[i]['dayDate']);
+                                // day[i]      = (dayDate[i].getMonth()+1)+'月'+dayDate[i].getDate()+'日';
+					        	day[i]      = dayDate[i].getDate()+'日';
+					        }
+
+
+
+                            
+					        // console.log(dayMoney);
+					        // 指定图表的配置项和数据
+					        option = {
+							    toolbox: {
+							        show: false,
+							        feature: {
+							            dataZoom: {
+							                yAxisIndex: 'none'
+							            },
+							            dataView: {readOnly: false},
+							            magicType: {type: ['line', 'bar']},
+							            restore: {},
+							            saveAsImage: {}
+							        }
+							    },
+							    xAxis:  {
+							        type: 'category',
+							        boundaryGap: false,
+							        axisLine: {show: false},
+							        axisTick: {
+									show: false
+									},
+							        data: day
+							    },
+							    yAxis: {
+							        type: 'value',
+							        axisLabel: {
+							            formatter: ''
+							        },
+							        axisLine: {show: false},
+									// 控制网格线是否显示
+									splitLine: {
+									show: false
+									},
+									// 去除y轴上的刻度线
+									axisTick: {
+									show: false
+									}
+							    },
+							    series: [
+							        {
+							            name:'',
+							            type:'line',
+							            data:dayMoney
+							           
+							        }
+							        
+							    ]
+							};
+
+					        // 使用刚指定的配置项和数据显示图表。
+					        myChart.setOption(option);
+                        }
+                    }
+                });
+            };
+            getEarningsRecords();
+    	});
+        $.init();
+    </script>
+</body>
+</html>

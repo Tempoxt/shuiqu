@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "shopTuikeDetail")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/shopCss.vm")
+<body>
+	<div class="page-group">
+		<div class="page page-finish page-current page-shopTuikeDetaul">
+            <header class="bar bar-nav light-nav">
+                <a href="javascript:history.go(-1);" class="icon icon-35icoback pull-left bar-left" id="go-back"></a>  
+                <h1 class="title">推客明细</h1>
+            </header>
+            <div class="content img-code-box infinite-scroll infinite-scroll-bottom">
+                <ul class="tuikeShops-list tab active " data-role="shopTuikeDetaul-list" data-distance="100">
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+#*加载JS文件*# 
+#parse("control/$!webStyle/publicJs.vm")
+<script src="/files/js/$!webStyle/app.js"></script>
+<!-- <script src="https://cdn.shuiqoo.cn/$!webStyle/echarts.min.js"></script> -->
+#parse("control/$!webStyle/globalJs.vm")
+<script id="reprotsTpl" type="text/x-handlebars-template">
+	{{#each data.reprots}}
+    	<li>
+    		<div class="content-padded">
+                <div class="row" >
+                    <div class="col-50">
+                    	<p>{{#is fullname}}{{fullname}}{{else}}姓名：无{{/is}}</p>
+                    </div>
+                    <div class="col-50">
+                    	<p>{{#is tel}}{{tel}}{{else}}手机号：无{{/is}}</p>
+                    </div>
+                </div>
+                <div class="row" >
+                    <div class="col-33">
+                      <p>{{#is shopName}}{{shopName}}{{else}}店名：无{{/is}}</p>
+                    </div>
+                    <div class="col-33">
+                    	<p><span>注册人数：</span><span>{{#is regUserQuantity}}{{regUserQuantity}}{{else}}无{{/is}}</span></p>
+                    </div>
+                    <div class="col-33">
+                    	<p>{{#is shortTime}}{{shortTime}}{{else}}时间：无{{/is}}</p>
+                    </div>
+                </div>
+            </div>
+    	</li>
+	{{/each}}
+</script>
+<script type="text/javascript">
+var tuikeEid = "";
+var identityCode = "";
+  var isApp=isAppFrame();
+  if(isApp){
+    $(".bar-nav").remove();
+      var userInfo = "";
+          try {
+          userInfo = app.GetManagerInfo();
+      } catch (e) {
+          try {
+              userInfo = GetManagerInfo();
+          } catch (ee) {
+            // run('', '')
+          }
+      }
+      if(userInfo != ""){
+        showDetail(userInfo.split('|')[0],userInfo.split('|')[1]);
+        tuikeEid = userInfo.split('|')[1];
+        identityCode = userInfo.split('|')[0];
+      }else if(userInfo == "" && isApp){
+        $.alert("系统异常！");
+      }
+  }else{
+	 tuikeEid = GetQueryString("eid");
+   showDetail();
+  }
+	var tuikeEndDate ="";
+  var tuikeLength = 0;
+	function showDetail(identityCode,eid){
+    if(isApp){
+      tuikeEid = eid;
+    }
+    $.ajax({
+        type: "post",
+        url: "/weixin/getShopClientRegeditReport",
+        dataType: 'json',
+        data:{
+            eid:tuikeEid,
+            identityCode:identityCode
+        },
+        complete: function(json) {
+          
+            var data = json.response;
+            
+            var status = json.status;
+            if(status != 200){
+                $.alert('网络异常，状态为12.1' + status);
+                return;
+            }    
+            if ($.type(data) == 'string') {
+                data = JSON.parse(data);
+            }
+            if(data.code != 'E00000'){
+              $.alert(data.message);
+            }else{
+              var context = {
+                    data: data.data
+                };
+                var reprotsTpl = $("#reprotsTpl").html();
+                var reprotsTemplate = Handlebars.compile(reprotsTpl);
+                var reprotsCont = reprotsTemplate(context);
+                $('[data-role="shopTuikeDetaul-list"]').html(reprotsCont);
+                tuikeEndDate = data.data.endDate;
+                tuikeLength=data.data.reprots.length;
+                if(data.data.reprots.length>10){
+                  $(".img-code-box").append('<div class="infinite-scroll-preloader"><div class="preloader"></div></div>');
+                }
+                if(data.data.reprots.length<1){
+                  $('.img-code-box').html('<div class="defaut-wrapp" style="padding: 5rem 1rem 1rem;color: #b7b8b7;" ><span class="icon icon-88tipicoorder" style="display: block;font-size: 3rem;width: 3rem;height: 3rem;margin: 0 auto 2rem;"></span><h2 class="def-note" style="font-size: 0.8rem;text-align: center;">无数据</h2></div>');
+                }
+            }
+        }
+    });
+  }
+	// 截取url参数
+    function GetQueryString(name){
+	     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+	     var r = window.location.search.substr(1).match(reg);
+	     if(r!=null)return  unescape(r[2]); return null;
+	}
+
+	var loading = false;
+	
+	$(document).on('infinite',".infinite-scroll-bottom",function() {
+		// 如果正在加载，则退出
+          if (loading) return;
+
+          // 设置flag
+          loading = true;
+          // $.refreshScroller();
+          setTimeout(function() {
+              // 重置加载flag
+              loading = false;
+
+
+
+              if(!tuikeEndDate==""&&tuikeLength!=0){
+                if(isApp){
+                   showDetailYe(identityCode,tuikeEid);
+                }else{
+              	 showDetailYe();
+                }
+              }else{
+              	// 加载完毕，则注销无限加载事件，以防不必要的加载
+                  $.detachInfiniteScroll($('.infinite-scroll'));
+                  // 删除加载提示符
+                  $('.infinite-scroll-preloader').remove();
+                  return;
+              }
+          }, 1000);
+	});
+
+  function showDetailYe(identityCode,eid){
+    if(isApp){
+      tuikeEid=eid;
+    }
+    $.ajax({
+          type: "post",
+          url: "/weixin/getShopClientRegeditReport",
+          dataType: 'json',
+          data:{
+              eid:tuikeEid,
+              endDate:tuikeEndDate,
+              identityCode:identityCode
+          },
+          complete: function(json) {
+            
+              var data = json.response;
+              
+              var status = json.status;
+              if(status != 200){
+                  $.alert('网络异常，状态为12.1' + status);
+                  return;
+              }    
+              if ($.type(data) == 'string') {
+                  data = JSON.parse(data);
+              }
+              if(data.code != 'E00000'){
+                $.alert(data.message);
+              }else{
+                var context = {
+                      data: data.data
+                  };
+                  var reprotsTpl = $("#reprotsTpl").html();
+                  var reprotsTemplate = Handlebars.compile(reprotsTpl);
+                  var reprotsCont = reprotsTemplate(context);
+                  $('[data-role="shopTuikeDetaul-list"]').append(reprotsCont);
+                  tuikeEndDate = data.data.endDate;
+                  tuikeLength=data.data.reprots.length;
+              }
+          }
+      });
+  }
+$.init();
+</script>
+</html>

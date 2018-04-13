@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "withdrawDeposit")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/shopCss.vm")
+
+<style type="text/css">
+    .alieditContainer{position:relative;}
+.alieditContainer .i-text{position: absolute;color: #fff;opacity:0.2; width:100%; height:48px; font-size:12px; left:0; -webkit-user-select:initial;  /*取消禁用选择页面元素*/z-index:9;  padding:0;  borde:0;}
+.alieditContainer .sixDigitPassword {width:100%; height:48px; cursor:text; background:#fff; outline:none; position:relative; padding:13px 0; border:1px solid #ddd; border-radius:5px;}
+.alieditContainer .sixDigitPassword i {width:16.6%; height:16px; float:left; display:block; padding:4px 0; border-left:1px solid #cccccc;}
+.alieditContainer .sixDigitPassword i:first-child{border-left:0;}
+.alieditContainer .sixDigitPassword i.active{background-image: url("https://t.alipayobjects.com/images/rmsweb/T1nYJhXalXXXXXXXXX.gif");background-repeat: no-repeat;background-position: center center; }
+.alieditContainer .sixDigitPassword b{display:block; margin:5px auto 4px auto; width:7px; height:7px; overflow:hidden; display:none;/*visibility:hidden;*/ background:#000; border-radius:100%;}
+.alieditContainer .sixDigitPassword .guangbiao{width:16.6%; height:48px; position:absolute; display:block; left:0px; top:-1px; border:1px solid rgba(82, 168, 236, .8); border:1px solid #00ffff\9; border-radius:5px; visibility:visible; -webkit-box-shadow: inset 0px 2px 2px rgba(0, 0, 0, 0.75), 0 0 8px rgba(82, 168, 236, 0.6); box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);}
+</style>
+<body>
+
+    <div class="page-group">
+        <div class="page page-finish page-current page-withdrawDeposit">
+            <header class="bar bar-nav light-nav">
+                <a href="/weixin/everyShopNew" class="icon icon-35icoback pull-left bar-left"></a>  
+                <h1 class="title">提现</h1>
+            </header>
+            <div class="content img-code-box">
+                <ul class="withdraw-list tab active infinite-scroll infinite-scroll-bottom" style="padding-left: 5px;padding-right: 5px;" data-distance="100" data-role="earningInfoTpl">
+                    
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="modal modal-out" style="top: 20%;width: 85%;left: 0;margin-left: 7.5%;" data-role="modal">
+        <div class="modal-inner" style="padding: 1rem;background: #fff;">
+            <div class="modal-text" style="height: 12rem;">
+                <span class="close-modal" style="position: absolute;left: 0;
+        top: 0;font-size: 1.5rem;width: 1.5rem;height: 1.5rem;line-height: 1.5rem;" data-role="close-modal">&times;</span>
+                <span>请输入提现密码</span>
+                <hr/>
+                <div style="margin-top: 20px;margin-bottom: 10px;">提现</div>
+                <div id="withdrawDIV" style="font-size: 40px;margin-bottom: 10%;">0.00</div>
+                <img src="/files/images/wallet.png" alt="" style="display: block;width: 50%;margin: 1rem auto;">
+                <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.evian.daojia" class="button button-fill btn-yello" style="height: 1.8rem;line-height: 1.8rem;width: 80%;margin: 0 auto 0.8rem;">下载水趣APP</a>
+                <p style="font-size: 0.75rem;">打开水趣APP，直接领取 ></p>
+                <div class="alieditContainer" id="payPassword_container">
+                    <input minlength="6" maxlength="6" tabindex="1" id="payPassword_rsainput" name="payPassword_rsainput" class="ui-input i-text" oncontextmenu="return false" onpaste="return false" oncopy="return false" oncut="return false" autocomplete="off" value="" type="password">
+                    <div class="sixDigitPassword" tabindex="0">
+                        <i class="active"><b></b></i>
+                        <i><b></b></i>
+                        <i><b></b></i>
+                        <i><b></b></i>
+                        <i><b></b></i>
+                        <i><b></b></i>
+                        <span class="guangbiao" style="left:0px;"></span>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: right;font-size: 14px;"><a href="/weixin/tuiKeRetrievePwd?page=forget" style="color: #f9d600;">忘记密码？</a></div>
+            
+        </div>
+        
+    </div> -->
+    <!-- <div class="modal-overlay" data-role="modal-overlay"></div> -->
+</body>
+#*加载JS文件*# 
+#parse("control/$!webStyle/publicJs.vm")
+<script src="/files/js/$!webStyle/app.js"></script>
+<script src="/files/js/$!webStyle/passwordBox.js"></script>
+<!-- <script src="https://cdn.shuiqoo.cn/$!webStyle/echarts.min.js"></script> -->
+#parse("control/$!webStyle/globalJs.vm")
+<script id="earningInfoTpl" type="text/x-handlebars-template">
+    <li>
+        <div class="content-padded">
+            <div class="row" >
+                <div class="col" >
+                    <div style="font-weight: 1000"><!-- 提现账号：<span style="font-weight: 600;font-size: 20px;color: #75777F;">{{data.earningAccount.bankNo}} -->提现到：微信零钱</span><span style="height: 2rem;line-height:2rem;margin: 0 0.5rem;font-weight: 100;" class="icon icon-weixinzhifu"></span></div>
+                </div>
+            </div>
+        </div>
+    </li>
+    <li>
+        <div class="content-padded" style="margin-bottom: 0px;">
+
+            <div class="row" style="margin-bottom: 0.5rem;">
+                <div class="col" >
+                    <div style="font-size: 20px;font-weight: 1000;">提现金额:</div>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 0.5rem;">
+                <div class="col" >
+                    <div style="font-size: 30px;border-bottom: 1px #EFEFF4 solid;">￥<input style="width: 85%;border: none;" type="text" value="0.00" name="balanceText"/></div>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 0.5rem;">
+                <div class="col" >
+                    <div style="font-size: 16px;font-weight: 600; color: #636363;">收益余额￥{{data.canBalance}} <span class="allBalance" style="color: #133B74;font-size: 17px;">全部提取</span></div>
+                </div>
+            </div>
+            <div class="row" >
+                <div class="col" >
+                    <div style="font-size: 15px;color: #FF1818;">(最小提现金额为:{{data.txMinMoney}}.00)</div>
+                </div>
+            </div>
+        </div>
+    </li>
+    <p style="margin-top: 14%;margin-bottom: 4%;"><a href="#" class="button button-yello withdrawBtn" id="withdrawBtn" data-role="tiXian" style="font-size: 17px;font-weight: 600;height: 2rem;line-height: 2rem;">提现</a></p>
+    <input type="hidden"  name="withdrawPwd">
+    <div style="font-size: 16px;font-weight: 600; color: #636363;"><span>7天内到账</span><span style="position: absolute;right: 5px;color: #133B74;font-size: 17px;">交易订单</span></div>
+</script>
+
+<script type="text/javascript">
+    PwdBox.init('123456','/files/images/pwd_keyboard.png','请输入支付密码');
+    $.showPreloader();
+    var balance = 0.00;
+    var txMinMoneyVal = 0.00;
+    var txMaxMoneyVal = 0.00;
+    var canBalanceVal = 0.00;
+    var myEarningInfo = function() {
+        $.ajax({
+            type: "post",
+            url: "/weixin/myEarningInfo",
+            dataType: 'json',
+            async:false,
+            complete: function(json) {
+                var data = json.response;
+                var status = json.status;
+                if (status != 200) {
+                    $.alert('网络异常，状态为22.1' + status);
+                    return;
+                }
+                if ($.type(data) == 'string') {
+                    data = JSON.parse(data);
+                }
+                if (data.code != 'E00000') {
+                    $.alert(data.message);
+                    return;
+                } else {
+                    // 隐藏银行卡号
+                    if(data.data.earningAccount){
+                        if(data.data.earningAccount.bankNo){
+                        data.data.earningAccount.bankNo = data.data.earningAccount.bankNo.replace(/^(?:\d+)(.{4})$/,"**** **** **** $1");
+                        }
+                    }
+                    var context = {
+                        data: data.data,
+                        earningAccount:false
+                    };
+                    txMinMoneyVal = data.data.txMinMoney;
+                    txMaxMoneyVal = data.data.txMaxMoney;
+                    canBalanceVal = data.data.canBalance;
+                    //有提现账号
+                    /*if (data.data.earningAccount != undefined) {
+                        context['earningAccount'] = true;
+                        localStorage.setItem("alipayNoDid",data.data.earningAccount.alipayNo);
+                        localStorage.setItem("alipayNameDid",data.data.earningAccount.alipayName);
+                        localStorage.setItem("mappingTelDid",data.data.earningAccount.mappingTel);
+                        localStorage.setItem("identityIdDid",data.data.earningAccount.identityId);
+                    }*/
+                    
+                    var earningInfoTpl = $("#earningInfoTpl").html();
+                    var earningInfoTemplate = Handlebars.compile(earningInfoTpl);
+                    var earningInfoCont = earningInfoTemplate(context);
+                    $('[data-role="earningInfoTpl"]').html(earningInfoCont);
+
+                    if($('#alipayNo').length>0){
+                        $('#alipayNo').html($('#alipayNo').html().replace(/(\d{3})\d{4}(\d{4})/,'$1****$2'));
+                    }
+                    balance = data.data.canBalance;
+                    $.hidePreloader();
+                }
+
+            }
+        });
+    };
+    myEarningInfo();
+    $(".allBalance").click(function(){
+        $('[name="balanceText"]').val(balance);
+    });
+    /*$("#withdrawBtn").click(function(){
+        $.ajax({
+            type: "post",
+            url: "/weixin/myEarningInfo",
+            dataType: 'json',
+            async:false,
+            complete: function(json) {
+                var data = json.response;
+                var status = json.status;
+                if (status != 200) {
+                    $.alert('网络异常，状态为22.1' + status);
+                    return;
+                }
+                if ($.type(data) == 'string') {
+                    data = JSON.parse(data);
+                }
+                if (data.code != 'E00000') {
+                    $.alert(data.message);
+                    return;
+                } else {
+
+                }
+            }
+        });
+    });*/
+    var modalInner=0;
+    PwdBox.init('123456','/files/images/pwd_keyboard.png','请输入支付密码');
+    //提现提示下载app
+    $('[data-role="tiXian"]').on('click',function(e){
+        var reg=/\d+(\.\d+)?/;
+        // alert(reg.test($('[name="balanceText"]').val()))
+        if(isNaN($('[name="balanceText"]').val())){
+            alert('请输入正确的金额！');
+            return;
+        }
+        if($('[name="balanceText"]').val()<txMinMoneyVal){
+            alert("最小提现金额为:"+txMinMoneyVal+"元");
+            return;
+        }
+        if($('[name="balanceText"]').val()>canBalanceVal){
+            alert("不能超过自身余额！");
+            return;
+        }
+        if($('[name="balanceText"]').val()>txMaxMoneyVal){
+            alert("最大提现金额为:"+txMaxMoneyVal+"元");
+            return;
+        }
+        /*$('#withdrawDIV').html($('[name="balanceText"]').val());
+        e.preventDefault();
+        $('[data-role="modal"]').removeClass('modal-out').addClass('modal-in').show();
+        $('[data-role="modal-overlay"]').addClass('modal-overlay-visible');    
+        modalInner = $('.modal-inner').width();*/
+        PwdBox.setMoney($('[name="balanceText"]').val());
+        PwdBox.show(function(res){
+            if(res.status){
+                //重置输入
+                // alert('密码正确');
+                //关闭并重置密码输入
+                PwdBox.reset();
+                window.location.href = "/weixin/everyShopNew";
+            }else{
+                // alert(JSON.stringify(arguments));
+                //关闭并重置密码输入
+                PwdBox.reset();
+            }
+        });
+    });
+    $('[data-role="close-modal"]').on('click',function(e){
+        /*e.preventDefault();
+        $('[data-role="modal"]').removeClass('modal-in').addClass('modal-out').hide();
+        $('[data-role="modal-overlay"]').removeClass('modal-overlay-visible'); */ 
+    });
+    var fail = 0;
+    $(".i-text").keyup(function()
+    {
+        // alert(modalInner);
+        var inp_v = $(this).val();
+        var inp_l = inp_v.length;
+        //$("p").html( "input的值为：" + inp_v +"; " + "值的长度为:" + inp_l);//测试用
+        
+            $('[name="withdrawPwd"]').val( inp_v );//测试
+        var isSwitch=false;
+        for( var x = 0; x<=6; x++)
+        {
+            
+            $(".sixDigitPassword").find("i").eq( inp_l ).addClass("active").siblings("i").removeClass("active");
+            $(".sixDigitPassword").find("i").eq( inp_l ).prevAll("i").find("b").css({"display":"block"});
+            $(".sixDigitPassword").find("i").eq( inp_l - 1 ).nextAll("i").find("b").css({"display":"none"});
+            
+            $(".guangbiao").css({"left":inp_l * (modalInner/6-7)});//光标位置
+            // alert(modalInner/5);
+            
+            if( inp_l == 0)
+            {
+                $(".sixDigitPassword").find("i").eq( 0 ).addClass("active").siblings("i").removeClass("active");
+                $(".sixDigitPassword").find("b").css({"display":"none"});
+                $(".guangbiao").css({"left":0});
+            }
+            else if( inp_l == 6)
+            {
+                if(fail>0){
+                    return
+                }
+                fail++;
+                 $.ajax({
+                    type: "post",
+                    url: "/weixin/txToWxWallet",
+                    dataType: 'json',
+                    async:false,
+                    data:{
+                        money:$('[name="balanceText"]').val(),
+                        dealPass:$('[name="withdrawPwd"]').val()
+                    },
+                    complete: function(json) {
+
+                        var data = json.response;
+                        var status = json.status;
+                        if (status != 200) {
+                            alert('网络异常，状态为22.1' + status);
+                            isSwitch = true;
+                            return;
+                        }
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if (data.code != 'E00000') {
+                            alert(data.message);
+                            isSwitch = true;
+                            return;
+                        } else {
+                            alert("您的提现申请已提交成功！")
+                        }
+                    }
+                });
+                            $('[data-role="modal"]').removeClass('modal-in').addClass('modal-out').hide();
+                            $('[data-role="modal-overlay"]').removeClass('modal-overlay-visible');
+                            $(".sixDigitPassword").find("b").css({"display":"block"});
+                            $(".sixDigitPassword").find("i").eq(5).addClass("active").siblings("i").removeClass("active");
+                            $(".guangbiao").css({"left":5 * (modalInner/6-7)});
+
+                            $(this).val("");
+                            inp_l=0;
+                            isSwitch = true;
+
+            }
+            
+            
+        }
+        if(isSwitch){
+            fail=0;
+        }
+    });
+</script>
+</html>

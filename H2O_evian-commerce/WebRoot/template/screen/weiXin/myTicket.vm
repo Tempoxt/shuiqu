@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "myTicket")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/shopCss.vm")
+<body>
+  	<div class="page-group">
+        <div class="page page-current">       
+            <header class="bar bar-nav light-nav">
+              <a href="/weixin/account" class="icon icon-35icoback pull-left bar-left"></a>
+              <h1 class='title'>我的电子票</h1>
+            </header>
+            <div class="content myTicket-content">
+              <div class="buttons-tab">
+                <a href="#tab1" class="tab-link active button" id="curTicket">当前余票</a>
+                <a href="#tab2" class="tab-link button" id="buyHistory">消费记录</a>
+              </div>
+              <div class="content-block no-p-m" data-role="ticket">
+                <div class="tabs">
+                  <div id="tab1" class="tab active">
+
+                  </div>
+                  <div id="tab2" class="tab">
+                  	
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+        <!-- 查看记录 Popup -->
+        <div class="popup popup-new-record">
+            
+          <div class="content-block">
+            <header class="bar bar-nav light-nav">
+                <span class="icon icon-35icoback pull-left close-new-popup bar-left"></span>  
+                <h1 class="title">我的电子票</h1>
+            </header>
+            <div class="content">
+                <div class="list-block new-record-list" data-role="new-record-list">
+                    
+                </div>               
+            </div>
+          </div>
+        </div>        
+    </div>
+    <!-- 电子票余量列表模板 -->
+    <script id="surplusTpl" type="text/x-handlebars-template">
+        <div class="count-info" data-role="count-info">
+            <b class="info">累计余票量：<span>{{data.totalCount}}</span></b>&nbsp;&nbsp;
+            <b class="recently">最近订购：<span>{{data.lastDate}}</span></b>
+        </div>
+        <div class="content-block no-p-m">
+          <ul class="to-use-list">
+          	{{#each data.ticketDatas}}
+            <li>
+                <table>
+                    <tr>
+                        <td class="col2">
+                        	<a href="#" class="open-new" data-ticketId="{{ticketId}}" data-orderid="{{orderId}}" data-eid="{{eid}}" data-pname="{{pname}}" data-selldate="{{sellDate}}" data-sellnum="{{sellNum}}" data-surplusnum="{{surplusNum}}" data-begindate="{{beginDate}}" data-enddate="{{endDate}}">
+                            <h4>{{pname}}</h4>
+                            <p>订单号：{{orderNo}}</p>
+                            <p>购买量：{{sellNum}}</p>
+                            <p>剩余量：{{surplusNum}}</p>
+                            <p>有效期：{{beginDate}}至{{endDate}}</p>
+                            <img src="{{logoUrl}}" alt=""></a>
+                        </td>
+                        <td class="col3" data-role="use">
+                        	<a href="#" style="display: block;" data-shopid="{{shopId}}" data-convertpid="{{convertPid}}" data-outdate="{{outDate}}">
+                            <span>点</span>
+                            <span>击</span>
+                            <span>使</span>
+                            <span>用</span>
+                            <span class="arrow"></span></a>
+                        </td>
+                    </tr>
+                </table>
+       
+            </li>
+            {{/each}}
+          </ul> 
+        </div>
+    </script>
+
+    <!-- 电子票消费记录列表模板 -->
+    <script id="recordTpl" type="text/x-handlebars-template">
+    	<div class="content-block no-p-m">
+          	<ul class="buy-history">
+          		{{#each data.consumeDatas}}
+            	<li class="open-new" data-ticketId="{{ticketId}}" data-orderid="{{orderId}}" data-eid="{{eid}}" data-pname="{{pname}}" data-selldate="{{sellDate}}" data-sellnum="{{sellNum}}" data-surplusnum="{{surplusNum}}" data-begindate="{{beginDate}}" data-enddate="{{endDate}}">
+              		<a href="#">
+		                <table>
+		                    <tr>
+		                        <td class="col2">
+		                            <h4>{{pname}}</h4>
+		                            <p>订单号：{{orderNo}}</p>
+		                            <p>购买量：{{sellNum}}</p>
+		                            <p>剩余量：{{surplusNum}}</p>
+		                            <p>有效期：{{beginDate}}至{{endDate}}</p>
+		                            <img src="{{logoUrl}}" alt="">
+		                        </td>
+		                        <td class="col3">
+		                            <span>查</span>
+		                            <span>看</span>
+		                            <span>记</span>
+		                            <span>录</span>
+		                            <span class="arrow"></span>
+		                        </td>
+		                    </tr>
+		                </table>
+              		</a>
+            	</li>
+            	{{/each}}
+            </ul>
+        </div>
+    </script>
+    <!-- 电子票消费详情模板 -->
+    <script id="detailTpl" type="text/x-handlebars-template">
+		<div class="card">
+          <div class="card-header" style="display: block;">
+          	<span>订单号：<b class="orderNo">{{#each data.consumeDetails}}{{orderNo}}{{/each}}</b></span>
+          	<br>
+          	<span>电子票名称：<b class="pname"></b></span>
+          </div>
+          <div class="card-content">
+            <div class="card-content-inner">
+              <p>购买日期：<b class="sellDate"></b></p>
+              <p>购买量：<b class="sellNum"></b></p>
+              <p>剩余量：<b class="surplusNum"></b></p>
+              <p>有效期：<b class="beginDate"></b>至<b class="endDate"></b></p>
+            </div>
+          </div>
+        </div>
+        
+        <table class="dispatch">
+			<tr>
+				<th>配送日期</th>
+				<th>配送量</th>
+			</tr>
+			{{#each data.consumeDetails}}
+			<tr>
+				<td>{{dateCreated}}</td>
+				<td>{{subtractNum}}</td>
+			</tr>
+			{{/each}}
+		</table>
+		
+    </script>
+    #*加载JS文件*# 
+    #parse("control/$!webStyle/publicJs.vm")
+    #parse("control/$!webStyle/globalJs.vm")
+    <script>
+        $.init();
+        $(function() {
+            // $("#buyHistory").on('click',function(){
+            //   $(".count-info").hide();
+            // });
+            // $("#curTicket").on('click',function(){
+            //   $(".count-info").show();
+            // });
+
+            //获取电子票余量列表
+            $.ajax({
+                type: "post",
+                url: "/weixin/getValidTicketList",
+                async:false,
+                dataType: 'json',
+                complete: function(json) {
+                  
+                    var data = json.response;
+                    var status = json.status;
+                    if(status != 200){
+                        $.alert('网络异常，状态为10.1' + status);
+                        return;
+                    }
+                    if ($.type(data) == 'string') {
+                        data = JSON.parse(data);
+                    }
+                    if(data.code != 'E00000'){  
+                        if(data.code == "-1"){
+                            window.location.href = "/weixin/bind";
+                        }else{
+                            $.alert(data.message);
+                            return;
+                        }
+                    }else{
+                        var context = {
+                            data: data.data
+                        };
+                        var surplusTpl = $("#surplusTpl").html();
+                        var surplusTemplate = Handlebars.compile(surplusTpl);
+                        var surplusCont = surplusTemplate(context);
+                        $('#tab1').html(surplusCont);
+                    }
+                    
+                }
+            });
+            //把电子票加入购物车
+            $('[data-role="use"]').delegate('a','click',function(e){
+            	// debugger;
+            	e.preventDefault();
+            	var shopId = $(this).data('shopid');
+                var convertPid = $(this).data('convertpid');
+                var outdate = $(this).data('outdate');
+                console.log(outdate);
+                // var product = [{
+                //     "shopId": shopId,
+                //     "pid": convertPid
+                    
+                // }];
+                //如果电子票没过期
+                if(outdate){
+                	$.ajax({
+	                    type: "get",
+	                    url: "/weixin/useTicketToCart?shopId="+shopId+"&pid="+convertPid,
+	                    async:false,
+	                    dataType: 'json',
+	                    complete: function(json) {
+	                      
+	                        var data = json.response;
+	                        
+	                        if ($.type(data) == 'string') {
+	                            data = JSON.parse(data);
+	                        }
+	                        if(data.code != 'E00000'){
+	                            if(data.code == "-1"){
+                                    window.location.href = "/weixin/bind";
+                                }else{
+                                    $.alert(data.message);
+                                    return;
+                                }
+	                        }else{
+	                            // $.toast("添加成功");
+	                            window.location.href="/weixin/shoppingCar";
+	                        }
+	                        
+	                    }
+	                });
+                }
+                
+            });
+            //获取电子票消费记录列表
+            $.ajax({
+                type: "post",
+                url: "/weixin/getConsumeTicketList",
+                dataType: 'json',
+                complete: function(json) {
+                  
+                    var data = json.response;
+                    var status = json.status;
+                    if(status != 200){
+                        $.alert('网络异常，状态为10.1' + status);
+                        return;
+                    }
+                    if ($.type(data) == 'string') {
+                        data = JSON.parse(data);
+                    }
+                    if(data.code != 'E00000'){  
+                        if(data.code == "-1"){
+                            window.location.href = "/weixin/bind";
+                        }else{
+                            $.alert(data.message);
+                            return;
+                        }
+                    }else{
+                        var context = {
+                            data: data.data
+                        };
+                        var recordTpl = $("#recordTpl").html();
+                        var recordTemplate = Handlebars.compile(recordTpl);
+                        var recordCont = recordTemplate(context);
+                        $('#tab2').html(recordCont);
+                    }
+                    
+                }
+            });
+            $(document).on('click','.open-new', function () {
+	            $.popup('.popup-new-record');
+	            // debugger;
+	            var ticketId = $(this).data('ticketid');
+	            var orderId = $(this).data('orderid');
+	            var eid = $(this).data('eid');
+	            var pname = $(this).data('pname');
+	            var sellDate = $(this).data('selldate');
+	            var sellNum  = $(this).data('sellnum');
+	            var surplusNum = $(this).data('surplusnum');
+	            var beginDate = $(this).data('begindate');
+	            var endDate = $(this).data('enddate');
+	            // console.log(ticketId,orderId,eid);
+	            
+
+	            // $('.orderNo').html('orderId');
+	            // $('.orderNo').html('orderId');
+              	//获取电子票消费记录列表
+	            $.ajax({
+	                type: "post",
+	                url: "/weixin/getConsumeTicketDetail",
+	                data:{
+	                	ticketId:ticketId,
+	                	orderId:orderId,
+	                	eid:eid
+	                },
+	                dataType: 'json',
+	                complete: function(json) {
+	                  
+	                    var data = json.response;
+	                    var status = json.status;
+	                    if(status != 200){
+	                        $.alert('网络异常，状态为10.1' + status);
+	                        return;
+	                    }
+	                    if ($.type(data) == 'string') {
+	                        data = JSON.parse(data);
+	                    }
+	                    if(data.code != 'E00000'){  
+	                        if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                                return;
+                            }
+	                    }else{
+	                    	// debugger;
+	                        var context = {
+	                            data: data.data
+	                        };
+	                        var detailTpl = $("#detailTpl").html();
+	                        var detailTemplate = Handlebars.compile(detailTpl);
+	                        var detailCont = detailTemplate(context);
+	                        $('[data-role="new-record-list"]').html(detailCont);
+	                        // $('.orderNo').html(orderId);
+	            			$('.pname').html(pname);
+	            			$('.sellDate').html(sellDate);
+	            			$('.sellNum').html(sellNum);
+	            			$('.surplusNum').html(surplusNum);
+	            			$('.beginDate').html(beginDate);
+	            			$('.endDate').html(endDate);
+	                    }
+	                    
+	                }
+	            });
+            });
+            $(document).on('click','.close-new-popup', function () {
+                $.closeModal('.popup-new-record');
+            });
+        });
+    </script>
+</body>
+</html>

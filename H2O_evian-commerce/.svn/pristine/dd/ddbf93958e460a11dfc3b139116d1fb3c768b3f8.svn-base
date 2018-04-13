@@ -1,0 +1,70 @@
+package com.eviano2o.util;
+
+import java.sql.Timestamp;
+
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class WxTokenAndJsticketCache {
+	private static final Logger logger = LoggerFactory.getLogger(WxTokenAndJsticketCache.class);
+	static String access_token;
+	static Timestamp access_tokenTimeOut;
+	static Boolean isChangeAccess_token;
+
+	public static String getAccess_token() {
+		
+		if (access_token == null || access_tokenTimeOut == null || isChangeAccess_token == null ||
+				StringUtils.isEmpty(access_token) || isChangeAccess_token || new Timestamp(System.currentTimeMillis()).after(access_tokenTimeOut)) {
+			String webContent = HttpClientUtil.get("https://" + SysParamCache.getCache(SysParamNames.ParamAdminWebSit) + "/WeiXin/ShowWxToken");
+			
+			logger.info("获取微信access_token, URL: "+"https://" + SysParamCache.getCache(SysParamNames.ParamAdminWebSit) + "/WeiXin/ShowWxToken" + "   webContent: " + webContent);
+			
+			if (webContent != null && !webContent.isEmpty() && webContent.replace("|@|", "。").split("。").length == 2) {
+				access_token = webContent.replace("|@|", "。").split("。")[0];
+				access_tokenTimeOut = Timestamp.valueOf(webContent.replace("|@|", "。").split("。")[1].replace("/", "-"));
+				isChangeAccess_token = false;
+			}
+		}
+		//System.out.println("access_token:"+access_token);
+		return access_token;
+	}
+
+	public static void setChangeAccess_token() {
+		isChangeAccess_token = true;
+	}
+
+	static String jsapi_ticket;
+	static Timestamp jsapi_ticketTimeOut;
+	static Boolean isChangeJsapi_ticket;
+
+	public static String getJsapi_ticket() {
+		
+		if (jsapi_ticket == null || isChangeJsapi_ticket == null || jsapi_ticketTimeOut == null ||
+				StringUtils.isEmpty(jsapi_ticket) || isChangeJsapi_ticket || new Timestamp(System.currentTimeMillis()).after(jsapi_ticketTimeOut)) {
+			String url = "";
+			String webContent = "";
+			if(WebStyle.getStyle().equals("dalishuishou")){
+				url="https://" + SysParamCache.getCache(SysParamNames.ParamAdminWebSit) + "/WeiXin/ShowWxJsapiTicket";
+				webContent = HttpClientUtil.get(url);
+			}else{
+				url="https://" + SysParamCache.getCache(SysParamNames.ParamAdminWebSit) + "/WeiXin/ShowWxJsapiTicket";
+				webContent = HttpClientUtil.post(url, "为了不返回411错误，这里不能为空");
+			}
+			
+			logger.info("获取微信Jsapi_ticket, URL: "+ url + "   webContent: " + webContent);
+			if (webContent != null && !webContent.isEmpty() && webContent.replace("|@|", "。").split("。").length == 2) {
+				jsapi_ticket = webContent.replace("|@|", "。").split("。")[0];
+				jsapi_ticketTimeOut = Timestamp.valueOf(webContent.replace("|@|", "。").split("。")[1].replace("/", "-"));
+				isChangeJsapi_ticket = false;
+			}
+		}
+		//System.out.println("jsapi_ticket:"+jsapi_ticket);
+		return jsapi_ticket;
+	}
+
+	public static Boolean setIsChangeJsapi_ticket() {
+		return isChangeJsapi_ticket = true;
+	}
+
+}

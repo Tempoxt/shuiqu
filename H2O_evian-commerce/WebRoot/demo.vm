@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>水趣</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+    <link rel="shortcut icon" href="/files/images/$!webStyle/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="/files/common/css/$!webStyle/sm.min.css?v=$version">
+    <link rel="stylesheet" href="/files/common/css/$!webStyle/sm-extend.min.css">
+    <link rel="stylesheet" href="/files/common/css/$!webStyle/shop.css?v=$version">
+</head>
+<script type='text/javascript' src='http://ow3heuhv0.bkt.clouddn.com/zepto.min.js' charset='utf-8'></script>
+   
+    <script type='text/javascript' src='http://ow3heuhv0.bkt.clouddn.com/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='http://ow3heuhv0.bkt.clouddn.com/sm-extend.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='http://ow3heuhv0.bkt.clouddn.com/handlebars-v4.0.5.js' charset='utf-8'></script>
+    <script src="http://ow3heuhv0.bkt.clouddn.com/iconfont.js"></script>
+    <script src="http://ow3heuhv0.bkt.clouddn.com/common.js"></script>
+    <script src="http://ow3heuhv0.bkt.clouddn.com/echarts.min.js"></script>
+    <body>
+    	<a href="https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=wx9c8cd3284651135f&pre_auth_code=preauthcode@@@lyMUBUNfu_i8k_VPL6F_IYEkaI1pFjR_aHMT-WbyxrpNXBFXrwU4Nsb0Ih2cKCP8&redirect_uri=sqweixin.haoshui.com.cn/weixin/showCode">入口</a>
+    </body>
+    #*<script type="text/javascript">
+    	var da = '{"component_appid":"wx98d2ea7671c59607","component_appsecret":"ab48726a19c862d2b01917225d860abd","component_verify_ticket":"ticket@@@rXtB0Bvk9PCHUL-RQ4wpb8Ecw9ixS8uHmtmhyliMEufFPzsop9_fDNYy-CLAvF4koxjxhVapSxBq2osr3gtrCQ"}';
+    	$.ajax({
+                type: "post",
+                url: "https://api.weixin.qq.com/cgi-bin/component/api_component_token",
+                data: {"component_appid":"wx98d2ea7671c59607","component_appsecret": "ab48726a19c862d2b01917225d860abd","component_verify_ticket": "ticket@@@rXtB0Bvk9PCHUL-RQ4wpb8Ecw9ixS8uHmtmhyliMEufFPzsop9_fDNYy-CLAvF4koxjxhVapSxBq2osr3gtrCQ"},
+                dataType: "json",
+                complete: function(json){
+                	
+                	alert(json)
+                }
+            });
+    </script>*#
+    
+</html>
+
+
+

@@ -1,0 +1,208 @@
+package com.eviano2o.controller;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
+import javax.servlet.http.HttpServletRequest;
+
+import net.sf.json.JSONObject;
+
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.eviano2o.bean.weixin.ClientModel;
+import com.eviano2o.bean.weixin.SysParamModel;
+import com.eviano2o.bean.weixin.WxCityInfoModel;
+import com.eviano2o.service.WeiXinService;
+import com.eviano2o.util.SessionConstantDefine;
+import com.eviano2o.util.SysParamCache;
+import com.eviano2o.util.WebStyle;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+/**
+ * @Title: BaseController
+ * @Description: 基础控制器
+ * @author lideguang
+ * @createTime 2016年9月19日 下午1:49:06
+ * @lastEdit
+ */
+public class BaseController {
+
+	public BaseController(){
+		// 网站模板
+		if(StringUtils.isEmpty(WebStyle.getStyle())){
+			Properties pStyle = new Properties();
+			try {
+				pStyle.load(this.getClass().getResourceAsStream("/style.properties"));
+				WebStyle.setStyle(pStyle.getProperty("style"));
+				WebStyle.setApiUrl(pStyle.getProperty("apiUrl"));
+			} catch (Exception e) {
+				logger.info(e.toString());
+			}
+		}
+		
+		getSysParamMap();
+	}
+	
+	protected WeiXinService weiXinService = new WeiXinService();
+
+	private final Logger logger = LoggerFactory.getLogger(BaseController.class);
+
+	/**
+	 * @Description: 返回session中的用户信息
+	 * @params:
+	 * @author lideguang
+	 * @createTime 2016年9月19日 下午1:49:50
+	 * @lastEdit
+	 */
+	protected ClientModel getSessionClient(HttpServletRequest request) {
+		return (ClientModel) request.getSession().getAttribute(SessionConstantDefine.CLIENT_INFO);
+	}
+
+	/**
+	 * 获取用户ID
+	 * 
+	 * @Description:
+	 * @params:
+	 * @author lideguang
+	 * @createTime 2016年9月19日 下午2:05:35
+	 * @lastEdit
+	 */
+	protected Integer getSessionClientId(HttpServletRequest request) {
+		// return 49;
+		if (getSessionClient(request) == null)
+			return null;
+		return getSessionClient(request).getUserId();
+	}
+
+	/**
+	 * 获取用户identityCode
+	 * 
+	 * @Description:
+	 * @params:
+	 * @author lideguang
+	 * @createTime 2016年9月19日 下午2:05:35
+	 * @lastEdit
+	 */
+	protected String getSessionClientIdentityCode(HttpServletRequest request) {
+		if (getSessionClient(request) == null)
+			return "";
+		return getSessionClient(request).getClientId();
+	}
+
+	protected String getSessionAuthorizerAppid(HttpServletRequest request){
+		return (String)request.getSession().getAttribute("authorizer_appid");
+	}
+	
+	/**
+	 * 获取用户微信ID
+	 * 
+	 * @Description:
+	 * @params:
+	 * @author lideguang
+	 * @createTime 2016年9月19日 下午2:05:35
+	 * @lastEdit
+	 */
+	protected String getSessionWeiXinId(HttpServletRequest request) {
+		return request.getSession().getAttribute(SessionConstantDefine.WX_OPENID).toString();
+	}
+
+	/** 系统参数集合 缓存 */
+	protected Map<String, String> getSysParamMap() {
+		// System.out.println("缓存："+SysParamCache.isNullObj());
+		if (SysParamCache.isNullObj()) {
+			String dataStr = weiXinService.getSysPram();
+			if (StringUtils.isEmpty(dataStr)) {
+				logger.error("[ex:{}]", new Object[] { "获取配置参数失败" });
+				return null;
+			}
+			//JSONArray json = JSONArray.fromObject(dataStr);
+			// System.out.print(json);
+			//List<SysParamModel> sysParamList = (List<SysParamModel>) JSONArray.toCollection(json, SysParamModel.class);
+			List<SysParamModel> sysParamList = new Gson().fromJson(dataStr, new TypeToken<List<SysParamModel>>() { }.getType());
+			SysParamCache.clearCache();
+			for (SysParamModel p : sysParamList) {
+				SysParamCache.setCache(p.getSysParam(), p.getSysValue());
+			}
+		}
+		return SysParamCache.getAllParam();
+	}
+	
+	/** 读取网页样式(弃用，在com.eviano2o.servlet，FristServlet中载入) */
+	protected void getWebStyle(){
+		// 读取七牛配置
+		Properties pStyle = new Properties();
+		try {
+			pStyle.load(this.getClass().getResourceAsStream("/style.properties"));
+			WebStyle.setStyle(pStyle.getProperty("style"));
+		} catch (Exception e) {
+			logger.info(e.toString());
+		}
+	}
+
+	/**
+	 * @Description: 返回session中的用户所属城市
+	 * @params:
+	 * @author lideguang
+	 * @createTime 2016年9月19日 下午1:49:50
+	 * @lastEdit
+	 */
+	protected WxCityInfoModel getSessionCity(HttpServletRequest request) {
+		return (WxCityInfoModel) request.getSession().getAttribute(SessionConstantDefine.WX_CITY);
+	}
+
+	/** 系统参数值 */
+	protected String getSysParamMapValue(String sysParam) {
+		if (getSysParamMap() != null && getSysParamMap().containsKey(sysParam))
+			return getSysParamMap().get(sysParam);
+		return "";
+	}
+
+	protected JSONObject formatJsonResult(String code, String message) {
+		JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code", code);
+        jsonObject.put("message", message);
+        jsonObject.put("data", "");
+        return jsonObject;
+		//return JSONObject.fromObject("{\"code\":\"" + code + "\",\"message\":\"" + message + "\",\"data\":\"\"}");
+	}
+
+	protected JSONObject formatJsonResult(String code, String message, Object data) {
+		JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code", code);
+        jsonObject.put("message", message);
+        jsonObject.put("data", data);
+        return jsonObject;
+		//return JSONObject.fromObject("{\"code\":\"" + code + "\",\"message\":\"" + message + "\",\"data\":\"\"}");
+	}
+
+	/** 当前网址 */
+	protected String currentUrl(HttpServletRequest request){
+		String url = request.getRequestURL().toString();
+		if(request.getQueryString()!=null) //判断请求参数是否为空  
+			url+="?"+request.getQueryString();   // 参数
+		return url;
+	}
+
+	/** IP */
+	public String getIp(HttpServletRequest request) {
+	    String ip = request.getHeader("x-forwarded-for");
+	    if(null == ip || 0 == ip.length() || "unknown".equalsIgnoreCase(ip)) {
+	        ip = request.getHeader("Proxy-Client-IP");
+	    }
+	    if(null == ip || 0 == ip.length() || "unknown".equalsIgnoreCase(ip)) {
+	        ip = request.getHeader("WL-Proxy-Client-IP");
+	    }
+	    if(null == ip || 0 == ip.length() || "unknown".equalsIgnoreCase(ip)) {
+	        ip = request.getHeader("X-Real-IP");
+	    }
+	    if(null == ip || 0 == ip.length() || "unknown".equalsIgnoreCase(ip)) {
+	        ip = request.getRemoteAddr();
+	    }
+	    return ip;
+	}
+	
+}

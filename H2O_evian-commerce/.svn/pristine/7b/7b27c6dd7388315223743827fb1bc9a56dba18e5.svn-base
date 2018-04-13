@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/indexCss.vm")
+#*加载JS文件*# 
+#parse("control/$!webStyle/publicJs.vm")
+#parse("control/$!webStyle/globalJs.vm")
+<body>
+    <div class="page-group">
+        <div class="page page-finish page-current">
+            <header class="bar bar-nav light-nav">
+                <a class="icon icon-35icoback pull-left bar-left" href="/weixin/home"></a>  
+                <h1 class="title">兑换优惠码</h1>
+            </header>
+            <div class="content img-code-box">
+                <script type="text/javascript">
+                    var data2;
+                    function isManager(){
+                        $.ajax({
+                            type: "post",
+                            url: "/weixin/existDiscountsCoupon",
+                            dataType: 'json',
+                            async: false,
+                            complete: function(json) {
+                                var data = json.response;
+                                var status = json.status;
+                                if(status != 200){
+                                    $.alert('网络异常，状态为12.1' + status);
+                                    return;
+                                }    
+                                if ($.type(data) == 'string') {
+                                    data = JSON.parse(data);
+                                }
+
+
+                                data2=data;
+
+                                // 赋值分享页面参数
+                                myLink = "https://weixin.shuiqoo.cn/weixin/imaCode?state=imaCode";
+                                myDesc = data.data.activity.activityRemark;
+                                // alert(myDesc);
+                                myImgUrl = data.data.activity.activityPicture;
+                                
+                                if(data.code != 'E00000'){
+                                    /*停止加载页面*/
+                                    if (window.stop)
+                                    window.stop();
+                                    else
+                                    document.execCommand("Stop");
+                                    $('.img-code-box').html('<div class="defaut-wrapp" style="padding: 5rem 1rem 1rem;color: #b7b8b7;" ><img class="icon icon-88tipicoorder" style="display: block;font-size: 3rem;width: 3rem;height: 3rem;margin: 0 auto 1rem;" src="/files/images/Shape2@3x.png"><h2 class="def-note" style="font-size: 0.8rem;text-align: center;">暂时没有任何活动哦！</h2><p style="width: 5rem;margin: 0 auto;" class="closeTuike" ></p></div>');
+                                }else{
+                                    if(data.data.exist==false){
+                                        /*停止加载页面*/
+                                        if (window.stop){
+                                            window.stop();
+                                        }else{
+                                            document.execCommand("Stop");
+                                        }
+                                        $('.img-code-box').html('<div class="defaut-wrapp" style="padding: 5rem 1rem 1rem;color: #b7b8b7;" ><img class="icon icon-88tipicoorder" style="display: block;font-size: 3rem;width: 3rem;height: 3rem;margin: 0 auto 1rem;" src="/files/images/Shape2@3x.png"><h2 class="def-note" style="font-size: 0.8rem;text-align: center;">暂时没有任何活动哦！</h2><p style="width: 5rem;margin: 0 auto;" class="closeTuike" ></p></div>');
+                                    }
+                                }
+                            }
+                        });
+                    }
+                    
+                   isManager();
+
+                </script>
+                <!-- <div class="img-box">
+                    <img src="http://7xlmry.com1.z0.glb.clouddn.com/youli.png" alt="">
+                </div> -->
+                <div id="swiper-container" style="height: 13rem;" class="swiper-container img-box" data-space-between='0'>
+                    <div class="swiper-wrapper " data-role="swiper-wrap">
+                        
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+                <div class="img-code-form reg-list">
+                    <ul>
+                        <li class="input">
+                            <label for="">优惠码</label>
+                            <input name="code_no" type="text" placeholder="请输入优惠券编码">
+                        </li>
+                        <li>
+                            <div class="row">
+                              <!-- <div class="col-50"><a href="/weixin/home" class="button button-big button-fill btn-gray">跳过</a></div> -->
+                              <div class="col-50"><a href="#" id="we" class="button button-big button-fill btn-gray">跳过</a></div>
+                              <div class="col-50"><a href="#" data-action="get-code" class="button button-big button-fill btn-yello">获取</a></div>
+                            </div>
+                        </li>
+                        <li class="notice">
+                            <h5>提示</h5>
+                            
+                        </li>
+                    </ul>
+
+                </div>    
+            </div>
+            
+
+            
+        </div>
+       
+    </div>
+
+
+
+<script id="swiper" type="text/x-handlebars-template">         
+    <!-- {{#each data.ads}}   
+        {{#is linkUrl}}
+        <a href="{{linkUrl}}" class="swiper-slide"><img src="{{pictureUrl}}" alt=""></a>
+        {{else}}
+        <a href="#" class="swiper-slide"><img src="{{pictureUrl}}" alt=""></a>
+        {{/is}}
+    {{/each}} -->
+    <img class="swiper-slide" src="{{data.activity.activityPicture}}" alt="">
+    <!-- <img class="swiper-slide" src="http://7xlmry.com1.z0.glb.clouddn.com/youli.png" alt="">
+    <img class="swiper-slide" src="http://7xlmry.com1.z0.glb.clouddn.com/youli.png" alt=""> -->
+</script>
+<script id="tishi" type="text/x-handlebars-template">         
+    <p>{{data.activity.activityRemark}}</p>
+    <!-- <p>2、请在活动时间范围内使用此劵</p>
+    <p>3、此劵领取后在我的优惠券中查看</p>
+    <p>4、此劵解释权归水趣生活所有</p> -->
+</script>
+<script>
+    $(function() {
+
+        $('[data-action="get-code"]').on('click', function(){
+                var code_no = $('input[name=code_no]').val();
+                if(!$.trim(code_no)){
+                    $.alert('优惠券编码不能为空');
+                    return;
+                }
+                $.ajax({
+                    type: "get",
+                    url: "/weixin/imaCouponConvert",
+                    data:{
+                        code_no:code_no,
+                        activityId:data2.data.activity.activityId
+                    },
+                    dataType: 'json',
+                    complete: function(json) {
+                      
+                        var data = json.response;
+                        var status = json.status;
+                        if(status != 200){
+                            $.alert('网络异常，状态为15.1' + status);
+                            return;
+                        }
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if(data.code != 'E00000'){
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                alert(data.message);
+                                return;
+                            }
+                        }else{
+                            alert('恭喜兑换成功！', function(){
+                                window.location.href = "/weixin/home";
+                            });
+                        }
+                        
+                    }
+                });
+        });
+
+            var tpl = $("#swiper").html();
+            var template = Handlebars.compile(tpl);
+            var context = {
+                data: data2.data
+            };
+            var html = template(context);
+            $("[data-role='swiper-wrap']").html(html);
+
+            $("#swiper-container").swiper({
+                autoplay: 2000,
+                autoplayDisableOnInteraction: false,
+                pagination: '.swiper-pagination'
+            });
+
+            // $.reinitSwiper(0);
+            $.reinitSwiper('#swiper-container');
+
+            var tpl2 = $("#tishi").html();
+            var template2 = Handlebars.compile(tpl2);
+            var context2 = {
+                data: data2.data
+            };
+            var html2 = template2(context2);
+            $(".notice").append(html2);
+
+    });
+    // $.init();
+</script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+package com.eviano2o.util;
+
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.eviano2o.bean.backstageApi.AccessTokenAndJsTicket;
+
+public class WxTokenAndJsticketCache {
+	private static final Logger logger = LoggerFactory.getLogger(WxTokenAndJsticketCache.class);
+	/*static String access_token;
+	static Timestamp access_tokenTimeOut;
+	static Boolean isChangeAccess_token;
+
+	public static String getAccess_token() {
+		
+		if (access_token == null || access_tokenTimeOut == null || isChangeAccess_token == null ||
+				StringUtils.isEmpty(access_token) || isChangeAccess_token || new Timestamp(System.currentTimeMillis()).after(access_tokenTimeOut)) {
+			String url = "https://" + SysParamCache.getCache(SysParamNames.ParamAdminWebSit) + "/WeiXin/ShowWxToken";
+			String webContent = HttpClientUtil.post(url, "为了不返回411错误，这里不能为空");
+			
+			logger.info("获取微信access_token, URL: " + url + "   webContent: " + webContent);
+			
+			if (!StringUtils.isEmpty(webContent) && webContent.replace("|@|", "。").split("。").length == 2) {
+				access_token = webContent.replace("|@|", "。").split("。")[0];
+				access_tokenTimeOut = Timestamp.valueOf(webContent.replace("|@|", "。").split("。")[1].replace("/", "-"));
+				isChangeAccess_token = false;
+			}
+		}
+		//System.out.println("access_token:"+access_token);
+		return access_token;
+	}
+
+	public static void setChangeAccess_token() {
+		isChangeAccess_token = true;
+	}
+
+	
+	
+	static String jsapi_ticket;
+	static Timestamp jsapi_ticketTimeOut;
+	static Boolean isChangeJsapi_ticket;
+
+	public static String getJsapi_ticket() {
+		
+		if (jsapi_ticket == null || isChangeJsapi_ticket == null || jsapi_ticketTimeOut == null ||
+				StringUtils.isEmpty(jsapi_ticket) || isChangeJsapi_ticket || new Timestamp(System.currentTimeMillis()).after(jsapi_ticketTimeOut)) {
+			String url="https://" + SysParamCache.getCache(SysParamNames.ParamAdminWebSit) + "/WeiXin/ShowWxJsapiTicket";;
+			String webContent = HttpClientUtil.post(url, "为了不返回411错误，这里不能为空");
+			
+			logger.info("获取微信Jsapi_ticket, URL: "+ url + "   webContent: " + webContent);
+			if (!StringUtils.isEmpty(webContent) && webContent.replace("|@|", "。").split("。").length == 2) {
+				jsapi_ticket = webContent.replace("|@|", "。").split("。")[0];
+				jsapi_ticketTimeOut = Timestamp.valueOf(webContent.replace("|@|", "。").split("。")[1].replace("/", "-"));
+				isChangeJsapi_ticket = false;
+			}
+		}
+		//System.out.println("jsapi_ticket:"+jsapi_ticket);
+		return jsapi_ticket;
+	}
+
+	public static Boolean setIsChangeJsapi_ticket() {
+		return isChangeJsapi_ticket = true;
+	}
+*/
+	public static void clearTokenAndTickent(){
+		accessTokenAndJsTicketMap = new HashMap<>();
+	}
+	
+	static Map<String, AccessTokenAndJsTicket> accessTokenAndJsTicketMap;
+	public static String getAccess_token(String appId) {
+		if(accessTokenAndJsTicketMap == null)
+			accessTokenAndJsTicketMap = new HashMap<String, AccessTokenAndJsTicket>();
+			
+		if(StringUtils.isEmpty(appId))return "";
+		if(!accessTokenAndJsTicketMap.containsKey(appId)){
+			Long timeOutInt = DateUtil.strToDate("2017-01-01").getTime() / 1000;
+			
+			AccessTokenAndJsTicket entity = new AccessTokenAndJsTicket();
+			entity.setAppId(appId);
+			entity.setTokenTimeout(timeOutInt);
+			entity.setJsTicketTimeout(timeOutInt);
+			accessTokenAndJsTicketMap.put(appId, entity);
+		}
+		checkToken(accessTokenAndJsTicketMap.get(appId));
+		
+		return accessTokenAndJsTicketMap.get(appId).getToken();
+	}
+	static void checkToken(AccessTokenAndJsTicket entity){
+		if(entity.getTokenTimeout() <= System.currentTimeMillis() / 1000 || StringUtils.isEmpty(entity.getToken())){
+			String url="https://" + SysParamCache.getCache(SysParamNames.ParamAdminWebSit) + "/WeiXin/ShowWxToken?appId="+entity.getAppId();
+			String webContent = HttpClientUtil.post(url, "为了不返回411错误，这里不能为空");
+			
+			logger.info(entity.getAppId() + " 获取微信token, URL: "+ url + "   webContent: " + webContent);
+			if (!StringUtils.isEmpty(webContent) && webContent.replace("|@|", "。").split("。").length == 2) {
+				Long tokenTimeout = DateUtil.strToDateLong(webContent.replace("|@|", "。").split("。")[1]).getTime() / 1000;
+				
+				entity.setToken(webContent.replace("|@|", "。").split("。")[0]);
+				entity.setTokenTimeout(tokenTimeout);
+			}
+		}
+	}
+	public static void setTokenTimeout(String appId) {
+		if(accessTokenAndJsTicketMap.containsKey(appId)){
+			accessTokenAndJsTicketMap.get(appId).setTokenTimeout(Long.MIN_VALUE);
+		}
+	}
+	
+	
+	public static String getJsapi_ticket(String appId) {
+		if(accessTokenAndJsTicketMap == null)
+			accessTokenAndJsTicketMap = new HashMap<String, AccessTokenAndJsTicket>();
+			
+		if(StringUtils.isEmpty(appId))return "";
+		if(!accessTokenAndJsTicketMap.containsKey(appId)){
+			
+			AccessTokenAndJsTicket entity = new AccessTokenAndJsTicket();
+			entity.setAppId(appId);
+			entity.setTokenTimeout(Long.MIN_VALUE);
+			entity.setJsTicketTimeout(Long.MIN_VALUE);
+			accessTokenAndJsTicketMap.put(appId, entity);
+		}
+		checkTicket(accessTokenAndJsTicketMap.get(appId));
+		
+		logger.info("appId = "+appId);
+		
+		return accessTokenAndJsTicketMap.get(appId).getJsTicket();
+	}
+	static void checkTicket(AccessTokenAndJsTicket entity){
+		if(entity.getTokenTimeout() <= System.currentTimeMillis() / 1000 || StringUtils.isEmpty(entity.getJsTicket())){
+			String url="https://" + SysParamCache.getCache(SysParamNames.ParamAdminWebSit) + "/WeiXin/ShowWxJsapiTicket?appId="+entity.getAppId();
+			String webContent = HttpClientUtil.post(url, "为了不返回411错误，这里不能为空");
+			
+			logger.info(entity.getAppId() + " 获取微信ticket, URL: "+ url + "   webContent: " + webContent);
+			if (!StringUtils.isEmpty(webContent) && webContent.replace("|@|", "。").split("。").length == 2) {
+				logger.info("1111111111111webContent.replace(\"|@|\", \"。\").split(\"。\")[1] = "+webContent.replace("|@|", "。").split("。")[1]);
+				logger.info("1111111111111DateUtil.strToDateLong2(webContent.replace(\"|@|\", \"。\").split(\"。\")[1]) = "+DateUtil.strToDateLong2(webContent.replace("|@|", "。").split("。")[1]));
+				Long ticketTimeout = DateUtil.strToDateLong2(webContent.replace("|@|", "。").split("。")[1]).getTime() / 1000;
+				
+				entity.setJsTicket(webContent.replace("|@|", "。").split("。")[0]);
+				entity.setJsTicketTimeout(ticketTimeout);
+			}
+		}
+	}
+	public static void setTicketTimeout(String appId) {
+		if(accessTokenAndJsTicketMap.containsKey(appId)){
+			accessTokenAndJsTicketMap.get(appId).setJsTicketTimeout(Long.MIN_VALUE);
+		}
+	}
+	
+	
+	
+	static String component_access_token;
+	static Timestamp component_access_tokenTimeOut;
+	static Boolean isChangecomponent_access_token;
+
+	public static String getComponent_access_token() {
+		
+		if (component_access_token == null || component_access_tokenTimeOut == null || isChangecomponent_access_token == null ||
+				StringUtils.isEmpty(component_access_token) || isChangecomponent_access_token || new Timestamp(System.currentTimeMillis()).after(component_access_tokenTimeOut)) {
+			String url="https://" + SysParamCache.getCache(SysParamNames.ParamAdminWebSit) + "/ComponentLiteapp/ShowComponentAccessToken";;
+			String webContent = HttpClientUtil.post(url, "为了不返回411错误，这里不能为空");
+			
+			logger.info("获取第三方平台Component_access_token, URL: "+ url + "   webContent: " + webContent);
+			if (!StringUtils.isEmpty(webContent) && webContent.replace("|@|", "。").split("。").length == 2) {
+				component_access_token = webContent.replace("|@|", "。").split("。")[0];
+				component_access_tokenTimeOut = Timestamp.valueOf(webContent.replace("|@|", "。").split("。")[1].replace("/", "-"));
+				isChangecomponent_access_token = false;
+			}
+		}
+		//System.out.println("jsapi_ticket:"+jsapi_ticket);
+		return component_access_token;
+	}
+
+	public static Boolean setIsChangeComponent_access_token() {
+		return isChangecomponent_access_token = true;
+	}
+
+}

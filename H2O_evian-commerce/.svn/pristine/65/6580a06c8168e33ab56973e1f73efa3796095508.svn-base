@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "account")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/indexCss.vm")
+<body>
+    <div class="page-group">
+        <div class="page page-current page-account">
+            
+            <div class="content">
+                <header class="my-bar">
+                  <table data-role="my-info" class="my-info">
+                      <tr>
+                          <td>
+                              <div class="photo-box">
+                                  <img src="" alt="">
+                              </div>
+                          </td>
+                          <td>
+                              <p>昵称：</p>
+                          </td>
+                      </tr>
+                  </table>
+                </header>
+                <!-- 积分、优惠券、电子票 -->
+                <table class="choose-bar" data-role="gift-wrap">
+                    <tr>
+                        <td>
+                            <p>0</p>
+                            <p>积分</p>
+                        </td>
+                        <td><a href="/weixin/coupon">
+                            <p>0</p>
+                            <p>优惠券</p></a>
+                        </td>
+                        <td>
+                            <a href="/weixin/myTicket">
+                            <p>0</p>
+                            <p>电子票</p></a>
+                        </td>
+                    </tr>
+                </table>
+                <div class="go-ahead for-order">
+                    <a class="open-detail" href="/weixin/orders?statusId=0&pageIndex=1">我的订单<span class="icon icon-ico_awwor_right"></span><span>查看全部订单</span></a>
+                </div>
+                <!-- 订单分类 -->
+                <table class="order-status" data-role="order-status">
+                    <tr>
+                        <td><a href="">
+                            <p><span class="icon icon-57meorderstatus1"></span></p>
+                            <p>待付款</p></a>
+                        </td>
+                        <td><a href="">
+                            <p><span class="icon icon-58meorderstatus2"></span></p>
+                            <p>待发货</p></a>
+                        </td>
+                        <td><a href="">
+                            <p><span class="icon icon-59meorderstatus3"></span></p>
+                            <p>待收货</p>
+                            </a>
+                        </td>
+                        <td><a href="">
+                            <p><span class="icon icon-60meorderstatus4"></span></p>
+                            <p>待评价</p>
+                            </a>
+                        </td>
+                        <td><a href="">
+                            <p><span class="icon icon-61meorderstatus5"></span></p>
+                            <p>退款/取消</p>
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+                <div class="list-block mt1em my-list">
+                    <ul>
+                      <li>
+                        <a class="item-content item-link" href="/weixin/hibits">
+                        <div class="item-media"><i class="icon icon-62meorderstatus10"></i></div>
+                        <div class="item-inner">
+                          <div class="item-title">消费习惯</div>
+                          <div class="item-after"></div>
+                        </div></a>
+                      </li>
+                      <li>
+                        <a class="item-content item-link" href="/weixin/myEvaluate">
+                        <div class="item-media"><i class="icon icon-51meicochat"></i></div>
+                        <div class="item-inner">
+                          <div class="item-title">我的评论</div>
+                          <div class="item-after"></div>
+                        </div></a>
+                      </li>
+                      <li>
+                        <a class="item-content item-link" href="/weixin/address">
+                        <div class="item-media"><i class="icon icon-53meicolocation"></i></div>
+                        <div class="item-inner">
+                          <div class="item-title">地址管理</div>
+                          <div class="item-after"></div>
+                        </div></a>
+                      </li>
+                      #if($!webStyle == "shuiqu")
+                      <li>
+                        <a class="item-content item-link" href="/weixin/receipt">
+                        <div class="item-media"><i class="icon icon-invoice"></i></div>
+                        <div class="item-inner">
+                          <div class="item-title">增值税发票</div>
+                          <div class="item-after"></div>
+                        </div></a>
+                      </li>
+                      #end
+                      <li>
+                        <a class="item-content item-link" href="/weixin/seller">
+                        <div class="item-media"><i class="icon icon-me_ico_shop"></i></div>
+                        <div class="item-inner">
+                          <div class="item-title">商家入驻</div>
+                          <div class="item-after"></div>
+                        </div></a>
+                      </li>
+                      <li>
+                        <a class="item-content item-link" href="/weixin/everyShopNew">
+                        <div class="item-media"><i class="icon icon-share"></i></div>
+                        <div class="item-inner">
+                          <div class="item-title">店铺推广</div>
+                          <div class="item-after"></div>
+                        </div></a>
+                      </li>
+                      <!-- <li>
+                        <a class="item-content item-link" href="/weixin/everyShop">
+
+                        <div class="item-media"><i class="icon icon-share"></i></div>
+                        <div class="item-inner">
+                          <div class="item-title">#if($!webStyle == "shuiqu")水趣推客#else大力水手推客#end</div>
+                          <div class="item-after"></div>
+                        </div></a>
+                      </li> -->
+                      <!-- <li>
+                          <div style="width: 50px;height: 20px;" id="LLL"></div>
+                      </li> -->
+                    </ul>
+                </div>
+            </div>
+            <!-- nav bar -->
+            #parse("control/$!webStyle/nav.vm")
+        </div>
+        
+    </div>
+    <script id="giftTpl" type="text/x-handlebars-template">
+        <tr>
+            <td>
+                <p>{{data.integral}}</p>
+                <p>积分</p>
+            </td>
+            <td>
+                <a href="/weixin/coupon">
+                <p>{{data.code_money}}</p>
+                <p>优惠券</p></a>
+            </td>
+            <td>
+                <a href="/weixin/myTicket">
+                <p>{{data.ticket_number}}</p>
+                <p>电子票</p></a>
+            </td>
+        </tr>
+    </script>
+    <script id="myinfoTpl" type="text/x-handlebars-template">
+        <tr>
+            <td data-role="freshWXInfo">
+                <div class="photo-box">
+                    <img src="{{data.baseClient.photo}}" alt="">
+                </div>
+            </td>
+            <td>
+                <p>昵称：{{data.baseClient.nickName}}</p>
+            </td>
+        </tr>
+    </script>
+    <script id="orderTpl" type="text/x-handlebars-template">
+        <tr>
+            {{#each data.statusTotals}}
+            <td><a href="/weixin/orders?statusId={{statusId}}">
+                <p>
+                {{#is statusId 100}}
+                  <span class="icon icon-57meorderstatus1"></span>
+                {{/is}}
+                {{#is statusId 101}}
+                  <span class="icon icon-58meorderstatus2"></span>
+                {{/is}}
+                {{#is statusId 102}}
+                  <span class="icon icon-59meorderstatus3"></span>
+                {{/is}}
+                {{#is statusId 103}}
+                  <span class="icon icon-60meorderstatus4"></span>
+                {{/is}}
+                {{#is statusId 104}}
+                  <span class="icon icon-61meorderstatus5"></span>
+                {{/is}}
+                </p>
+                <p>{{tag}}</p>
+                {{#is count '>' 0}}
+                <span class="badge"></span>{{/is}}</a>
+            </td>
+            {{/each}}
+        </tr>
+    </script>
+    #*加载JS文件*# 
+    #parse("control/$!webStyle/publicJs.vm")
+    #parse("control/$!webStyle/globalJs.vm")
+    <script>
+        $('#LLL').click(function(){
+            window.location.href = "/weixin/shopDistributor";
+        });
+        $(function() {
+            //购物车有商品就在导航栏加小红点标记
+            $.ajax({
+                type: "get",
+                url: "/weixin/getShopCartProductJson",
+                dataType: 'json',
+                complete: function(json) {
+                
+                    var data = json.response;
+                    var status = json.status;
+                    if(status != 200){
+                        $.alert('网络异常，状态为3.2' + status);
+                        return;
+                    }
+                    if ($.type(data) == 'string') {
+                        data = JSON.parse(data);
+                    }
+                    if(data.code != 'E00000'){
+                        if(data.code == "-1"){
+                            window.location.href = "/weixin/bind";
+                        }else{
+                            $.alert(data.message);
+                            return;
+                        }
+                      
+                    }else{
+                        if(data.data.shopcarts.length>=1){
+                            $('[data-role="purchased"]').after('<span class="badge"></span>');
+                        }
+                    }
+                  
+                }
+            });
+            $('[data-role="product-bar"] a').click(function(){
+                $('[data-role="product-bar"] a').removeClass('active');
+                $(this).addClass('active');
+            });
+            //获取积分礼券等概况信息
+            $.ajax({
+                type: "get",
+                url: "/weixin/getIntegralCodeNum",
+                dataType: 'json',
+                complete: function(json) {
+                  
+                    var data = json.response;
+                    var status = json.status;
+                    if(status != 200){
+                        $.alert('网络异常，状态为10.1' + status);
+                        return;
+                    }
+                    if ($.type(data) == 'string') {
+                        data = JSON.parse(data);
+                    }
+                    if(data.code != 'E00000'){
+                        if(data.code == "-1"){
+                            window.location.href = "/weixin/bind";
+                        }else{
+                            $.alert(data.message);
+                            return;
+                        }
+                    }else{
+                        var context = {
+                            data: data.data
+                        };
+                        var giftTpl = $("#giftTpl").html();
+                        var giftTemplate = Handlebars.compile(giftTpl);
+                        var giftCont = giftTemplate(context);
+                        $('[data-role="gift-wrap"]').html(giftCont);
+
+                    }
+                    
+                }
+            });
+            //获取客户信息
+            $.ajax({
+                type: "get",
+                url: "/weixin/getClientInfo",
+                dataType: 'json',
+                complete: function(json) {
+                  
+                    var data = json.response;
+                    var status = json.status;
+                    if(status != 200){
+                        $.alert('网络异常，状态为10.2' + status);
+                        return;
+                    }
+                    if ($.type(data) == 'string') {
+                        data = JSON.parse(data);
+                    }
+                    if(data.code != 'E00000'){
+                        if(data.code == "-1"){
+                            window.location.href = "/weixin/bind";
+                        }else{
+                            $.alert(data.message);
+                            return;
+                        }
+                    }else{
+                        var context = {
+                            data: data.data
+                        };
+                        var myinfoTpl = $("#myinfoTpl").html();
+                        var myinfoTemplate = Handlebars.compile(myinfoTpl);
+                        var myinfoCont = myinfoTemplate(context);
+                        $('[data-role="my-info"]').html(myinfoCont);
+                        //订单数据
+                        var orderTpl = $("#orderTpl").html();
+                        var orderTemplate = Handlebars.compile(orderTpl);
+                        var orderCont = orderTemplate(context);
+                        $('[data-role="order-status"]').html(orderCont);
+                        $('[data-role="order-status"]').find('tr td:last-child a').attr("href","/weixin/canceled?statusId=104");
+
+                        $('[data-role="freshWXInfo"]').on('click',function(){
+                            $.confirm('是否更新用户信息?',function(){
+                                $.ajax({
+                                    type: "get",
+                                    url: "/weixin/freshWXInfo",
+                                    dataType: 'json',
+                                    complete: function(json) {
+                                      
+                                        var data = json.response;
+                                        var status = json.status;
+                                        if(status != 200){
+                                            $.alert('网络异常，状态为10.2' + status);
+                                            return;
+                                        }
+                                        if ($.type(data) == 'string') {
+                                            data = JSON.parse(data);
+                                        }
+                                        if(data.code != 'E00000'){
+                                            if(data.code == "-1"){
+                                                window.location.href = "/weixin/bind";
+                                            }else{
+                                                $.alert(data.message);
+                                                return;
+                                            }
+                                        }else{
+                                            window.location.reload();
+                                        }
+                                        
+                                    }
+                                });
+                            });
+                        });
+                    }
+                    
+                }
+            });
+
+            //水趣推客跳转判断
+            // $('[data-role="jump-where"]').on('click',function(e){
+            //     e.preventDefault();
+            //     $.ajax({
+            //         type: "post",
+            //         url: "/weixin/getShareApplyInfo",
+            //         dataType: 'json',
+            //         complete: function(json) {
+                    
+            //             var data = json.response;
+            //             var status = json.status;
+            //             if(status != 200){
+            //                 $.alert('系统异常，状态为3.2' + status);
+            //                 return;
+            //             }
+            //             if ($.type(data) == 'string') {
+            //                 data = JSON.parse(data);
+            //             }
+            //             if(data.code != 'E00000'){
+            //                 $.alert(data.message);
+                          
+            //             }else{
+            //                 if(data.data.hash==false){
+            //                     window.location.href="/weixin/shopApply";
+            //                 }else{
+            //                     if(data.data.apply.status=="1"){
+            //                         window.location.href="/weixin/everyShop";
+            //                     }else if(data.data.apply.status=="-1"){
+            //                         window.location.href="/weixin/shopApply";
+            //                     }else if(data.data.apply.status=="0"){
+            //                         window.location.href="/weixin/shopApply";
+            //                     }
+            //                 }
+            //             }
+                      
+            //         }
+            //     });
+            // })
+        });
+        $.init();
+    </script>
+  </body>
+</html>

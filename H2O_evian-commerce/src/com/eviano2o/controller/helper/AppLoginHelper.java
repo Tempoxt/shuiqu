@@ -1,0 +1,49 @@
+package com.eviano2o.controller.helper;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.ui.Model;
+
+import com.eviano2o.bean.weixin.ClientModel;
+import com.eviano2o.util.SessionConstantDefine;
+
+public class AppLoginHelper extends BaseControllerHelper {
+	
+	public AppLoginHelper(Model model, HttpServletRequest request, HttpServletResponse response) {
+		super(model, request, response);
+	}
+	
+	@Override
+	public void Init() {
+		String uinfo = _request.getParameter("uinfo");
+		if (StringUtils.isEmpty(uinfo)){
+			_result = formatJsonResult("E90000", "参数为空啦");
+			return;
+		}
+		
+		String clientId = uinfo.split("\\|")[0];
+		String appType = uinfo.split("\\|")[1];
+		String appid = uinfo.split("\\|")[2];
+		_request.getSession().setAttribute(SessionConstantDefine.WX_APPID, appid);
+		if (StringUtils.isEmpty(clientId) || StringUtils.isEmpty(appType)){
+			_result = formatJsonResult("E90000", "参数错误啦");
+			return;
+		}
+
+		ClientModel userInfo = weiXinService.getUserInfoById(clientId,appid);
+		if(userInfo==null){
+			_request.getSession().removeAttribute(SessionConstantDefine.CLIENT_INFO);
+			_result = formatJsonResult("E90000", "账号不存在啦");
+		}else{
+			_request.getSession().setAttribute(SessionConstantDefine.CLIENT_INFO, userInfo);
+			_result = formatJsonResult("E00000", "登录成功");
+		}
+	}
+	
+	@Override
+	public String getResult() {
+		return _result;
+	}
+}

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/shopCss.vm")
+<body>
+ 	<div class="page-group">
+        <div class="page page-finish page-current page-shopRegister" data-role="shopRegister">
+            <header class="bar bar-nav light-nav">
+                <a href="javascript:history.go(-1)" class="icon icon-35icoback pull-left bar-left"></a>   
+                <h1 class="title">店铺注册</h1>
+            </header>
+            <div class="content">
+                <div class="list-block new-form-list">
+                    <ul>
+                        <li>
+                            <div class="item-content">
+                          <div class="item-inner">
+                            <div class="item-title label">商户名称:</div>
+                            <div class="item-input">
+                              <input type="text" name="ename" placeholder="请填写商户企业名称，必填">
+                            </div>
+                          </div>
+                            </div>
+                        </li>
+                        
+                        <li>
+                            <div class="item-content">
+                          <div class="item-inner">
+                            <div class="item-title label">商铺编号:</div>
+                            <div class="item-input">
+                              <input type="text" name="shopNo" placeholder="请填写水店自定义编号，必填">
+                            </div>
+                          </div>
+                            </div>
+                        </li>
+                        
+                        <li>
+                            <div class="item-content">
+                              <div class="item-inner">
+                                <div class="item-title label">我的编号:</div>
+                                <div class="item-input">
+                                  <input type="text" name="keeperCode" placeholder="请填写店长编号，必填">
+                                </div>
+                              </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                              <div class="item-inner">
+                                <div class="item-title label">手机号:</div>
+                                <div class="item-input">
+                                  <input type="text" name="keeperMobile" placeholder="请填写您的手机号码，必填" maxlength="11">
+                                </div>
+                              </div>
+                            </div>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+            <div class="bar bar-footer order-bar">
+                <a href="#" data-role="save-blank" class="button button-fill btn-yello">提交</a>
+            </div>
+        </div>
+       
+    </div>
+    #*加载JS文件*# 
+    #parse("control/$!webStyle/publicJs.vm")
+    #parse("control/$!webStyle/globalJs.vm")
+    <script>
+        $(function() {
+
+            //店铺注册
+            var flag=0;
+            $('[data-role="shopRegister"]').delegate('[data-role="save-blank"]', "click", function(e){
+                e.preventDefault();   
+                flag++;
+                console.log(flag);
+                if(flag > 1){
+                    return;
+                }          
+                var ename = $.trim($('input[name=ename]').val());
+                var shopNo = $.trim($('input[name=shopNo]').val());
+                var keeperCode = $.trim($('input[name=keeperCode]').val());
+                var keeperMobile = $.trim($('input[name=keeperMobile]').val());
+                $('.err-msg').remove();
+                if(ename == ""){
+                    $('input[name=ename]').parents('.item-content').after('<p class="err-msg">商户名称不能为空</p>');
+                    flag=0;
+                    return;
+                }
+                if(shopNo == ""){
+                    $('input[name=shopNo]').parents('.item-content').after('<p class="err-msg">商铺编号不能为空</p>');
+                    flag=0;
+                    return;
+                }
+                if(keeperCode == ""){
+                    $('input[name=keeperCode]').parents('.item-content').after('<p class="err-msg">店长编号不能为空</p>');
+                    flag=0;
+                    return;
+                }
+                if(keeperMobile == "" ){
+                    $('input[name=keeperMobile]').parents('.item-content').after('<p class="err-msg">手机号不能为空</p>');
+                    flag=0;
+                    return;
+                }
+                if(/^1[3|4|5|7|8][0-9]{9}$/.test(keeperMobile)==false){
+                    $('input[name=keeperMobile]').parents('.item-content').after('<p class="err-msg">手机号不正确</p>');
+                    flag=0;
+                    return;
+                }
+                
+                $.ajax({
+                    type: "post",
+                    url: "/weixin/shopregeditweixin",
+                    data: {
+                        ename:ename,
+                        shopNo: shopNo,
+                        keeperCode: keeperCode,
+                        keeperMobile: keeperMobile
+                    },
+                    dataType: 'json',
+                    complete: function(json) {
+                      
+                        var status = json.status;
+                        if(status != 200){
+                            $.alert('网络异常，状态为22.2' + status);
+                            flag=0;
+                            return;
+                        }
+                        var data = json.response;
+                       
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if(data.code != 'E00000'){
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                                flag = 0;
+                                return;
+                            }
+                        }else{
+                            flag=0;
+                            $.alert('提交成功',function(){
+                                window.location.reload();
+                            });
+                            
+                        }
+                    }
+                });
+            });
+        });
+        $.init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,428 @@
+package com.eviano2o.controller.helper;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+
+import net.sf.json.JSON;
+import net.sf.json.JSONObject;
+import net.sf.json.xml.XMLSerializer;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.ui.Model;
+
+import com.alibaba.druid.util.StringUtils;
+import com.eviano2o.bean.backstageApi.e_weixin_user_message;
+import com.eviano2o.bean.request.ReceiveWeiXinXmlModel;
+import com.eviano2o.bean.weixin.ClientModel;
+import com.eviano2o.bean.weixin.e_enterprise_wechatliteapp;
+import com.eviano2o.util.DES3_CBCUtil;
+import com.eviano2o.util.DateUtil;
+import com.eviano2o.util.DownloadFileUtil;
+import com.eviano2o.util.Sha1Util;
+import com.eviano2o.util.SysParamNames;
+import com.eviano2o.wxpay.WxPayModel;
+import com.eviano2o.wxpay.WxPayParamCheck;
+
+/** 第三方授权公众号处理 */
+public class IndexComponentHelper extends BaseControllerHelper {
+
+	String appId;
+	String postString;
+	e_enterprise_wechatliteapp wechatEntity;
+	public IndexComponentHelper(Model model, HttpServletRequest request, String appid, String postStr) {
+		super(model, request);
+		appId = appid;
+		postString = postStr;
+		wechatEntity = getWechatInfo().get(appid);
+	}
+
+	@Override
+	public void Init() {
+		try {
+			ReceiveWeiXinXmlModel xmlEntity = getMsgEntity(postString);
+			
+			logger.info("微信发送事件      "+postString);
+			setResult(xmlEntity);
+		} catch (Exception e) {
+			_result = "";
+		}
+	}
+
+	private static final Logger logger = LoggerFactory.getLogger(IndexComponentHelper.class);
+
+	/** 公众号访问事件 */
+	private void doPost() {
+		try {
+			StringBuffer sb = new StringBuffer();
+			InputStream is = _request.getInputStream();
+			InputStreamReader isr = new InputStreamReader(is, "UTF-8");
+			BufferedReader br = new BufferedReader(isr);
+			String s = "";
+			while ((s = br.readLine()) != null) {
+				sb.append(s);
+			}
+			String strXml = sb.toString();
+
+			ReceiveWeiXinXmlModel xmlEntity = getMsgEntity(strXml);
+			
+			logger.info("微信发送事件      "+strXml);
+			setResult(xmlEntity);
+		} catch (Exception e) {
+			_result = "";
+		}
+	}
+
+	/** 将inputString 支付串转换为ReceiveWeiXinXmlModel实体类 */
+	private ReceiveWeiXinXmlModel getMsgEntity(String strXml) {
+		ReceiveWeiXinXmlModel msg = null;
+		try {
+			XMLSerializer xmlSerializer=new XMLSerializer();
+	        JSON json=xmlSerializer.read(strXml);
+	        JSONObject jsonObject=JSONObject.fromObject(json.toString()); 
+	        ReceiveWeiXinXmlModel result = new ReceiveWeiXinXmlModel();
+	        if(jsonObject.has("ToUserName"))result.setToUserName(jsonObject.getString("ToUserName"));
+	        if(jsonObject.has("FromUserName"))result.setFromUserName(jsonObject.getString("FromUserName"));
+	        if(jsonObject.has("CreateTime"))result.setCreateTime(jsonObject.getString("CreateTime"));
+	        if(jsonObject.has("MsgType"))result.setMsgType(jsonObject.getString("MsgType"));
+	        if(jsonObject.has("MsgId"))result.setMsgId(jsonObject.getString("MsgId"));
+	        if(jsonObject.has("Event"))result.setEvent(jsonObject.getString("Event"));
+	        if(jsonObject.has("EventKey"))result.setEventKey(jsonObject.getString("EventKey"));
+	        if(jsonObject.has("Ticket"))result.setTicket(jsonObject.getString("Ticket"));
+	        if(jsonObject.has("Latitude"))result.setLatitude(jsonObject.getString("Latitude"));
+	        if(jsonObject.has("Longitude"))result.setLongitude(jsonObject.getString("Longitude"));
+	        if(jsonObject.has("Precision"))result.setPrecision(jsonObject.getString("Precision"));
+	        if(jsonObject.has("PicUrl"))result.setPicUrl(jsonObject.getString("PicUrl"));
+	        if(jsonObject.has("MediaId"))result.setMediaId(jsonObject.getString("MediaId"));
+	        if(jsonObject.has("Title"))result.setTicket(jsonObject.getString("Title"));
+	        if(jsonObject.has("Description"))result.setDescription(jsonObject.getString("Description"));
+	        if(jsonObject.has("Url"))result.setUrl(jsonObject.getString("Url"));
+	        if(jsonObject.has("Location_X"))result.setLocation_X(jsonObject.getString("Location_X"));
+	        if(jsonObject.has("Location_Y"))result.setLocation_Y(jsonObject.getString("Location_Y"));
+	        if(jsonObject.has("Scale"))result.setScale(jsonObject.getString("Scale"));
+	        if(jsonObject.has("Label"))result.setLabel(jsonObject.getString("Label"));
+	        if(jsonObject.has("Content"))result.setContent(jsonObject.getString("Content"));
+	        if(jsonObject.has("Format"))result.setFormat(jsonObject.getString("Format"));        
+	        if(jsonObject.has("Recognition"))result.setRecognition(jsonObject.getString("Recognition")); 
+	        return result;
+		} catch (Exception e) {
+			logger.info("xml 格式异常: " + strXml);
+			e.printStackTrace();
+		}
+		return msg;
+	}	
+
+	/** 判断入口 */
+	private void setResult(ReceiveWeiXinXmlModel entity){
+		if(wechatEntity == null){
+			formatXmlAnswer(entity.getFromUserName(), entity.getToUserName(), "感谢您的关注和厚爱。");
+			return;
+		}
+		
+		Integer shareId = 0;
+		String qrscene = "";
+		if(entity.getMsgType().equals("event") && entity.getEvent().equals("subscribe")){//关注
+			if(entity.getEventKey().startsWith("qrscene_share")){
+				shareId = Integer.parseInt(entity.getEventKey().replace("qrscene_share", ""));
+				checkTemplate(entity, shareId);//未关注人人开店二维码
+				//关注日志
+				weiXinService.writeWXLog(entity.getFromUserName(), "subscribe", "人人开店分享ID："+entity.getEventKey().replace("qrscene_share", ""), appId);
+			}else if(entity.getEventKey().startsWith("qrscene_antifake")){//防伪码扫描关注
+				qrscene = "antifake";
+				//关注日志
+				weiXinService.writeWXLog(entity.getFromUserName(), "subscribe", qrscene, appId);
+				//String link = "欢迎来到水趣防伪平台认证系统，<a href='https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + getSysParamMapValue(SysParamNames.wxParaWeiXinAppID) + "&redirect_uri=http%3A%2F%2F" + getSysParamMapValue(SysParamNames.ParamWXWebSit) + "%2Fweixin%2Foauth2&response_type=code&scope=snsapi_base&state=antifake'>点击此处再次扫描合格证背面二维码</a>，您将获取权威的产品溯源信息。";
+				String link = "欢迎来到水趣防伪平台认证系统，<a href='https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri=https%3A%2F%2F" + getSysParamMapValue(SysParamNames.ParamWXWebSit) + "%2Fweixin%2Foauth2&response_type=code&scope=snsapi_base&state=antifake&component_appid=" + getSysParamMapValue(SysParamNames.wxParaComponentAppID) + "#wechat_redirect'>点击此处再次扫描合格证背面二维码</a>，您将获取权威的产品溯源信息。";
+				formatXmlAnswer(entity.getFromUserName(), entity.getToUserName(), link);
+			}else if(entity.getEventKey().startsWith("qrscene_") && entity.getEventKey().indexOf("qrscene_share")<0
+					&&entity.getEventKey().indexOf("qrscene_antifake")<0){
+				qrscene = entity.getEventKey().replace("qrscene_", "");
+				//关注日志
+				weiXinService.writeWXLog(entity.getFromUserName(), "subscribe", qrscene, appId);
+			}else if(entity.getEventKey().startsWith("qrscene_") && entity.getEventKey().startsWith("chackPayEVIAN")){
+				//关注日志
+				//weiXinService.writeWXLog(entity.getFromUserName(), "subscribe", qrscene, appId);	
+				validPay(entity.getFromUserName(), entity.getToUserName(),entity.getEventKey().replace("chackPayEVIAN", ""));
+			}else{
+				//关注日志
+				weiXinService.writeWXLog(entity.getFromUserName(), "subscribe", "", appId);
+				checkSubscripbe(entity);
+			}
+		}else if(entity.getMsgType().equals("event") && entity.getEvent().equals("SCAN") && entity.getEventKey().startsWith("share")){//已关注人人开店二维码
+			//logger.info("------------------------------------------------------------------------------------"+entity.toString());
+			shareId = Integer.parseInt(entity.getEventKey().replace("share", ""));
+			checkTemplate(entity,  shareId);
+		}else if(entity.getMsgType().equals("event") && entity.getEvent().equals("SCAN") && entity.getEventKey().startsWith("chackPayEVIAN")){//已关注人人开店二维码
+			//logger.info("------------------------------------------------------------------------------------"+entity.toString());
+			validPay(entity.getFromUserName(), entity.getToUserName(), entity.getEventKey().replace("chackPayEVIAN", ""));
+		}else if(entity.getMsgType().equals("event") && entity.getEvent().equals("SCAN") && entity.getEventKey().equals("antifake")){//已关注防伪二维码
+			//String link = "欢迎来到水趣防伪平台认证系统，<a href='https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + getSysParamMapValue(SysParamNames.wxParaWeiXinAppID) + "&redirect_uri=http%3A%2F%2F" + getSysParamMapValue(SysParamNames.ParamWXWebSit) + "%2Fweixin%2Foauth2&response_type=code&scope=snsapi_base&state=antifake'>点击此处再次扫描合格证背面二维码</a>，您将获取权威的产品溯源信息。";
+			String link = "欢迎来到水趣防伪平台认证系统，<a href='https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri=https%3A%2F%2F" + getSysParamMapValue(SysParamNames.ParamWXWebSit) + "%2Fweixin%2Foauth2&response_type=code&scope=snsapi_base&state=antifake&component_appid=" + getSysParamMapValue(SysParamNames.wxParaComponentAppID) + "#wechat_redirect'>点击此处再次扫描合格证背面二维码</a>，您将获取权威的产品溯源信息。";
+			formatXmlAnswer(entity.getFromUserName(), entity.getToUserName(), link);
+		}else if(entity.getMsgType().equals("text") || entity.getEvent().equals("voice") || entity.getEvent().equals("video") || entity.getEvent().equals("image")){//客户发送信息
+			checkSendMessage(entity);
+		}else if(entity.getMsgType().equals("event") && entity.getEvent().equals("unsubscribe")){//取消关注
+			weiXinService.writeWXLog(entity.getFromUserName(), "unsubscribe", "", appId);
+		}else{
+			//logger.info("无匹配事件");
+		}
+		
+		if(shareId != null && shareId > 0){
+			logger.info("推客扫码下载=======================================" + entity.getFromUserName());
+			//getWXUserInfo(entity.getFromUserName(), qrscene, shareId);
+		}
+	}
+	
+	/** 客户发送信息 */
+	private void checkSendMessage(ReceiveWeiXinXmlModel entity){
+		e_weixin_user_message msg = new e_weixin_user_message();
+		msg.setOpenId(entity.getFromUserName());
+		String rootPath = _request.getSession().getServletContext().getRealPath("/");// 根目录		
+		
+		if(entity.getMsgType().equals("text")){
+			msg.setMessageType("text");
+			msg.setMessage(entity.getContent());
+			checkText(entity, entity.getContent());
+		}else if(entity.getMsgType().equals("voice")){
+			msg.setMessageType("voice");
+			msg.setMessage(DownloadFileUtil.downloadWxMessageFile(entity.getMediaId(), entity.getFormat(),entity.getMsgType(), rootPath));
+			msg.setRecongnition(entity.getRecognition());
+			if(!StringUtils.isEmpty(entity.getRecognition())){
+				checkText(entity, entity.getRecognition());
+			}else{
+				formatXmlAnswer(entity.getFromUserName(), entity.getToUserName(), "您的语音信息我们已经收到，在线客服正在完善中。。。");
+			}
+		}else if(entity.getMsgType().equals("video")){
+			msg.setMessageType("video");
+			msg.setMessage(DownloadFileUtil.downloadWxMessageFile(entity.getMediaId(), entity.getFormat(),entity.getMsgType(), rootPath));
+			formatXmlAnswer(entity.getFromUserName(), entity.getToUserName(), "您的视频信息我们已经收到，在线客服正在完善中。。。");
+		}else if(entity.getMsgType().equals("image")){
+			msg.setMessageType("image");
+			msg.setMessage(DownloadFileUtil.downloadWxMessageFile(entity.getMediaId(), entity.getFormat(),entity.getMsgType(), rootPath));
+			formatXmlAnswer(entity.getFromUserName(), entity.getToUserName(), "您的图片信息我们已经收到，在线客服正在完善中。。。");
+		}else{
+			
+		}
+		//baService.SaveUserMsg(msg);
+	}
+	
+	/** 人人开店判断 */
+	private void checkTemplate(ReceiveWeiXinXmlModel entity, Integer shareId){
+		try{
+			String shareTemplate = weiXinService.getTemplateWxText(shareId, appId);
+			if(StringUtils.isEmpty(shareTemplate)){
+				formatXmlAnswer(entity.getFromUserName(), entity.getToUserName(), "感谢您的关注哦。");
+				return;
+			}
+			JSONObject shareTemplateJson = JSONObject.fromObject(shareTemplate);
+			if(!shareTemplateJson.has("code") || !shareTemplateJson.getString("code").equals("E00000")){
+				logger.info("人人开店扫描返回模板信息错误：" + shareTemplate);
+				formatXmlAnswer(entity.getFromUserName(), entity.getToUserName(), "感谢您的关注哦，活动不存在。");
+				return;
+			}else{
+				if(!shareTemplateJson.has("data") || shareTemplateJson.getJSONObject("data") == null || !shareTemplateJson.getJSONObject("data").has("shareId")){
+					logger.info("人人开店扫描返回模板不存在：" + shareTemplate);
+					formatXmlAnswer(entity.getFromUserName(), entity.getToUserName(), "感谢您的关注哦，查询不到活动。");
+					return;
+				}
+			}
+			String content = "谢谢";
+			//是否在有效期间
+			if(DateUtil.compare_date(shareTemplateJson.getJSONObject("data").getString("beginDate") + ":00", DateUtil.getStringDate()) == -1
+					&& DateUtil.compare_date(shareTemplateJson.getJSONObject("data").getString("endDate") + ":00", DateUtil.getStringDate()) == 1){
+				//是否启用
+				if(shareTemplateJson.getJSONObject("data").getBoolean("valid") == true){
+					//是否绑定用户
+					ClientModel userInfo = weiXinService.getWxLogin(entity.getFromUserName(), appId);
+					if(userInfo==null || StringUtils.isEmpty(userInfo.getClientId())){
+						String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + getSysParamMapValue(SysParamNames.wxParaWeiXinAppID) + "&redirect_uri=http://" + getSysParamMapValue(SysParamNames.ParamWXWebSit) + "/weixin/oauth2?response_type=code&scope=snsapi_base&state=qrscene_share"+shareId.toString()+"#wechat_redirect";
+						content = shareTemplateJson.getJSONObject("data").getString("wxText") + "<br><br>【<a href='" + url + "'>点击参与活动</a>】";
+					}else{
+						content = "水趣欢迎您再次回来。";
+					}
+				}else{
+					content = "很遗憾，该活动已停止。";
+				}
+			}else{
+				content = "抱歉，活动还没开始，请关注后续通知。";
+			}
+			formatXmlAnswer(entity.getFromUserName(), entity.getToUserName(), content);
+		}
+		catch(Exception ex){
+			logger.info("识别二维码错误！" + ex.getMessage().toString());
+			formatXmlAnswer(entity.getFromUserName(), entity.getToUserName(), "谢谢");
+		}
+	}
+
+	/** 回复文本信息 */
+ 	private void formatXmlAnswer(String to, String from, String content) {
+		StringBuffer sb = new StringBuffer();
+		Date date = new Date();
+		sb.append("<xml><ToUserName><![CDATA[");
+		sb.append(to);
+		sb.append("]]></ToUserName><FromUserName><![CDATA[");
+		sb.append(from);
+		sb.append("]]></FromUserName><CreateTime>");
+		sb.append(date.getTime());
+		sb.append("</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[");
+		sb.append(content);
+		sb.append("]]></Content><FuncFlag>0</FuncFlag></xml>");
+		_result = sb.toString();
+		logger.info("回复事件      "+sb.toString());
+	}
+
+ 	/** 回复用户关注时的信息 */
+ 	private void checkSubscripbe(ReceiveWeiXinXmlModel entity){
+ 		String webContent = baService.SubscripbeReply(wechatEntity.getEid());
+ 		if(StringUtils.isEmpty(webContent)){
+			formatXmlAnswer(entity.getFromUserName(), entity.getToUserName(), "感谢您的关注哦.");
+			logger.info("1："+ _result);
+			return;
+ 		}
+
+ 		JSONObject objJson = JSONObject.fromObject(webContent);
+ 		if(!objJson.has("code") || !objJson.getString("code").equals("E00000")){
+ 			formatXmlAnswer(entity.getFromUserName(), entity.getToUserName(), "感谢您的关注哦。.");
+ 			logger.info(_result+"|"+webContent);
+			return;
+ 		}
+
+ 		if(objJson.getJSONObject("entity").getInt("replyType") == 1){
+ 			formatXmlAnswer(entity.getFromUserName(), entity.getToUserName(), objJson.getJSONObject("entity").getString("replyContent"));
+            logger.info("关注回复文本      "+_result);
+ 		}else if(objJson.getJSONObject("entity").getInt("replyType") == 2){
+ 			StringBuffer sb = new StringBuffer();
+ 			sb.append("<xml><ToUserName><![CDATA[" + entity.getFromUserName() + "]]></ToUserName><FromUserName><![CDATA[" + entity.getToUserName() + "]]></FromUserName><CreateTime>" + String.valueOf(System.currentTimeMillis()) + "</CreateTime><MsgType><![CDATA[news]]></MsgType><ArticleCount>" + objJson.getJSONObject("entity").getJSONArray("articles").size() + "</ArticleCount><Articles>");
+ 			for(java.util.Iterator tor=objJson.getJSONObject("entity").getJSONArray("articles").iterator(); tor.hasNext();){
+				JSONObject job = (JSONObject)tor.next();
+            	sb.append("<item><Title><![CDATA[" + job.getString("title") + "]]></Title><Description><![CDATA[" + job.getString("digest") + "]]></Description><PicUrl><![CDATA[" + job.getString("coverPic") + "]]></PicUrl><Url><![CDATA[" + job.getString("contentSourceUrl") + "]]></Url></item>");
+            }
+            sb.append("</Articles></xml>");
+            _result = sb.toString();
+            logger.info("关注回复图文      "+_result);
+ 		}
+ 	}
+
+ 	/** 回复用户文本或者语音信息 */
+ 	private void checkText(ReceiveWeiXinXmlModel entity, String keyword){
+ 		String webContent = baService.WxKeywordReply(keyword, wechatEntity.getEid());
+ 		if(StringUtils.isEmpty(webContent)){
+			formatXmlAnswer(entity.getFromUserName(), entity.getToUserName(), "感谢您的支持哦.");
+			logger.info("1："+ _result);
+			return;
+ 		}
+
+ 		JSONObject objJson = JSONObject.fromObject(webContent);
+ 		if(!objJson.has("code") || !objJson.getString("code").equals("E00000")){
+ 			formatXmlAnswer(entity.getFromUserName(), entity.getToUserName(), "感谢您的支持哦。.");
+ 			logger.info(_result+"|"+webContent);
+			return;
+ 		}
+
+ 		if(objJson.getJSONObject("entity").getInt("replyType") == 1){
+ 			formatXmlAnswer(entity.getFromUserName(), entity.getToUserName(), objJson.getJSONObject("entity").getString("replyContent"));
+ 		}else if(objJson.getJSONObject("entity").getInt("replyType") == 2){
+ 			StringBuffer sb = new StringBuffer();
+ 			sb.append("<xml><ToUserName><![CDATA[" + entity.getFromUserName() + "]]></ToUserName><FromUserName><![CDATA[" + entity.getToUserName() + "]]></FromUserName><CreateTime>" + String.valueOf(System.currentTimeMillis()) + "</CreateTime><MsgType><![CDATA[news]]></MsgType><ArticleCount>" + objJson.getJSONObject("entity").getJSONArray("articles").size() + "</ArticleCount><Articles>");
+ 			for(java.util.Iterator tor=objJson.getJSONObject("entity").getJSONArray("articles").iterator(); tor.hasNext();){
+				JSONObject job = (JSONObject)tor.next();
+            	sb.append("<item><Title><![CDATA[" + job.getString("title") + "]]></Title><Description><![CDATA[" + job.getString("digest") + "]]></Description><PicUrl><![CDATA[" + job.getString("coverPic") + "]]></PicUrl><Url><![CDATA[" + job.getString("contentSourceUrl") + "]]></Url></item>");
+            }
+            sb.append("</Articles></xml>");
+            _result = sb.toString();
+            logger.info("关注文本图文      "+_result);
+ 		}
+ 	}
+ 	
+ 	/** 支付参数验证 */
+ 	private void validPay(String to, String from, String appId) {
+ 		String content="";
+ 		String wechatInfoString = weiXinService.getWxPublicDetail(appId);
+ 		if(StringUtils.isEmpty(wechatInfoString)){
+ 			content = "没有支付公众号信息";
+ 		}
+ 		JSONObject wechatJsonObject = JSONObject.fromObject(wechatInfoString);
+ 		if(wechatJsonObject.has("code") && wechatJsonObject.getString("code").equals("E00000") && wechatJsonObject.has("data") 
+ 				&& wechatJsonObject.getJSONObject("data") != null && !StringUtils.isEmpty(wechatJsonObject.getJSONObject("data").getString("mchId"))
+ 				&& !StringUtils.isEmpty(wechatJsonObject.getJSONObject("data").getString("partnerKey"))){
+ 			
+ 			String orderNo = UUID.randomUUID().toString().replace("-", "");
+
+ 			WxPayModel config = new WxPayModel();
+ 			config.setMchId(wechatJsonObject.getJSONObject("data").getString("mchId"));
+ 			config.setAppId(appId);
+ 			config.setAppKey(DES3_CBCUtil.des3DecodeCBC(wechatJsonObject.getJSONObject("data").getString("partnerKey")));
+ 			// config.setNotifyUrl(notifyPayUrl);
+ 			config.setNotifyUrl("https://"+ getSysParamMapValue(com.eviano2o.util.SysParamNames.ParamWXWebSit) + "/weixin/notifyUrl");
+ 			config.setOrderSN(orderNo);
+ 			config.setBody("shuiqu");
+ 			config.setOpenId(from);
+ 			config.setTotalFee("1");
+ 			config.setNonceStr(create_nonce_str());
+ 			config.setTimeStamp(create_timestamp());
+ 			config.setCreateIp(getIp());
+ 			//config.setSubMchId(sub_mch_id);
+
+ 			JSONObject result = new WxPayParamCheck().CheckPay(config);
+ 			if(result.getString("code").equals("E00000"))
+ 				weiXinService.validWxPublicPay(appId);
+ 			content = "验证支付成功！";
+ 		}else{
+ 			content = "获取公众号支付参数失败";
+ 			logger.info("获取公众号支付参数失败：" + wechatInfoString+"         appId:"+appId);
+ 		}
+ 		
+ 		formatXmlAnswer(from, to, content);
+	}
+	
+	/** 公众号验证 */
+ 	private void doGet() {
+		// 接收微信服务器以Get请求发送的4个参数
+		String signature = _request.getParameter("signature");
+		String timestamp = _request.getParameter("timestamp");
+		String nonce = _request.getParameter("nonce");
+		String echostr = _request.getParameter("echostr");
+		logger.error("[signature:{}],[timestamp:{}],[nonce:{}],[echostr:{}],[token:{}]", new Object[] { signature, timestamp, nonce, echostr, getSysParamMapValue(SysParamNames.wxParaWeiXinToken) });
+		if (checkSignature(signature, timestamp, nonce)) {
+			_result = echostr;
+		}
+	}
+
+	/** 验证 */
+	private boolean checkSignature(String signature, String timestamp, String nonce) {
+		// getSysParamMapValue(SysParamNames.wxParaWeiXinToken)获取系统缓存的token没有的话 返回""
+		String[] arr = new String[] { getSysParamMapValue(SysParamNames.wxParaWeiXinToken), timestamp, nonce };
+
+		// 排序
+		Arrays.sort(arr);
+		
+		// 生成字符串
+		StringBuilder content = new StringBuilder();
+		for (int i = 0; i < arr.length; i++) {
+			content.append(arr[i]);
+		}
+		logger.error("[[signature:{}],[content:{}]", new Object[] { signature, content });
+		
+		// sha1加密
+		String temp = Sha1Util.getSha1(content.toString());
+		
+		logger.error("[temp:{}],[signature:{}],[content:{}]", new Object[] { temp, signature, content });
+		return temp.equals(signature); // 与微信传递过来的签名进行比较
+	}
+
+
+	@Override
+	public String getResult() {
+		return _result;
+	}
+}
+
+
+
+

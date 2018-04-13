@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "receipt")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/shopCss.vm")
+<body>
+    <div class="page-group">
+        <div class="page page-finish page-current page-receipt">
+            <header class="bar bar-nav light-nav">
+                <a href="#" data-role="go-back" class="icon icon-35icoback pull-left bar-left"></a>  
+                <h1 class="title">增值税发票</h1>
+            </header>
+
+            <div class="content">
+                <ul class="receipt-list" data-role="receipt-list">
+                    
+                </ul>
+                <form action="/weixin/confirmCar"  method="POST" id="shoppingCar">
+                    <input type="hidden" name="quickSpJson">
+                </form>
+                <form action="/weixin/quickShoppingConfirm"  method="POST" id="quickShoppingCar">
+                    <input type="hidden" name="quickSpJson">
+                </form>
+            </div>
+            <!-- Block button in standard bar fixed above the footer -->
+            <div class="bar bar-footer order-bar">
+                <a href="#" class="button button-fill btn-yello open-new">新增发票信息</a>
+            </div>
+
+            
+        </div>
+       
+    </div>
+<!-- 发票信息 popup -->
+<div class="popup popup-invoices">
+    
+  <div class="content-block">
+    <header class="bar bar-nav  light-nav">
+        <span class="icon icon-35icoback pull-left close-popup bar-left" data-role="back"></span>
+        <h1 class="title">发票信息填写</h1>
+    </header>
+    <div class="content">
+        <div class="list-block">
+            <div class="invoice-type" data-role="invoice-type">
+                
+            </div>
+            <div class="tabs">
+                <div class="tab" id="tab1">
+                    <div class="invoice-header">
+                        <div class="item-content">
+                            <table>
+                                <tr>
+                                    <td class="pull-left">发票抬头</td>
+                                    <td class="pull-right">
+                                        <label class="label-checkbox">
+                                            <input type="radio" value="0" name="invoice-obj" checked/>
+                                            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>  
+                                        </label>
+                                        <b>个人</b>
+                                        <label class="label-checkbox">
+                                            <input type="radio" value="1" name="invoice-obj">
+                                            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                        </label>
+                                        <b>单位</b>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <input type="text" placeholder="请填写单位名称或个人姓名" class="invoico-name" data-role="invoico-name" >
+                    </div>
+                    <ul class="invoice-detail" data-role="invoice-detail">
+                        
+                    </ul>
+                    <div class="content-block">
+                        <div class="row">
+                          <div class="col-100"><a data-role="save-invoice" href="#" class="button button-big button-fill btn-yello" style="top: 0;height:2.2rem;line-height: 2.2rem;font-size: 0.8rem;">确认</a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab" id="tab2" data-role="vatTpl">
+                    <div class="invoice-header no-padding">
+                        <div class="item-content">
+                            <table>
+                                <tr data-role="select-invoice">
+                                    <td class="pull-left">发票抬头</td>
+                                    <td class="pull-right">选择发票抬头<i class="icon icon-ico_awwor_right"></i></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div data-role="invoice-desc-wrap" class="invoice-desc-wrap">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="tab active" id="tab3">
+                    <div class="content-block">
+                        <div class="row">
+                          <div class="col-100"><a data-role="save-invoice" href="#" class="button button-big button-fill btn-yello" style="top: 0;height:2.2rem;line-height: 2.2rem;font-size: 0.8rem;">确认</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+<!-- 新增发票弹出层 -->
+<div class="popup popup-new-receipt">
+    
+  <div class="content-block">
+    <header class="bar bar-nav light-nav">
+        <span class="icon icon-35icoback pull-left close-new-popup bar-left"></span>  
+        <h1 class="title">新增增值税发票</h1>
+    </header>
+    <div class="content">
+        <div class="list-block new-add-list">
+            <ul>
+              <!-- Text inputs -->
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">开票抬头：</div>
+                    <div class="item-input">
+                      <input type="text" name="company" placeholder="请输入公司名称或个人">
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">纳税人识别号：</div>
+                    <div class="item-input">
+                      <input type="text" name="companyNo" placeholder="请输入纳税识别号">
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">公司地址：</div>
+                    <div class="item-input">
+                      <input type="text" name="companyDz" placeholder="营业执照上的公司地址">
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">公司电话：</div>
+                    <div class="item-input">
+                      <input type="text" name="companyTel" placeholder="企业的联系电话">
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">开户银行名称：</div>
+                    <div class="item-input">
+                      <input type="text" name="bankName" placeholder="公司开户许可证上的开户银行">
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">开户账号：</div>
+                    <div class="item-input">
+                      <input type="text" name="bankNo" placeholder="公司开户许可证上的银行账号">
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">收 件 人：</div>
+                    <div class="item-input">
+                      <input type="text" name="recipients" placeholder="请输入收件人姓名">
+                    </div>
+                  </div>
+                </div>
+              </li>
+    
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">收件电话：</div>
+                    <div class="item-input">
+                      <input type="text" name="recipientsTel" placeholder="请输入收件人联系电话">
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">详细地址：</div>
+                    <div class="item-input">
+                      <input type="text" name="recipientsDz" placeholder="请输入收件人地址">
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <ul>
+              <li>
+              <div class="item-title label" style="padding: 0.2rem 0 0.2rem 0.75rem;border-bottom:1px solid #F6F6F6;width: 100%;">备注：</div>
+                <div class="item-content">
+                  <div class="item-inner">
+                    
+                    <div class="item-input">
+                        <textarea name="remark" id="" cols="30" rows="10" placeholder="特殊事项说明" style="font-size: 0.65rem;"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+        </div>
+    </div>
+    <!-- Block button in standard bar fixed above the footer -->
+    <div class="bar bar-footer order-bar">
+      <a href="#" data-role="save-receipt" class="button button-fill btn-yello" style="top: 0;height:2.2rem;line-height: 2.2rem;font-size: 0.8rem;">保存发票</a>
+    </div>
+
+  </div>
+</div>
+<!-- 修改发票弹出层 -->
+<div class="popup popup-edit-receipt">
+    
+  <div class="content-block">
+    <header class="bar bar-nav light-nav">
+        <span class="icon icon-35icoback pull-left close-edit-popup bar-left"></span>  
+        <h1 class="title">修改增值税发票</h1>
+    </header>
+    <div class="content">
+        <div class="list-block new-edit-list">
+            <ul>
+              <!-- Text inputs -->
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">开票抬头：</div>
+                    <div class="item-input">
+                      <input type="text" name="company" placeholder="请输入公司名称或个人">
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">纳税人识别号：</div>
+                    <div class="item-input">
+                      <input type="text" name="companyNo" placeholder="请输入纳税识别号">
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">公司地址：</div>
+                    <div class="item-input">
+                      <input type="text" name="companyDz" placeholder="营业执照上的公司地址">
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">公司电话：</div>
+                    <div class="item-input">
+                      <input type="text" name="companyTel" placeholder="企业的联系电话">
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">开户银行名称：</div>
+                    <div class="item-input">
+                      <input type="text" name="bankName" placeholder="公司开户许可证上的开户银行">
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">开户账号：</div>
+                    <div class="item-input">
+                      <input type="text" name="bankNo" placeholder="公司开户许可证上的银行账号">
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">收 件 人：</div>
+                    <div class="item-input">
+                      <input type="text" name="recipients">
+                    </div>
+                  </div>
+                </div>
+              </li>
+    
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">收件电话：</div>
+                    <div class="item-input">
+                      <input type="text" name="recipientsTel">
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">详细地址：</div>
+                    <div class="item-input">
+                      <input type="text" name="recipientsDz">
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <ul>
+                <li>
+                    <div class="item-title label" style="padding: 0.2rem 0 0.2rem 0.75rem;border-bottom:1px solid #F6F6F6;width: 100%;">备注：</div>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-input">
+                                <textarea name="remark" id="" cols="30" rows="10" placeholder="特殊事项说明" style="font-size: 0.65rem;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- Block button in standard bar fixed above the footer -->
+    <div class="bar bar-footer order-bar">
+      <a href="#" data-role="edit-receipt" class="button button-fill btn-yello" style="top: 0;height:2.2rem;line-height: 2.2rem;font-size: 0.8rem;">修改</a>
+    </div>
+
+  </div>
+</div>
+
+<script id="invoiceTypeTpl" type="text/x-handlebars-template">
+    <h3>发票类型</h3>
+    <div class="buttons-row">
+        <a href="#tab1" class="tab-link button">纸质发票</a>
+        {{#is data.openVAT true}}
+        <a href="#tab2" class="tab-link button" data-role="zzs">增值税发票</a>
+        {{else}}
+        <a href="#" class="tab-link button" style="border-color:#D1D1D1;" disabled="disabled" id="added-value-invoice"data-role="added-value-invoice">增值税发票</a>
+        {{/is}}
+        <a href="#tab3" class="tab-link active button">不开发票</a>
+    </div>
+</script>
+<script id="defaultInvoiceTpl" type="text/x-handlebars-template">
+    {{#each data.vats}}
+    {{#is isDefault true}}
+    <ul class="invoice-desc">
+        <li>{{company}}</li>
+        <li>纳税人识别号：{{companyNo}}</li>
+        <li>公司电话：{{companyTel}}</li>
+        <li>公司地址：{{companyDz}}</li>
+        <li>开户银行：{{bankName}}</li>
+        <li>银行账号：{{bankNo}}</li>               
+    </ul>
+    <div class="addressee-wrap">
+        <div class="item-content">
+            <div class="item-inner">
+                <div class="item-title label pull-left">收件人信息</div>
+            </div>
+        </div>
+        <ul class="addressee">
+            <li>收件人：{{recipients}}</li>
+            <li>收件电话：{{recipientsTel}}</li>
+            <li>收件地址：{{recipientsDz}}</li>
+        </ul>
+    </div>
+    <div class="content-block">
+        <div class="row">
+          <div class="col-100"><a href="#" data-role="save-invoice"  class="button button-big button-fill btn-yello" style="top: 0;height:2.2rem;line-height: 2.2rem;font-size: 0.8rem;">确认</a></div>
+        </div>
+    </div>
+    {{/is}}
+    {{/each}}
+</script>
+<script id="invoiceDetailTpl" type="text/x-handlebars-template">
+    {{#each data.invoiceggs}}
+    <li>
+        <label class="label-checkbox">
+            <input type="radio" value="{{this}}" name="default" checked>
+            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+        </label>
+        <b>{{this}}</b>
+    </li>
+    {{/each}}
+</script>
+<script id="invoiceDescTpl" type="text/x-handlebars-template">
+    <ul class="invoice-desc">
+        <li>{{data.company}}</li>
+        <li>纳税人识别号：{{data.companyNo}}</li>
+        <li>公司电话：{{data.companyTel}}</li>
+        <li>公司地址：{{data.companyDz}}</li>
+        <li>开户银行：{{data.bankName}}</li>
+        <li>银行账号：{{data.bankNo}}</li>               
+    </ul>
+    <div class="addressee-wrap">
+        <div class="item-content">
+            <div class="item-inner">
+                <div class="item-title label pull-left">收件人信息</div>
+            </div>
+        </div>
+        <ul class="addressee">
+            <li>收件人：{{data.recipients}}</li>
+            <li>收件电话：{{data.recipientsTel}}</li>
+            <li>收件地址：{{data.recipientsDz}}</li>
+        </ul>
+    </div>
+    <div class="content-block">
+        <div class="row">
+          <div class="col-100"><a href="#" data-role="save-invoice"  class="button button-big button-fill btn-yello" style="top: 0;height:2.2rem;line-height: 2.2rem;font-size: 0.8rem;">确认</a></div>
+        </div>
+    </div>
+    
+</script>
+<script id="receiptTpl" type="text/x-handlebars-template">
+    {{#each data}}
+    {{#is status '0'}}
+    <li data-vatId="{{vatId}}" data-company="{{company}}" data-companyNo="{{companyNo}}" data-companyDz="{{companyDz}}" data-companyTel="{{companyTel}}" data-bankName="{{bankName}}" data-bankNo="{{bankNo}}" data-recipients="{{recipients}}" data-recipientsTel="{{recipientsTel}}" data-recipientsDz="{{recipientsDz}}" data-remark="{{remark}}">
+        <u  data-action="go-sub" style="text-decoration:none;display: block;">
+        <p>发票抬头：{{company}}</p>
+        <p style="color:#B6B6B6">纳税人识别号：{{companyNo}}</p>
+        </u>
+        <svg class="icon icon-svg audit" aria-hidden="true">
+            <use xlink:href="#icon-vat__ico_andit"></use>
+        </svg>
+        <div class="bottom-ctrl">
+            <table>
+                <tr>
+                    <td style="visibility: hidden;">
+                        <label class="label-checkbox" data-action="set-default">
+                            <input {{#is isDefault true}}checked="checked"{{/is}} type="radio" value="1" name="default" />
+                            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                        </label>默认开票信息
+                    </td>
+                    <td>
+                        <a href="#" class="open-edit"><span class="icon icon-40icoedit" data-action="edit-receipt"></span><em data-action="edit-receipt">编辑</em></a>
+                    </td>
+                    <td>
+                        <span class="icon icon-onlyforaddressdelete" data-action="delete-receipt"></span><em data-action="delete-receipt">删除</em>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </li>
+    {{/is}}
+    {{#is status '1'}}
+    <li data-vatId="{{vatId}}" data-company="{{company}}" data-companyNo="{{companyNo}}" data-companyDz="{{companyDz}}" data-companyTel="{{companyTel}}" data-bankName="{{bankName}}" data-bankNo="{{bankNo}}" data-recipients="{{recipients}}" data-recipientsTel="{{recipientsTel}}" data-recipientsDz="{{recipientsDz}}" data-remark="{{remark}}">
+        <u  data-action="go-sub" style="text-decoration:none;display: block;">
+        <p>发票抬头：{{company}}</p>
+        <p style="color:#B6B6B6">纳税人识别号：{{companyNo}}</p>
+        </u>
+        <svg class="icon icon-svg audit" aria-hidden="true">
+            <use xlink:href="#icon-vat_ico_pass"></use>
+        </svg>     
+        <div class="bottom-ctrl">
+            <table>
+                <tr>
+                    <td>
+                        <label class="label-checkbox" data-action="set-default">
+                            <input {{#is isDefault true}}checked="checked"{{/is}} type="radio" value="1" name="default" />
+                            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                        </label>默认开票信息
+                    </td>
+                    <td style="visibility: hidden;">
+                        <a href="#" class="open-edit"><span class="icon icon-40icoedit" data-action="edit-receipt"></span><em data-action="edit-receipt">编辑</em></a>
+                    </td>
+                    <td style="visibility: hidden;">
+                        <span class="icon icon-onlyforaddressdelete" data-action="delete-receipt"></span><em data-action="delete-receipt">删除</em>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </li>
+    {{/is}}
+    {{#is status '-1'}}
+    <li data-vatId="{{vatId}}" data-company="{{company}}" data-companyNo="{{companyNo}}" data-companyDz="{{companyDz}}" data-companyTel="{{companyTel}}" data-bankName="{{bankName}}" data-bankNo="{{bankNo}}" data-recipients="{{recipients}}" data-recipientsTel="{{recipientsTel}}" data-recipientsDz="{{recipientsDz}}" data-remark="{{remark}}">
+        <u style="text-decoration:none;display: block;">
+        <p>发票抬头：{{company}}</p>
+        <p style="color:#B6B6B6">纳税人识别号：{{companyNo}}</p>
+        </u>  
+        <svg class="icon icon-svg audit" aria-hidden="true">
+            <use xlink:href="#icon-vat_ico_reject"></use>
+        </svg>
+        <div class="bottom-ctrl">
+            <table>
+                <tr>
+                    <td style="color:red;">审核原因：公司信息有误</td>
+                    <td style="visibility: hidden;">
+                        <a href="#" class="open-edit"><span class="icon icon-40icoedit" data-action="edit-receipt"></span><em data-action="edit-receipt">编辑</em></a>
+                    </td>
+                    <td>
+                        <span class="icon icon-onlyforaddressdelete" data-action="delete-receipt"></span><em data-action="delete-receipt">删除</em>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </li>
+    {{/is}}
+    {{/each}}
+</script>
+#*加载JS文件*# 
+#parse("control/$!webStyle/publicJs.vm")
+#parse("control/$!webStyle/globalJs.vm")
+    <script>
+        
+        var vatId;
+        var shopId;
+        $(function() {
+            //判断返回链接
+            var from = getQueryString('from');
+            shopId = getQueryString('shopId');        
+            var goBack = $('[data-role="go-back"]');
+            goBack.click(function(e){
+                e.preventDefault();
+                //来自确认订单页面
+                if(from == 'confirmCar'){
+                    $('#shoppingCar input[name=quickSpJson]').val(localStorage.getItem("shoppingCarData"));
+                    $('#shoppingCar').submit();
+                //来自快速订水确认页面    
+                }else if(from == 'QKconfirm'){
+                    $('#quickShoppingCar input[name=quickSpJson]').val(localStorage.getItem("quickShoppingCarData"));
+                    $('#quickShoppingCar').submit();
+                //来自优惠券页面    
+                }else if(from == 'coupon'){
+                    window.location.href="/weixin/coupon";
+                }else{
+                    window.location.href = '/weixin/account';
+                }
+            });
+            if(from=='confirmCar' || from=='QKconfirm'){
+                $.popup('.popup-invoices');
+                //获取客户的增值税发票信息
+                var getEidInvoiceGuiGe = function(){
+                    $.ajax({
+                        type: "post",
+                        url: "/weixin/getEidInvoiceGuiGe?shopId="+shopId,
+                        dataType: 'json',
+                        complete: function(json) {
+                          
+                            var data = json.response;
+                            var status = json.status;
+                            if(status != 200){
+                                $.alert('网络异常，状态为11.2' + status);
+                                return;
+                            }
+                            if ($.type(data) == 'string') {
+                                data = JSON.parse(data);
+                            }
+                            if(data.code != 'E00000'){
+                                if(data.code == "-1"){
+                                    window.location.href = "/weixin/bind";
+                                }else{
+                                    $.alert(data.message);
+                                    return;
+                                }
+                            }else{
+                                var context = {
+                                    data: data.data
+                                };
+                                var invoiceTypeTpl = $("#invoiceTypeTpl").html();
+                                var invoiceTypeTemplate = Handlebars.compile(invoiceTypeTpl);
+                                var invoiceTypeCont = invoiceTypeTemplate(context);
+                                $('[data-role="invoice-type"]').html(invoiceTypeCont);
+
+                                var defaultInvoiceTpl = $("#defaultInvoiceTpl").html();
+                                var defaultInvoiceTplTemplate = Handlebars.compile(defaultInvoiceTpl);
+                                var defaultInvoiceTplCont = defaultInvoiceTplTemplate(context);
+                                $('[data-role="invoice-desc-wrap"]').html(defaultInvoiceTplCont);
+                                for(var i=0;i<data.data.vats.length;i++){
+                                    if(data.data.vats[i]['isDefault']==true){
+                                        var invoice = {
+                                            "vatId":data.data.vats[i]['vatId'],
+                                            "company":data.data.vats[i]['company'],
+                                            "companyNo":data.data.vats[i]['companyNo'],
+                                            "companyTel":data.data.vats[i]['companyTel'],
+                                            "companyDz":data.data.vats[i]['companyDz'],
+                                            "bankName":data.data.vats[i]['bankName'],
+                                            "bankNo":data.data.vats[i]['bankNo'],
+                                            "recipients":data.data.vats[i]['recipients'],
+                                            "recipientsTel":data.data.vats[i]['recipientsTel'],
+                                            "recipientsDz":data.data.vats[i]['recipientsDz']
+                                        }
+                                        localStorage.setItem("invoice",JSON.stringify(invoice));
+                                    }
+                                }
+                                
+
+                                var invoiceDetailTpl = $("#invoiceDetailTpl").html();
+                                var invoiceDetailTemplate = Handlebars.compile(invoiceDetailTpl);
+                                var invoiceTypeCont = invoiceDetailTemplate(context);
+                                $('[data-role="invoice-detail"]').html(invoiceTypeCont);
+
+                                $('.invoice-type').find('a').on('click',function(e){
+                                    e.preventDefault();
+                                    
+                                    if($('[data-role="added-value-invoice"]').attr('disabled')=="disabled"){
+                                        $(this).not("#added-value-invoice").addClass('active').siblings().removeClass('active');
+                                    }else{
+                                        $(this).addClass('active').siblings().removeClass('active');
+                                    }
+                                })
+                                $("[data-role='select-invoice']").on('click',function(){
+                                    $.closeModal('.popup-invoices');
+                                });
+                                $("[data-role='back']").on('click',function(e){
+                                    // window.history.back();
+                                    e.preventDefault();
+                                    //来自确认订单页面
+                                    if(from == 'confirmCar'){
+                                        $('#shoppingCar input[name=quickSpJson]').val(localStorage.getItem("shoppingCarData"));
+                                        $('#shoppingCar').submit();
+                                    //来自快速订水确认页面    
+                                    }else if(from == 'QKconfirm'){
+                                        $('#quickShoppingCar input[name=quickSpJson]').val(localStorage.getItem("quickShoppingCarData"));
+                                        $('#quickShoppingCar').submit();
+                                    //来自优惠券页面    
+                                    }else if(from == 'coupon'){
+                                        window.location.href="/weixin/coupon";
+                                    }else{
+                                        window.location.href = '/weixin/account';
+                                    }
+                                });
+                              
+                                //保存发票
+                                $(".tabs").delegate('[data-role="save-invoice"]','click',function(e){
+                                    e.preventDefault();
+                                    
+                                    if($('.buttons-row').find("a.active").html()=="纸质发票"){
+                                        var type =  $(this).parents('.tab').find('.label-checkbox [type="radio"]:checked').val();
+                                        var invoicoName = $.trim($('[data-role="invoico-name"]').val());
+                                        var invoiceDetail = $('.invoice-detail').find('[type="radio"]:checked').val();
+                                        $('.err-msg').remove()
+                                        if(invoicoName==''){
+                                            $('[data-role="invoico-name"]').after('<p class="err-msg">发票抬头不能为空</p>');
+                                            return;
+                                        }
+                                        localStorage.setItem("type", type);
+                                        localStorage.setItem("invoicoName", invoicoName);
+                                        localStorage.setItem("invoiceDetail", invoiceDetail);
+                                        localStorage.setItem("vatId",0);
+                                    }else if($('.buttons-row').find("a.active").html()=="增值税发票"){
+
+                                        localStorage.setItem("type","2");
+                                        localStorage.setItem("invoicoName",JSON.parse(localStorage.getItem("invoice")).company);
+                                        localStorage.setItem("invoiceDetail","");
+                                        localStorage.setItem("vatId",JSON.parse(localStorage.getItem("invoice")).vatId);
+                                    }else if($('.buttons-row').find("a.active").html()=="不开发票"){
+                                        
+                                        localStorage.removeItem("type");
+                                        localStorage.removeItem("invoicoName");
+                                        localStorage.removeItem("invoiceDetail");
+                                        localStorage.removeItem("vatId");
+                                    }
+                                    
+                                    localStorage.setItem("shopId",shopId);
+                                    // window.history.back();
+                                    if(from == 'confirmCar'){
+                                        $('#shoppingCar input[name=quickSpJson]').val(localStorage.getItem("shoppingCarData"));
+                                        $('#shoppingCar').submit();
+                                    //来自快速订水确认页面    
+                                    }else if(from == 'QKconfirm'){
+                                        $('#quickShoppingCar input[name=quickSpJson]').val(localStorage.getItem("quickShoppingCarData"));
+                                        $('#quickShoppingCar').submit();
+                                    //来自优惠券页面    
+                                    }else if(from == 'coupon'){
+                                        window.location.href="/weixin/coupon";
+                                    }else{
+                                        window.location.href = '/weixin/account';
+                                    }
+                                });
+                            }
+                            
+                        }
+                    });
+                };
+                getEidInvoiceGuiGe();
+
+                //选择发票后回到浮层
+                $('[data-role="receipt-list"]').delegate("u","click",function(e){
+                    e.preventDefault();
+                    var me = $(this);
+                    action = me.data('action');
+                    if(action == 'go-sub'){
+                        // debugger;
+                        var parentsli = $(this).parents('li');
+
+                        var vId = parentsli.data('vatid');
+                        var company = parentsli.data('company');
+                        var companyNo = parentsli.data('companyno');
+                        var companyTel = parentsli.data('companytel');
+                        var companyDz = parentsli.data('companydz');
+                        var bankName = parentsli.data('bankname');
+                        var bankNo = parentsli.data('bankno');
+                        var recipients = parentsli.data('recipients');
+                        var recipientsTel = parentsli.data('recipientstel');
+                        var recipientsDz = parentsli.data('recipientsdz');
+                        var invoice = {
+                            "vatId":vId,
+                            "company":company,
+                            "companyNo":companyNo,
+                            "companyTel":companyTel,
+                            "companyDz":companyDz,
+                            "bankName":bankName,
+                            "bankNo":bankNo,
+                            "recipients":recipients,
+                            "recipientsTel":recipientsTel,
+                            "recipientsDz":recipientsDz
+                        }
+                        localStorage.setItem("invoice",JSON.stringify(invoice));
+                        // console.log(localStorage.getItem("invoice"));
+                        $.popup('.popup-invoices');
+                        var context = {
+                                data: JSON.parse(localStorage.getItem("invoice"))
+                        };
+                        var invoiceDescTpl = $("#invoiceDescTpl").html();
+                        var invoiceDescTemplate = Handlebars.compile(invoiceDescTpl);
+                        var invoiceDescCont = invoiceDescTemplate(context);
+                        $('[data-role="invoice-desc-wrap"]').html(invoiceDescCont);    
+                       
+                        
+                    }
+                });
+                
+            }
+            
+            //获取客户的增值税发票信息
+            var getClientVats = function(){
+                $.ajax({
+                    type: "get",
+                    url: "/weixin/getClientVats",
+                    dataType: 'json',
+                    complete: function(json) {
+                      
+                        var data = json.response;
+                        var status = json.status;
+                        if(status != 200){
+                            $.alert('网络异常，状态为11.2' + status);
+                            return;
+                        }
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if(data.code != 'E00000'){
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                                return;
+                            }
+                        }else{
+                            
+                            var tpl = $("#receiptTpl").html();
+                            var template = Handlebars.compile(tpl);
+                            var context = {
+                                data: data.data
+                            };
+                            var cont = template(context);
+                            $('[data-role="receipt-list"]').html(cont);
+                            for(var i=0,defaultInvoice=0;i<data.data.length;i++){
+                                if(data.data[i].status==1){
+                                    defaultInvoice +=1;
+                                }
+                            }
+                            if(defaultInvoice==1){
+                                for(var j=0;j<data.data.length;j++){
+                                    if(data.data[j]['status']==1 && data.data[j]['isDefault']==false){
+                                        var dataVat =  {
+                                            vatId:data.data[j].vatId,
+                                            company:data.data[j].company,
+                                            companyNo:data.data[j].companyNo,
+                                            companyDz:data.data[j].companyDz,
+                                            companyTel:data.data[j].companyTel,
+                                            bankName:data.data[j].bankName,
+                                            bankNo:data.data[j].bankNo,
+                                            recipients:data.data[j].recipients,
+                                            recipientsTel:data.data[j].recipientsTel,
+                                            recipientsDz:data.data[j].recipientsDz,
+                                            remark:data.data[j].remark
+                                        }
+                                        dataVat = JSON.stringify(dataVat);
+                                        $.ajax({
+                                            type: "post",
+                                            url: "/weixin/saveClientVAT",
+                                            dataType: 'json',
+                                            data:{
+                                               dataVat:dataVat,
+                                               tag:"DEFAULT"
+                                            },
+                                            complete: function(json) {
+                                                var status = json.status;
+
+                                                if(status != 200){
+                                                    $.alert('网络异常，状态为11.4' + status);
+                                                    return;
+                                                }
+                                                var data = json.response;
+                                           
+                                                if ($.type(data) == 'string') {
+                                                    data = JSON.parse(data);
+                                                }
+                                                if(data.code != 'E00000'){
+                                                    if(data.code == "-1"){
+                                                        window.location.href = "/weixin/bind";
+                                                    }else{
+                                                        $.alert(data.message);
+                                                        return;
+                                                    }
+                                                }else{
+                                                    getClientVats();
+                                                }
+                                            
+                                            }
+                                        }); 
+                                    }
+                                }
+                            }
+                        }
+
+                        
+                    }
+                });
+            };
+            getClientVats();
+            
+            //新增发票弹出层
+            $(document).on('click','.open-new', function (e) {
+                e.preventDefault();
+                $.popup('.popup-new-receipt');
+            });
+            $(document).on('click','.close-new-popup', function (e) {
+                e.preventDefault();
+              $.closeModal('.popup-new-receipt');
+            });
+            
+            $(document).on('click','.close-edit-popup', function (e) {
+                e.preventDefault();
+              $.closeModal('.popup-edit-receipt');
+            });
+            //发票的增删改查操作
+            $('[data-role="receipt-list"]').delegate("label,span,em,a", "click", function(e){
+                // debugger;
+                //设置默认发票
+                e.preventDefault();
+                var me = $(this);
+                action = me.data('action');
+                vatId  = me.parents('.bottom-ctrl').parent().data('vatid');
+                var company = me.parents('.bottom-ctrl').parent().data('company');
+                var companyNo = me.parents('.bottom-ctrl').parent().data('companyno');
+                var companyDz = me.parents('.bottom-ctrl').parent().data('companydz');
+                var companyTel = me.parents('.bottom-ctrl').parent().data('companytel');
+                var bankName = me.parents('.bottom-ctrl').parent().data('bankname');
+                var bankNo = me.parents('.bottom-ctrl').parent().data('bankno');
+                var recipients = me.parents('.bottom-ctrl').parent().data('recipients');
+                var recipientsTel = me.parents('.bottom-ctrl').parent().data('recipientstel');
+                var recipientsDz = me.parents('.bottom-ctrl').parent().data('recipientsdz');
+                var remark  = me.parents('.bottom-ctrl').parent().data('remark');
+            	var dataVat =  {
+                            		vatId:vatId,
+                            		company:company,
+                            		companyNo:companyNo,
+                            		companyDz:companyDz,
+                            		companyTel:companyTel,
+                            		bankName:bankName,
+                            		bankNo:bankNo,
+                            		recipients:recipients,
+                            		recipientsTel:recipientsTel,
+                            		recipientsDz:recipientsDz,
+                            		remark:remark
+                                }
+                dataVat = JSON.stringify(dataVat);
+                if(action == 'set-default'){
+                    $.confirm('是否设置默认发票?',function(){
+                        $.ajax({
+                            type: "post",
+                            url: "/weixin/saveClientVAT",
+                            dataType: 'json',
+                            data:{
+                        	   dataVat:dataVat,
+                        	   tag:"DEFAULT"
+                            },
+                            complete: function(json) {
+                                var status = json.status;
+
+                                if(status != 200){
+                                    $.alert('网络异常，状态为11.4' + status);
+                                    return;
+                                }
+                                var data = json.response;
+                           
+                                if ($.type(data) == 'string') {
+                                    data = JSON.parse(data);
+                                }
+                                if(data.code != 'E00000'){
+                                    if(data.code == "-1"){
+                                        window.location.href = "/weixin/bind";
+                                    }else{
+                                        $.alert(data.message);
+                                        return;
+                                    }
+                                }else{
+                                    $.alert("默认发票设置成功！", function(){
+                                        getClientVats();
+                                    });
+                                }
+                            
+                            }
+                        });
+                    });
+                //删除发票
+                }else if(action == 'delete-receipt'){
+                  $.confirm('是否确认删除该发票?',
+                    function(){
+                      $.ajax({
+                          type: "post",
+                          url: "/weixin/saveClientVAT",
+                          data:{
+                          	dataVat:dataVat,
+                          	tag:"DELETE"
+                          },
+                          dataType: 'json',
+                          complete: function(json) {
+                              var status = json.status;
+                              if(status != 200){
+                                  $.alert('网络异常，状态为11.5' + status);
+                                  return;
+                              }
+                              var data = json.response;
+                             
+                              if ($.type(data) == 'string') {
+                                  data = JSON.parse(data);
+                              }
+                              if(data.code != 'E00000'){
+                                    if(data.code == "-1"){
+                                        window.location.href = "/weixin/bind";
+                                    }else{
+                                        $.alert(data.message);
+                                        return;
+                                    }
+                              }else{
+                                  $.alert("发票删除成功！", function(){  
+                                        getClientVats();
+                                  });
+
+                              }
+                              
+                          }
+                      });
+                    })
+                //修改发票
+
+                }else if(action == 'edit-receipt'){
+                    //修改发票弹出层
+		            $(document).on('click','.open-edit', function () {
+		                $.popup('.popup-edit-receipt');
+		                // debugger;
+		                //获取发票信息回填到表单中
+		                $('.new-edit-list [name="company"]').val(company);
+			            $('.new-edit-list [name="companyNo"]').val(companyNo);
+			            $('.new-edit-list [name="companyDz"]').val(companyDz);
+			            $('.new-edit-list [name="companyTel"]').val(companyTel);
+			            $('.new-edit-list [name="bankName"]').val(bankName);
+			            $('.new-edit-list [name="bankNo"]').val(bankNo);
+			            $('.new-edit-list [name="recipients"]').val(recipients);
+			            $('.new-edit-list [name="recipientsTel"]').val(recipientsTel);
+			            $('.new-edit-list [name="recipientsDz"]').val(recipientsDz);
+			            $('.new-edit-list [name="remark"]').val(remark);
+			            
+		            });
+                }
+            });
+            //保存新增发票
+            var flag=0;
+            $('[data-role="save-receipt"]').click(function(e){
+                e.preventDefault();
+                flag++;
+                console.log(flag);
+                if(flag > 1){
+                    return;
+                }
+              var company = $.trim($('.new-add-list [name=company]').val());
+	            var companyNo = $.trim($('.new-add-list [name=companyNo]').val());
+	            var companyDz = $.trim($('.new-add-list [name=companyDz]').val());
+	            var companyTel = $.trim($('.new-add-list [name=companyTel]').val());
+	            var bankName = $.trim($('.new-add-list [name=bankName]').val());
+	            var bankNo = $.trim($('.new-add-list [name=bankNo]').val());
+	            var recipients = $.trim($('.new-add-list [name=recipients]').val());
+	            var recipientsTel = $.trim($('.new-add-list [name=recipientsTel]').val());
+	            var recipientsDz = $.trim($('.new-add-list [name=recipientsDz]').val());
+	            var remark = $.trim($('.new-add-list [name=remark]').val());
+                $('.err-msg').remove();
+                if(company == ""){
+                    $('.new-add-list [name=company]').parents('.item-content').after('<p class="err-msg">公司名称不能为空</p>');
+                    flag=0;
+                    return;
+                }
+                if(companyNo == ""){
+                    $('.new-add-list [name=companyNo]').parents('.item-content').after('<p class="err-msg">纳税识别号不能为空</p>');
+                    flag=0;
+                    return;
+                }
+                if(companyDz == ""){
+                    $('.new-add-list [name=companyDz]').parents('.item-content').after('<p class="err-msg">公司注册地址不能为空</p>');
+                    flag=0;
+                    return;
+                }
+                if(companyTel == ""){
+                    $('.new-add-list [name=companyTel]').parents('.item-content').after('<p class="err-msg">公司电话不能为空</p>');
+                    flag=0;
+                    return;
+                }
+                if(bankName == ""){
+                    $('.new-add-list [name=bankName]').parents('.item-content').after('<p class="err-msg">银行账号不能为空</p>');
+                    flag=0;
+                    return;
+                }
+                if(bankNo == ""){
+                    $('.new-add-list [name=bankNo]').parents('.item-content').after('<p class="err-msg">开户账号不能为空</p>');
+                    flag=0;
+                    return;
+                }
+                if(recipients == ""){
+                	$('.new-add-list [name=recipients]').parents('.item-content').after('<p class="err-msg">收件人不能为空</p>');
+                    flag=0;
+                    return;
+                }
+                if(recipientsTel == ""){
+                	$('.new-add-list [name=recipientsTel]').parents('.item-content').after('<p class="err-msg">收件人电话不能为空</p>');
+                    flag=0;
+                    return;
+                }
+                if(recipientsDz == ""){
+                	$('.new-add-list [name=recipientsDz]').parents('.item-content').after('<p class="err-msg">收件人地址不能为空</p>');
+                    flag=0;
+                    return;
+                }
+                var dataVat ={
+            		vatId:0,
+            		company:company,
+            		companyNo:companyNo,
+            		companyDz:companyDz,
+            		companyTel:companyTel,
+            		bankName:bankName,
+            		bankNo:bankNo,
+            		recipients:recipients,
+            		recipientsTel:recipientsTel,
+            		recipientsDz:recipientsDz,
+            		remark:remark
+            	}
+            	dataVat = JSON.stringify(dataVat);
+            	// console.log(dataVat);
+                $.ajax({
+
+                    type: "post",
+                    url: "/weixin/saveClientVAT",
+                    data:{
+                    	dataVat:dataVat,
+                    	tag:"ADD"
+                    },
+                    dataType: 'json',
+                    complete: function(json) {
+                      
+                        var status = json.status;
+                        if(status != 200){
+                            $.alert('网络异常，状态为11.6' + status);
+                            flag=0;
+                            return;
+                        }
+                        var data = json.response;
+                       
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if(data.code != 'E00000'){
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                                flag=0;
+                                return;
+                            }
+                        }else{
+                            flag=0;
+                            $.alert('新增成功',function(){
+                                // debugger;
+                            	$.closeModal('.popup-new-receipt');
+                                getClientVats();
+                                $('.new-add-list [name=company]').val("");
+                                $('.new-add-list [name=companyNo]').val("");
+                                $('.new-add-list [name=companyDz]').val("");
+                                $('.new-add-list [name=companyTel]').val("");
+                                $('.new-add-list [name=bankName]').val("");
+                                $('.new-add-list [name=bankNo]').val("");
+                                $('.new-add-list [name=recipients]').val("");
+                                $('.new-add-list [name=recipientsTel]').val("");
+                                $('.new-add-list [name=recipientsDz]').val("");
+                                $('.new-add-list [name=remark]').val("");
+                            });
+                        }
+                    }
+                });
+            });
+            //保存修改的发票
+            var updateFlag=0;
+            $('[data-role="edit-receipt"]').click(function(e){
+                e.preventDefault();
+                updateFlag++;
+                console.log(flag);
+                if(updateFlag > 1){
+                    return;
+                }
+
+                //把修改过的数据传给后台
+                var company = $('.new-edit-list [name="company"]').val();
+                var companyNo = $('.new-edit-list [name="companyNo"]').val();
+                var companyDz = $('.new-edit-list [name="companyDz"]').val();
+                var companyTel = $('.new-edit-list [name="companyTel"]').val();
+                var bankName = $('.new-edit-list [name="bankName"]').val();
+                var bankNo = $('.new-edit-list [name="bankNo"]').val();
+                var recipients = $('.new-edit-list [name="recipients"]').val();
+                var recipientsTel = $('.new-edit-list [name="recipientsTel"]').val();
+                var recipientsDz = $('.new-edit-list [name="recipientsDz"]').val();
+                var remark = $('.new-edit-list [name="remark"]').val();
+                
+                var dataVat={
+                            vatId:vatId,
+                            company:company,
+                            companyNo:companyNo,
+                            companyDz:companyDz,
+                            companyTel:companyTel,
+                            bankName:bankName,
+                            bankNo:bankNo,
+                            recipients:recipients,
+                            recipientsTel:recipientsTel,
+                            recipientsDz:recipientsDz,
+                            remark:remark
+                        }
+                dataVat = JSON.stringify(dataVat);
+                $('.err-msg').remove();
+                if(company == ""){
+                    $('.new-edit-list [name=company]').parents('.item-content').after('<p class="err-msg">公司名称不能为空</p>');
+                    updateFlag=0;
+                    return;
+                }
+                if(companyNo == ""){
+                    $('.new-edit-list [name=companyNo]').parents('.item-content').after('<p class="err-msg">纳税识别号不能为空</p>');
+                    updateFlag=0;
+                    return;
+                }
+                if(companyDz == ""){
+                    $('.new-edit-list [name=companyDz]').parents('.item-content').after('<p class="err-msg">公司注册地址不能为空</p>');
+                    updateFlag=0;
+                    return;
+                }
+                if(companyTel == ""){
+                    $('.new-edit-list [name=companyTel]').parents('.item-content').after('<p class="err-msg">公司电话不能为空</p>');
+                    updateFlag=0;
+                    return;
+                }
+                if(bankName == ""){
+                    $('.new-edit-list [name=bankName]').parents('.item-content').after('<p class="err-msg">银行账号不能为空</p>');
+                    updateFlag=0;
+                    return;
+                }
+                if(bankNo == ""){
+                    $('.new-edit-list [name=bankNo]').parents('.item-content').after('<p class="err-msg">开户账号不能为空</p>');
+                    updateFlag=0;
+                    return;
+                }
+                if(recipients == ""){
+                    $('.new-edit-list [name=recipients]').parents('.item-content').after('<p class="err-msg">收件人不能为空</p>');
+                    updateFlag=0;
+                    return;
+                }
+                if(recipientsTel == ""){
+                    $('.new-edit-list [name=recipientsTel]').parents('.item-content').after('<p class="err-msg">收件人电话不能为空</p>');
+                    updateFlag=0;
+                    return;
+                }
+                if(recipientsDz == ""){
+                    $('.new-edit-list [name=recipientsDz]').parents('.item-content').after('<p class="err-msg">收件人地址不能为空</p>');
+                    updateFlag=0;
+                    return;
+                }
+
+                $.ajax({
+                    type: "post",
+                    url: "/weixin/saveClientVAT",
+                    data:{
+                        dataVat:dataVat,
+                        tag:"EDIT"
+                    },
+                    dataType: 'json',
+                    complete: function(json) {                            
+                        var status = json.status;
+                        if(status != 200){
+                            $.alert('网络异常，状态为11.6' + status);
+                            updateFlag=0;
+                            return;
+                        }
+                        var data = json.response;
+                       
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if(data.code != 'E00000'){
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                                updateFlag=0;
+                                return;
+                            }
+                        }else{
+                            updateFlag=0;
+                            $.alert('修改成功',function(){
+                                $.closeModal('.popup-edit-receipt');
+                                getClientVats();
+                                
+                            });
+                            
+                        }
+                    }
+                });
+            });
+            $('.new-edit-list input,textarea').on('change', function(){
+                $(this).parents('li').find('.err-msg').remove();
+            });
+            $('.new-add-list input').on('change', function(){
+                $(this).parents('li').find('.err-msg').remove();
+            });
+        });
+        $.init();
+    </script>
+  </body>
+  </html>

@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/indexCss.vm")
+<body>
+    <div class="page-group">
+        <div class="page page-finish page-current">
+            <header class="bar bar-nav light-nav">
+                <a href1="/weixin/quickShopping" href="javascript:history.go(-1);" class="icon icon-35icoback pull-left bar-left"></a>
+                <h1 class="title">提交订单</h1>
+            </header>
+            #if($!msg)
+            <div class="content">
+                <h2>$!msg</h2>
+            </div>
+            
+            #else
+            <div class="content">
+                <div class="address-wrap">
+                    <input type="hidden" name="did" value="199" />
+                    <a href="/weixin/address?from=QKconfirm">
+                        <table>
+                            <tr>
+                                <td id="addressTips">
+                                    <p><span id="contacts"></span> <span id="phone"></span></p>
+                                    <h4 id="addressDetail"></h4>
+                                </td>
+                                <td><span class="icon icon-ico_awwor_right"></span></td>
+                            </tr>
+                        </table> 
+                    </a>
+                </div>
+                <div class="pay-method">
+                    <h3>选择支付方式</h3>
+                    <!-- <table>
+                        #if($!isOnlinePay && $!allMoney >0)
+                        <tr data-role="weiXinOn">
+                            <td>
+                                <span class="icon icon-weixin"></span>
+                            </td>
+                            <td>
+                                <h4>微信支付</h4>
+                                <p>单笔最高1000元，每日限额10000元</p>
+                            </td>
+                            <td>
+                                <label class="label-checkbox">
+                                    <input type="radio" value="2" name="payMode" data-role="weixinPay" checked="checked" />
+                                    <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                </label>
+                            </td>
+                        </tr>
+                        #else
+                        
+                        <tr data-role="weiXinOn">
+                            <td>
+                                <span class="icon icon-weixin"></span>
+                            </td>
+                            <td>
+                                <h4>微信支付</h4>
+                                <p>单笔最高1000元，每日限额10000元</p>
+                            </td>
+                            <td>
+                                <label class="label-checkbox">
+                                    <input type="radio" value="2" name="payMode" checked="checked" data-role="weixinPay" />
+                                    <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr data-role="cashOn">
+                            <td>
+                                <span class="icon-wrap"><em class="icon icon-cod"></em></span>
+                            </td>
+                            <td>
+                                <h4>货到付款</h4>
+                                <p>现金以及水票支付使用</p>
+                            </td>
+                            <td>
+                                <label class="label-checkbox">
+                                    <input type="radio" value="1" name="payMode" data-role="cashPay" />
+                                    <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                </label>
+                            </td>
+                        </tr>
+                        #end
+                    </table> -->
+                    <div class="pay-box">
+                        #if($!isOnlinePay && $!totalMoney >0)
+                        <div data-role="weiXinOn" class="pay-item">
+                            <label class="label-checkbox">
+                                <!-- <div style="flex:2;display:flex;justify-content: center;align-items: center;"> -->
+                                <span class="icon icon-weixinzhifu"></span>
+                                <!-- </div> -->
+                                <div class="pay-text">
+                                    <h4>微信支付</h4>
+                                    <p>单笔最高1000元，每日限额10000元</p>
+                                </div>
+                                <div class="pay-radio">
+                                    
+                                    <input type="radio" value="2" name="payMode" checked="checked" data-role="weixinPay" />
+                                    <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                    
+                                </div>
+                            </label>
+                        </div>
+                        #else
+                        <div data-role="weiXinOn" class="pay-item">
+                            <label class="label-checkbox">
+                                <!-- <div style="flex:2;display:flex;justify-content: center;align-items: center;"> -->
+                                <span class="icon icon-weixinzhifu"></span>
+                                <!-- </div> -->
+                                <div class="pay-text">
+                                    <h4>微信支付</h4>
+                                    <p>单笔最高1000元，每日限额10000元</p>
+                                </div>
+                                <div class="pay-radio">
+                                    
+                                    <input type="radio" value="2" name="payMode" checked="checked" data-role="weixinPay" />
+                                    <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                    
+                                </div>
+                            </label>
+                        </div>
+                        <div data-role="cashOn" class="pay-item">
+                            <label class="label-checkbox">
+                                <span class="icon-wrap"><em class="icon icon-cod" ></em></span>
+                                <!-- <span class="icon icon-cod" ></span> -->
+                                <div class="pay-text">
+                                    <h4>货到付款</h4>
+                                    <p>现金以及水票支付使用</p>
+                                </div>
+                                <div class="pay-radio">
+                               
+                                    <input type="radio" value="1" name="payMode" data-role="cashPay"/>
+                                    <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                    
+                                </div>
+                            </label>
+                        </div>
+                        
+                        #end
+                    </div>
+                </div>
+                <div class="commodity" data-role="commodity">
+                    <h3>商品详情</h3>
+                    <ul class="store-list" data-role="store-list">
+                        #foreach($item in $!model)
+                        <div class="location" id="sendLocation" style="display: none;">$item.sendLocations</div>
+                        <li data-shop-id="$item.shopId" data-role="shopId" class="shop-wraps" data-hashticket="$!hashTicket">
+                            <img data-role="noscope" src="/files/images/order_ico_noscope.png" class="noscope">
+                            <table class="h4">
+                                <tr>
+                                    <td><img src="$item.pictureUrl" alt=""></td>
+                                    <td>$item.shopName</td>
+                                </tr>
+                            </table>
+                            <table class="store-cont">
+                                #foreach($product in $!item.habits)
+                                <tr data-id="$product.pid">
+                                    <td>
+                                        <img src="$product.pictureUrl" alt="">
+                                    </td>
+                                    <td>
+                                        <h5>$product.pname</h5>
+                                        <span class="pull-left price">
+                                            #if($product.buyType == 1)
+                                                <svg class="icon icon-svg" aria-hidden="true">
+                                                    <use xlink:href="#icon-icon_cash"></use>
+                                                </svg>￥$product.vipPrice
+                                                #end
+                                                #if($product.buyType == 2)
+                                                <svg class="icon icon-svg" aria-hidden="true">
+                                                    <use xlink:href="#icon-icon_e_ticket"></use>
+                                                </svg><em>￥$product.vipPrice</em>
+                                                #end
+                                                #if($product.buyType == 3)
+                                                <svg class="icon icon-svg" aria-hidden="true">
+                                                    <use xlink:href="#icon-icon_ticket"></use>
+                                                </svg><em>￥$product.vipPrice</em>
+                                                #end 
+                                        </span>
+                                        <span class="pull-right">
+                                            <svg class="icon icon-svg" aria-hidden="true">
+                                                <use xlink:href="#icon-icon_num"></use>
+                                            </svg>$product.number</span>
+                                    </td>
+                                </tr>
+                                #end
+                            </table>
+                            <div class="list-block">
+                                <ul>
+                                    
+                                    <li class="item-content item-link">
+                                        <div class="item-inner">
+                                          <div class="item-title">配送日期</div>
+                                          <div class="item-after"><input data-suffix="$!item.timeStampSuffix" data-time="$!item.timeStamps" class="time-box" type="text" value="" name="appointmentDate" data-action="date-picker"/></div>
+                                        </div>
+                                    </li>
+                                    <li class="item-content item-link">
+                                        <div class="item-inner">
+                                          <div class="item-title">配送时间</div>
+                                          <div class="item-after"><input class="time-box" type="text" value="" name="appointmentTime1" data-action="t-time-picker"/><input class="time-box hide" type="text" value="" name="appointmentTime2" data-action="o-time-picker"/></div>
+                                        </div>
+                                    </li>
+                                    #if($!item.openInvoice)
+                                    <li class="item-content item-link" data-role="invoice-wrap" data-shop-id="$item.shopId">
+                                        <div class="item-inner invoice-wrap">
+                                            <div class="item-title label">发票信息</div>
+                                            <div class="item-input">
+                                                <input data-role="choose-invoice" class="choose-invoice" data-select-shop-id="$item.shopId" name="hasInvoice" data-invoice-type="-1" data-invoico-name="" data-invoice-detail="" value="不开发票" data-vat-id="0" readonly="readonly">
+                                              
+                                            </div>
+                                        </div>
+                                    </li>
+                                    #else
+                                    <li class="item-content item-link" data-role="invoice-wrap" data-shop-id="$item.shopId" style="display: none;">
+                                        <div class="item-inner invoice-wrap">
+                                            <div class="item-title label">发票信息</div>
+                                            <div class="item-input">
+                                                <input data-role="choose-invoice" class="choose-invoice" data-select-shop-id="$item.shopId" name="hasInvoice" data-invoice-type="-1" data-invoico-name="" data-invoice-detail="" value="不开发票" data-vat-id="0" readonly="readonly">
+                                              
+                                            </div>
+                                        </div>
+                                    </li>
+                                    #end
+                                    <li class="align-top">
+                                        <div class="item-content">
+                                          <div class="item-inner">
+                                            <div class="item-input">
+                                              <textarea name="orderRemark" placeholder="在此输入您的其他要求"></textarea>
+                                            </div>
+                                          </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <table class="summary">
+                                <tr>
+                                    <td>现金：<em>$!item.getShopProductMoneyStr()</em></td>
+                                    <input type="hidden" data-role="shopProductMoney" value="$!item.shopProductMoney" />
+                                    <td>运费：<em>$!item.freight</em></td>
+                                    <input type="hidden" data-role="freight" value="$!item.freight" />
+                                    <td>水票：<em>$!item.shopProductTicket</em></td>
+                                    <td>电子票：<em>$!item.shopProductETicket</em></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <span class="pull-left">共<em>$!item.shopProductQuantity</em>件商品</span>
+                                        <span class="pull-right">应付款：<em data-role="shopTotalMoney">$!item.shopTotalMoney</em></span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </li>
+                        #end
+                    </ul>
+                </div>
+            </div>
+            <!-- Block button in standard bar fixed above the footer -->
+            <div class="bar bar-footer order-bar" style="padding: 0 0.5rem;">
+                <input type="hidden" name="totalMoney" value="$!totalMoney" />
+              <table>
+                  <tr>
+                      <td>
+                        共<span data-role="allTotal">￥ $!totalMoney</span> 水票<span>$!totalTicket</span> 电子票<span>$!totalETicket</span>
+                      </td>
+                      <td class="go-buy">
+                          <p><a data-action="save-order" href="#" class="button button-fill btn-yello">提交订单</a></p>
+                      </td>
+                  </tr>
+              </table>
+            </div>
+            #end
+        </div>
+        <!-- 纸质发票 Popup -->
+        <!-- <div class="popup popup-services">
+          <div class="content-block">
+            <header class="bar bar-nav  light-nav">
+                <span class="icon icon-35icoback pull-left close-popup bar-left"></span>
+                <h1 class="title">发票信息填写</h1>
+            </header>
+            <div class="content">
+                <div class="list-block">
+                    <ul>
+                        <li>
+                            <div class="item-content">
+                              <div class="item-inner">
+                                <div class="item-title label">发票类型</div>
+                                <div class="item-input">
+                                  <select disabled="disabled">
+                                    <option value="1">纸质发票</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                              <div class="item-inner">
+                                <div class="item-title label">发票抬头</div>
+                                <div class="item-input">
+                                  <select name="invoiceType">
+                                    <option value="1">公司</option>
+                                    <option value="0">个人</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                              <div class="item-inner">
+                                <div class="item-input">
+                                  <input type="text" name="invoicoName" placeholder="请填写单位名称或个人姓名">
+                                </div>
+                              </div>
+                            </div>
+                        </li>
+                        <li class="align-top">
+                            <div class="item-content">
+                              <div class="item-inner">
+                                <div class="item-title label">收票人信息</div>
+                                <div class="item-input">
+                                  <textarea name="invoiceDetail" placeholder="请在此处输入发票的内容（如：办公用品）"></textarea>
+                                </div>
+                              </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="content-block">
+                    <div class="row">
+                      <div class="col-100"><a data-role="save-invoice" href="#" class="button button-big button-fill btn-yello">确认</a></div>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div> -->
+        <!-- 货到付款支付成功 popup-->
+        <div class="popup popup-payCashOn">
+            <header class="bar bar-nav light-nav habit-nav">
+                <h1 class="title">支付结果</h1>
+            </header>
+            <div class="content content-payFruit">
+                <div class="list-block">
+                    <span class="icon icon-100huodao"></span>
+                    <h3>订单提交成功，货到付款！</h3>
+                    <div class="tips">您可以点击查看订单详情</div>
+                    <p>
+                        <a href="/weixin/orders?statusId=101&pageIndex=1" class="button button-fill btn-yello">查看订单详情</a>
+                    </p>
+                    <p>
+                        <a href="/weixin/quickShopping" class="button button-fill btn-yello">继续购买</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- 微信支付成功 popup-->
+        <div class="popup popup-payWeiXin">
+            <header class="bar bar-nav light-nav habit-nav">
+                <h1 class="title">支付结果</h1>
+            </header>
+            <div class="content content-payFruit">
+                <div class="list-block">
+                    <span class="icon icon-ico_pay"></span>
+                    <h3>订单支付成功！</h3>
+                    <div class="tips">您可以点击查看订单详情</div>
+                    <p>
+                        <a href="/weixin/orders?statusId=101&pageIndex=1" class="button button-fill btn-yello">查看订单详情</a>
+                    </p>
+                    <p>
+                        <a href="/weixin/quickShopping" class="button button-fill btn-yello">继续购买</a>
+                    </p>
+                </div>
+            </div> 
+        </div>
+        <!-- 支付失败 -->
+        <div class="popup popup-payFail">
+            <header class="bar bar-nav light-nav habit-nav">
+                <h1 class="title">支付结果</h1>
+            </header>
+            <div class="content content-payFruit">
+                <div class="list-block">
+                    <span class="icon icon-ico_no_pay"></span>
+                    <h3>订单已提交，支付未成功！</h3>
+                    <div class="tips">您可以点击查看订单详情继续支付。</div>
+                    <p>
+                        <a href="/weixin/orders?statusId=100&pageIndex=1" class="button button-fill btn-yello">查看订单详情</a>
+                    </p>
+                    <p>
+                        <a href="/weixin/quickShopping" class="button button-fill btn-yello">继续购买</a>
+                    </p>
+                </div>
+            </div> 
+        </div>
+    </div>
+
+
+#*加载JS文件*# 
+#parse("control/$!webStyle/publicJs.vm")
+<script type='text/javascript' src='/files/common/js/selector.js' charset='utf-8'></script>
+<!-- <script type='text/javascript' src='https://cdn.shuiqoo.cn/$!webStyle/selector.js' charset='utf-8'></script> -->
+#parse("control/$!webStyle/globalJs.vm")
+    <script>
+        $.init();
+        $(function() {
+
+            var quickData = [
+                #set($flag = "")    
+                #foreach( $item in $model)     
+                    $!flag {   
+                        "shopId":${item.shopId},
+                        "eid":${item.eid},
+                        "did":"",
+                        "privilegeId":0,
+                        "appointmentTime":"",
+                        "orderRemark":"",
+                        "sendRemark":"",
+                        "payMode":"",
+                        "vatId":0,
+                        "invoiceType":-1,  
+                        "invoicoName":"",
+                        "invoiceDetail":"",
+                        "habits": [
+                            #set($Hflag = "")
+                            #foreach( $product in $item.habits)
+                                $!Hflag{
+                                    "pid":${product.pid},
+                                    "buyType":${product.buyType},
+                                    "number":${product.number}
+                                }
+                                #set($Hflag = ",") 
+                            #end
+                        ]  
+                    }    
+                    #set($flag = ",")    
+                #end  
+            ];
+            localStorage.setItem("quickData",JSON.stringify(quickData));
+            var qkDid = localStorage.getItem('qkDid');
+            //配送时间选择
+            $('.store-list [data-action="date-picker"]').each(function(index){
+                var timeBox = $(this);
+                var suffix = timeBox.data('suffix');
+                var times = timeBox.data('time');
+                times = times.replace(/\[|\]/g,"");
+                var timeVal = times.split(',');
+                var Dcols = [];
+                var Tcols = [];
+
+                if(suffix > 0){
+                    Dcols[0] = {
+                        textAlign: 'center',
+                        values: ['今天', '明天', '后天']
+                    };
+                    Dval = '今天';
+                    $('[data-action="t-time-picker"]').eq(index).val(timeVal[suffix-1]);
+                    $('[data-action="t-time-picker"]').eq(index).picker({
+                      toolbarTemplate: '<header class="bar bar-nav pick-nav">\
+                      <button class="button button-link pull-right close-picker">确定</button>\
+                      <h1 class="title">选择配送时间</h1>\
+                      </header>',
+                      cols: [{
+                            textAlign: 'center',
+                            values: timeVal.slice(suffix-1)
+                      }]
+                    });
+                }else if(suffix = 0){
+                    Dcols[0] = {
+                        textAlign: 'center',
+                        values: ['明天', '后天']
+                    };
+                
+                    Dval = '明天';
+
+                    $('[data-action="t-time-picker"]').eq(index).hide();
+                    $('[data-action="o-time-picker"]').eq(index).removeClass('hide');
+                }
+                $('[data-action="date-picker"]').eq(index).val(Dval);
+                $('[data-action="date-picker"]').eq(index).picker({
+                  toolbarTemplate: '<header class="bar bar-nav pick-nav">\
+                  <button class="button button-link pull-right close-picker">确定</button>\
+                  <h1 class="title">选择配送日期</h1>\
+                  </header>',
+                  cols: Dcols
+                });
+                $('[data-action="o-time-picker"]').eq(index).val(timeVal[0]);
+                $('[data-action="o-time-picker"]').eq(index).picker({
+                  toolbarTemplate: '<header class="bar bar-nav pick-nav">\
+                  <button class="button button-link pull-right close-picker">确定</button>\
+                  <h1 class="title">选择配送时间</h1>\
+                  </header>',
+                  cols: [{
+                        textAlign: 'center',
+                        values: timeVal
+                    }]
+                });
+                
+
+                $('input[name=appointmentDate]').on('change', function(){
+                    var curVal = $(this).val();
+                    
+                    if(curVal == '今天'){
+                        $('[data-action="t-time-picker"]').eq(index).show();
+                        $('[data-action="o-time-picker"]').eq(index).hide();
+                    }else{
+                        $('[data-action="t-time-picker"]').eq(index).hide();
+                        $('[data-action="o-time-picker"]').eq(index).show();
+                    }
+                })
+            });
+
+            $('[data-role="invoice-wrap"]').on('click',function(){
+                
+                var shopId = $(this).parents('li').data('shopId');
+                window.location.href="/weixin/receipt?shopId="+shopId+"&from="+"QKconfirm";
+                
+            })
+            var invoiceType = localStorage.getItem("type");
+            var invoicoName = localStorage.getItem("invoicoName");
+            var invoiceDetail = localStorage.getItem("invoiceDetail");
+            var vatId = localStorage.getItem("vatId");
+            
+
+            var invoiceLen = $('[data-role="invoice-wrap"]').length;
+            for(var i=0;i<invoiceLen;i++){
+                if($('[data-role="invoice-wrap"]').eq(i).data('shopId')==localStorage.getItem("shopId")){
+                    var this_invoice = $('[data-role="invoice-wrap"]').eq(i);
+                    if(invoiceType==0){
+                        this_invoice.find('.choose-invoice').val("个人发票");
+                    }else if(invoiceType==1){
+                        this_invoice.find('.choose-invoice').val("单位发票");
+                    }else if(invoiceType==2){
+                        this_invoice.find('.choose-invoice').val("增值税发票");
+                    }else{
+                        this_invoice.find('.choose-invoice').val("不开发票");
+                    }
+                    this_invoice.find('.choose-invoice').attr("data-invoice-type", invoiceType);
+                    this_invoice.find('.choose-invoice').attr("data-invoico-name", invoicoName);
+                    this_invoice.find('.choose-invoice').attr("data-invoice-detail", invoiceDetail);
+                    this_invoice.find('.choose-invoice').attr("data-vat-id", vatId);
+                }
+            }
+           
+            //提交订单
+            var flag = 0;
+            $('[data-action="save-order"]').on('click',function(e){
+                var newJosn = [];
+                e.preventDefault();
+                flag++;
+                console.log(flag);
+                if(flag > 1){
+                    return;
+                }
+                var did = parseInt($('[name="did"]').val());
+                var payMode = parseInt($('[name="payMode"]:checked').val());
+                var quickData = JSON.parse(localStorage.getItem("quickData"));
+
+                $('.store-list > li').each(function(index){
+                    for(var i=0; i < quickData.length; i++){
+                        if(quickData[i].shopId == parseInt($(this).data('shopId')) && !$(this).hasClass("no-display")){
+                            newJosn.push(quickData[i])
+
+                        }
+                    }
+                });
+                if(newJosn.length==0){
+                    $.alert('没有可配送的水店');
+                    flag =0;
+                    return;
+                }
+                var index = 0;
+                $('.store-list > li').each(function(){
+                    var me = $(this);
+
+                    if(me.hasClass("no-display")){
+                        return;
+                    }
+                    var shopId = parseInt(me.data('shopId'));
+
+                    if(newJosn[index].shopId == shopId){ 
+                        var orderRemark = me.find('[name="orderRemark"]').val();
+                        // var hasInvoice = me.find('select[name="hasInvoice"]').val();
+                        var invoiceType = me.find('[data-role="choose-invoice"]').data('invoiceType');
+                        var invoicoName = me.find('[data-role="choose-invoice"]').data('invoicoName');
+                        var invoiceDetail = me.find('[data-role="choose-invoice"]').data('invoiceDetail');
+                        var vatId = me.find('[data-role="choose-invoice"]').data('vatId');
+                        var privilegeId = me.find('select[name="privilegeId"]').val();
+                        var appointmentDate = me.find('input[name="appointmentDate"]').val();
+                        var appointmentTime1 = me.find('input[name="appointmentTime1"]').val();
+                        var phone = $("#phone").html();
+                        // var sendRemark = phone+";"+appointmentTime1;
+                        var sendRemark = appointmentTime1;
+                        var appointmentTime2 = me.find('input[name="appointmentTime2"]').val();
+                        var appointmentTime = "";
+                    }
+                    if(appointmentDate == '今天'){
+                        appointmentTime = appointmentDate +　appointmentTime1;
+                    }else{
+                        appointmentTime = appointmentDate +　appointmentTime2;
+                    }
+                    // if(hasInvoice == 1){
+                    //     type = me.find('select[name="hasInvoice"]').data('type');
+                    //     invoicoName = me.find('select[name="hasInvoice"]').data('invoicoName');
+                    //     invoiceDetail = me.find('select[name="hasInvoice"]').data('invoiceDetail');
+                    // }
+                    for(var i=0; i < newJosn.length; i++){
+
+                        if(newJosn[i].shopId == shopId){
+                            newJosn[i].did = did;
+                            newJosn[i].privilegeId = privilegeId;
+                            newJosn[i].payMode = payMode;
+                            newJosn[i].orderRemark = orderRemark;
+                            newJosn[i].invoiceType = invoiceType;
+                            newJosn[i].invoicoName = invoicoName;
+                            newJosn[i].invoiceDetail = invoiceDetail;
+                            newJosn[i].vatId = vatId;
+                            newJosn[i].appointmentTime = appointmentTime;
+                            newJosn[i].sendRemark = sendRemark;
+                        }
+                    }
+                    index++;
+                });
+                //console.log(quickData);
+                $.ajax({
+                      type: "post",
+                      url: "/weixin/quickShoppingSave",
+                      data: {
+                        quickSpJson: JSON.stringify(quickData)
+                      },
+                      dataType: 'json',
+                      complete: function(json) {
+                        
+                          var data = json.response;
+                          var status = json.status;
+                          if(status != 200){
+                              $.alert('网络异常5.1，状态为' + status);
+                              return;
+                          }
+                          var totalMoney = parseFloat($('input[name=totalMoney]').val());
+                          if ($.type(data) == 'string') {
+                              data = JSON.parse(data);
+                          }
+                          
+                          if(data.code != 'E00000'){
+                                if(data.code == "-1"){
+                                    window.location.href = "/weixin/bind";
+                                }else{
+                                    $.alert(data.message);
+                                    flag=0; 
+                                    return;
+                                }
+                               
+                          }else{
+                            // console.log(JSON.stringify(newJosn));
+                            // return;
+
+                            flag=0;
+
+                            localStorage.setItem("qkDid",'');
+                            localStorage.removeItem("quickShoppingCarData");
+                            //清除发票信息
+                            localStorage.removeItem("type");
+                            localStorage.removeItem("invoicoName");
+                            localStorage.removeItem("invoiceDetail");
+                            localStorage.removeItem("vatId");
+                            localStorage.removeItem("invoice");
+                            localStorage.removeItem("shopId");
+                            //货到付款
+                            if(payMode == 1){
+                                $.popup('.popup-payCashOn');
+                            }else if(totalMoney > 0 && payMode == 2){
+                            //微信支付 todo
+                                function pay(group) {
+                                    $.ajax({
+                                        url: "/weixin/payGroup?group=" + group ,
+                                        type: "get",
+                                        dataType: "json",
+                                        complete: function (result) {
+                                            
+                                            var status = result.status;
+                                            if(status != 200){
+                                                $.alert('网络异常5.2，状态为' + status);
+                                                return;
+                                            }
+                                            var resp = result.response;
+                                           
+                                            if ($.type(resp) == 'string') {
+                                                resp = JSON.parse(resp);
+                                            }
+                                            if(resp.code != 'E00000'){
+                                                if(resp.code == "-1"){
+                                                    window.location.href = "/weixin/bind";
+                                                }else{
+                                                    $.alert(resp.message); 
+                                                    return;
+                                                }
+                                            }else{
+                                                quickSavePay(resp.appId, resp.timeStamp, resp.nonceStr, resp.package, resp.paySign);
+                                            }
+                                        }
+                                    });
+                                }
+                                pay(data.data.group);
+                            }
+                                
+                        }
+                          
+                      }
+                });
+            });
+            //统计订单总价
+            
+            var lens = $('.shop-wraps:not(.no-display)').length;
+            
+            // console.log(lens);
+            var countDefault = 0;
+            for(var i=0; i<lens;i++){
+                
+                //商品价格
+                var shopProductMoney = Number($('.shop-wraps:not(.no-display)').eq(i).find('[data-role="shopProductMoney"]').val());
+                    shopProductMoney = Number(shopProductMoney.toFixed(2));
+                //运费
+                var freight = Number($('.shop-wraps:not(.no-display)').eq(i).find('[data-role="freight"]').val());
+                //优惠价格
+                // var acyPrice = Number($('.shop-wraps:not(.no-display)').eq(i).find('option:selected').data('discount'));
+                //店铺订水总价
+                var shopTotal = Number(shopProductMoney+freight);
+                // console.log(shopTotal);
+                shopTotal = Number(shopTotal.toFixed(2));
+                $('.shop-wraps:not(.no-display)').eq(i).find('[data-role="shopTotalMoney"]').html(shopTotal);
+                //统计所有订单的总价
+                countDefault= Number((countDefault+shopTotal).toFixed(2));
+                $('[data-role="allTotal"]').html(countDefault);
+                // console.log(shopProductMoney,freight,shopTotal,countDefault);
+                //如果价格为0，只能货到付款，把微信支付移除
+                if(countDefault == 0){
+                    // debugger;
+                    $('[data-role="weiXinOn"]').remove();
+                    $('[data-role="cashPay"]').attr("checked",true);
+                    $('[data-role="invoice-wrap"]').hide();
+                    //清除发票信息
+                    localStorage.removeItem("shoppingCarData");
+                    localStorage.removeItem("type");
+                    localStorage.removeItem("invoicoName");
+                    localStorage.removeItem("invoiceDetail");
+                    localStorage.removeItem("vatId");
+                    localStorage.removeItem("invoice");
+                    localStorage.removeItem("shopId");
+                }
+                            
+                // if($('.shop-wraps:not(.no-display)').eq(i).find('option:selected').val()>0){
+                //     $('.shop-wraps:not(.no-display)').eq(i).siblings('li.shop-wraps').find('[name="privilegeId"] option:contains("首桶")').hide();
+                // }
+                
+            }
+            //获取用户地址
+            var getUserAddress = function(){
+                $.ajax({
+                    type: "get",
+                    url: "/weixin/userAddress",
+                    dataType: 'json',
+                    async:false,
+                    complete: function(json) {
+                      
+                        var data = json.response;
+                        var status = json.status;
+                          if(status != 200){
+                              $.alert('网络异常5.3，状态为' + status);
+                              return;
+                          }
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if(data.code != 'E00000'){
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                                return;
+                            }
+                        }else{
+                            var didFlag = true;
+
+                            //判断是否已有收货地址
+                            if(data.data==""){
+                                $('#addressTips').html("<span class='icon icon-41icolocal' style='padding:0 0.5rem;font-size:1rem;'></span>请添加一个收货地址");
+                            }
+                            //判断是否已选择地址
+                            for(var i = 0; i < data.data.length; i++){
+                                if(qkDid && data.data[i].did == qkDid){
+                                    $('input[name=did]').val(data.data[i].did);
+                                    $('#contacts').html(data.data[i].contacts);
+                                    $('#phone').html(data.data[i].phone);
+                                    $('#addressDetail').html(data.data[i].streetDescribe);
+                                    var curLt = data.data[i].location;
+                                    checkLocation(curLt);
+                                    didFlag = true;
+                                    break;
+                                }else{
+                                    didFlag = false;
+                                }
+                            }
+                            //没有选择地址则使用默认地址
+                            if(!didFlag){
+                                for(var i = 0; i < data.data.length; i++){
+                                    if(data.data[i].ifDefault){
+                                        $('input[name=did]').val(data.data[i].did);
+                                        $('#contacts').html(data.data[i].contacts);
+                                        $('#phone').html(data.data[i].phone);
+                                        $('#addressDetail').html(data.data[i].streetDescribe);
+                                        var curLt = data.data[i].location;
+                                        //如果用户没填地址则打上水印，不能提交
+                                        checkLocation(curLt);
+                                        return;
+                                    }
+                                }    
+                                
+                            }
+                        }
+                        
+                    }
+                });
+            };
+            getUserAddress();
+        });
+        //有电子票商品则只能微信支付，把货到付款移除
+        var hashTicket = $('[data-role="shopId"]').data('hashticket');
+        // debugger;
+        if(hashTicket){
+            $('[data-role="cashOn"]').remove();
+            $('[data-role="weixinPay"]').attr("checked",true);
+        }
+        
+        function checkLocation(addressLocation){
+            //判断用户地址是否在百度围栏之内
+            var len = $('[data-role="store-list"]>li').length;
+            for(var i=0;i<len;i++){
+                var sendLocation = $('.location').eq(i).html();
+                var validateShopWL = function(){
+                    // debugger;
+                    $.ajax({
+                        type: "post",
+                        url: "/weixin/baiduRailLocation",
+                        data:{
+                            "baiduRail":sendLocation,
+                            "addressLocation":addressLocation
+                        },
+                        async: false,
+                        dataType: 'json',
+                        complete: function(json) {
+                            // debugger;
+                            var data = json.response;
+                            var status = json.status;
+                            if(status != 200){
+                                $.alert('网络异常，状态为11.2' + status);
+                                return;
+                            }
+                            if ($.type(data) == 'string') {
+                                data = JSON.parse(data);
+                            }
+                            if(data == "0"){
+                                $("[data-role=store-list]>li:eq("+i+")").find(".noscope").show();
+                                $("[data-role=store-list]>li:eq("+i+")").addClass("no-display");
+                            }else if(data == "1"){
+                                $("[data-role=store-list]>li:eq("+i+")").find(".noscope").hide();
+                                $("[data-role=store-list]>li:eq("+i+")").find(".noscope").remove();
+                            }
+                            
+                        }
+                    });
+                }
+                validateShopWL();
+            }
+        }
+    </script>
+  </body>
+</html>

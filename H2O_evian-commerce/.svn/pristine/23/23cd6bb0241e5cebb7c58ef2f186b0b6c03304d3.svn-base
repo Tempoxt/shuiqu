@@ -1,0 +1,130 @@
+package com.eviano2o.controller.helper;
+
+import javax.servlet.http.HttpServletRequest;
+
+import net.sf.json.JSONObject;
+
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.ui.Model;
+
+import com.eviano2o.util.SysParamCache;
+import com.eviano2o.util.SysParamNames;
+
+/**
+ * 人人开店模板1生成
+ */
+public class ShareTemplateOneHelper_New extends BaseControllerHelper {
+	Integer shareId;// 分享id
+	Integer tid;// 模板id
+	Integer pictureid;// 图片id
+	String productPicUrl;// 商品图片url
+	Integer shareNum;//分享人数统计
+	Integer clientType;//来源（1：微信, 2：APP）
+	String userNickname;//昵称
+	String backImageUrl;//模板背景图片
+	String headImgUrl = "";// 头像URL
+	
+	public ShareTemplateOneHelper_New(Model model, HttpServletRequest request) {
+		super(model, request);
+		
+		shareId = Integer.valueOf(StringUtils.isEmpty(_request.getParameter("shareId")) ? "0" : _request.getParameter("shareId"));
+		tid = Integer.valueOf(StringUtils.isEmpty(_request.getParameter("tid")) ? "0" : _request.getParameter("tid"));
+		pictureid = Integer.valueOf(StringUtils.isEmpty(_request.getParameter("pictureid")) ? "0" : _request.getParameter("pictureid"));
+		productPicUrl = _request.getParameter("productPicUrl");
+		clientType = Integer.valueOf(StringUtils.isEmpty(_request.getParameter("clientType")) ? "0" : _request.getParameter("clientType"));
+		logger.info("生成模板参数-> tid:" +tid + "   pictureid:" + pictureid + "   productPicUrl:" + productPicUrl + "   shareId:" + shareId + "   clientType:" + clientType);
+		userNickname = getSessionClient().getNickname();
+	}
+
+	public void Init() {
+		if ((tid.intValue() == 0 || pictureid.intValue() == 0 || StringUtils.isEmpty(productPicUrl)) && shareId.intValue() == 0 && clientType.intValue() == 0) {
+			_result = formatJsonResult("E90000", "参数错误！");
+			return;
+		}
+
+		if(!StringUtils.isEmpty(getSessionClient().getPhoto()))
+			headImgUrl = getSessionClient().getPhoto();
+		
+		String result = weiXinService.saveShareRecord(getSessionClientIdentityCode(), tid, pictureid, userNickname, "", headImgUrl,getSessionAuthorizerAppid());
+		if(JSONObject.fromObject(result).has("code") && JSONObject.fromObject(result).getString("code").equals("E00000")){
+			shareId = JSONObject.fromObject(result).getJSONObject("data").getInt("shareId");
+		}
+		else{
+			_result = result;
+			return;
+		}
+		
+		mackPic();
+
+	}
+	
+	private Boolean mackPic() {
+		// 模板路径
+		String srcImgPath = templateBgPath();
+		if (StringUtils.isEmpty(srcImgPath)){
+			return false;
+		}
+		
+		String makeResult = fileService.ShearTemplateOne(shareId, srcImgPath, productPicUrl, headImgUrl, "", shareNum, clientType, userNickname);
+		if (StringUtils.isEmpty(makeResult)) {
+			_result = formatJsonResult("E90000", "生成模板失败！");
+			return false;
+		}
+		
+		JSONObject json = JSONObject.fromObject(makeResult);
+		if (json.has("code") && json.getString("code").equals("E00000")){
+			
+		}else{
+			_result = makeResult;
+			return false;
+		}
+		String viewTemplateUrl = "http://" + SysParamCache.getCache(SysParamNames.ParamFileManageDomain) + "/" + json.getString("data");
+		
+		
+		String saveRecord = weiXinService.updateShareRecordUrl1(getSessionClientIdentityCode(), tid, pictureid, shareId, viewTemplateUrl,getSessionAuthorizerAppid());
+		//logger.info("保存分享记录结果：" + saveRecord);
+		JSONObject resultJson = new JSONObject();
+		resultJson.put("code", "E00000");
+		resultJson.put("message", "生成成功！");
+		JSONObject resultJsonData = new JSONObject();
+		resultJsonData.put("shareId", shareId);
+		resultJsonData.put("url1", viewTemplateUrl);
+		resultJsonData.put("posterUrl", "");
+		resultJson.put("data", resultJsonData);
+
+		_result = resultJson.toString();
+		return true;
+	}
+
+	/** 获取模板背景图片 */
+	private String templateBgPath() {
+		String templateJson = weiXinService.getShareTemplateDetail(tid, getSessionClientIdentityCode(), true,getSessionAuthorizerAppid());
+		if (StringUtils.isEmpty(templateJson)) {
+			_result = formatJsonResult("E90000", "获取模板失败！");
+			return "";
+		}
+
+		JSONObject template = JSONObject.fromObject(templateJson);
+		if (template.has("code") && template.getString("code").equals("E00000") && template.getJSONObject("data") != null 
+				&& template.getJSONObject("data").getJSONObject("templateData") != null 
+				&& !StringUtils.isEmpty(template.getJSONObject("data").getJSONObject("templateData").getString("backImage"))) {
+			shareNum = template.getJSONObject("data").getJSONObject("templateData").getInt("shareNum");
+			backImageUrl = template.getJSONObject("data").getJSONObject("templateData").getString("backImage");
+			
+			return backImageUrl;
+		} else {
+			_result = formatJsonResult("E90000", "获取模板失败。");
+			logger.info("获取模板失败:" + templateJson);
+			return "";
+		}
+	}
+
+	private static final Logger logger = LoggerFactory.getLogger(ShareTemplateOneHelper_New.class);
+
+	@Override
+	public String getResult() {
+		return _result;
+	}
+}

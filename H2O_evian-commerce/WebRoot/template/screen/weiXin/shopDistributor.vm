@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "shopDistributor")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/shopCss.vm")
+<body>
+<div class="page-group">
+	<div class="page page-finish page-current page-shopDistributor">
+            <header class="bar bar-nav light-nav">
+                <a class="icon icon-guanbi-copy pull-right bar-right closeTuike" href="#"></a>  
+                <h1 class="title">店铺配送接单员</h1>
+            </header>
+            <div class="content img-code-box">
+                <ul class="tuikes-list tab active infinite-scroll infinite-scroll-bottom" data-role="tuikes-list" data-distance="100">
+                   <li>
+                       <div class="content-padded">
+                            <div class="row" >
+                                <div class="col">
+                                    <span>企业名：</span><input type="text" name="eName" placeholder="请填写企业名，必填"/>
+                                </div>
+                            </div>
+                        </div>
+                   </li>
+                   <li>
+                       <div class="content-padded">
+                            <div class="row" >
+                                <div class="col">
+                                    <span>店铺号：</span><input type="tel" name="shopCode" placeholder="请填写店铺号，必填"/>
+                                </div>
+                            </div>
+                        </div>
+                   </li>
+                   <li>
+                       <div class="content-padded">
+                            <div class="row" >
+                                <div class="col">
+                                    <span>手机号：</span><input type="tel" name="phone" maxlength="11" onkeyup="this.value=this.value.replace(/[^\d]/g,'') " onafterpaste="this.value=this.value.replace(/[^\d]/g,'')" placeholder="请填写手机号，必填"/><a href="#" id="yhPhoneBtn" class="button white pull-right yzmHui" data-role="btn" >获取验证码</a>
+                                </div>
+                                
+                            </div>
+                        </div>
+                   </li>
+                   <li>
+                       <div class="content-padded">
+                            <div class="row" >
+                                <div class="col">
+                                    <span>验证码：</span><input type="tel" maxlength="6" onkeyup="this.value=this.value.replace(/[^\d]/g,'') " onafterpaste="this.value=this.value.replace(/[^\d]/g,'')" name="smsCode" placeholder="请填写验证号，必填"/>
+                                </div>
+                            </div>
+                        </div>
+                   </li>
+                   <li>
+                       <div class="content-padded">
+                            <div class="row" >
+                                <div class="col">
+                                    <span>姓　名：</span><input type="text" name="userName" placeholder="请填写姓名，必填"/>
+                                </div>
+                            </div>
+                        </div>
+                   </li>
+                </ul>
+                <div><a href="#" class="button btn-yello btn-125" data-role="submitBtn" >提交</a></div>
+                
+            </div>
+    </div>
+</div>
+#*加载JS文件*# 
+#parse("control/$!webStyle/publicJs.vm")
+<script src="/files/js/$!webStyle/app.js"></script>
+<!-- <script src="https://cdn.shuiqoo.cn/$!webStyle/echarts.min.js"></script> -->
+#parse("control/$!webStyle/globalJs.vm")
+<script type="text/javascript">
+    $.alert(1);
+    // 点击关闭界面
+    function closeWin() {
+        WeixinJSBridge.invoke('closeWindow', {}, function(res) {
+            //res.err_msg(close_window:ok/close_window:error)
+        });
+    }
+    function clickCloseTuike(){
+      $(".closeTuike").click(function(){
+          closeWin();
+      });
+    }
+    var term = false;
+    var isBtn = true;
+    $.ajax({
+        type: "post",
+        url: "/weixin/getShopCourierAccount",
+        dataType: 'json',
+        complete: function(json) {
+        
+            var data = json.response;
+            var status = json.status;
+            if(status != 200){
+                $.alert('网络异常，状态为3.2' + status);
+                return;
+            }
+            if ($.type(data) == 'string') {
+                data = JSON.parse(data);
+            }
+            if(data.code != 'E00000'){
+                $.alert(data.message);
+                return;
+            }else{
+                var hasData = data.data.hasData;
+                var courierData = data.data.courierData;
+                // 是否有数据
+                if(hasData){
+                    $('[name="eName"]').attr({"placeholder":courierData.eName,"readonly":"readonly"});
+                    $('[name="shopCode"]').attr({"placeholder":courierData.shopCode,"readonly":"readonly"});
+                    $('[name="userName"]').attr({"placeholder":courierData.userName,"readonly":"readonly"});
+                    $('[name="smsCode"]').attr({"placeholder":"","readonly":"readonly"});
+                    $('[name="phone"]').attr({"placeholder":courierData.cellphone,"readonly":"readonly"});
+                    if(courierData.auditStatus=="0"){
+                        $('[data-role="submitBtn"]').css("background-color","#DDDDDD");
+                        $('[data-role="submitBtn"]').html("待审核");
+                        $('.img-code-box').append('<div class="content-padded" style="font-size: 0.8rem;"><div class="row" ><div class="col" style="width: 90%;margin: auto;">您于'+courierData.createTime+'提交注册信息，请您耐心等待审核！</div></div></div>');
+                    }else if(courierData.auditStatus=="1"){
+                        $('[data-role="submitBtn"]').html("我的配送单");
+                        $('[data-role="submitBtn"]').attr({"data-role":"distributionListBtn","href":"/weixin/orderDistributor"});
+                        $('.img-code-box').append('<div class="content-padded" style="font-size: 0.8rem;"><div class="row" ><div class="col" style="width: 90%;margin: auto;">您已于'+courierData.auditTime+'通过审核</div></div></div>');
+                    }else if(courierData.auditStatus=="-1"){
+                        $('[data-role="submitBtn"]').css("background-color","#DDDDDD");
+                        $('[data-role="submitBtn"]').html("已拒绝");
+                        $('.img-code-box').append('<div class="content-padded" style="font-size: 0.8rem;"><div class="row" ><div class="col" style="width: 90%;margin: auto;">您于'+courierData.auditTime+'审核不通过！</div></div></div>');
+                    }
+                }else{
+
+                }
+            }
+        }
+    });
+    
+    // 当企业名店铺号手机号都有内容 才能获取验证码
+    $('[name="phone"]').bind('input', function() {
+        showCodeBtn();
+    });
+    $('[name="eName"]').bind('input', function() {
+        if($('[name="eName"]').val()==""){
+            term = false;
+            $("#yhPhoneBtn").removeClass("yzmCai");
+            $("#yhPhoneBtn").addClass("yzmHui");
+        }else{
+            showCodeBtn();
+        }
+    });
+    $('[name="shopCode"]').bind('input', function() {
+        if($('[name="shopCode"]').val()==""){
+            term = false;
+            $("#yhPhoneBtn").removeClass("yzmCai");
+            $("#yhPhoneBtn").addClass("yzmHui");
+        }else{
+            showCodeBtn();
+        }
+    });
+    function showCodeBtn(){
+        if($('[name="phone"]').val().length==11&&isBtn){
+            if(/^1[3|4|5|8][0-9]\d{4,8}$/.test($('[name="phone"]').val())){
+                if($('[name="eName"]').val()!="" && $('[name="shopCode"]').val()!=""){
+                    term = true;
+                    $("#yhPhoneBtn").removeClass("yzmHui");
+                    $("#yhPhoneBtn").addClass("yzmCai");
+                }
+            }
+        }else{
+            term = false;
+            $("#yhPhoneBtn").removeClass("yzmCai");
+            $("#yhPhoneBtn").addClass("yzmHui");
+        }
+    }
+
+    $('#yhPhoneBtn').click(function(){
+        if(term){
+            $('[name="phone"]').css("max-width","5.5rem");
+            var wait=parseInt("59");
+            isBtn = false;
+            $.ajax({
+                type: "post",
+                url: "/weixin/sendShopCourierSMS",
+                data:{
+                    cellphone:$('[name="phone"]').val(),
+                    shopCode:$('[name="shopCode"]').val()
+                },
+                dataType: 'json',
+                complete: function(json) {
+                
+                    var data = json.response;
+                    var status = json.status;
+                    if(status != 200){
+                        wait=parseInt("29");
+                        $("#yhPhoneBtn").html("获取验证码"+wait+"s");
+                        $.alert('网络异常，状态为3.2' + status);
+                        return;
+                    }
+                    if ($.type(data) == 'string') {
+                        data = JSON.parse(data);
+                    }
+                    if(data.code != 'E00000'){
+                        wait=parseInt("29");
+                        $("#yhPhoneBtn").html("获取验证码"+wait+"s");
+                        $.alert(data.message);
+                        return;
+                    }else{
+                        $('[data-role="submitBtn"]').attr({"data-eName":$('[name="eName"]').val(),"data-shopCode":$('[name="shopCode"]').val(),"data-phone":$('[name="phone"]').val()});
+                    }
+                }
+            });
+            
+              
+            //倒计时
+            function time(o) {  
+                if (wait == 0) {  
+                    o.html("获取验证码");
+                    wait = parseInt("59");
+                    if($('[name="phone"]').val().length==11){
+                        if(/^1[3|4|5|8][0-9]\d{4,8}$/.test($('[name="phone"]').val())){
+                            if($('[name="eName"]').val()!="" && $('[name="shopCode"]').val()!=""){
+                                term = true;
+                                o.removeClass("yzmHui");
+                                o.addClass("yzmCai");
+                                isBtn = true;
+                                $('[name="phone"]').css("max-width","");
+                            }
+                        }
+                    }
+                } else {  
+                    term = false;
+                    o.removeClass("yzmCai");
+                    o.addClass("yzmHui");    
+                    o.html("获取验证码"+wait+"s");  
+                    wait--;  
+                    setTimeout(function() {  
+                        time(o)  
+                    },  
+                    1000)  
+                }  
+            } 
+            time($("#yhPhoneBtn")); 
+        }
+    });
+    $('[data-role="submitBtn"]').click(function(){
+        var submitBtn = $(this);
+        if(!$('[name="smsCode"]').val()&&!$('[name="userName"]').val()&&!$('[name="eName"]').val()&&!$('[name="shopCode"]').val()&&!$('[name="phone"]').val()){
+
+        }else{
+            if(submitBtn.attr("data-eName") && submitBtn.attr("data-shopCode") && submitBtn.attr("data-phone")){
+                if($('[name="smsCode"]').val() && $('[name="userName"]').val()){
+                    $.ajax({
+                        type: "post",
+                        url: "/weixin/saveShopCourier",
+                        data:{
+                            cellphone:submitBtn.attr("data-phone"),
+                            eName:submitBtn.attr("data-eName"),
+                            shopCode:submitBtn.attr("data-shopCode"),
+                            userName:$('[name="userName"]').val(),
+                            smsCode:$('[name="smsCode"]').val()
+                        },
+                        dataType: 'json',
+                        complete: function(json) {
+                            var data = json.response;
+                            var status = json.status;
+                            if(status != 200){
+                                $.alert('网络异常，状态为3.2' + status);
+                                return;
+                            }
+                            if ($.type(data) == 'string') {
+                                data = JSON.parse(data);
+                            }
+                            if(data.code != 'E00000'){
+                                $.alert(data.message);
+                                return;
+                            }else{
+                                $.alert("提交成功！");
+                            }
+                        }
+                    });
+                }else{
+                    $.alert("请填写验证码和姓名");
+                }
+            }else{
+                $.alert("请先填写必要信息");
+            }
+        }
+    });
+</script>
+</body>
+</html>

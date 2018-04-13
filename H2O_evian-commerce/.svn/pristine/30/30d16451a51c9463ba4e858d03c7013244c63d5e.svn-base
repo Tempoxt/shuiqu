@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/indexCss.vm")
+<body>
+    <div class="page-group">
+        <div class="page page-finish page-current page-searchShopOrProduct">
+            <header class="bar bar-nav search-bar light-nav" >
+                <a href="/weixin/home" class="icon icon-35icoback pull-left special-left"></a>
+                <div class="searchbar pull-left">
+                    <div class="search-input">
+                      <input type="search" id='search' placeholder='输入商家电话或品牌' />
+                    </div>
+                </div>
+                <a class="icon icon-111icosearch pull-right" data-role="search"></a>
+            </header>
+
+            <div class="content infinite-scroll" data-distance="100">
+                <ul class="show-list" data-role="list-container">
+                 
+                </ul>
+                
+            </div>
+            
+
+        </div>
+       
+    </div>
+    <script id="tpl" type="text/x-handlebars-template">
+        {{#each data}}
+        <li>
+            <a href="/weixin/products?shopId={{shopId}}">
+                <table>
+                   <tr>
+                       <td><img src="{{pictureUrl}}" alt=""></td>
+                       <td>
+                           <h4>{{shopName}}</h4>
+                           <div data-grade="{{grade}}">
+                                {{{showstars grade}}}
+                            </div>
+                           <p>起送价 ￥{{minSendPrice}} | 配送费 ￥ {{freight}} | {{sendOnTime}}分钟</p>
+                           <p>{{ceil distance}}km</p>
+                       </td>
+                   </tr>
+               </table>
+            </a>
+        </li>
+        {{/each}}
+    </script>
+
+#*加载JS文件*# 
+#parse("control/$!webStyle/publicJs.vm")
+#parse("control/$!webStyle/globalJs.vm")
+<script>
+    var appid = "";
+    $.ajax({
+            type: "get",
+            url: "/weixin/checkWeiXinLogin",
+            dataType: 'json',
+            async:false,
+            complete: function(json) {
+                
+                var data = json.response;
+                var status = json.status;
+                
+                if(status != 200){
+                    $.alert('网络异常9.2，状态为' + status);
+                    return;
+                }
+                if ($.type(data) == 'string') {
+                    data = JSON.parse(data);
+                }
+                
+                if(data.code != 'E00000'){
+                    if(data.code == "-1"){
+                        // window.location.href = "/weixin/bind";
+                    }else{
+                        $.alert(data.message);
+                        return;
+                    }
+                }else{
+                    appid = data.data.appid
+                    console.log(data.data.appid);
+                    // var appid = res.data.data.appid;
+                }
+                
+            }
+        });
+    //获取数据
+    var wxlocation = JSON.parse(localStorage.getItem("wxlocation"+appid));
+    var getData = function(articleTitle) {
+        $.ajax({
+            type: "post",
+            url: "/weixin/getBrandSearchShopsJson",
+            data: {
+                lat: wxlocation.lat,
+                lon: wxlocation.lon,
+                brand: articleTitle
+            },
+            dataType: 'json',
+            complete: function(json) {
+              
+                var status = json.status;
+                if(status != 200){
+                    $.alert('网络异常，状态为21.1' + status);
+                    return;
+                }
+                var data = json.response;
+               
+                if ($.type(data) == 'string') {
+                    data = JSON.parse(data);
+                }
+                if(data.code != 'E00000'){
+                    if(data.code == "-1"){
+                        window.location.href = "/weixin/bind";
+                    }else{
+                        $.alert(data.message);
+                        return;
+                    }
+                }else{
+                    if(data.data.shops.length>0){
+                        var tpl = $("#tpl").html();
+                        var template = Handlebars.compile(tpl);
+                        var context = {
+                            data: data.data.shops
+                        };
+                        var cont = template(context);
+                        
+                        $('[data-role="list-container"]').html(cont);
+                    }else{
+                        $.ajax({
+                            type: "post",
+                            url: "/weixin/getTelSearchShopsJson",
+                            data: {
+                                lat: wxlocation.lat,
+                                lon: wxlocation.lon,
+                                brand: articleTitle
+                            },
+                            dataType: 'json',
+                            complete: function(json) {
+                              
+                                var status = json.status;
+                                if(status != 200){
+                                    $.alert('网络异常，状态为21.1' + status);
+                                    return;
+                                }
+                                var data = json.response;
+                               
+                                if ($.type(data) == 'string') {
+                                    data = JSON.parse(data);
+                                }
+                                if(data.code != 'E00000'){
+                                    if(data.code == "-1"){
+                                        window.location.href = "/weixin/bind";
+                                    }else{
+                                        $.alert(data.message);
+                                        return;
+                                    }
+                                }else{
+                                    if(data.data.shops.length>0){
+                                        var tpl = $("#tpl").html();
+                                        var template = Handlebars.compile(tpl);
+                                        var context = {
+                                            data: data.data.shops
+                                        };
+                                        var cont = template(context);
+                                        
+                                        $('[data-role="list-container"]').html(cont);
+                                    }else{
+                                        $('[data-role="list-container"]').html('<div style="position:absolute;top:50%;left:50%;margin-top:-4rem;margin-left:-3rem;"><i class="icon icon-default" style="color:#ddd;display:block;text-align:center;"></i><span style="color:#bbb;">没有搜索到水店</span></div>');
+
+                                    }   
+                                }
+                            }
+                        });
+                    }
+                    
+                }
+            }
+        });
+    };
+ 
+    $(function() {
+        // $("#search").trigger("click").focus();
+        
+        $('[data-role="search"]').click(function(e){
+            e.preventDefault();
+            var searchval = $.trim($('#search').val());
+            if(searchval){
+                getData(searchval);
+            }else{
+                $.toast('请输入有效信息');
+            }
+        });
+    });
+   $.init();
+</script>
+</body>
+</html>

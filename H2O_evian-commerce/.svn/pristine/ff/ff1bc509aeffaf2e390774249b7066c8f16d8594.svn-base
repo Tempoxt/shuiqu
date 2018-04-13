@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/indexCss.vm")
+<body>
+    <div class="page-group">
+        <div class="page page-finish page-current">
+            <header class="bar bar-nav light-nav">
+                <a href="/weixin/account"><span class="icon icon-35icoback pull-left bar-left"></span></a>
+                <h1 class="title">优惠券</h1>
+                <a href="#" class="open-used"><svg class="icon icon-svg title-icon pull-right white-color" aria-hidden="true">
+                    <use xlink:href="#icon-101couponused"></use>
+                </svg></a>
+            </header>
+
+            <div class="content">
+                <ul class="discount-list" data-role="coupon-list">
+                    
+                    
+                </ul>
+            </div>
+        
+
+         
+        </div>
+       
+    </div>
+<div class="popup popup-detail">
+    <header class="bar bar-nav light-nav">
+        <span class="icon icon-35icoback pull-left close-detail bar-left" style="transform:rotate(-90deg);"></span>
+        <h1 class="title">优惠券详情</h1>
+        
+    </header>
+
+    <div class="content" data-role="detail-wrap">
+        
+    </div>
+</div>
+<div class="popup popup-used">
+    <header class="bar bar-nav light-nav">
+        <span class="icon icon-35icoback pull-left close-used bar-left" style="transform:rotate(-90deg);"></span>
+        <h1 class="title">已使用</h1>
+    </header>
+
+    <div class="content" style="background: #EFEFF4;">
+        <ul class="discount-list" data-role="used-list">
+            
+            
+        </ul>
+    </div>
+</div>
+<div class="popup popup-address">
+    <header class="bar bar-nav top-nav" id="bars" style="padding: 0;background-color:'';">
+        <span class="icon icon-35icoback close-address" style="margin:0;background-color:transparent;transform:rotate(270deg); "></span>
+        <a class="newLink" href="#"><span data-role="street" style="width: 24%;"></span></a>
+        <div class="searchbar">
+            <div class="search-input">
+                <a class="newDt" href="#">
+                    <svg class="icon icon-svg title-icon" aria-hidden="true" style="width: 1.2rem;left: 85%;">
+                        <use xlink:href="#icon-111icosearch"></use>
+                    </svg>
+                    <input type="search" name="brand" id='search' readonly="readonly" placeholder='选择地址' style="width: 95%" />
+                </a>
+            </div>
+        </div>
+        <input type="hidden" name="location" value="">
+    </header>
+
+    <div class="content" style="background: #EFEFF4;">
+        <ul class="show-list has-border" data-role="list-container">
+            
+            
+        </ul>
+    </div>
+</div>
+<!-- 地图定位 Popup -->
+<div class="popup popup-map-location">
+    <div class="content-block">
+        <header class="bar bar-nav light-nav">
+            <span class="icon icon-35icoback pull-left close-pop-map  bar-left" style="transform:rotate(270deg);"></span>  
+            <h1 class="title">当前定位</h1>
+        </header>
+        <div class="content" style="display:flex;flex-direction: column;justify-content: center;">
+            <div id="allmap" style="flex:1;"></div>
+            <div class="search-wrap" style="height:4.4rem;">
+                <!-- <input type="text" id="locationInfo" style="border:0px;width:100%; font-size:1rem;" /> -->
+                <input type="textarea" value="定位中..."  style="width:100%;height:50%;background-color: #fff;border:0;text-align:center;overflow: hidden;white-space: nowrap;text-overflow:ellipsis;" readonly="readonly" data-role="address" />
+                <input type="button" value="不在配送范围" class="submitBtn" style="width:50%;height:50%;background-color: #D9D9D9;border:0;float: left;border-right: 1px #FFF solid;"/>
+                <input type="button" value="查看店铺配送范围" class="showRange" style="width:50%;height:50%;background-color: #FAD603;border:0;border-left: 1px #FFF solid;" />
+            </div>
+            <!--<div class="search-wrap"><input type="text" id="suggestId"  placeholder="请输入关键字" /><input type="button" value="搜索" id="searchBtn" /></div>
+            <p class="location-notice">
+                您的收货地址是不是在这附近？
+            </p>
+            <ul id="r-result">
+                
+            </ul>-->
+        </div>
+    </div>
+</div>
+<script id="detailTpl" type="text/x-handlebars-template">
+    <div class="discount-wrap">
+        <img src="{{logoUrl}}" alt="">
+        <h4>{{pname}}专用</h4>
+        <h3>{{typeName}}</h3>
+        <!-- <p><a href="/weixin/address?from=coupon&codeid={{id}}" class="button button-fill btn-yello link">立即使用</a></p> -->
+        <p><a href="#" class="button button-fill btn-yello link">立即使用</a></p>
+        <p><a href="#" data-action="give-other" class="button button-fill btn-yello" data-code="{{code}}">赠送他人</a></p>
+        <p><span>有效期:{{begintime}}至{{overtime}}</span></p>
+    </div>
+    <ul class="discount-info">
+        <li><span>使用说明</span><em>一个订单只能使用一张优惠券</em></li>
+        <li><span>服务热线</span><em>{{tel}}</em></li>
+        <li><span>相关活动</span><em></em></li>
+    </ul>
+</script>
+<script id="couponTpl" type="text/x-handlebars-template">
+    
+    {{#each data}}
+        {{#is ifUse false}}
+        {{#is ifovertime false}}
+            <li>
+                <a href="" data-action="get-detail" data-logo="{{logoUrl}}" data-class="{{pname}}" data-type="{{typeName}}" data-tel="{{tel}}" data-overtime="{{overtime}}" data-reamrk="{{reamrk}}" data-code="{{code_no}}" data-id="{{code_id}}" data-begintime="{{begintime}}" data-cityId="{{cityId}}">
+                    <table>
+                        <tr>
+                            <td><img src="{{logoUrl}}" alt=""></td>
+                            <td>
+                                <h6>{{pname}}专用</h6>
+                                <p><span>{{convert_money}}元</span>优惠券</p>
+                            </td>
+                            <td>
+                                {{#is ifovertime true}}
+                                    <img src="http://7xlmry.com1.z0.glb.clouddn.com/passed.png" alt="">
+                                {{else}}
+                                    {{#is datelimit true}}
+                                        <img src="http://7xlmry.com1.z0.glb.clouddn.com/hasdate.png" alt="">
+                                    {{else}}
+                                        <img src="http://7xlmry.com1.z0.glb.clouddn.com/used.png" alt="">
+                                    {{/is}}
+                                {{/is}}
+                            </td>
+                        </tr>
+                    </table>
+                    <div>
+                        <span><i class="icon icon-46location"></i>{{cityName}}</span>
+                        <em>可用时间：{{begintime}}~{{overtime}}</em>
+                    </div>
+                </a>
+            </li>
+
+        {{/is}}    
+        {{/is}}
+        
+    {{/each}}
+    {{#is data.length 0}}
+        <li style="margin:8rem auto;text-align:center;background:#EFEFF4;"><i class="icon icon-no_coupon" style="display:block;text-align:center;font-size: 2.2rem;"></i><span style="color:#A3A6B0;font-size:0.7rem;">您还没有优惠券</span></li>
+    {{/is}}
+    
+</script>
+<script id="usedTpl" type="text/x-handlebars-template">
+    {{#each data}}
+        {{#is ifUse true}}
+        <li>
+            <a href="#" data-action="get-detail" data-logo="{{logoUrl}}" data-class="{{pname}}" data-type="{{typeName}}" data-tel="{{tel}}" data-overtime="{{overtime}}" data-reamrk="{{reamrk}}" data-begintime="{{begintime}}">
+                <table>
+                    <tr>
+                        <td><img src="{{logoUrl}}" alt=""></td>
+                        <td>
+                            <h6>{{pname}}专用</h6>
+                            <p><span>{{convert_money}}元</span>优惠券</p>
+                        </td>
+                        <td>
+                            <img src="http://7xlmry.com1.z0.glb.clouddn.com/hadused.png" alt="">
+                        </td>
+                    </tr>
+                </table>
+                <div>
+                    <span><i class="icon icon-46location"></i>{{cityName}}</span>
+                    <em>可用时间：{{begintime}}~{{overtime}}</em>
+                </div>
+            </a>
+        </li>
+        {{else}}
+        {{#is ifovertime true}}
+        <li>
+            <a href="" data-action="get-detail" data-logo="{{logoUrl}}" data-class="{{pname}}" data-type="{{typeName}}" data-tel="{{tel}}" data-overtime="{{overtime}}" data-reamrk="{{reamrk}}" data-begintime="{{begintime}}">
+                <table>
+                    <tr>
+                        <td><img src="{{logoUrl}}" alt=""></td>
+                        <td>
+                            <h6>{{pname}}专用</h6>
+                            <p><span>{{convert_money}}元</span>优惠券</p>
+                        </td>
+                        <td>
+                            <img src="http://7xlmry.com1.z0.glb.clouddn.com/hadused.png" alt="">
+                        </td>
+                    </tr>
+                </table>
+                <div>
+                    <span><i class="icon icon-46location"></i>{{cityName}}</span>
+                    <em>可用时间：{{begintime}}~{{overtime}}</em>
+                </div>
+            </a>
+        </li>
+        {{/is}}
+        {{/is}}
+    {{/each}}
+</script>   
+<script id="tpl" type="text/x-handlebars-template">
+    {{#each data}}
+    <li>
+        <a data-url="/weixin/codeProducts?shopId={{shopId}}&codeid={{../codeid}}" data-name="{{shopName}}" href="">
+            <table>
+               <tr>
+                   <td><img src="{{pictureUrl}}" alt=""></td>
+                   <td>
+                       <h4>{{shopName}}</h4>
+                       <div data-grade="{{grade}}">
+                            {{{showstars grade}}}
+                        </div>
+                       <p>起送价 ￥{{minSendPrice}} | 配送费 ￥ {{freight}} | {{sendOnTime}}分钟</p>
+                       <p>{{ceil distance}}km</p>
+                   </td>
+               </tr>
+            </table>
+        </a>
+   </li>
+    {{/each}}
+</script> 
+#*加载JS文件*# 
+#parse("control/$!webStyle/publicJs.vm")
+<script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=CFecNbZbabHRfdW8QCz40xqkvrNrB3Bu"></script>
+#parse("control/$!webStyle/globalJs.vm")
+    <script>
+    $(function() {
+
+        var appid = "";
+
+        $.ajax({
+            type: "get",
+            url: "/weixin/checkWeiXinLogin",
+            dataType: 'json',
+            complete: function(json) {
+                
+                var data = json.response;
+                var status = json.status;
+                
+                if(status != 200){
+                    $.alert('网络异常9.2，状态为' + status);
+                    return;
+                }
+                if ($.type(data) == 'string') {
+                    data = JSON.parse(data);
+                }
+                if(data.data){
+                    appid = data.data.appid;
+                }
+                
+                if(data.code != 'E00000'){
+                    if(data.code == "-1"){
+                        // window.location.href = "/weixin/bind";
+                    }else{
+                        $.alert(data.message);
+                        return;
+                    }
+                }else{
+                    appid = data.data.appid;
+                }
+                
+            }
+        });
+
+        //获取优惠券
+        var getCoupons = function(){
+            $.ajax({
+                type: "get",
+                url: "/weixin/getMyVouchers",
+                async:false,
+                dataType: 'json',
+                complete: function(json) {
+                  
+                    var data = json.response;
+                    var status = json.status;
+                    if(status != 200){
+                        $.alert('网络异常2.1，状态为' + status);
+                        return;
+                    }
+                    
+                    if ($.type(data) == 'string') {
+                        data = JSON.parse(data);
+                    }
+                    if(data.code != 'E00000'){
+                        if(data.code == "-1"){
+                            window.location.href = "/weixin/bind";
+                        }else{
+                            $.alert(data.message);
+                            return;
+                        }
+                    }else{
+                        var tpl = $("#couponTpl").html();
+                        var template = Handlebars.compile(tpl);
+                        var context = {
+                            data: data.data.vouchers
+                        };
+                        var cont = template(context);
+                        
+                        $('[data-role="coupon-list"]').html(cont);
+                        var count = [];
+                        for(var i=0;i<data.data.vouchers.length;i++){
+                            //如果没有使用过且没过期
+                            if(data.data.vouchers[i].ifUse==false && data.data.vouchers[i].ifovertime==false){
+                                count[i]=1; 
+                            }
+                        }
+                        if(count.length==0){
+                            $('[data-role="coupon-list"]').html('<li style="margin:8rem auto;text-align:center;background:#EFEFF4;"><i class="icon icon-no_coupon" style="display:block;text-align:center;font-size: 2.2rem;"></i><span style="color:#A3A6B0;font-size:0.7rem;">您还没有优惠券</span></li>')
+                        }
+                        var usedTpl = $("#usedTpl").html();
+                        var usedTemplate = Handlebars.compile(usedTpl);
+                        var Ucontext = {
+                            data: data.data.vouchers
+                        };
+                        var Ucont = usedTemplate(Ucontext);
+                        
+                        $('[data-role="used-list"]').html(Ucont);
+                    }
+                    
+                }
+            });
+        };
+        getCoupons();
+        //查看详情
+       $('[data-role="coupon-list"]').delegate("a", "click", function(e){
+            localStorage.setItem("couponCityId",$(this).attr("data-cityId"));
+            e.preventDefault();
+            var me = $(this),
+                action = me.data('action');
+
+                if(action == 'get-detail'){
+                    var logoUrl = me.data('logo'),
+                        begintime = me.data('begintime'),
+                        pname = me.data('class'),
+                        typeName = me.data('type'),
+                        tel = me.data('tel'),
+                        overtime = me.data('overtime'),
+                        code = me.data('code'),
+                        id = me.data('id'),
+                        reamrk = me.data('reamrk');
+
+                        var tpl = $("#detailTpl").html();
+                        var template = Handlebars.compile(tpl);
+                        var context = {
+                            begintime:begintime,
+                            logoUrl: logoUrl,
+                            pname: pname,
+                            typeName: typeName,
+                            tel: tel,
+                            overtime: overtime,
+                            code: code,
+                            id: id,
+                            reamrk: reamrk
+                        };
+                        var cont = template(context);
+                        
+                        $('[data-role="detail-wrap"]').html(cont);
+
+                        $.popup('.popup-detail');
+
+                        // 显示地址选项
+                        $('.link').click(function(){
+                            $.popup('.popup-address');
+                        });
+                        $('.close-address').click(function(){
+                            $.closeModal('.popup-address');
+                        });
+                        console.log(localStorage.getItem("wxlocation"+appid));
+                        var loc1 = JSON.parse(localStorage.getItem("wxlocation"+appid));
+                        if(loc1 && (loc1.lat)){
+                                lat = loc1.lat;
+                                lon = loc1.lon;
+                                if(loc1.street){
+                                    $('[data-role="street"]').html(loc1.street + '&gt;');
+                                }else{
+                                    $('[data-role="street"]').html(loc1.city + '&gt;');
+                                }
+                                $(".newLink").attr("href","/weixin/address?from=coupon&codeid="+id);
+                                var loc = lat+','+lon;
+                                localStorage.setItem("couponLocation",loc);
+                                
+                                localStorage.setItem("couponCode",id);
+                        
+                            var location = localStorage.getItem("couponLocation");
+                            var code_id = localStorage.getItem("couponCode");
+                            var cityId = localStorage.getItem("couponCityId");
+                            $.ajax({
+                                type: "get",
+                                url: "/weixin/voucherToShopByLocation?cityId=" + cityId + "&location=" + location + "&code_id=" + code_id,
+                                dataType: 'json',
+                                complete: function(json) {
+                                  
+                                    var data = json.response;
+                                    var status = json.status;
+                                    if(status != 200){
+                                        $.alert('网络异常6.1，状态为' + status);
+                                        return;
+                                    }
+                                    if ($.type(data) == 'string') {
+                                        data = JSON.parse(data);
+                                    }
+                                    if(data.code != 'E00000'){
+                                        if(data.code == "-1"){
+                                            window.location.href = "/weixin/bind";
+                                        }else{
+                                            $.alert(data.message);
+                                            return;
+                                        }
+                                    }else{
+                                        //console.log(data.data);
+                                        var tpl = $("#tpl").html();
+                                        var template = Handlebars.compile(tpl);
+                                        var context = {
+                                            data: data.data.shops,
+                                            codeid: code_id
+                                        };
+                                        var cont = template(context);
+
+                                        if(data.data.shops&&data.data.shops.length>0){
+                                            $('[data-role="list-container"]').html(cont);
+                                        }else{
+                                            $('[data-role="list-container"]').html('<li style="margin:8rem auto;text-align:center;background:#EFEFF4;border:none;"><i class="icon icon-no_coupon" style="display:block;text-align:center;font-size: 3rem;color:#A3A6B0;"></i><span style="color:#A3A6B0;font-size:0.9rem;">您所选区域暂无水店</span></li>');
+                                        }
+                                        
+                                        
+                                    }
+                                    
+                                }
+                            });
+                            $('[data-role="list-container"]').delegate("a", "click", function(e){
+                                e.preventDefault();
+                                var me = $(this),
+                                    url = me.data('url'),
+                                    shopName = me.data('name');
+
+                                    localStorage.setItem("shopName", shopName);
+                                    window.location.href = url;
+                            });
+                        }else{
+
+                        }
+
+                        // 百度地图API功能
+                        var map = new BMap.Map("allmap");
+                        var point = new BMap.Point(116.331398,39.897445);
+                        map.centerAndZoom(point,15);
+                        
+                        var geolocation = new BMap.Geolocation();
+                        var geoc = new BMap.Geocoder(); 
+                        
+                        //单击获取点击的经纬度
+                        map.addEventListener("click",function(e){
+                            sendLocationInfo(e, '');
+                        });
+
+                        // 是否可以提交
+                        var isSumbit = false;
+                        // 是否加载过浮层
+                        var isFuceng = false;
+
+                        $('.submitBtn').click(function(){
+                            if(isSumbit){
+                                $.ajax({
+                                type: "get",
+                                url: "/weixin/voucherToShopByLocation?cityId=" + cityId + "&location=" + $('input[name=location]').val() + "&code_id=" + code_id,
+                                dataType: 'json',
+                                complete: function(json) {
+                                  
+                                    var data = json.response;
+                                    var status = json.status;
+                                    if(status != 200){
+                                        $.alert('网络异常6.1，状态为' + status);
+                                        return;
+                                    }
+                                    if ($.type(data) == 'string') {
+                                        data = JSON.parse(data);
+                                    }
+                                    if(data.code != 'E00000'){
+                                        if(data.code == "-1"){
+                                            window.location.href = "/weixin/bind";
+                                        }else{
+                                            $.alert(data.message);
+                                            return;
+                                        }
+                                    }else{
+                                        //console.log(data.data);
+                                        var tpl = $("#tpl").html();
+                                        var template = Handlebars.compile(tpl);
+                                        var context = {
+                                            data: data.data.shops,
+                                            codeid: code_id
+                                        };
+                                        var cont = template(context);
+
+                                        if(data.data.shops&&data.data.shops.length>0){
+                                            $('[data-role="list-container"]').html(cont);
+                                        }else{
+                                            $('[data-role="list-container"]').html('<li style="margin:8rem auto;text-align:center;background:#EFEFF4;border:none;"><i class="icon icon-no_coupon" style="display:block;text-align:center;font-size: 3rem;color:#A3A6B0;"></i><span style="color:#A3A6B0;font-size:0.9rem;">您所选区域暂无水店</span></li>');
+                                        }
+                                        
+                                        
+                                    }
+                                    
+                                }
+                            });
+                            $('[data-role="list-container"]').delegate("a", "click", function(e){
+                                e.preventDefault();
+                                var me = $(this),
+                                    url = me.data('url'),
+                                    shopName = me.data('name');
+
+                                    localStorage.setItem("shopName", shopName);
+                                    window.location.href = url;
+                            });
+                        }else{
+
+                        }
+                        
+                            $.closeModal('.popup-map-location');
+                        });
+
+                        var from = getQueryString('from');
+
+                        // 从account页面进来没有店铺 只是单纯的新增地址
+                        if(!from){
+                            $('.showRange').hide();
+                            $('.submitBtn').css({"width":"100%","background-color":"#FAD603","border":"none"});
+                            $('.submitBtn').val("确定地址");
+                            isSumbit = true;
+                        }
+
+
+                        //定位浮层
+                        var mapFlag = 0;
+                        $(".newDt").click(function(){
+                            //搜索附近的地标
+                            geolocation.getCurrentPosition(function(r){
+                                if(this.getStatus() == BMAP_STATUS_SUCCESS){
+                                    //var mk = new BMap.Marker(r.point);
+                                    //map.addOverlay(mk);
+                                    //map.panTo(r.point);
+                                    mapFlag++;
+                                    if (mapFlag>1){
+                                        return;
+                                    }
+                                    sendLocationInfo(r, '');
+                                    console.log(r.point);
+                                    //alert('您的位置：'+r.point.lng+','+r.point.lat);
+                                    geoc.getLocation(r.point, function(rs){
+                                        var addComp = rs.addressComponents;
+                                        //alert(addComp.province + ", " + addComp.city + ", " + addComp.cityCode + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+                                        
+
+                                        //local.search(addComp.street);
+                                    }); 
+
+                                }
+                                else {
+                                    alert('failed'+this.getStatus());
+                                }        
+                            },{enableHighAccuracy: true})
+                            $.popup('.popup-map-location'); 
+                            $(document).on('click','.close-pop-map', function () {
+                                $.closeModal('.popup-map-location');
+                            });
+                        });
+
+                        function deletePoint(){
+                            var allOverlay = map.getOverlays();
+                            for (var i = 0; i < allOverlay.length -1; i++){
+                                //alert(allOverlay[i].toString());
+                                if (allOverlay[i].toString() == "[object Marker]")
+                                    map.removeOverlay(allOverlay[i]);
+                            }
+                        }
+
+                        function sendLocationInfo(e, t){
+                            //alert(e.point.lng + "," + e.point.lat);
+                            //map.clearOverlays();
+                            deletePoint();
+                            //var marker = new BMap.Marker(new BMap.Point(e.point.lng, e.point.lat)); // 创建点
+                            //map.addOverlay(marker); //增加点
+                            var mk = new BMap.Marker(e.point);
+                            map.addOverlay(mk);
+                            map.panTo(e.point);
+                            console.log(e.point); 
+                            if(from){
+                                for(var i=0;i<shopLocationArray.length;i++){
+                                    $.ajax({
+                                        type: "post",
+                                        url: "/weixin/baiduRailLocation",
+                                        data:{
+                                            "baiduRail":shopLocationArray[i],
+                                            "addressLocation":e.point.lng + ',' + e.point.lat
+                                        },
+                                        async: false,
+                                        dataType: 'json',
+                                        complete: function(json) {
+                                            var data = json.response;
+                                            count = data;
+                                            var status = json.status;
+                                            if(status != 200){
+                                                $.alert('网络异常，状态为11.2' + status);
+                                                return;
+                                            }
+                                            if ($.type(data) == 'string') {
+                                                data = JSON.parse(data);
+                                            }
+                                            if(data == "0"){
+                                                $('.submitBtn').css("background-color","#D9D9D9");
+                                                $('.submitBtn').val("不在配送范围");
+                                                isSumbit = false;
+                                            }else if(data == "1"){
+                                                $('.submitBtn').css("background-color","#FAD603");
+                                                $('.submitBtn').val("确定地址");
+                                                isSumbit = true;
+                                            }
+                                        }
+                                    });
+                                    if(isSumbit){
+                                        break;
+                                    }
+                                }
+                            }
+                            //初开页面
+                            if(t=="new"){
+                                drawShopLocation();
+                            }
+                                                                            
+                            geoc.getLocation(e.point, function(rs){
+                                var addComp = rs.addressComponents;
+                                 // var label = new BMap.Label(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber,{offset:new BMap.Size(-60,-20)});
+                                 // $('[data-role="address"]').val(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+                                 // mk.setLabel(label);  
+                                // var opts = {
+                                //   width : 200,     // 信息窗口宽度
+                                //   height: 50,     // 信息窗口高度
+                                //   title : "" , // 信息窗口标题
+                                //   enableMessage:false//设置允许信息窗发送短息
+                                // }
+                                //var infoWindow = new BMap.InfoWindow(addComp.province + addComp.city + addComp.district  + addComp.street + addComp.streetNumber, opts);  // 创建信息窗口对象
+                                //map.openInfoWindow(infoWindow,e.point);
+                                //alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+                                // $('#locationInfo').val(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+                                
+                                $('input[name=doorplate]').val(addComp.streetNumber);
+                                $('input[name=streetName]').val(addComp.street);
+                                $('input[name=streetDescribe]').val(addComp.city + "" + addComp.district);
+                                $('input[name=location]').val(e.point.lng + ',' + e.point.lat);
+                                $('[data-role="address"]').val(addComp.province+addComp.city+addComp.district+addComp.street+addComp.streetNumber);
+                                //$('.map-wrap .err-msg').remove();
+                                //$.closeModal('.popup-map-location');
+                            }); 
+                        }
+
+                }
+        });
+
+       $('.close-detail').click(function(){
+            $.closeModal('.popup-detail');
+       });
+       //转赠他人券
+       $('[data-role="detail-wrap"]').delegate("a:not(.link)", "click", function(e){
+            e.preventDefault();
+            var me = $(this),
+                action = me.data('action');
+
+                if(action == "give-other"){
+                    var code = me.data('code');
+
+                    $.prompt('请输入要赠送的人的手机号', '转赠券',
+                        function (value) {
+                         
+                          if($.trim(value)){
+                             $.ajax({
+                                type: "get",
+                                url: "/weixin/voucherGive",
+                                data: {
+                                    account: value,
+                                    code_no: code
+                                },
+                                dataType: 'json',
+                                complete: function(json) {
+                                  
+                                    var data = json.response;
+                                    var status = json.status;
+                                    if(status != 200){
+                                        $.alert('网络异常2.2，状态为' + status);
+                                        return;
+                                    }
+                                    if ($.type(data) == 'string') {
+                                        data = JSON.parse(data);
+                                    }
+                                    
+                                    if(data.code != 'E00000'){
+                                        if(data.code == "-1"){
+                                            window.location.href = "/weixin/bind";
+                                        }else{
+                                            $.alert(data.message);
+                                            flag=0;
+                                            return;
+                                        }
+                                    }else{
+                                        $.alert('转赠成功', function(){
+                                            window.location.reload();
+                                        });
+                                    }
+                                    
+                                }
+                            });   
+                          }else{
+                             $.alert('手机号不能为空！');
+                          }
+                        },
+                        function (value) {
+                          //$.alert('标签是 "' + value + '". You clicked Cancel button');
+                        }
+                    );
+                }
+        });
+       //查看已使用券
+       $('.open-used').click(function(){
+            $.popup('.popup-used');
+       });
+       $('.close-used').click(function(){
+            $.closeModal('.popup-used');
+       });
+       
+
+    });
+    $.init();
+    </script>
+</body>
+</html>

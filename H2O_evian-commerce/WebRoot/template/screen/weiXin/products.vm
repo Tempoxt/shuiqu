@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/indexCss.vm")
+<style type="text/css">
+    #code{  
+            font-family:Arial,宋体;  
+            font-style:italic;  
+            color:green;  
+            border:0;  
+            padding:2px 3px;  
+            letter-spacing:3px;  
+            font-weight:bolder;  
+        }  
+</style>
+<body>
+    <div class="page-group store-wrap">
+        <div class="page page-finish page-current page-products">
+            <header class="bar bar-nav light-nav">
+                <a href="/weixin/home" class="icon icon-35icoback pull-left bar-left" id="go-back"></a>  
+                <h1 class="title" data-role="store-name"></h1>
+            </header>
+            <div class="bar bar-header-secondary buttons-tab store-header-bar">
+                <a href="#tab1" class="tab-link active button" id="order">订水</a>
+                <a href="#tab2" class="tab-link button" id="evaluates">评价</a>
+                <a href="#tab3" class="tab-link button" id="shopInfo">商家</a>
+            </div>
+            <ul class="left-bar" data-role="product-bar">
+                               
+            </ul>
+            <div class="content">
+                
+                <div class="content-block">
+                    <div class="tabs">
+                      <div id="tab1" class="tab active">
+                        <div class="store-buy">
+                            <div class="tab-cont" data-role="product-list">
+                                
+                            </div>
+                        </div>
+                      </div>
+                      <div id="tab2" class="tab">
+                        <div class="content-block">
+                            <ul class="evaluate-list infinite-scroll" data-role="evaluate-list" data-distance="50">
+                                
+                            </ul>
+                            <!-- 加载提示符 拖拉加载，暂不开放 -->
+                            <div class="infinite-scroll-preloader">
+                                <div class="preloader">
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                      <div id="tab3" class="tab">
+                        <div class="content-block" data-role="shop-info">
+                          
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Block button in standard bar fixed above the footer -->
+            <div class="bar bar-footer order-bar">
+                
+                <svg class="icon-svg car" aria-hidden="true" >
+                    <a  href="/weixin/shoppingCar" data-role="goShop">
+                    <use xlink:href="#icon-shopping_ico_cart"></use>
+                    </a>
+                </svg>
+                <a href="/weixin/shoppingCar" class="badge" id="badgeNum" data-role="goShop">0</a>
+                <a href="/weixin/shoppingCar" class="button button-fill btn-yello" id="goShopCar">去购物车结算</a>
+            </div>
+        </div>
+        <!-- 资质证照-->
+        <div class="popup popup-certificate">
+            <div class="content-block">
+                <header class="bar bar-nav light-nav">
+                    <span class="icon icon-35icoback pull-left close-popup bar-left"></span>  
+                    <h1 class="title">证照信息</h1>
+                </header>
+                <div class="content" style="background-color: #F8F8F8;">
+                    <body onload='createCode()' style="">   
+                        <div style="width: 80%;margin: auto;margin-top: 2rem;">   
+                            <p style="margin-bottom:1rem;text-align: center;">请输入验证码查看证照信息</p>
+                            <input type = "tel" id = "input" style="height: 2rem;width: 50%;margin-right: 14%;margin-bottom: 10%;border: 1px #B9B9B9 solid;" />    
+                            <input type="button" id="code" onclick="createCode()" style="width:30%;height: 2rem;background-color: #B9B9B9;" title='点击更换验证码' />  
+                            <a href="#" class="button button-fill btn-yello" onclick = "validate()" style="height: 40px;line-height: 40px;font-size: 18px;">确定</a>
+                        </div>    
+                    </body>  
+                    <!-- <img src=""> -->
+                </div>        
+            </div>
+        </div>
+        <!-- 水店配送范围 -->
+        <div class="popup popup-waterShop-scope">
+            <div class="content-block">
+                <header class="bar bar-nav light-nav">
+                    <span class="icon icon-35icoback pull-left close-scope bar-left"></span>  
+                    <h1 class="title">水店配送范围</h1>
+                </header>
+                <div class="content" id="allmap">
+                    
+                </div>        
+            </div>
+        </div>
+        <!-- 查看该店所有品牌 -->
+        <div class="popup popup-brands-scope">
+            <div class="content-block">
+                <header class="bar bar-nav light-nav">
+                    <span class="icon icon-35icoback pull-left close-brands bar-left"></span>  
+                    <h1 class="title">经营品牌</h1>
+                </header>
+                <div class="content" id="brand">
+                    
+                </div>        
+            </div>
+        </div>
+    </div>
+    <script id="navTpl" type="text/x-handlebars-template">
+        {{#each data}}
+         <li>
+            <a {{#is cid 0}} class="active" data-role="type{{cid}}" {{/is}} href="#type{{cid}}" data-role="type{{cid}}"><div style="font-size: 16px;overflow: hidden;height: 40px;text-overflow: ellipsis;white-space: nowrap;">{{className}}</div></a>
+        </li>
+        {{/each}}
+    </script>
+    <script id="productTpl" type="text/x-handlebars-template">
+        {{#each data}}
+        <h4 id="type{{cid}}">{{className}}</h4>
+        <ul>
+            {{#each products}}
+            <li>
+                <a href="/weixin/productDetail?pid={{pid}}&shopId={{../../shopId}}"  data-fristFreeTag="{{fristFreeTag}}" style="display:block;">
+                    <table>
+                        <tr>
+                            <td>
+                                <!-- <img src="/files/images/default_bucket.png" onload='this.src="{{pictureUrl}}"'> -->
+                                <img src="{{pictureUrl}}" alt="">
+                                <svg class="icon icon-svg activity-tag" aria-hidden="true">
+                                    {{#is fristFreeTag 11}}
+                                    <use xlink:href="#icon-free"></use>
+                                    {{/is}}
+                                    {{#is fristFreeTag 12}}
+                                    <use xlink:href="#icon-half"></use>
+                                    {{/is}}
+                                </svg>
+                            </td>
+                            <td>
+                                <h5>{{pname}}</h5>
+                                <p>已销售{{salesNum}}份{{#is sellTag 1}}<i class="tag">热销</i>{{/is}}{{#is sellTag 2}}<i class="tag">推荐</i>{{/is}}{{#is sellTag 3}}<i class="tag">优惠</i>{{/is}}{{#is sellTag 4}}<i class="tag">套餐</i>{{/is}}</p>
+                                <div>
+                                    <span>￥ {{vipPrice}}</span>
+                                    {{#is ifshowcart}}
+                                    <p class="car-count" data-action="add-cart" data-pid="{{pid}}" style="padding-left: 0;">
+                                        <em data-action="minus" style="display: none;" data-pid="{{pid}}">
+                                            <svg class="icon-svg" aria-hidden="true">
+                                                <use xlink:href="#icon-shopping_btn_num_minus"></use>
+                                            </svg>
+                                        </em>
+                                        
+                                        <input type="hidden" name="num" data-sum="0" value="0" data-pid="{{pid}}"><i  style="padding: 0;margin:0;font-style:normal;width:0.8rem;text-align:center; font-size:0.8rem;height: 1.2rem;vertical-align: top;display: none;" data-pid="{{pid}}">0</i>
+                                        
+                                        
+                                        <em data-action="add" data-pid="{{pid}}">
+                                            <svg class="icon-svg" aria-hidden="true">
+                                               <use xlink:href="#icon-shopping_btn_num_add"></use>
+                                            </svg> 
+                                        </em>
+                                    </p>
+                                    {{/is}}
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </a>
+            </li>
+            {{/each}}
+        </ul>
+        {{/each}}
+    </script>
+    <script id="evaluateTpl" type="text/x-handlebars-template">
+        {{#each data}}
+        <li>
+            <table>
+                <tr>
+                    <td>
+                        {{#unless photo}}
+                        <img src="/files/images/$!webStyle/default.png" alt="">
+                        {{else}}
+                        <img src="{{photo}}" alt="">
+                        {{/unless}} 
+                    </td>
+                    <td>
+                        <h5>{{userName}}<span class="time">{{createDate}}</span></h5>
+                    </td>
+
+                </tr>
+            </table>
+            <div style="width: 0;height: 0;border: 10px #F2F2F2 solid;border-right-color: transparent;border-left-color: transparent;border-top-color: transparent;position: relative;left: 10px;">
+                <div style="width: 0;height: 0;border: 10px #FFFFFF solid;border-right-color: transparent;border-left-color: transparent;border-top-color: transparent;position: absolute;left: -10px;top: -8px;"></div>
+            </div>
+            <div style="border: 1px #F2F2F2 solid;box-shadow: 0 2px 2px 1px #eee;padding-top: 10px;border-radius: 6px;">
+            {{#each projectMaps}}
+            <p class="evaluate">{{{showstars grade }}}&nbsp;&nbsp;&nbsp;&nbsp;{{projectName}}&nbsp;<span style="color: red;">{{grade}}星</span>&nbsp;{{tags}}</p>
+            {{/each}}
+            <p style="width: 94%;border-top: 1px #F2F2F2 dashed;margin: auto;margin-top: 8px;"></p>
+            <p class="userEvaluate" style="margin-left: 4%;margin-right: 4%;padding-bottom: 0.5rem;">{{content}}</p>
+            </div>
+        </li>
+        {{/each}}
+        
+    </script>
+    <script id="shopTpl" type="text/x-handlebars-template">
+        <ul style="margin-bottom: 5px;">
+          <li>
+            <div class="store-box">
+                <div class="img-wrap" style="display: inline-block;width: 60%;">
+                    <div class="img-box">
+                        <img src="{{data.shopMap.pictureUrl}}">
+                    </div>
+                    <div style="display: inline-block;vertical-align: -webkit-baseline-middle;">
+                        <h5>{{data.shopMap.shopName}}</h5>
+                        <span style="font-size: 14px;color:#6d6d72;">{{data.shopMap.integrityYear}}</span>
+                        <span style="font-size: 14px;color:#6d6d72;">{{data.shopMap.chainNum}}</span>
+                    </div>
+                </div>
+                <div style="display: inline-block;font-size: 15px;padding: 5px 0 5px 10px;margin-left: -10px;border-left: 1px #EFEFF4 solid;">平均送达:<span style="color: #F9A550;">{{data.shopMap.sendOnTime}}</span>分钟</div>
+            </div>
+        </li>
+      </ul>
+      <ul class="store-info-list" style="margin-bottom: 5px;">
+          <li>
+              <!-- <i class="icon icon-42icotime"></i> -->
+              <p><span style="color: #000;">送水时间 &nbsp;</span>{{data.shopMap.startTime}}-{{data.shopMap.endTime}}</p>            
+          </li>
+          <li>
+              <a href="tel:{{data.shopMap.tel}}" style="display: block;">
+              <p style="color:#6d6d72;"><span style="color: #000;">商家电话 &nbsp;</span>{{data.shopMap.tel}}</p>
+              <i class="icon pull-right icon-ico_tel1" style="text-decoration: none;float: right;text-align: right;"></i>
+              </a>           
+          </li>
+          <li class="open-publicWxCode">
+              <p><span style="color: #000;">店铺二维码</span></p>       
+              <img src="/files/images/qcd@3x.png" style="width: 7%;text-decoration: none;float: right;margin:0.2rem 0.2rem 0.2rem 0;">
+          </li>
+          <li class="open-about">
+              <p><span style="color: #000;">证照信息</span></p>
+              <img src="/files/images/Shape@3x.png" style="width: 7%;text-decoration: none;float: right;margin:0.2rem 0.2rem 0.2rem 0;">
+          </li>
+      </ul>
+      <ul class="store-info-list">
+          <li class="open-scope" style="padding-right: 7px;">
+              <p><span style="color: #000;">配送范围</span></p>
+              <u class="icon icon-ico_awwor_right" style="text-decoration: none;float: right;color: #000;"></u>
+          </li>
+          <li>
+              <!-- <i class="icon icon-42icotime"></i> -->
+              <p><span style="color: #000;">开店时间 &nbsp;</span>{{data.shopMap.openDate}}</p>            
+          </li>
+      </ul>
+      <p style="padding: 10px;" style="color: #000;font-weight: 600;">经营品牌</p>
+      <ul class="store-info-list" style="margin-bottom: 1rem;">
+          <li>
+              <div class="content-padded">
+                <div class="row" >
+                    {{#each data.brands}}
+                    <div class="col-50" style="border: 1px #EFEFF4 solid;margin-bottom: 10px;">
+                        <div style="display: inline-block;width: 50%;vertical-align: -webkit-baseline-middle;"><img style="width: 100%;" src="{{pictureUrl}}"></div>
+                        <div style="display: inline-block;"><p style="width: 64px;height: 24px; margin: 10px 0 -10px -4px;font-size: 16px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{brandName}}</p></div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+          </li>
+      </ul>
+      <ul class="store-info-list" id="showBands" style="margin-bottom: 1rem;">
+        <li style="padding-right: 7px;">
+            <u class="icon icon-ico_awwor_right" style="text-decoration: none;float: right;color: #000;"></u>
+            <div class="content-padded" style="margin:1px;margin-top: 5px;">
+                <div class="row" style="margin-left: 0;">
+                    <div class="col" style="color: #000;">
+                        查看该店所有品牌
+                    </div>
+                </div>
+            </div>
+        </li>
+      </ul>
+      <!-- <div class="store-box">
+            <div class="img-wrap">
+                <div class="img-box">
+                    <img src="{{data.pictureUrl}}" />
+                </div>
+                <div class="laodian">
+                    <span>{{data.integrityYear}}</span>
+                    <span>{{data.chainNum}}</span>
+                </div>
+                
+            </div>
+          
+          <h4>{{data.shopName}}</h4>
+          <p data-grade="{{data.grade}}">
+             {{{showShopStars data.grade}}}
+          </p>
+          <span class="distance" data-role="distance"></span>
+      </div>
+      <div class="store-info">
+          <table>
+              <tr>
+                  <th><span>{{data.sendOnTime}}</span>分</th>
+                  <th>￥<span>{{data.minSendPrice}}</span></th>
+                  <th>￥<span>{{data.freight}}</span></th>
+              </tr>
+              <tr>
+                  <td>平均送达时间</td>
+                  <td>起送价</td>
+                  <td>配送费</td>
+              </tr>
+          </table>
+      </div>
+      <ul class="store-info-list">
+          <li>
+              <i class="icon icon-42icotime"></i>
+              <p><span>送水时间:</span>{{data.startTime}}-{{data.endTime}}</p>            
+          </li>
+          <li>
+              <i class="icon icon-41icolocal"></i>
+              <p><span>水店地址:</span>{{data.address}}</p>       
+          </li>
+          <li>
+              <a href="tel:{{data.tel}}" style="display: block;">
+              <i class="icon icon-ico_tel1"></i>
+              <p style="color:#6d6d72;"><span>水店电话:</span>{{data.tel}}</p>
+              </a>           
+          </li>
+          <li class="open-scope">
+              <i class="icon icon-ico_map"></i>
+              <p><span>水店配送范围</span></p>
+              <u class="icon icon-ico_awwor_right" style="text-decoration: none;float: right;"></u>
+          </li>
+      </ul>
+      <div class="b-licence"><i class="icon icon-zhengjian"></i><p><span>资质证照</span></p></div>
+      <ul class="certi-wrap">
+         
+      </ul> -->
+    </script>
+    <script id="brandsTpl" type="text/x-handlebars-template">
+      <ul class="store-info-list" style="margin-bottom: 1rem;">
+          <li>
+              <div class="content-padded">
+                <div class="row" >
+                    {{#each data}}
+                    <div class="col-50" style="border: 1px #EFEFF4 solid;margin-bottom: 10px;">
+                        <div style="display: inline-block;width: 50%;vertical-align: -webkit-baseline-middle;"><img style="width: 100%;" src="{{pictureUrl}}"></div>
+                        <div style="display: inline-block;"><p style="width: 64px;height: 24px; margin: 10px 0 -10px -4px;font-size: 16px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{brandName}}</p></div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+          </li>
+      </ul>
+    </script>
+    #*加载JS文件*# 
+    #parse("control/$!webStyle/publicJs.vm")
+    <script type='text/javascript' src='/files/common/js/selector.js' charset='utf-8'></script>
+    <!-- <script type='text/javascript' src='https://cdn.shuiqoo.cn/$!webStyle/selector.js' charset='utf-8'></script> -->
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=CFecNbZbabHRfdW8QCz40xqkvrNrB3Bu"></script>
+    #parse("control/$!webStyle/globalJs.vm")
+    <script>
+
+        var appid = "";
+        var certificateUrl = "";
+        $.ajax({
+            type: "get",
+            url: "/weixin/checkWeiXinLogin",
+            dataType: 'json',
+            async:false,
+            complete: function(json) {
+                
+                var data = json.response;
+                var status = json.status;
+                
+                if(status != 200){
+                    $.alert('网络异常9.2，状态为' + status);
+                    return;
+                }
+                if ($.type(data) == 'string') {
+                    data = JSON.parse(data);
+                }
+                if(data.data){
+                    appid = data.data.appid;
+                }
+                if(data.code != 'E00000'){
+                    if(data.code == "-1"){
+                        // window.location.href = "/weixin/bind";
+                    }else{
+                        $.alert(data.message);
+                        return;
+                    }
+                }else{
+                    appid = data.data.appid
+                    console.log(data.data.appid);
+                    // var appid = res.data.data.appid;
+                }
+                
+            }
+        });
+        var eid = getQueryString('eid'),
+            evaluateId = 0;
+            pageSize = 3,
+            loading = true,
+            shopId = parseInt(getQueryString('shopId'));
+        // console.log(eid);
+        // var distance = getQueryString('distance');
+        
+            //判断返回链接
+            var productBar = $('[data-role="product-bar"]');
+            productBar.delegate("a", "click", function(e){
+
+                $(".content").unbind('scroll',winscroll());
+                $('[data-role="product-bar"] a').removeClass('active');
+                $(this).addClass('active');
+                $(".content").bind('scroll',winscroll);
+            });
+            
+            var shopId = parseInt(getQueryString('shopId'));
+            var geturl = "/weixin/getShopProduct?shopId=" + shopId;
+            
+            $.ajax({
+                type: "get",
+                url: geturl,
+                dataType: 'json',
+                complete: function(json) {
+                  
+                    var data = json.response;
+                    var status = json.status;
+                    if(status != 200){
+                        $.alert('网络异常，状态为19.1' + status);
+                        return;
+                    }
+                    if ($.type(data) == 'string') {
+                        data = JSON.parse(data);
+                    }
+                    if(data.code != 'E00000'){
+                        if(data.code == "-1"){
+                            window.location.href = "/weixin/bind";
+                        }else{
+                            $.alert(data.message);
+                            return;
+                        }
+                    }else{
+                        var shopName = data.data.shopName;
+                        $('[data-role="store-name"]').html(shopName);
+                        // console.log(data.data);
+                        var navTpl = $("#navTpl").html();
+                        var productTpl = $("#productTpl").html();
+                        var navTemplate = Handlebars.compile(navTpl);
+                        var proTemplate = Handlebars.compile(productTpl);
+                        var context = {
+                            data: data.data.shopProducts,
+                            shopId: shopId
+                        };
+                        var navCont = navTemplate(context);
+                        var proCont = proTemplate(context);
+                        
+                        productBar.html(navCont);
+                        $('[data-role="product-list"]').html(proCont);
+
+                        // console.log($('#type36').offset());
+                        // $('[data-role="product-list"]').find('h4').eq(0).css({position:'relative'});
+                        
+                        winscroll();
+                        // $('.tab-cont ul li img').attr('src',$('this').attr('imgsrc'));
+                        $.ajax({
+                            type: "get",
+                            url: "/weixin/getShopCartProductJson",
+                            dataType: 'json',
+                            complete: function(json) {
+                            
+                                var data = json.response;
+                                var status = json.status;
+                                if(status != 200){
+                                    $.alert('网络异常，状态为3.2' + status);
+                                    return;
+                                }
+                                if ($.type(data) == 'string') {
+                                    data = JSON.parse(data);
+                                }
+                                if(data.code != 'E00000'){
+                                    if(data.code == "-1"){
+                                        window.location.href = "/weixin/bind";
+                                    }else{
+                                        $.alert(data.message);
+                                        return;
+                                    }
+                                  
+                                }else{
+                                    var productNumber = 0;
+                                    if(data.data.shopcarts.length>=1){
+                                        for(var i=0,len=data.data.shopcarts.length;i<len;i++){
+                                            if(data.data.shopcarts[i].shopId==shopId){
+                                            
+                                                for(var j=0;j<data.data.shopcarts[i].products.length;j++){
+                                                    productNumber += data.data.shopcarts[i].products[j].number;
+                                                    for(var k=0;k<$('.car-count').length;k++){
+                                                        // console.log(k);
+                                                        if($('.car-count').eq(k).data('pid')==data.data.shopcarts[i].products[j].pid){
+                                                            $('.car-count').eq(k).find('input[type="hidden"]').val(data.data.shopcarts[i].products[j].number);
+                                                            $('.car-count').eq(k).find('i').show().html(data.data.shopcarts[i].products[j].number);
+                                                            $('.car-count').eq(k).find('[data-action="minus"]').show();
+                                                            
+                                                        }
+                                                    }
+                                                    
+                                                }
+                                            }else{
+                                                
+                                                for(var j=0;j<data.data.shopcarts[i].products.length;j++){
+                                                    productNumber += data.data.shopcarts[i].products[j].number;
+                                                }
+                                               
+                                                
+                                            }
+
+                                        }
+                                        
+                                    }else{
+                                        $("#goShopCar").addClass('gray-color');
+                                        $("#goShopCar").on('click',function(e){
+                                            e.preventDefault();
+
+                                        })
+                                        $("[data-role='goShop']").on('click',function(e){
+                                            e.preventDefault();
+                                        });
+                                    }
+                                    $("#badgeNum").html(productNumber);
+
+                                }
+                              
+                            }
+                        });
+                        
+                    }
+                    
+                }
+            });
+            
+            //获取评价
+            var getData = function(method) {
+                $.ajax({
+                    type: "get",
+                    url: "/weixin/getShopEvaluate",
+                    data: {
+                        shopId: shopId,
+                        // type: 1,
+                        // pageIndex: pageIndex
+                        evaluateId:evaluateId
+                    },
+                    async:false,
+                    dataType: 'json',
+                    complete: function(json) {
+                      
+                        var data = json.response;
+                        var status = json.status;
+                        if(status != 200){
+                            $.alert('网络异常，状态为19.2' + status);
+                            return;
+                        }
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if(data.code != 'E00000'){
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                                return;
+                            }
+                        }else{
+                            setTimeout(function(){
+                               $('.infinite-scroll-preloader').show(); 
+                            },1000);
+                            // debugger;
+                            if(data.data.count>0){
+                                 
+                                var evaluateTpl = $("#evaluateTpl").html();
+                                var template = Handlebars.compile(evaluateTpl);
+                                var context = {
+                                    data: data.data.evaluates
+                                };
+                                var cont = template(context);
+                                var count = data.data.count-1;
+                                evaluateId = data.data.evaluates[count].evaluateId
+                                console.log(data.data.evaluates[count].evaluateId);
+                                // evaluateId = data.data.evaluates
+                                // $('[data-role="evaluate-list"]').html(cont);
+                                if(method == 'pull'){ 
+                                    $('[data-role="evaluate-list"]').append(cont);
+                                    $('.infinite-scroll-preloader').hide();
+                                }else{
+                                    $('[data-role="evaluate-list"]').html(cont);
+                                }
+                                loading = false;
+
+                                if(data.data.count < 10){
+                                    $('.infinite-scroll-preloader').remove();
+                                    loading = true;
+                                }
+                            }else{
+                                loading = true;
+                                $('.infinite-scroll-preloader').remove();
+                                if(data.data.count < 1){
+                                    $('[data-role="evaluate-list"]').height($('.native-scroll').height());
+                                    $('[data-role="evaluate-list"]').html('<div class="defaut-wrapp" style="padding: 5rem 1rem 1rem;color: #b7b8b7;" ><span class="icon icon-88tipicoorder" style="display: block;font-size: 3rem;width: 3rem;height: 3rem;margin: 0 auto 2rem;"></span><h2 class="def-note" style="font-size: 0.8rem;text-align: center;">小店新开张，暂无评价</h2></div>');
+                                }
+                            }
+                            $.refreshScroller();
+                        }
+                        
+                        
+                    }
+                });
+            };
+            $('#evaluates').click(function(e){
+                if($(this).hasClass('active')){return;}
+                loading = false;
+                $('.order-bar').hide();
+                productBar.hide();
+                // $.ajax({
+                //     type: "get",
+                //     url: "/weixin/getMyOrShopEvaluates",
+                //     data: {
+                //         shopId: shopId,
+                //         type: 1,
+                //         pageIndex: 1
+                //     },
+                //     dataType: 'json',
+                //     complete: function(json) {
+                      
+                //         var data = json.response;
+                //         var status = json.status;
+                //         if(status != 200){
+                //             $.alert('网络异常，状态为19.2' + status);
+                //             return;
+                //         }
+                //         if ($.type(data) == 'string') {
+                //             data = JSON.parse(data);
+                //         }
+                //         if(data.code != 'E00000'){
+                //             $.alert(data.message);
+                //             return;
+                //         }else{
+                //             if(data.data.count>0){
+                //                 var evaluateTpl = $("#evaluateTpl").html();
+                //                 var template = Handlebars.compile(evaluateTpl);
+                //                 var context = {
+                //                     data: data.data.evaluates
+                //                 };
+                //                 var cont = template(context);
+                //                 $('[data-role="evaluate-list"]').html(cont);
+                //             }
+                            
+                //             $('.infinite-scroll-preloader').hide();
+                //         }
+                        
+                //     }
+                // });
+                getData();
+            });
+            //获取门店信息
+            $('#shopInfo').click(function(e){
+                $('.order-bar').hide();
+                productBar.hide();
+                $.ajax({
+                    type: "get",
+                    url: "/weixin/getShopById",
+                    async:false,
+                    data: {
+                        shopId: shopId
+                    },
+                    dataType: 'json',
+                    complete: function(json) {
+                      
+                        var data = json.response;
+                        
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if(data.code != 'E00000'){
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                                return;
+                            }
+                        }else{
+                            // console.log(data.data);
+                            var shopTpl = $("#shopTpl").html();
+                            var template = Handlebars.compile(shopTpl);
+                            var barands1 = data.data.brands;
+                            if(data.data.brands.length>4){
+                                var brands2=[];
+                                for(var i =0; i<4;i++){
+                                    brands2.push(data.data.brands[i]);
+                                }
+                                data.data.brands=brands2;
+                            }
+
+                            var context = {
+                                data: data.data
+                            };
+                            var cont = template(context);
+                            
+                            $('[data-role="shop-info"]').html(cont);
+
+                            var certificate = data.data.shopMap.certificate;
+                            certificateUrl = data.data.shopMap.certificate;
+                            var arrCer = certificate.split(";");
+                            var cerStr = "";
+                            for(var i = 0; i < arrCer.length; i++){
+                                cerStr = cerStr + '<a class="open-about"><li><img src="' + arrCer[i] + '" /></li></a>';
+                            }
+
+                            $('.open-publicWxCode').click(function(){
+                                if(data.data.shopMap.publicWxCode){
+                                    $.alert('<img style="max-width:240px;" src="'+data.data.shopMap.publicWxCode+'">');
+                                }else{
+                                    $.alert('暂无二维码');
+                                }
+                            });
+
+                            $('#showBands').click(function(){
+                                console.log(barands1);
+                                var context2 = {
+                                    data: barands1
+                                };
+                                var brandsTpl = $("#brandsTpl").html();
+                                var template1 = Handlebars.compile(brandsTpl);
+                                var cont2 = template1(context2);
+                                $('#brand').html(cont2);
+                                $.popup('.popup-brands-scope');
+                                $('.close-brands').on('click',function(e){
+                                    $.closeModal('.popup-brands-scope');
+                                });
+
+                            });
+
+                            $('.certi-wrap').html(cerStr);
+                            // 百度地图API功能    
+                            var map = new BMap.Map("allmap");
+                            var waterShopLocation = data.data.shopMap.location.split(",");
+                            var shopPoint = new BMap.Point(waterShopLocation[0],waterShopLocation[1]);
+                            //获取我当前的位置离水店的距离
+                            var location = JSON.parse(localStorage.getItem("wxlocation"+appid));
+                            var myPoint = new BMap.Point(location.lat,location.lon);
+                            var distance = Math.floor(map.getDistance(shopPoint,myPoint));
+            
+                            if(distance>=1000){
+                                distance /=1000;
+                                $('[data-role="distance"]').html(distance+"km");
+                            }else{
+                                $('[data-role="distance"]').html(distance+"m");
+                            }
+                            
+                            $('[data-role="shop-info"]').delegate(".open-scope","click",function(e){
+                                e.preventDefault();
+                                $.popup('.popup-waterShop-scope');
+                                // 百度地图API功能    
+                                var map = new BMap.Map("allmap");
+                                var waterShopLocation = data.data.shopMap.location.split(",");
+                                var shopPoint = new BMap.Point(waterShopLocation[0],waterShopLocation[1]);
+
+                                var send_location = data.data.shopMap.sendLocation;
+                                var shopPhoto = data.data.shopMap.pictureUrl;
+                                var locationLen = send_location.length;
+                                
+                                map.centerAndZoom(shopPoint,12);
+                                map.enableScrollWheelZoom();
+
+
+                                
+                                // function addMarker(photo,point){  // 创建图标对象   
+                                //     var myIcon = new BMap.Icon(photo,new BMap.Size(40,30), {    
+                                          
+                                //     });      
+                                //         // 创建标注对象并添加到地图   
+                                //     var marker = new BMap.Marker(point, {icon: myIcon});    
+                                //     map.addOverlay(marker);    
+                                // }
+                                // addMarker(shopPhoto,shopPoint);
+                                // 复杂的自定义覆盖物
+                                function ComplexCustomOverlay(point){
+                                    this._point = point;
+                                       
+                                }
+                                ComplexCustomOverlay.prototype = new BMap.Overlay();
+                                ComplexCustomOverlay.prototype.initialize = function(map){
+                                    this._map = map;
+                                    var div = this._div = document.createElement("div");
+                                    div.className = 'shopLogo';
+                                    div.style.position = "relative";
+                                    div.style.zIndex = BMap.Overlay.getZIndex(this._point.lat);
+                                    div.style.height = "55px";
+                                    div.style.width="55px";
+                                    div.style.background="url(/files/images/01.png)";
+                                    div.style.backgroundSize="55px 55px";
+                                    div.style.backgroundRepeat="no-repeat";
+                                    var arrow = this._arrow = document.createElement("img");
+                                    arrow.src = shopPhoto;
+                                    arrow.style.width = "40px";
+                                    arrow.style.height = "30px";
+                                    arrow.style.position = "absolute";
+                                    arrow.style.top = "7px";
+                                    arrow.style.left = "8px";
+                                    div.appendChild(arrow);
+                                
+                              
+                                     
+                                    map.getPanes().labelPane.appendChild(div);       
+                                    return div;
+                                   
+                                }
+
+                                ComplexCustomOverlay.prototype.draw = function(){
+                                    var map = this._map;
+                                    var pixel = map.pointToOverlayPixel(this._point);
+                                    this._div.style.left = pixel.x - parseInt(this._arrow.style.left) + "px";
+                                    this._div.style.top  = pixel.y - 30 + "px";
+                                }
+
+                                var myCompOverlay = new ComplexCustomOverlay(new BMap.Point(waterShopLocation[0],waterShopLocation[1]));
+                                 
+                                map.addOverlay(myCompOverlay);//将标注添加到地图中
+
+
+
+
+
+                            // debugger;
+                            //百度围栏
+                            var zuobiaoArray = [];
+                            for(var l=0;l<locationLen;l++){
+                                // console.log(send_location[l]);
+                                // var zuobiao = send_location[l];
+                                zuobiaoArray.push(new BMap.Point(send_location[l].lng,send_location[l].lat));
+                            }
+                            var polygon = new BMap.Polygon(zuobiaoArray, {strokeColor:"red", strokeWeight:2, strokeOpacity:0.5}); 
+                             //创建多边形
+                             // console.log(polygon);
+                            map.addOverlay(polygon);   //增加多边形
+                            
+                            })
+                            $('.close-scope').on('click',function(e){
+                                e.preventDefault();
+                                $.closeModal('.popup-waterShop-scope');
+                                $('.shopLogo').remove();
+                            });
+                        }
+                        
+                    }
+                });
+            });
+            $(document).on('click', '.open-about', function() {
+                
+                $.popup('.popup-certificate');
+                // $(".popup-certificate .content img").attr('src',$(this).find('img').attr('src'));
+            });
+            $('#order').click(function(e){
+                $('.order-bar').show();
+                productBar.show();
+            });
+            //加入购物车
+            // $('[data-role="product-list"]').delegate("p", "click", function(e){
+            //     e.preventDefault();
+            //     var me = $(this),
+            //         action = me.data('action');
+
+
+            //         if(action == 'add-cart'){
+            //             var pid = parseInt(me.data('pid'));
+            //             var product = [{
+            //                 "shopId": shopId,
+            //                 "pid": pid,
+            //                 "number": 1
+            //             }];
+
+            //             $.ajax({
+            //                 type: "post",
+            //                 url: "/weixin/editShopCart",
+            //                 data:{
+            //                     products:JSON.stringify(product)
+            //                 },
+            //                 dataType: 'json',
+            //                 complete: function(json) {
+                              
+            //                     var data = json.response;
+                                
+            //                     if ($.type(data) == 'string') {
+            //                         data = JSON.parse(data);
+            //                     }
+            //                     if(data.code != 'E00000'){
+            //                         $.alert(data.message);
+            //                         return;
+            //                     }else{
+                                    
+            //                         $.toast("添加成功");
+            //                     }
+                                
+            //                 }
+            //             });
+            //         }
+            // });
+            //数量加减
+            $('[data-role="product-list"]').delegate("em", "click", function(e){
+                e.preventDefault();
+                // debugger;
+                var me = $(this),
+                    numbox = me.siblings('input'),
+                    show = me.siblings('i'),
+                    action = me.data('action'),
+                    numValue = 0,
+                    pid = parseInt(me.data('pid'));
+                    // console.log(eTicketMax);
+                    //新增商品
+                    if(action == 'add'){
+                        numValue = parseInt(numbox.val()) + 1;
+                        if(numValue>0){
+                            // $(this).siblings().show();
+                            for(var i=0,len=$(".car-count").length;i<len;i++){
+                                if($(".car-count").eq(i).data('pid')==pid){
+                                    $(".car-count").eq(i).find('i').show();
+                                    $(".car-count").eq(i).find('[data-action="minus"]').show();
+                                }
+                                
+                            }
+                        }
+                        $("#badgeNum").html(Number($("#badgeNum").html())+1);
+                    //删减商品                   
+                    }else if(action == 'minus'){
+                        if(numbox.val() > 1){
+                            numValue = parseInt(numbox.val()) - 1;
+                        }else if(numbox.val() == 1){
+                            numValue = 0;
+                            for(var i=0,len=$(".car-count").length;i<len;i++){
+                                if($(".car-count").eq(i).data('pid')==pid){
+                                    $(".car-count").eq(i).find('i').hide();
+                                    $(".car-count").eq(i).find('[data-action="minus"]').hide();
+                                }
+                                
+                            }
+                            
+                        }
+                        $("#badgeNum").html(Number($("#badgeNum").html())-1);
+                    }
+                    
+                    var product = [{
+                        "shopId": shopId,
+                        "pid": pid,
+                        "number": numValue,
+                        "settleStyle":"现金"
+                    }];
+                    //商品总数大于0
+                    if(numValue>0){
+                        $.ajax({
+                            type: "post",
+                            url: "/weixin/editShopCart",
+                            data:{
+                                products:JSON.stringify(product)
+                            },
+                            dataType: 'json',
+                            complete: function(json) {
+                              
+                                var data = json.response;
+                                
+                                if ($.type(data) == 'string') {
+                                    data = JSON.parse(data);
+                                }
+                                if(data.code != 'E00000'){
+                                    if(data.code == "-1"){
+                                        window.location.href = "/weixin/bind";
+                                    }else{
+                                        $.alert(data.message);
+                                        return;
+                                    }
+                                }else{
+                                    $.ajax({
+                                        type: "get",
+                                        url: "/weixin/getShopCartProductJson",
+                                        dataType: 'json',
+                                        complete: function(json) {
+                                        
+                                            var data = json.response;
+                                            var status = json.status;
+                                            if(status != 200){
+                                                $.alert('网络异常，状态为3.2' + status);
+                                                return;
+                                            }
+                                            if ($.type(data) == 'string') {
+                                                data = JSON.parse(data);
+                                            }
+                                            if(data.code != 'E00000'){
+                                                if(data.code == "-1"){
+                                                    window.location.href = "/weixin/bind";
+                                                }else{
+                                                    $.alert(data.message);
+                                                    return;
+                                                }
+                                              
+                                            }else{
+                                                if(data.data.shopcarts.length>=1){
+                                                    $("#goShopCar").removeClass('gray-color');
+                                                    $("#goShopCar").unbind('click');
+                                                    $("[data-role='goShop']").unbind('click');
+                                                }
+                                            }
+                                        }
+                                    });
+                                    // $.toast("添加成功");
+                                }
+                                
+                            }
+                        });
+                    //商品总数为0
+                    }else{
+                        $.ajax({
+                            type: "post",
+                            url: "/weixin/editShopCart",
+                            data:{
+                                tag:"DEL",
+                                products:JSON.stringify(product)
+                            },
+                            dataType: 'json',
+                            complete: function(json) {
+                              
+                                var data = json.response;
+                                
+                                if ($.type(data) == 'string') {
+                                    data = JSON.parse(data);
+                                }
+                                if(data.code != 'E00000'){
+                                    if(data.code == "-1"){
+                                        window.location.href = "/weixin/bind";
+                                    }else{
+                                        $.alert(data.message);
+                                        return;
+                                    }
+                                }else{
+                                    $.ajax({
+                                        type: "get",
+                                        url: "/weixin/getShopCartProductJson",
+                                        dataType: 'json',
+                                        complete: function(json) {
+                                        
+                                            var data = json.response;
+                                            var status = json.status;
+                                            if(status != 200){
+                                                $.alert('网络异常，状态为3.2' + status);
+                                                return;
+                                            }
+                                            if ($.type(data) == 'string') {
+                                                data = JSON.parse(data);
+                                            }
+                                            if(data.code != 'E00000'){
+                                                if(data.code == "-1"){
+                                                    window.location.href = "/weixin/bind";
+                                                }else{
+                                                    $.alert(data.message);
+                                                    return;
+                                                }
+                                              
+                                            }else{
+                                                if(data.data.shopcarts.length==0){
+                                                    $("#goShopCar").addClass('gray-color');
+                                                    $("#goShopCar").bind('click',function(e){
+                                                        e.preventDefault();
+                                                    });
+                                                    $("[data-role='goShop']").bind('click',function(e){
+                                                        e.preventDefault();
+                                                    });
+                                                }
+                                            }
+                                        }
+                                    });
+                                    // $.toast("删除成功");
+                                }
+                                
+                            }
+                        });
+                    }
+                    
+                    for(var i=0,len=$(".car-count").length;i<len;i++){
+                        if($(".car-count").eq(i).data('pid')==pid){
+                            $(".car-count").eq(i).find('input').val(numValue)
+                            $(".car-count").eq(i).find('i').html(numValue)
+                        }
+                        
+                    }
+                    
+                    
+                    
+            });
+
+
+        
+        // $(window).scroll(function(e){
+        //     debugger;
+        //     console.log(111);
+        //     if($(window).scrollTop()>=box_top){
+        //         console.log(e);
+        //         // $box.css({position:'fixed', top:0});
+        //     }else{
+        //         // $box.css({position:'static'});
+        //     }
+        // });
+        function winscroll(){
+            var offsetTop = [];
+            for(var i=0,len=$('[data-role="product-list"]').find('h4').length;i<len;i++){
+                offsetTop[i] = {scroll:$('[data-role="product-list"]').find('h4').eq(i).offset().top-90,tagName:$('[data-role="product-list"]').find('h4').eq(i).attr('id'),name:$('[data-role="product-list"]').find('h4').eq(i).html()}
+                // offsetTop[i].push(name:$('[data-role="product-list"]').find('h4').eq(i).data('role'))
+            }
+            // console.log($('[data-role="product-list"]').find('h4'));
+
+            // var offsetTop = $('#type36').offset().top-90;
+            // console.log(offsetTop);
+            $(".content").bind('scroll',function(e){
+                
+                // console.log($(".content").scrollTop());
+                for(var k=0;k<len;k++){
+                    if($(".content").scrollTop()>=offsetTop[k].scroll){
+
+                        // debugger;
+                        $('[data-role="product-bar"] a').removeClass('active');
+                        // debugger;
+                        $("[data-role="+offsetTop[k].tagName+"]").addClass('active');
+                        // $('[data-role="product-list"]').find('h4').eq(0).html(offsetTop[k].name);
+                        // $('[data-role="product-list"]').find('h4').eq(k).css({position:'fixed', top:'89px',zIndex:'1000',width:'100%'});
+                        // $('[data-role="product-list"]').find('h4').eq(k).siblings().css({position:'static'});
+                        // $('[data-role="product-list"]').find('h4')
+                    }
+                }
+                // if($(".content").scrollTop()>=offsetTop){
+                //     // debugger;
+                //     $('[data-role="product-bar"] a').removeClass('active');
+                //     $("[data-role='type36']").addClass('active');
+                // }
+                console.log($(".content").scrollTop());
+
+                // $('[data-role="product-list"]').find('h4')
+            });
+        }
+        $(document).on("pageInit", function(e, id, page) {
+            
+            $(page).on('infinite', function() {
+                // debugger;
+                // console.log(loading);
+                // 如果正在加载，则退出
+                if (loading) return;
+
+                // 设置flag
+                loading = true;
+                
+                //新增一页
+                // evaluateId = evaluateId + 1;
+
+                getData('pull');
+
+                
+            });
+        });
+        var code ; //在全局定义验证码    
+          
+        function createCode(){  
+             code = "";     
+             var codeLength = 4;//验证码的长度    
+             var checkCode = document.getElementById("code");     
+             var random = new Array(0,1,2,3,4,5,6,7,8,9,'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R',    
+             'S','T','U','V','W','X','Y','Z');//随机数
+             // var random = new Array(0,1,2,3,4,5,6,7,8,9);
+             for(var i = 0; i < codeLength; i++) {//循环操作    
+                var index = Math.floor(Math.random()*10);//取得随机数的索引（0~35）    
+                code += random[index];//根据索引取得随机数加到code上    
+            }    
+            checkCode.value = code;//把code值赋给验证码    
+        }  
+        //校验验证码    
+        function validate(){    
+            var inputCode = document.getElementById("input").value.toUpperCase(); //取得输入的验证码并转化为大写          
+            if(inputCode.length <= 0) { //若输入的验证码长度为0    
+                $.alert("请输入验证码！"); //则弹出请输入验证码    
+            }else if(inputCode != code ) { //若输入的验证码与产生的验证码不一致时    
+                $.alert("验证码输入错误!"); //则弹出验证码输入错误    
+                createCode();//刷新验证码    
+                document.getElementById("input").value = "";//清空文本框    
+            }else { //输入正确时    
+                var arrCer = certificateUrl.split(";");
+                var cerStr = "";
+                $(".popup-certificate .content").html('');
+                for(var i = 0; i < arrCer.length; i++){
+                    // cerStr = cerStr + '<a class="open-about"><li><img src="' + arrCer[i] + '" /></li></a>';
+                    $(".popup-certificate .content").html($(".popup-certificate .content").html()+'<img src="'+arrCer[i]+'">');
+                } 
+            }  
+        }
+        $.init();
+    </script>
+</body>
+</html>

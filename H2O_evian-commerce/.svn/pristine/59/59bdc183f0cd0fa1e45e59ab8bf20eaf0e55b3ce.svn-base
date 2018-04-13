@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/indexCss.vm")
+<body>
+    <div class="page-group">
+        <div class="page page-finish page-current">
+            <header class="bar bar-nav search-bar light-nav">
+                <a href="javascript:history.go(-1)"><span class="icon icon-35icoback pull-left  bar-left special-left"></span></a>
+                <span class="icon pull-left choose-location" data-role="choose-city"><i data-role="city">选城市</i><em class="icon icon-63navbaricoarrowdown"></em></span>
+                
+                <div class="searchbar pull-left location-search">
+                    <div class="search-input">
+                      <input type="search" id='search' placeholder='输入地址寻找周边水店'/>
+                    </div>
+                </div>
+                <a href="" class="icon icon-111icosearch" data-role="handle-search" for="search"></a>
+            </header> 
+
+            <div class="content city-content">
+                <ul id="r-result"></ul>
+                <div class="title-list-wrap">
+                    <h4>定位地址</h4>
+                    <table class="now-location">
+                        <tr>
+                            <td data-code="" data-role="street" data-loc=""></td>
+                            <td>
+                                <!-- <span data-role="location" class="icon icon-47location1"></span> -->
+                                <a href="#" class="button button-fill btn-yello" data-role="location" >定位当前位置</a>
+                            </td>
+
+                        </tr>
+                    </table>
+                </div>
+                <input type="hidden" data-code="" data-role="streetName">
+                <div class="title-list-wrap" data-role="address-list" >
+                    <!-- <h4>我的收获地址</h4> -->
+                    <!-- <table class="now-location">
+                        <tr>
+                            <td data-code="" data-role="street"></td>
+                            <td>
+                                <span data-role="location" class="icon icon-47location1"></span>
+                                <a href="#" class="button button-fill btn-yello" data-role="location" >定位当前位置</a>
+                            </td>
+
+                        </tr>
+                    </table> -->
+                </div>
+                <div class="title-list-wrap" data-role="history-list" >
+                    
+                </div>
+                <!-- <div class="test" style="width:100%; height:5rem; position:absolute; bottom:0; left:0;"></div> -->
+            </div>
+        </div>
+       
+    </div>
+<!-- all city Popup -->
+<div class="popup popup-all-city">
+    <div id="l-map" style="display:none;"></div>  
+    <header class="bar bar-nav light-nav">
+        <h1 class="title">选择城市</h1>
+        <svg class="icon icon-svg title-icon pull-right close-all-city" aria-hidden="true">
+            <use xlink:href="#icon-28icoclose"></use>
+        </svg>   
+    </header>
+    <div class="content-block city-box" data-role="city-box">
+        <div class="title-list-wrap">
+            <h4>热门城市</h4>
+            <div class="list-hot-city">
+                
+                #foreach($hostcity in $allCity.hotCitys)
+                  <a data-action="choose-here" data-id="$hostcity.cityId" href="">$hostcity.cityName</a>
+                #end
+            </div>
+        </div>
+        <div class="title-list-wrap">
+            <h4>选择城市</h4>
+            <div class="list-city">
+                #foreach($city in $allCity.allCitys)
+                  <a data-first="$city.firstLetter" data-action="choose-here" data-id="$city.cityId" href="">$city.cityName</a>
+                #end
+            </div>
+        </div>
+    </div>
+</div>
+<script id="addressTpl" type="text/x-handlebars-template">
+    {{#is data.length '>' 0}}
+    <h4>我的收获地址</h4>
+    {{#each data}}
+    {{#is streetName}}
+        <ul class="my-address" data-code="{{cityId}}" data-role="myAddress" data-location="{{location}}" data-city="{{cityName}}" data-streetname="{{streetName}}">
+            <li class="personal-info">{{contacts}}&nbsp;&nbsp;&nbsp;&nbsp;{{phone}}</li>
+            <li class="street-name">{{streetName}}</li>
+        </ul>
+    {{else}}
+        <ul class="my-address" data-code="{{cityId}}" data-role="myAddress" data-location="{{location}}" data-city="{{cityName}}" data-streetname="{{streetName}}">
+            <li class="personal-info">{{contacts}}&nbsp;&nbsp;&nbsp;&nbsp;{{phone}}</li>
+            <li class="street-name">{{streetDescribe}}</li>
+        </ul>
+    {{/is}}
+    {{/each}}
+    {{/is}}
+</script>
+<script id="historyTpl" type="text/x-handlebars-template">
+    {{#is data}}
+    <h4>历史记录</h4>
+    {{#each data}}
+    <ul class="my-history" data-code="{{cityId}}" data-role="myAddress" data-lat="{{lat}}" data-lon="{{lon}}" data-city="{{city}}" data-street="{{street}}">
+        <li class="personal-info">{{city}}</li>
+        <li class="street-name">{{street}}</li>
+    </ul>
+    {{/each}}
+    <p id="clearHistory">清空历史记录</p>
+    {{/is}}
+</script>
+#*加载JS文件*# 
+#parse("control/$!webStyle/publicJs.vm")
+<script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=CFecNbZbabHRfdW8QCz40xqkvrNrB3Bu"></script>  
+#parse("control/$!webStyle/globalJs.vm")  
+<script>
+    // debugger;
+    // wx.ready(function() {
+    //     // 1 判断当前版本是否支持指定 JS 接口，支持批量判断
+    //     wx.checkJsApi({
+    //         jsApiList: [
+    //             'getNetworkType',
+    //             'previewImage'
+    //         ],
+    //         success: function(res) {
+    //             aa();
+    //         },
+    //         fail: function(res) {
+    //             //alert("不支持最新SDK");
+                
+    //         }
+    //    });
+    // });  
+    //获取用户地址
+    var getUserAddress = function(){
+        $.ajax({
+            type: "get",
+            url: "/weixin/userAddress",
+            async:'false',
+            dataType: 'json',
+            complete: function(json) {
+              
+                var data = JSON.parse(json.response);
+                var status = json.status;
+
+                if(status != 200){
+                    $.alert('网络异常，状态为11.2' + status);
+                    return;
+                }
+                if ($.type(data) == 'string') {
+                    data = JSON.parse(data);
+                }
+                if(data.code != 'E00000'){
+
+                    if(data.code == "-1"){
+                        //用户未注册会跳转到city页面，所以在此不做处理
+                        // window.location.href = "/weixin/bind";
+                    }else{
+                        $.alert(data.message);
+                        return;
+                    }
+                }else{
+                    
+                        var tpl = $("#addressTpl").html();
+                        var template = Handlebars.compile(tpl);
+                        var context = {
+                            data: data.data
+                        };
+                        var cont = template(context);
+                        
+                        $('[data-role="address-list"]').html(cont);
+                        //获取历史记录
+                        var historyAddress = localStorage.getItem("historyAddress");
+                        
+                        if(historyAddress){
+                            
+                            var historyTpl = $("#historyTpl").html();
+                            var historyTemplate = Handlebars.compile(historyTpl);
+                            var historyContext = {
+                                data:JSON.parse(historyAddress)
+                            };
+                            
+                            var historyCont = historyTemplate(historyContext);
+                            
+                            $('[data-role="history-list"]').html(historyCont);
+                            $("#clearHistory").on('click',function(){
+                                $.confirm('确认清除历史记录?',function(){
+                                    localStorage.removeItem("historyAddress");
+                                    $('[data-role="history-list"]').html("");
+                                });
+                            }); 
+                        }   
+                    
+                }
+                
+            }
+        });
+    };
+    $.ajax({
+        type: "get",
+        url: "/weixin/checkWeiXinLogin",
+        dataType: 'json',
+        complete: function(json) {
+            
+            var data = json.response;
+            var status = json.status;
+            
+            if(status != 200){
+                $.alert('网络异常9.2，状态为' + status);
+                return;
+            }
+            if ($.type(data) == 'string') {
+                data = JSON.parse(data);
+            }
+            
+            if(data.code != 'E00000'){
+                if(data.code == "-1"){
+                    // window.location.href = "/weixin/bind";
+                }else{
+                    $.alert(data.message);
+                    return;
+                }
+            }else{
+                getUserAddress();
+            }
+            
+        }
+    });
+    
+
+
+    var locationFlag = 0;
+    var map = new BMap.Map("l-map");
+    var point = new BMap.Point(116.331398,39.897445);
+    map.centerAndZoom(point,12);
+    
+        
+        
+        // $('[data-role="location"]').trigger('click');
+    
+    // function aa(){
+        
+    //         // debugger;
+    //         locationFlag++;
+    //         console.log(locationFlag);
+    //         // console.log(locationFlag);
+    //         if(locationFlag>1){
+    //             return;
+                
+    //         }
+    //         $("[data-role='location']").css({"backgroundColor":"#ddd"});
+
+    //         getWxLocation();
+    // }
+    //保存当前城市定位
+    function saveCity(id,loc){
+        // if(id == ""){
+        //     // getWxLocation();
+            
+        //     getWxLocationNow();
+        //     return;
+        // }
+        // alert(id);
+        $.ajax({
+            type: "get",
+            url: "/weixin/saveCity?cityId="+id+"&location="+loc,
+            dataType: 'json',
+            complete: function(json) {
+                var data = json.response;
+                var status = json.status;
+                if(status != 200){
+                    $.alert('网络异常9.1，状态为' + status);
+                    return;
+                }
+                if ($.type(data) == 'string') {
+                    data = JSON.parse(data);
+                }
+                if(data.code != 'E00000'){
+                    
+                    if(data.code == "-1"){
+                        $.alert(data.message, function(){
+                            // window.location.href = "/weixin/bind";
+                        });
+                    }else{
+                        $.alert(data.message);
+                        return;
+                    }
+                    
+                }else{
+                    // alert(loc);
+                    window.location.href = "/weixin/home?num="+Math.random();
+                    // $.ajax({
+                    //     type: "get",
+                    //     url: "/weixin/checkWeiXinLogin",
+                    //     dataType: 'json',
+                    //     complete: function(json) {
+                          
+                    //         var data = json.response;
+                    //         var status = json.status;
+                    //         if(status != 200){
+                    //             $.alert('网络异常9.2，状态为' + status);
+                    //             return;
+                    //         }
+                    //         if ($.type(data) == 'string') {
+                    //             data = JSON.parse(data);
+                    //         }
+                    //         if(data.code != 'E00000'){
+                    //             if(data.code == "-1"){
+                    //                 window.location.href = "/weixin/bind";
+                    //             }else{
+                    //                 $.alert(data.message);
+                    //                 return;
+                    //             }
+                    //         }else{
+                    //             // debugger;
+                    //             window.location.href = "/weixin/home?num="+Math.random();
+                    //         }
+                            
+                    //     }
+                    // });
+                }
+                
+            }
+        });
+    }
+    /*$('.test').click(function(){
+        $.alert(3333333);
+        wx.getLocation({
+          complete: function (res) {
+            $.alert('微信坐标：' + JSON.stringify(res));
+            
+          },
+          cancel: function (res) {
+            $.alert('用户拒绝授权获取地理位置');
+          }
+        });
+    });*/
+    //百度获取坐标
+    var geolocation = new BMap.Geolocation();
+    function getNowLocation(){
+            geolocation.getCurrentPosition(function(r){
+                if(this.getStatus() == BMAP_STATUS_SUCCESS){
+                    var mk = new BMap.Marker(r.point);
+                    map.addOverlay(mk);
+                    map.panTo(r.point);
+                    //alert('百度坐标：'+r.point.lng+','+r.point.lat);
+                    $.ajax({
+                        url: "/weixin/changeWxLocationToBaidu?lat=" + r.point.lat + "&lon=" + r.point.lng,
+                        type: "get",
+                        dataType: "json",
+                        complete: function(result) {
+                            var status = result.status;
+                            var data = result.response;
+                            if(status != 200){
+                                $.alert('网络异常9.4，状态为' + status);
+                                return;
+                            }
+                            if ($.type(data) == 'string') {
+                                data = JSON.parse(data);
+                            }
+                            if(data.code != "E00000"){
+                                if(data.code == "-1"){
+                                    $.alert(data.message, function(){
+                                        // window.location.href = "/weixin/bind";
+                                    });
+                                }else{
+                                    $.alert(data.message);
+                                    return;
+                                }
+                            }else{
+                                // alert(data);
+                                localStorage.setItem("wxlocation",JSON.stringify(data));
+                                map.centerAndZoom(data.city,11);
+                                $('[data-role="city"]').html(data.city);
+                                $('[data-role=city]').attr('data-id', data.cityId);
+                                $('[data-role="street"]').attr('data-code', data.cityId);
+                                $('[data-role="street"]').html(data.street);
+                                $('[data-role="streetName"]').attr('data-code', data.cityId);
+                                $('[data-role="streetName"]').val(data.street);
+                            }
+                        }
+                    });
+                    
+            
+
+                }
+                else {
+                    alert('failed'+this.getStatus());
+                }        
+            },{enableHighAccuracy: true})
+    }
+    //定位中的状态
+    function locationing(){
+        $('[data-role="street"]').unbind('click');
+        var old = $('[data-role="street"]').html();
+        var str = "定位中...";
+        $('[data-role="street"]').html(str);
+        var timer = setInterval(function(){
+            if(!resMsg){
+                $.hidePreloader();
+                $.alert('暂未获取定位，可手动选取城市后再搜索详细地址。');
+            }
+            $('[data-role="street"]').html(old);
+                // str +=".";
+                
+                // if($('[data-role="street"]').html()=="定位中..."){
+                //     str = "定位中";    
+                // }
+                // $('[data-role="street"]').html(str);
+                
+            // }
+        },5000);
+    }
+    //获取微信定位坐标
+    function getWxLocation(){
+        // var resMsg = "";
+        // $.showPreloader('正在获取坐标');
+        // locationing();
+
+        $('[data-role="street"]').unbind('click');
+        var old = $('[data-role="street"]').html();
+        var str = "定位中...";
+        $('[data-role="street"]').html(str);
+        
+
+        var resMsg = "";
+        setTimeout(function(){
+            if(!resMsg){
+                $('[data-role="street"]').html(old);
+                $('[data-role="street"]').click(function(){
+                    //code是城市id
+                    var code = $(this).data('code');
+                    var loc = $(this).data('loc');
+                    // alert(code);
+                    if(code || code == 0){
+                        //保存城市
+                        saveCity(code,loc);
+                    }else{
+                        //获取定位信息
+                        getWxLocation();
+                    }
+                });
+                // $('[data-role="location"]').css({"backgroundColor":"#FAD603"});
+                $('[data-role="location"]').addClass('public-color');
+                locationFlag = 0;
+                $.alert('暂未获取定位，可手动选取城市后再搜索详细地址。');
+            }
+        },10000);
+        wx.ready(function() {
+            // 1 判断当前版本是否支持指定 JS 接口，支持批量判断
+            wx.checkJsApi({
+                jsApiList: [
+                    'getNetworkType',
+                    'previewImage'
+                ],
+                success: function(res) {
+                    
+                    
+                    wx.getLocation({
+                      complete: function (res) {
+                        // $.hidePreloader();
+                        // alert('微信坐标：' + JSON.stringify(res));
+                        var resMsg = res.errMsg;
+                        // alert(resMsg);
+                        if(res.errMsg == "getLocation:ok"){
+                            $.ajax({
+                                url: "/weixin/changeWxLocationToBaidu?lat=" +  res.latitude + "&lon=" +  res.longitude,
+                                type: "get",
+                                async:false,
+                                dataType: "json",
+                                complete: function(result) {
+                                   //  debugger;
+                                   // $.alert('changeWxLocationToBaidu：' + JSON.stringify(result));
+                                   var data = result.response;
+                                   var status = result.status;
+                                    if(status != 200){
+                                        $.alert('网络异常9.3，状态为' + status);
+                                        return;
+                                    }
+                                    if ($.type(data) == 'string') {
+                                        data = JSON.parse(data);
+                                    }
+                                    if(data.code != "E00000"){
+                                        $.alert('定位失败:' + data.code);
+                                        if(data.code == -1){
+                                            $.alert(data.message, function(){
+                                                // window.location.href = "/weixin/bind";
+                                            });
+                                        }else{
+                                            $.alert(data.message);
+                                            return;
+                                        }
+                                    }else{
+                                        // debugger;
+                                        // console.log(data);
+                                        
+                                        localStorage.setItem("wxlocation",JSON.stringify(data));
+                                        map.centerAndZoom(data.city,11);
+                                        var loc = data.lat+","+data.lon;
+                                        $('[data-role="city"]').html(data.city);
+                                        $('[data-role=city]').attr('data-id', data.cityId);
+                                        $('[data-role="street"]').attr('data-code',data.cityId);
+                                        $('[data-role="street"]').attr('data-loc',data.lat+","+data.lon);
+                                        $('[data-role="street"]').html(data.street);
+                                        $('[data-role="streetName"]').attr('data-code',data.cityId);
+                                        $('[data-role="streetName"]').val(data.street);
+                                        
+                                        //code是城市id
+                                        var code = $('[data-role="streetName"]').attr('data-code');
+                                        // console.log(code);
+                                        if(code || code == 0){
+                                            //保存城市
+                                            saveCity(code,loc);
+                                        }
+                                    }
+                                }
+                            });
+                        }else{
+                            $.alert('暂未获取定位，可手动选取城市后再搜索详细地址。');
+                            // $('[data-role="street"]').html(old);
+                            // getNowLocation();
+                        }
+                        
+                      },
+                      cancel: function (res) {
+                        // $.hidePreloader();
+                        $.alert('用户拒绝授权获取地理位置');
+                      }
+                    });
+                },
+                fail: function(res) {
+                    alert("不支持最新SDK");
+                    
+                }
+           });
+        }); 
+        
+
+    }
+    // function getWxLocationNow(){
+
+    //     // var resMsg = "";
+    //     // $.showPreloader('正在获取坐标');
+    //     wx.getLocation({
+    //       complete: function (res) {
+    //         // $.hidePreloader();
+    //         // $.alert('微信坐标：' + JSON.stringify(res));
+    //         var resMsg = res.errMsg;
+    //         if(res.errMsg == "getLocation:ok"){
+    //             $.ajax({
+    //                 url: "/weixin/changeWxLocationToBaidu?lat=" +  res.latitude + "&lon=" +  res.longitude,
+    //                 type: "get",
+    //                 async:false,
+    //                 dataType: "json",
+    //                 complete: function(result) {
+    //                    //  debugger;
+    //                    // $.alert('changeWxLocationToBaidu：' + JSON.stringify(result));
+    //                    var data = result.response;
+    //                    var status = result.status;
+    //                     if(status != 200){
+    //                         $.alert('网络异常9.3，状态为' + status);
+    //                         return;
+    //                     }
+    //                     if ($.type(data) == 'string') {
+    //                         data = JSON.parse(data);
+    //                     }
+    //                     if(data.code != "E00000"){
+    //                         $.alert('定位失败:' + data.code);
+    //                         if(data.code == "-1"){
+    //                             window.location.href = "/weixin/bind";
+    //                         }else{
+    //                             $.alert(data.message);
+    //                             return;
+    //                         }
+    //                     }else{
+    //                         alert(data);
+    //                         localStorage.setItem("wxlocation",JSON.stringify(data));
+    //                         map.centerAndZoom(data.city,11);
+    //                         $('[data-role="city"]').html(data.city);
+    //                         $('[data-role=city]').attr('data-id', data.cityId);
+    //                         $('[data-role="street"]').attr('data-code',data.cityId);
+    //                         $('[data-role="street"]').html(data.street);
+    //                         $('[data-role="streetName"]').attr('data-code',data.cityId);
+    //                         $('[data-role="streetName"]').val(data.street);
+    //                         var loc = lat+","+lon;
+    //                         //code是城市id
+    //                         var code = $('[data-role="streetName"]').attr('data-code');
+    //                         // console.log(code);
+    //                         if(code || code == 0){
+    //                             //保存城市
+    //                             saveCity(code,loc);
+    //                         }
+    //                     }
+    //                 }
+    //             });
+    //         }else{
+    //             // $.alert('暂未获取定位，可手动选取城市后再搜索详细地址。');
+    //             // alert('暂未获取定位');
+    //             // getNowLocation();
+    //         }
+            
+    //       },
+    //       cancel: function (res) {
+    //         // $.hidePreloader();
+    //         $.alert('用户拒绝授权获取地理位置');
+    //       }
+    //     });
+
+    // }
+    $(function() {
+        //本地搜索配置
+        
+        var options = {
+            onSearchComplete: function(results){
+                // var current_city = current_city.name;
+                // 判断状态是否正确
+                if (local.getStatus() == BMAP_STATUS_SUCCESS){
+                    var s = [];
+                    for (var i = 0; i < results.getCurrentNumPois(); i ++){
+                       
+                        s.push("<li data-lat=" + results.getPoi(i).point.lat + " data-lng=" + results.getPoi(i).point.lng + "><h4>" + results.getPoi(i).title + "</h4><p>" + results.getPoi(i).address) + "</p></li>";
+                    }
+                    //如果搜索结果对应的城市和当前城市一致，把结果列表显示出来
+                    if($('[data-role="city"]').html()+"市"==results.city){
+                        
+                        document.getElementById("r-result").innerHTML = s.join("");
+                    }else{
+                        $('#r-result').html('');
+                    }
+                    
+
+                }
+            }
+        };
+        
+        var local = new BMap.LocalSearch(map, options);
+
+        var location = JSON.parse(localStorage.getItem("wxlocation"));
+        if(location && (location.code == "E00000")){
+            $('[data-role="street"]').html(location.street);
+            $('[data-role="street"]').attr('data-code', location.cityId);
+            $('[data-role="street"]').attr('data-loc', location.lat+","+location.lon);
+            $('[data-role="streetName"]').val(location.street);
+            $('[data-role="streetName"]').attr('data-code', location.cityId);
+            $('[data-role="city"]').html(location.city);
+            $('[data-role=city]').attr('data-id', location.cityId);
+            map.centerAndZoom(location.city,11);
+        }
+        
+        $('[data-role="handle-search"]').on('click', function(e){
+            e.preventDefault();
+            console.log($('#search').val());
+            // console.log(current_city);
+            //选择城市后才能获取到城市id
+            if($('[data-role=city]').data('id')==undefined){
+                $.alert('请先选择城市');
+            }else{
+                //根据关键字列出搜索结果
+                var cont = $.trim($('#search').val());
+                local.search(cont);
+            }
+            
+
+        });
+        //选择搜索地址
+        $('#r-result').delegate("li", "click", function(e){
+            e.preventDefault();
+            var me = $(this),
+                city = $('[data-role=city]').html(),
+                cityId = $('[data-role=city]').data('id'),
+                lat = me.data('lat'),
+                lon = me.data('lng'),
+                street = me.find('h4').html();
+                // alert(location,location.code);
+                // alert("城市名为"+city+",cityId为"+cityId+",横坐标为"+lat+",纵坐标为"+lon+",街道名为"+street);
+            map.centerAndZoom(city,11);
+            var location = {
+                code: "E00000",
+                lat: lon,
+                lon: lat,
+                city: city,
+                cityId: cityId,
+                street:street
+            };
+            
+            var loc = lon+","+lat;
+
+            localStorage.setItem("wxlocation",JSON.stringify(location));
+
+            var historyAddress = localStorage.getItem("historyAddress");
+            // debugger;
+            if(historyAddress){
+                historyAddress = JSON.parse(historyAddress)
+                historyAddress.push({code:"E00000",lat:lon,lon:lat,city:city,cityId:cityId,street:street});
+                localStorage.setItem("historyAddress",JSON.stringify(historyAddress));
+            }else{
+                var historyAddress = [{
+                    code: "E00000",
+                    lat: lon,
+                    lon: lat,
+                    city: city,
+                    cityId: cityId,
+                    street:street
+                }];
+                localStorage.setItem("historyAddress",JSON.stringify(historyAddress));
+            }
+            
+            // console.log(historyAddress);
+            
+            $('#r-result').html('');
+            saveCity(cityId,loc);
+        });
+        //选择历史地址
+        $('[data-role="history-list"]').delegate('[data-role="myAddress"]',"click",function(e){
+            e.preventDefault();
+            // debugger;
+            var city = $(this).data('city'),
+                cityId = $(this).data('code'),
+                lat = $(this).data('lat'),
+                lon = $(this).data('lon'),
+                street = $(this).data('street'),
+                loc = lat+","+lon;
+            var location = {
+                code: "E00000",
+                lat: lat,
+                lon: lon,
+                city: city,
+                cityId: cityId,
+                street:street
+            };
+            localStorage.setItem("wxlocation",JSON.stringify(location));
+            saveCity(cityId,loc);
+            // localStorage.setItem("historyAddress",JSON.stringify(historyAddress));
+        });
+        $('#search').on('change', function(){
+            if($(this).val() == ''){
+                $('#r-result').html('');
+            }
+        });
+        //选择缓存数据中的位置
+        if($('[data-role="street"]').html()!=""){
+            $('[data-role="street"]').click(function(){
+                //code是城市id
+                var code = $(this).data('code');
+                var loc = $(this).data('loc');
+                if(code || code == 0){
+                    //保存城市
+                    saveCity(code,loc);
+                }else{
+                    //获取定位信息
+                    getWxLocation();
+                }
+           });
+        }
+        //选择收获地址
+        $('[data-role="address-list"]').delegate('[data-role="myAddress"]','click',function(){
+            //  data-code="{{cityId}}" data-role="myAddress" data-location="{{location}}" data-city="{{cityName}}" data-streetname="{{streetName}}"
+            // {"code":"E00000","lat":113.850316,"lon":22.731045,"city":"深圳","cityId":199,"street":"沙井中心客运站"}
+            //                     localStorage.setItem("wxlocation",JSON.stringify(data));
+                //code是城市id
+                // debugger;
+                var cityId = $(this).data('code');
+                var location = $(this).data('location');
+                var loc = $(this).data('location').split(",");
+                var lat = loc[0];
+                var lon = loc[1];
+                var city = $(this).data('city');
+                var street = $(this).data('streetname');
+                var code = "E00000";
+                var data = {code:code,lat:lat,lon:lon,city:city,cityId:cityId,street:street}
+                localStorage.setItem("wxlocation",JSON.stringify(data));
+                // return;
+                if(cityId || cityId == 0){
+                    //保存城市
+                    saveCity(cityId,location);
+                }else{
+                    //获取定位信息
+                    getWxLocation();
+                }
+           });
+       //定位当前位置
+       
+       $('[data-role="location"]').on('click',function(e){
+            e.preventDefault();
+            // debugger;
+            locationFlag++;
+            console.log(locationFlag);
+            // console.log(locationFlag);
+            if(locationFlag>1){
+                return;
+                
+            }
+            $(this).removeClass('public-color');
+            $(this).css({"backgroundColor":"#ddd"});
+
+            getWxLocation();
+       });
+       //选择城市
+        $('[data-role="city-box"]').delegate('a', 'click', function(e){
+            e.preventDefault();
+            var me = $(this),
+                action = me.data('action');
+
+                if(action == 'choose-here'){
+                    var id = me.data('id');
+                    $('[data-role="city"]').html(me.html());
+                    $('[data-role="city"]').attr('data-id', id);
+                    map.centerAndZoom(me.html(),11);
+                    $('[data-role="choose-city"]').removeClass('active');
+                    $.closeModal('.popup-all-city');
+                    $('#search').focus();
+                }
+            
+        });
+        //打开城市列表浮层
+        $('[data-role="choose-city"]').on('click', function(e){
+            e.preventDefault();
+            var me = $(this);
+                
+            if(me.hasClass('active')){
+                me.removeClass('active');
+                $.closeModal('.popup-all-city');
+            }else{
+                me.addClass('active');
+                $.popup('.popup-all-city');
+            }
+            
+        });
+        //打开城市列表浮层
+        $('.close-all-city').click(function(){
+            $('[data-role="choose-city"]').removeClass('active');
+            $.closeModal('.popup-all-city');
+        });
+        var preVal = '';
+        //遍历所有城市
+        $('.list-city a').each(function(index){
+            
+            var nowFirst = $(this).data('first');
+            if(nowFirst != preVal){
+                $(this).before('<h5 class="city-tit">' + nowFirst + '</h5>');
+                preVal = nowFirst;
+            }
+        });
+    });
+     $.init();
+</script>
+</body>
+</html>

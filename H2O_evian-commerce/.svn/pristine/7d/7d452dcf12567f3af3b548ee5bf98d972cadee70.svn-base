@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "tuiKeManagerShop")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/shopCss.vm")
+#*加载JS文件*# 
+#parse("control/$!webStyle/publicJs.vm")
+<script src="/files/js/$!webStyle/app.js"></script>
+<!-- <script src="https://cdn.shuiqoo.cn/$!webStyle/echarts.min.js"></script> -->
+#parse("control/$!webStyle/globalJs.vm")
+<body>
+<div class="page-group">
+	<div class="page page-finish page-current page-tuiKeManagerShop">
+            <header class="bar bar-nav light-nav">
+                <a class="icon icon-guanbi-copy pull-right bar-right closeTuike" href="#"></a>  
+                <h1 class="title">推客经理绑定推广店铺</h1>
+            </header>
+            <div class="content img-code-box">
+                <script type="text/javascript">
+                    var isApp=isAppFrame();
+                    if(isApp){
+                        $(".bar-nav").remove();
+                    }
+                    // 点击关闭界面
+                    function closeWin() {
+                        WeixinJSBridge.invoke('closeWindow', {}, function(res) {
+                            //res.err_msg(close_window:ok/close_window:error)
+                        });
+                    }
+                    function clickCloseTuike(){
+                      $(".closeTuike").click(function(){
+                          closeWin();
+                      });
+                    }
+                    function clickCloseShop(){
+
+                        $(".button-fill").click(function(){
+                            if(isApp){
+                                try {
+                                    app.ClosePage();
+                                } catch (e) {
+                                    try {
+                                        ClosePage();
+                                    } catch (ee) {
+                                        // run('', '')
+                                    }
+                                }
+                            }else{
+                                closeWin();
+                            }
+                        });
+                    }
+                    clickCloseTuike();
+                    function isManager(){
+                        $.ajax({
+                            type: "post",
+                            url: "/weixin/getClientShareInfo",
+                            dataType: 'json',
+                            async: false,
+                            complete: function(json) {
+                              
+                                var data = json.response;
+                                
+                                var status = json.status;
+                                if(status != 200){
+                                    $.alert('网络异常，状态为12.1' + status);
+                                    return;
+                                }    
+                                if ($.type(data) == 'string') {
+                                    data = JSON.parse(data);
+                                }
+                                if(data.code != 'E00000'){
+                                    /*停止加载页面*/
+                                    if (window.stop)
+                                    window.stop();
+                                    else
+                                    document.execCommand("Stop");
+                                    $('.img-code-box').html('<div class="defaut-wrapp" style="padding: 5rem 1rem 1rem;color: #b7b8b7;" ><span class="icon icon-88tipicoorder" style="display: block;font-size: 3rem;width: 3rem;height: 3rem;margin: 0 auto 2rem;"></span><h2 class="def-note" style="font-size: 0.8rem;text-align: center;">您不是推客经理，不能访问</h2><p style="width: 5rem;margin: 0 auto;" class="closeTuike" ><a href="#" class="button button-fill btn-yello">点击关闭</a></p></div>');
+                                        // 点击关闭界面
+                                        clickCloseShop();
+                                }else{
+                                    if(data.data.isManager==false){
+                                        /*停止加载页面*/
+                                        if (window.stop){
+                                            window.stop();
+                                        }else{
+                                            document.execCommand("Stop");
+                                        }
+                                        $('.img-code-box').html('<div class="defaut-wrapp" style="padding: 5rem 1rem 1rem;color: #b7b8b7;" ><span class="icon icon-88tipicoorder" style="display: block;font-size: 3rem;width: 3rem;height: 3rem;margin: 0 auto 2rem;"></span><h2 class="def-note" style="font-size: 0.8rem;text-align: center;">您不是推客经理，不能访问</h2><p style="width: 5rem;margin: 0 auto;" class="closeTuike" ><a href="#" class="button button-fill btn-yello">点击关闭</a></p></div>');
+                                            // 点击关闭界面
+                                            clickCloseShop();
+                                    }
+                                }
+                            }
+                        });
+                    }
+                    if(!isApp){
+                        isManager();
+                    }
+                </script>
+                <ul class="tuikeShops-list tab active infinite-scroll infinite-scroll-bottom" data-role="tuikeShops-list" data-distance="100">
+                   
+                   <li>
+                    <div class="content-padded">
+                        <div class="row" >
+                            <div class="col">
+                               <h4 style="display:inline;">扫描条码：</h4><input style="width: 48%;" type="text" name="barCode" readonly="readonly" placeholder="点击扫码" />
+                              <!--  #if($!webStyle == "shuiqu")
+                                <a href="#" class="button pull-right btn-yello btn-125" data-role="btn" data-btn="fresh" style="font-weight: normal;margin-top: 10px;line-height: 1.4rem;">扫一扫 <span class="icon icon-code_qc"></span></a>
+                                #else
+                                <a href="#" class="button pull-right btn-yello btn-125" data-role="btn" data-btn="fresh" style="font-weight: normal;margin-top: 10px;line-height: 1.4rem;color: #fff;">扫一扫 <span class="icon icon-code_qc" style="color: #FFF"></span></a>
+                                #end -->
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <table>
+                                    <tr style="">
+                                        <td ><span>推客经理：</span><span name="fullname" data-color="xx"></span></td>
+                                        
+                                    </tr>
+                                    <tr><td><span >绑定店铺：</span><span name="jlShopName" data-color="xx"></span></td></tr>
+                                    <tr><td colspan="2"><span>店铺状态：</span><span name="isEnable" data-color="xx"></span></td></tr>
+                                </table>
+                                
+                            </div>
+                        </div>
+                    </div>
+                   </li>
+                   <li style="background-color:#EEEEF3;height: 10px; "></li>
+                   <li>
+                    <div class="content-padded">
+                        <div class="row" >
+                            <div class="col">
+                                <div class="phone">
+                                    <span for="">关联用户:</span>
+                                    <input type="text" class="code" id="yhPhone" name="code" maxlength="11" onkeyup="this.value=this.value.replace(/[^\d]/g,'') " onafterpaste="this.value=this.value.replace(/[^\d]/g,'')" placeholder="请输入手机号" />
+                                    <!-- <input type="button" id="yhPhoneBtn" data-nickname="" class="pull-right" data-role="btn"  value="获取验证码" 
+                                    style="margin-top: 10px;padding-bottom: 4px;background-color: #DDDDDD;" /> -->
+                                    <a href="#" style="width: 25%;" id="yhPhoneBtn" class="button btn-yello btn-125 pull-right yzmHui" data-role="btn" >获取验证码</a>
+                                </div>
+                                <div>
+                                    
+                                    <table>
+                                        <!-- <tr style="display: inline-block;height: 30px;line-height: 30px;overflow: hidden;"> -->
+                                        <tr><td><span>关联用户：</span><span name="nickname"></span>&nbsp;&nbsp;&nbsp;&nbsp;<span name="ifTuiKe" data-color="xx"></td></tr>
+                                        <!-- <tr style="">
+                                            <td style="width: 160px;"><span>账号注册：</span><span name="ifRegedit" data-color="xx"></span></td>
+                                            <!-- <td style="width: 160px;"><span>是否注册推客：</span><span name="ifTuiKe" data-color="xx"></span></td> 
+                                        </tr> -->
+                                        <tr><td><span>推客经理：</span><span name="ifBinding" data-color="xx"></span></td></tr>
+                                        <tr style="">
+                                            
+                                            <td><span>绑定店铺：</span><span name="shopName" data-color="xx"></span></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   </li>
+                   <li style="background-color:#EEEEF3;height: 10px; "></li>
+                   <li>
+                    <div class="content-padded">
+                        <div class="row" >
+                            <div class="col">
+                               <div class="identifyingCode">
+                                <span for="">填写验证码：</span>
+                                <input type="text" id="yzm" class="code" name="code" onkeyup="this.value=this.value.replace(/[^\d]/g,'') " onafterpaste="this.value=this.value.replace(/[^\d]/g,'')" style="width: 42%;" maxlength="6" placeholder="请输入验证码" />
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                   </li>
+                   <li>
+                    <div class="content-padded">
+                        <div class="row" >
+                            <div class="col">
+                               #if($!webStyle == "shuiqu")
+                                <a href="#" class="button  btn-yello btn-125" name="submit" data-role="btn" style="font-weight: normal;padding: 0;line-height: 1.8rem;height: 40px;font-size: large;">提交</a>
+                                #else
+                                <a href="#" class="button  btn-yello btn-125" name="submit" data-role="btn" style="font-weight: normal;padding: 0;line-height: 1.8rem;height: 40px;font-size: large;color: #fff;">提交</a>
+                                #end
+                            </div>
+                        </div>
+                    </div>
+                   </li>
+                </ul>
+                <!-- <div id="tuikeAduitUser" >
+                    <table id="tuikeAduitTab" >
+                        
+                    </table>
+                </div> -->
+            </div>
+    </div>
+
+</div>
+    <script type="text/javascript">
+        var isEn = true;
+        $(function(){
+            $('[name="barCode"]').click(function(){
+                var code = "";
+
+                if(isApp){
+                    try {
+                        app.ToShaoMa();
+                    } catch (e) {
+                        try {
+                            ToShaoMa();
+                        } catch (ee) {
+                        }
+                    }
+                }else{
+                    wx.scanQRCode({
+                        needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                        scanType: ["barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+                        success: function (res) {
+                            var index = res.resultStr.indexOf(',');
+                            var shopCode1 = res.resultStr.substring(index+1);// 当needResult 为 1 时，扫码返回的结果
+                            code = parseInt(shopCode1);
+                            // code=234234;
+                            // alert(shopCode);
+                            if(typeof code!="number"){
+                                $.alert("请扫描正确的条形码！");
+                                return;
+                            }
+                            $('[name="barCode"]').val(code);
+                            $('[name="submit"]').attr("data-shopCode",code);
+                            $.ajax({
+                                type: "post",
+                                url: "/weixin/getShopManagerCode",
+                                data:{
+                                    shopCode:code
+                                },
+                                dataType: 'json',
+                                complete: function(json) {
+                                
+                                    var data = json.response;
+                                    var status = json.status;
+                                    if(status != 200){
+                                        $.alert('网络异常，状态为3.2' + status);
+                                        return;
+                                    }
+                                    if ($.type(data) == 'string') {
+                                        data = JSON.parse(data);
+                                    }
+                                    if(data.code != 'E00000'){
+                                        $.alert(data.message);
+                                        return;
+                                    }
+                                    if(data.data.fullname==""&&data.data.shopName==""){
+                                        $.alert("该条形码没有任何信息");
+                                    }else{
+                                        var context = {
+                                            data: data.data
+                                        };
+                                        isEn = data.data.isEnable;
+                                        $('[name="fullname"]').html(data.data.fullname);
+                                        $('[name="jlShopName"]').html(data.data.shopName);
+                                        if(data.data.isEnable){
+                                            $('[name="isEnable"]').html("已激活");
+                                            $.alert("店铺已被激活");
+                                            $("#yhPhoneBtn").removeAttr("data-eid");
+                                            $('[name="submit"]').removeAttr("data-shopId");
+                                        }else if(data.data.isEnable==false){
+                                            $('[name="isEnable"]').html("待激活");
+                                            $("#yhPhoneBtn").attr("data-eid",data.data.eid);
+                                            $('[name="submit"]').attr("data-shopId",data.data.shopId);
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }
+
+            });
+            $("#yhPhoneBtn").click(function(){
+                if($("#yhPhoneBtn").attr("data-isEnable") == "false"){
+                    var cellphone = $('#yhPhone').val();
+                    if(isApp){
+                        var userInfo = "";
+                        var identityCode = "";
+                        try {
+                            userInfo = app.GetManagerInfo();
+                        } catch (e) {
+                            try {
+                                userInfo = GetManagerInfo();
+                            } catch (ee) {
+                            }
+                        }
+                        if(userInfo != ""){
+                            identityCode = userInfo.split('|')[0];
+                        }else if(userInfo == "" && isApp){
+                            alert("系统异常！");
+                            return;
+                        }
+                        isZC(identityCode);
+                    }else{
+                        isZC();
+                    }
+                    function isZC(e){
+                        $.ajax({
+                            type: "post",
+                            url: "/weixin/getShopRegeditGetCode",
+                            data: {
+                                eid:$("#yhPhoneBtn").attr("data-eid"),
+                                cellphone: cellphone,
+                                identityCode:e
+                            },
+                            dataType: 'json',
+                            complete: function(json) {
+                              
+                                var data = json.response;
+                                
+                                var status = json.status;
+                                if(status != 200){
+                                    $.alert('网络异常，状态为12.1' + status);
+                                    return;
+                                }    
+                                if ($.type(data) == 'string') {
+                                    data = JSON.parse(data);
+                                }
+                                if(data.code != 'E00000' && data.code != 'E90001' ){
+                                    $.alert(data.message);
+                                }else{
+                                    //倒计时
+                                    var wait=parseInt("59");
+                                      
+                                    function time(o) {  
+                                        if (wait == 0) {  
+                                            o.html("获取验证码");
+                                            wait = parseInt("59");
+                                            if($("#yhPhone").val().length==11){
+                                                if(/^1[3|4|5|8][0-9]\d{4,8}$/.test($("#yhPhone").val())){
+                                                    o.attr("data-isEnable","false");
+                                                    o.removeClass("yzmHui");
+                                                    o.addClass("yzmCai");
+                                                }
+                                            }
+                                        } else {  
+                                            o.attr("data-isEnable","true");
+                                            o.removeClass("yzmCai");
+                                            o.addClass("yzmHui");
+                                            o.html("获取验证码"+wait+"s");  
+                                            wait--;  
+                                            setTimeout(function() {  
+                                                time(o)  
+                                            },  
+                                            1000)  
+                                        }  
+                                    } 
+                                    time($("#yhPhoneBtn")); 
+                                    var context = {
+                                        data: data.data
+                                    };
+                                    if(data.data.ifTuiKe){
+                                        $('[name="ifTuiKe"]').html("推客");
+                                    }else if(data.data.ifTuiKe == false){
+                                        $('[name="ifTuiKe"]').html("--");
+                                    }
+                                    $('[name="shopName"]').html(data.data.shopName);
+                                    if(data.data.ifRegedit){
+                                        // $('[name="ifRegedit"]').html("已注册");
+                                        $('[name="nickname"]').html(data.data.nickname);
+                                        $('[name="submit"]').attr("data-nickname","true");
+                                        $('[name="submit"]').attr("data-existCid",data.data.existCid);
+                                    }else if(data.data.ifRegedit == false){
+                                        // $('[name="ifRegedit"]').html("未注册");
+                                        $('[name="nickname"]').html('<input type="text" id="nickname" placeholder="请填写用户名"/>');
+                                        $('[name="submit"]').attr("data-nickname","false");
+                                        $('[name="submit"]').attr("data-existCid","0");
+                                    }
+                                    $('[name="ifBinding"]').html(data.data.imanagerId);
+                                    if(data.data.clientId==data.data.existCid){
+                                        $.alert("自己不能绑定自己,请更换手机后重试");
+                                        $('[name="submit"]').removeAttr("data-cellphone");
+                                    }else if(data.data.imanagerId>0&&data.data.imanagerId!=data.data.clientId){
+                                        $.alert("此账号已有上级经理,请更换手机后重试")
+                                        $('[name="submit"]').removeAttr("data-cellphone");
+                                    }else{
+                                        $('[name="submit"]').attr("data-cellphone",cellphone);
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+            $('#yhPhone').bind('input', function() {
+                if($("#yhPhone").val().length==11){
+                    if(/^1[3|4|5|8][0-9]\d{4,8}$/.test($("#yhPhone").val())){
+                        if(isEn == false){
+                            $("#yhPhoneBtn").attr("data-isEnable","false");
+                            $("#yhPhoneBtn").removeClass("yzmHui");
+                            $("#yhPhoneBtn").addClass("yzmCai");
+                        }
+                    }
+                }else{
+                    $("#yhPhoneBtn").attr("data-isEnable","true");
+                    $("#yhPhoneBtn").removeClass("yzmCai");
+                    $("#yhPhoneBtn").addClass("yzmHui");
+                }
+            });
+
+            $('[name="submit"]').click(function(){
+                if($('[name="submit"]').attr("data-nickname")=="false"){
+                    if($('#nickname').val().length<1){
+                        $.alert("请输入用户名");
+                        return;
+                    }
+                }
+                if($("#yzm").val().length>4){
+                    if($('[name="submit"]').attr("data-cellphone")&&$('[name="submit"]').attr("data-shopCode")&&$('[name="submit"]').attr("data-shopId")&&$('[name="submit"]').attr("data-existCid")){
+                        var name = "";
+                        if($('[name="submit"]').attr("data-nickname")=="true"){
+                            name=$('[name="nickname"]').html();
+                        }else if($('[name="submit"]').attr("data-nickname")=="false"){
+                            name=$('#nickname').val();
+                        }
+                        if(isApp){
+                            var userInfo = "";
+                            var identityCode = "";
+                            try {
+                                userInfo = app.GetManagerInfo();
+                            } catch (e) {
+                                try {
+                                    userInfo = GetManagerInfo();
+                                } catch (ee) {
+                                }
+                            }
+                            if(userInfo != ""){
+                                identityCode = userInfo.split('|')[0];
+                            }else if(userInfo == "" && isApp){
+                                $.alert("系统异常！");
+                                return;
+                            }
+                            BDZC(identityCode);
+                        }else{
+                            BDZC();
+                        }
+                        function BDZC(e){
+                            $.ajax({
+                                type: "post",
+                                url: "/weixin/saveShopManagerCode",
+                                data: {
+                                    cellphone:$('[name="submit"]').attr("data-cellphone"),
+                                    nickname:name,
+                                    existCid:$('[name="submit"]').attr("data-existCid"),
+                                    code:$("#yzm").val(),
+                                    shopCode:$('[name="submit"]').attr("data-shopCode"),
+                                    shopId:$('[name="submit"]').attr("data-shopId"),
+                                    identityCode:e
+                                },
+                                dataType: 'json',
+                                complete: function(json) {
+                                  
+                                    var data = json.response;
+                                    
+                                    var status = json.status;
+                                    if(status != 200){
+                                        $.alert('网络异常，状态为12.1' + status);
+                                        return;
+                                    }    
+                                    if ($.type(data) == 'string') {
+                                        data = JSON.parse(data);
+                                    }
+                                    if(data.code != 'E00000' && data.code != 'E90001' ){
+                                        $.alert(data.message);
+                                    }else{
+                                        $.alert("添加成功！");
+                                        if(isApp){
+                                            try {
+                                                app.ClosePage();
+                                            } catch (e) {
+                                                try {
+                                                    ClosePage();
+                                                } catch (ee) {
+                                                    // run('', '')
+                                                }
+                                            }
+                                        }else{
+                                            window.location.href = "/weixin/tuiKeShopStatistics";
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    }else{
+                        /*$.alert("shopCode:"+$('[name="submit"]').attr("data-shopCode"));
+                        $.alert("shopId"+$('[name="submit"]').attr("data-shopId"))
+                        $.alert("existCid"+$('[name="submit"]').attr("data-existCid"))*/
+                        $.alert("操作错误，请重新扫码并输入手机号")
+                    }
+                }else{
+                    if($('[name="isEnable"]').html()=="已激活"){
+                        $.alert("条码已经被激活，请换个条码");
+                    }else{
+                        $.alert("请输入验证码");
+                    }
+                }
+            });
+            
+        });
+    function scan(df){
+        if(df==""){
+            $.alert("无数据");
+        }else{
+            $.alert(df);
+        }
+        var index = df.indexOf(',');
+        var shopCode1 = df.substring(index+1);// 当needResult 为 1 时，扫码返回的结果
+        var code = parseInt(shopCode1);
+        if(typeof code!="number"){
+            $.alert("请扫描正确的条形码！");
+            return;
+        }
+        $('[name="barCode"]').val(code);
+        $('[name="submit"]').attr("data-shopCode",code);
+
+        var userInfo = "";
+        var identityCode = "";
+        try {
+            userInfo = app.GetManagerInfo();
+        } catch (e) {
+            try {
+                userInfo = GetManagerInfo();
+            } catch (ee) {
+            }
+        }
+        if(userInfo != ""){
+            identityCode = userInfo.split('|')[0];
+        }else if(userInfo == "" && isApp){
+            alert("系统异常！");
+            return;
+        }
+
+        $.ajax({
+            type: "post",
+            url: "/weixin/getShopManagerCode",
+            data:{
+                shopCode:code,
+                identityCode:identityCode
+            },
+            dataType: 'json',
+            complete: function(json) {
+            
+                var data = json.response;
+                var status = json.status;
+                if(status != 200){
+                    $.alert('网络异常，状态为3.2' + status);
+                    return;
+                }
+                if ($.type(data) == 'string') {
+                    data = JSON.parse(data);
+                }
+                if(data.code != 'E00000'){
+                    $.alert(data.message);
+                    return;
+                }
+                if(data.data.fullname==""&&data.data.shopName==""){
+                    $.alert("该条形码没有任何信息");
+                }else{
+                    var context = {
+                        data: data.data
+                    };
+                    isEn = data.data.isEnable;
+                    $('[name="fullname"]').html(data.data.fullname);
+                    $('[name="jlShopName"]').html(data.data.shopName);
+                    if(data.data.isEnable){
+                        $('[name="isEnable"]').html("已激活");
+                        $.alert("店铺已被激活");
+                        $("#yhPhoneBtn").removeAttr("data-eid");
+                        $('[name="submit"]').removeAttr("data-shopId");
+                    }else if(data.data.isEnable==false){
+                        $('[name="isEnable"]').html("待激活");
+                        $("#yhPhoneBtn").attr("data-eid",data.data.eid);
+                        $('[name="submit"]').attr("data-shopId",data.data.shopId);
+                    }
+                }
+            }
+        });
+    }
+    </script>
+</body>
+</html>

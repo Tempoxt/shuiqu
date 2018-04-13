@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "myIntegral")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/shopCss.vm")
+<body>
+#*加载JS文件*# 
+#parse("control/$!webStyle/publicJs.vm")
+<script src="/files/js/$!webStyle/app.js"></script>
+<!-- <script src="https://cdn.shuiqoo.cn/$!webStyle/echarts.min.js"></script> -->
+#parse("control/$!webStyle/globalJs.vm")
+
+	<div class="page-group">
+		<div class="page page-finish page-current page-myIntegral">
+            <header class="bar bar-nav light-nav">
+                <a class="icon icon-35icoback pull-left bar-left closeTuike" href="#"></a>  
+                <a class="icon icon-183help pull-right bar-right open-about" style="width: 28%;" href="#"><span style="font-size: 70%;position: relative;top: -2px" >积分规则</span></a>  
+                <h1 class="title">我的积分</h1>
+            </header>
+            <div class="content img-code-box">
+            	<script type="text/javascript">
+            		var isApp=isAppFrame();
+            		if(isApp){
+            			$(".bar-nav").remove();
+            		}
+            		var tuikeEid="";
+            		// 点击关闭界面
+		            function closeWin() {
+		                WeixinJSBridge.invoke('closeWindow', {}, function(res) {
+		                    //res.err_msg(close_window:ok/close_window:error)
+		                });
+		            }
+		            function clickCloseTuike(){
+		              $(".closeTuike").click(function(){
+		                  closeWin();
+		              });
+		            }
+		            function clickCloseShop(){
+		                $(".button-fill").click(function(){
+		                    if(isApp){
+                                try {
+						        	app.ClosePage();
+							    } catch (e) {
+							        try {
+							            ClosePage();
+							        } catch (ee) {
+							        	// run('', '')
+							        }
+							    }
+                            }else{
+                                closeWin();
+                            }
+		                });
+		            }
+		            clickCloseTuike();
+		            // 截取url参数
+				    function GetQueryString(name){
+					     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+					     var r = window.location.search.substr(1).match(reg);
+					     if(r!=null)return  unescape(r[2]); return null;
+					}
+					 function getCookie(c_name)
+					{
+						if (document.cookie.length>0)
+						  {
+							  c_start=document.cookie.indexOf(c_name + "=")
+							  if (c_start!=-1)
+							    { 
+								    c_start=c_start + c_name.length+1 
+								    c_end=document.cookie.indexOf(";",c_start)
+							    if (c_end==-1) c_end=document.cookie.length
+							    	return unescape(document.cookie.substring(c_start,c_end))
+							    } 
+						  }
+						return ""
+					}
+					var appUserInfo = getCookie("appUserInfo");
+					/*if(!appUserInfo){
+						
+	                	if (window.stop)
+						window.stop();
+						else
+						document.execCommand("Stop");
+	                    $('.img-code-box').html('<div class="defaut-wrapp" style="padding: 5rem 1rem 1rem;color: #b7b8b7;" ><span class="icon icon-88tipicoorder" style="display: block;font-size: 3rem;width: 3rem;height: 3rem;margin: 0 auto 2rem;"></span><h2 class="def-note" style="font-size: 0.8rem;text-align: center;">您未登陆，不能访问</h2><p style="width: 5rem;margin: 0 auto;" class="closeTuike" ></p></div>');
+					}*/
+					appUserInfo = JSON.parse(appUserInfo);
+					appUserInfo = JSON.parse(appUserInfo);
+
+		            function isManager(a){
+
+		            	$.ajax({
+				            type: "post",
+				            url: "/weixin/getClientShareInfo",
+				            dataType: 'json',
+				            data:{
+				            	identityCode:a
+				            },
+				            async: false,
+				            complete: function(json) {
+				              
+				                var data = json.response;
+				                
+				                var status = json.status;
+				                if(status != 200){
+				                    $.alert('网络异常，状态为12.1' + status);
+				                    return;
+				                }    
+				                if ($.type(data) == 'string') {
+				                    data = JSON.parse(data);
+				                }
+				                if(data.code != 'E00000'){
+				                	/*停止加载页面*/
+				                	if (window.stop)
+									window.stop();
+									else
+									document.execCommand("Stop");
+				                    $('.img-code-box').html('<div class="defaut-wrapp" style="padding: 5rem 1rem 1rem;color: #b7b8b7;" ><span class="icon icon-88tipicoorder" style="display: block;font-size: 3rem;width: 3rem;height: 3rem;margin: 0 auto 2rem;"></span><h2 class="def-note" style="font-size: 0.8rem;text-align: center;">您不是推客经理，不能访问</h2><p style="width: 5rem;margin: 0 auto;" class="closeTuike" ><a href="#" class="button button-fill btn-yello">点击关闭</a></p></div>');
+							            clickCloseShop();
+				                }else{
+				                    if(data.data.isManager==false){
+				                    	/*停止加载页面*/
+				                    	if (window.stop){
+											window.stop();
+				                    	}else{
+											document.execCommand("Stop");
+				                    	}
+				                        $('.img-code-box').html('<div class="defaut-wrapp" style="padding: 5rem 1rem 1rem;color: #b7b8b7;" ><span class="icon icon-88tipicoorder" style="display: block;font-size: 3rem;width: 3rem;height: 3rem;margin: 0 auto 2rem;"></span><h2 class="def-note" style="font-size: 0.8rem;text-align: center;">您不是推客经理，不能访问</h2><p style="width: 5rem;margin: 0 auto;" class="closeTuike" ><a href="#" class="button button-fill btn-yello">点击关闭</a></p></div>');
+				                        	clickCloseShop();
+				                    }
+				                    tuikeEid=data.data.eid;
+				                }
+				            }
+				        });
+		            }
+
+		            
+		            if(!isApp){
+		            	// isManager();
+		            }
+				</script>
+                <ul class="tuikeShops-list tab active infinite-scroll infinite-scroll-bottom" data-role="tuikeShops-list" data-distance="100">
+                	<li>
+                		<div class="content-padded">
+	                        <div class="row">
+	                        	<div class="col">
+	                        		<table style="margin-top: 2%;">
+	                        			<!-- <tr>
+	                        				<td colspan="3"><div class="userPhoto" style="width: 3.5rem;height: 3.5rem;border-radius:50%;"></div></td>
+	                        				<td colspan="10">
+	                        					<div><span class="userName">李小仙</span></div>
+	                        					<div><span>可用积分:</span><span class="integral">105678</span><span> (价值10.56元)</span></div>
+	                        				</td>
+	                        			</tr> -->
+	                        			<tr>
+	                        				<td colspan="3"><div class="userPhoto" style="width: 3.5rem;height: 3.5rem;border-radius:50%;"></div></td>
+	                        				<td colspan="10">
+	                        					<div><span class="userName"></span></div>
+	                        					<div><span>可用积分:</span><span class="integral"></span><span> (价值10.56元)</span></div>
+	                        				</td>
+	                        			</tr>
+	                        			<tr style="border-top: 20px transparent solid;">
+	                        				<td style="width: 8%;"><img src="/files/images/heart-icon@3x.png" style="width: 80%;"></td>
+	                        				<td style="width: 8%;"><img src="/files/images/heart-icon@3x.png" style="width: 80%;"></td>
+	                        				<td style="width: 8%;"><img src="/files/images/heart-icon@3x.png" style="width: 80%;"></td>
+	                        				<td style="width: 8%;"><img src="/files/images/heart-icon@3x.png" style="width: 80%;"></td>
+	                        				<td style="width: 8%;"><img src="/files/images/heart-icon@3x.png" style="width: 80%;"></td>
+	                        				<td style="width: 8%;"><img src="/files/images/heart-icon@3x.png" style="width: 80%;"></td>
+	                        				<td style="width: 8%;"><img src="/files/images/heart-icon@3x.png" style="width: 80%;"></td>
+	                        				<td colspan="6">
+				                                <!-- <a href="/weixin/tuiKeManagerShop" class="button  btn-yello btn-125 tuikeShop" name="tuikeShop" data-role="btn" style="font-weight: normal;padding: 0;line-height: 1.8rem;height: 40px;font-size: large;">去绑定店铺推客</a> -->
+				                                <a href="#" class="button  btn-yello btn-125 tuikeShop" name="tuikeShop" data-role="btn" style="font-weight: normal;padding: 0;line-height: 1.2rem;height: 1.2rem;">签到领积分</a>
+	                        				</td>
+	                        			</tr>
+	                        		</table>
+	                        	</div>
+	                        </div>
+	                    </div>
+                	</li>
+                	<li style="min-height: 22rem;">
+                		<div class="content-padded">
+	                        <div class="row" style="border-bottom: 1px #EBEBEB solid;">
+	                            <div class="col" style="display: flex;align-items: center;">
+	                            	<div style="width: 100%;">
+		                            	<div class="buttons-tab" style="width: 60%;margin:auto;position: inherit;margin-bottom: 2%;">
+							                <a id="aTab1" href="#tab1" class="tab-link active button" style="height: 1.8rem;font-size: medium;" id="order">全部</a>
+							                <a id="aTab2" href="#tab2" class="tab-link button" style="height: 1.8rem;font-size: medium;" id="evaluates">收入</a>
+							                <a id="aTab3" href="#tab3" class="tab-link button" style="height: 1.8rem;font-size: medium;" id="shopInfo">支出</a>
+							            </div>
+						            </div>
+	                            </div>
+	                        </div>
+	                        <div class="row" >
+	                            <div class="col">
+	                            	<div class="content-block" style="margin:-1rem;padding: 0;">
+	                            		<div class="tabs">
+	                            			<div id="tab1" class="tab active">
+	                            				<div class="content-block" >
+	                            					<ul>
+	                            						
+	                            					</ul>
+	                            				</div>
+	                            			</div>
+	                            			<div id="tab2" class="tab">
+	                            				<div class="content-block">
+	                            					<ul></ul>
+	                            				</div>
+	                            			</div>
+	                            			<div id="tab3" class="tab">
+	                            				<div class="content-block">
+	                            					<ul></ul>
+	                            				</div>
+	                            			</div>
+	                            		</div>
+	                            	</div>
+	                            </div>
+	                        </div>
+	                    </div>
+                	</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+	<div class="popup popup-about">
+	  <div class="content-block integralRule ">
+	    <header class="bar bar-nav  light-nav">
+	        <span class="icon icon-35icoback pull-left close-popup bar-left"></span>
+	        <h1 class="title">积分规则</h1>
+	    </header>
+	    <div class="content">
+	        
+	    </div>
+	  </div>
+	</div>
+</body>
+    <script id="tab1Tpl" type="text/x-handlebars-template">
+    	{{#each data.integralRecords}}
+	    	<li style="position: relative;border-bottom: 1px #EBEBEB solid;padding: 0px 10px 10px 10px">
+				<p style="font-size: 0.7rem;">{{integral_remark}}</p>
+				<p style="font-size: 0.7rem;">{{dateCreated}}</p>
+				{{#is typeId 1}}
+					<span  style="position: absolute;top: 10px;right: 10px;color: red">+{{deal_integral}}</span>
+				{{else}}
+					<span  style="position: absolute;top: 10px;right: 10px;color: #717171">{{deal_integral}}</span>
+				{{/is}}
+			</li>
+		{{/each}}
+    </script>
+    <script type="text/javascript">
+    	
+	   
+		// alert(typeof appUserInfo)
+		$(document).on('click','.open-about', function () {
+			getIntegralRule(appUserInfo.eid);
+		  $.popup('.popup-about');
+		});
+    	var isTab1 = true;
+        var isTab2 = true;
+        var isTab3 = true;
+    	$(function(){
+        	//H5获取我的积分明细
+			if(isTab1){
+        		getIntegralRecord('tab1',0,1,20,appUserInfo.clientId,appUserInfo.eid);
+				isTab1=false;
+        	}
+            $('#aTab2').click(function(){
+            	if(isTab2){
+            		getIntegralRecord('tab2',1,1,20,appUserInfo.clientId,appUserInfo.eid);
+            		isTab2=false;
+            	}
+            });
+
+            $('#aTab3').click(function(){
+            	if(isTab3){
+            		getIntegralRecord('tab3',2,1,20,appUserInfo.clientId,appUserInfo.eid);
+            		isTab3=false;
+            	}
+            });
+
+            //H5获取我的积分明细
+            function getIntegralRecord(type,typeId,pageIndex,pageSize,identityCode, eid){
+            	$.ajax({
+		            type: "post",
+		            url: "/weixin/getIntegralRecord",
+		            dataType: 'json',
+		            async: false,
+		            data: {
+		            	typeId:typeId,
+		            	pageIndex:pageIndex,
+		            	pageSize:pageSize,
+		            	identityCode:identityCode,
+		            	eid:eid
+	                },
+		            complete: function(json) {
+		                var data = json.response;
+		                
+		                var status = json.status;
+		                if(status != 200){
+		                    $.alert('网络异常，状态为12.1' + status);
+		                    return;
+		                }    
+		                if ($.type(data) == 'string') {
+		                    data = JSON.parse(data);
+		                }
+		                if(data.code != 'E00000'){
+		                	$.alert(data.message);
+		                }else{
+		                	$('.userName').html(data.data.nickName);
+		                	$('.userPhoto').css({'background':"url("+data.data.photo+") center center no-repeat",'background-size':'cover'});
+		                	$('.integral').html(data.data.surplus);
+		                	if(data.data.integralRecords&&data.data.integralRecords.length>0){
+		                		var context = {
+	                            	data: data.data
+	                        	}
+	                        	var tab1Tpl = $("#tab1Tpl").html();
+		                        var tab1Template = Handlebars.compile(tab1Tpl);
+		                        var tab1Cont = tab1Template(context);
+		                        $('#'+type+' ul').html(tab1Cont);
+		                	}
+		                }
+		            }
+		        });
+            }
+    	});
+
+    	function getIntegralRule(eid){
+    		$.ajax({
+	            type: "post",
+	            url: "/weixin/getIntegralRule",
+	            dataType: 'json',
+	            async: false,
+	            data: {
+	            	eid:eid
+                },
+	            complete: function(json) {
+	                var data = json.response;
+	                
+	                var status = json.status;
+	                if(status != 200){
+	                    $.alert('网络异常，状态为12.1' + status);
+	                    return;
+	                }    
+	                if ($.type(data) == 'string') {
+	                    data = JSON.parse(data);
+	                }
+	                if(data.code != 'E00000'){
+	                	$.alert(data.message);
+	                }else{
+                		var context = {
+                        	data: data.data
+                    	}
+                        $('.integralRule .content').html(data.data.rule);
+	                }
+	            }
+	        });
+    	}
+
+    </script>
+</html>

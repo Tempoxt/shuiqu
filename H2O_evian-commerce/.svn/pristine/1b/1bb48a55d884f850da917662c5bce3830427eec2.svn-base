@@ -1,0 +1,21 @@
+#parse("control/$!webStyle/indexCss.vm")
+<body>
+    <div class="page-group">
+        <div class="page page-finish page-current">
+            url:$!{url}<br />
+            appId:$!{appId}<br />
+            jsapi_ticket:$!{jsapi_ticket}<br />
+            nonceStr:$!{nonceStr}<br />
+            timestamp:$!{timestamp}<br />
+            signature:$!{signature}<br />
+            addressSign:$!{addressSign}<br />
+            
+        </div>
+        <br /><br /><br /><br />
+        <a onclick="getWXLocation()">click</a>
+    </div>
+    #parse("control/$!webStyle/globalJs.vm")
+</body>
+  
+  
+  

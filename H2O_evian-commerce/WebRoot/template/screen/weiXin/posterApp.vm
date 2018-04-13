@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "posterApp")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/shopCss.vm")
+<body>
+  	<div class="page-group">
+        <div class="page page-finish page-current">
+            <div class="content content-poster">
+                <div class="wrap-all" data-role="wrap-all">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 选择品牌页面 start-->
+    <div class="popup popup-about">
+        <div class="content-block">
+            <div class="content">
+                <div class="card">
+                    <div class="card-header">请选择品牌首字母<span class="pull-right close-popup">关闭</span></div>
+                    <div class="card-content">
+                        <div class="card-content-inner">
+                            <table class="select-brand">
+                            <tr>
+                                <td class="active"><a href="#">A</a></td>
+                                <td><a href="#">B</a></td>
+                                <td><a href="#">C</a></td>
+                                <td><a href="#">D</a></td>
+                                <td><a href="#">E</a></td>
+                                <td><a href="#">F</a></td>
+                                <td><a href="#">G</a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#">H</a></td>
+                                <td><a href="#">I</a></td>
+                                <td><a href="#">J</a></td>
+                                <td><a href="#">K</a></td>
+                                <td><a href="#">L</a></td>
+                                <td><a href="#">M</a></td>
+                                <td><a href="#">N</a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#">O</a></td>
+                                <td><a href="#">P</a></td>
+                                <td><a href="#">Q</a></td>
+                                <td><a href="#">R</a></td>
+                                <td><a href="#">S</a></td>
+                                <td><a href="#">T</a></td>
+                                <td style="display:none;"><a href="#">U</a></td>
+                                <td style="display:none;"><a href="#">V</a></td>
+                                <td><a href="#">W</a></td>
+                            </tr>
+                            <tr>
+                                <tr>   
+                                    <td><a href="#">X</a></td>
+                                    <td><a href="#">Y</a></td>
+                                    <td><a href="#">Z</a></td>
+                                    <td style="visibility:hidden;"></td>
+                                    <td style="visibility:hidden;"></td>
+                                    <td style="visibility:hidden;"></td>
+                                    <td style="visibility:hidden;"></td>
+                                </tr>
+                            </tr>
+                            </table>     
+                        </div>
+                    </div>
+                    <ul class="water-brand" data-role="Template-list">
+                    </ul>      
+                </div>
+            </div>
+            <div class="bar bar-footer">
+                <a href="#" class="button button-fill btn-yello" id="confirm" >确认</a>
+            </div>
+        </div>
+        
+    </div>
+    <!-- 选择品牌页面 end-->
+    <!-- 生成海报页面 start-->
+    <div class="popup popup-pic">
+        <div class="content-block">
+            <div class="content">
+                <img src="" id="showViewPic"/>
+            </div>
+            <div class="bar bar-footer" id="makePicAndSend">
+                <a href="#" class="button button-fill btn-yello">生成海报并发送</a>
+            </div>
+        </div>
+    </div>
+    <!-- 生成海报页面 end-->
+
+    <script id="posterTpl" type="text/x-handlebars-template">
+        <img src="{{data.templateData.templatePreview}}" alt="">
+        <div class="bucket"><a href="#" class="open-about"></a></div>
+    </script>
+    <script id="TemplateDetail" type="text/x-handlebars-template">
+        {{#each data.productList}}
+        <li title="{{pictureId}}" class="{{letter}}">
+            <em>
+                <!-- <img src="/files/images/$!webStyle/default.png" onload="this.src='{{pictureUrl}}'"> -->
+                <img src="{{pictureUrl}}" >
+            </em>
+            <span>{{pictureName}}</span>
+        </li>
+        {{/each}}
+    </script>
+    #*加载JS文件*# 
+    #parse("control/$!webStyle/publicJs.vm")
+    <script src="/files/js/$!webStyle/app.js?v=$version"></script>
+
+    #parse("control/$!webStyle/globalJs.vm")
+    <script>
+        //商品列表
+        var productList = '';
+        var clientType = 2;
+        var shareId = 0;
+        var pictureid;
+        var pictureUrl;
+        $(document).on('click', '#makePicAndSend', function() {
+            if (!CheckLogin()) return;
+            if (shareId == 0) {
+                alert("error!");
+                return;
+            }
+            $(this).hide();
+            $.toast("正在发送中");
+            $.ajax({
+                type: "get",
+                url: "/weixin/makeAndSendPic?clientType=" + clientType + "&shareId=" + shareId,
+                dataType: 'json',
+                complete: function(json) {
+
+                    var data = json.response;
+                    var status = json.status;
+                    if (status != 200) {
+                        $.alert('网络异常，状态为11.2' + status);
+                        $(this).show();
+                    }
+                    if ($.type(data) == 'string') {
+                        data = JSON.parse(data);
+                    }
+                    if (data.code != 'E00000') {
+                        if(data.code == "-1"){
+                            window.location.href = "/weixin/bind";
+                        }else{
+                            $.alert(data.message);
+                            $(this).show();
+                        }
+                        
+                    } else {
+                        try {
+                            app.appShareTemplateFromWeb(data.data.posterUrl);
+                        } catch (e) {
+                            try {
+                                appShareTemplateFromWeb(data.data.posterUrl);
+                            } catch (ee) {
+                                $.alert("请在APP端浏览");
+                            }
+                        }
+                    }
+
+                }
+            });
+        });
+
+        $(document).on('click', '.open-about', function() {
+            $.popup('.popup-about');
+        });
+        //获取品牌图片详情
+        var getShareTemplateDetail = function() {
+            if (CheckLogin()){
+                $.showPreloader();
+                $.ajax({
+                    type: "post",
+                    url: "/weixin/getShareTemplateDetail",
+                    data: {
+                        tid: $!{tid}
+                    },
+                    dataType: 'json',
+                    complete: function(json) {
+                        
+                        var data = json.response;
+                        var status = json.status;
+                        if (status != 200) {
+                            $.hidePreloader();
+                            $.alert('网络异常，状态为11.2' + status);
+                        }
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if (data.code != 'E00000') {
+                            $.hidePreloader();
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                                $.alert("请上传头像再分享");
+                                return;
+                            }
+                            
+                        } else {
+                            productList = data.data.productList;
+                            showPicList('a');
+                            //渲染海报模板
+                            var posterTpl = $("#posterTpl").html();
+                            var posterTemplate = Handlebars.compile(posterTpl);
+                            var context = {
+                                data: data.data
+                            };
+                            var posterCont = posterTemplate(context);
+                            $('[data-role="wrap-all"]').html(posterCont);
+                        }
+                        $.hidePreloader();
+                    }
+                });
+            }else{return;}
+        };
+        
+
+        getShareTemplateDetail();
+        //根据首字母筛选对应的产品
+        $(".select-brand").delegate('td', 'click', function() {
+            $('td').removeClass("active");
+            $(this).addClass("active");
+            var that = $(this).find('a').html().toLowerCase();
+            showPicList(that);
+        });
+        //选择产品
+        $(".content-block").delegate('li', 'click', function() {
+            $(this).addClass("active").siblings().removeClass("active");
+            pictureid = $(this).attr("title");
+            pictureUrl = $(this).find("img").attr("src");
+        });
+        $(".content-block").delegate('#confirm', 'click', function() {
+            if ($(".content-block li").hasClass("active")) {
+                $.showPreloader();
+                $.ajax({
+                    type: "post",
+                    url: "/weixin/viewPic?clientType=" + clientType,
+                    async:false,
+                    data: {
+                        tid: $!{tid},
+                        pictureid: pictureid,
+                        productPicUrl: pictureUrl
+                    },
+                    dataType: 'json',
+                    complete: function(json) {
+                        var data = json.response;
+                        var status = json.status;
+                        if (status != 200) {
+                            $.hidePreloader();
+                            $.alert('网络异常，状态为11.2' + status);
+                        }
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if (data.code != 'E00000') {
+                            $.hidePreloader();
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message)
+                                return;
+                            }
+                            
+                        } else {
+                            $.hidePreloader();
+                            shareId = data.data.shareId;
+                            /*if (data.data.posterUrl && data.data.posterUrl != null) { //已经发送信息
+                                try {
+                                    app.appShareTemplateFromWeb(data.data.posterUrl);
+                                } catch (e) {
+                                    try {
+                                        appShareTemplateFromWeb(data.data.posterUrl);
+                                    } catch (ee) {
+                                        $.alert("请在APP端浏览");
+                                    }
+                                }
+                            } else {*/
+
+                                //生成海报预览图片,展示图片给用户选择发送
+                                $("#showViewPic").attr("src", data.data.url1);
+                                //$("#showViewPic").attr("src", "http://localhost:8080/ShareTemplate/viewTemplate/21.jpg");
+                                $.popup(".popup-pic");
+                            
+                        }
+                        
+                    }
+                });
+            } else {
+                alert("请选择饮用水品牌");
+            }
+        });
+        $.init();
+        //展示商品列表
+        function showPicList(le){
+            if(productList && productList.length > 0){
+            $('[data-role="Template-list"]').empty();
+                for(var i = 0;i<productList.length;i++){
+                    if(productList[i].letter == le){
+                        
+                        $('[data-role="Template-list"]').append('<li title="'+productList[i].pictureId+'" class="'+productList[i].letter+'"><b>佣金：￥'+productList[i].shareEarnings+'</b><em><img src="'+productList[i].pictureUrl+'"></em><span>'+productList[i].pictureName+'</span></li>');
+                        
+                    }
+                }
+            }
+        }
+        function logout(){
+            $.ajax({
+                url: "/weixin/appLogout",
+                type: "get",
+                async: false,
+                dataType:"json",
+                success: function (result) {
+                },error:function(msg){
+
+                }
+			});
+        }
+
+    </script>
+</body>
+</html>

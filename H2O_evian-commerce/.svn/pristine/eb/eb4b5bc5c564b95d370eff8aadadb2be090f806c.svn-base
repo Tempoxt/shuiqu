@@ -1,0 +1,15 @@
+<nav class="bar bar-tab massage-bar" data-role="massage-bar">
+    <table>
+        <tr>
+            <td width="10%">
+            #if($!{detail.isLike})
+              <span data-role="like" data-comment-id="$!{commentId}" class="icon icon-108click needsclick active"></span>
+            #else
+              <span data-role="like" data-comment-id="$!{commentId}" class="icon icon-108click needsclick"></span>
+            #end
+            </td>
+            <td width="70%"><input data-role="msg-box" type="text"></td>
+            <td width="20%" data-client-id="0" data-parent-id="0" data-role="send"><span>发送</span></td>
+        </tr>
+    </table>
+</nav>

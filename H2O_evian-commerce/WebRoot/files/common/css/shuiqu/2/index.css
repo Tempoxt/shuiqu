@@ -1,0 +1,129 @@
+@charset "UTF-8";
+/*基础数据，可配置*/
+
+
+
+.button.btn-yello.active,
+.button.btn-yello:hover,
+.button.btn-yello {
+  background: #7B00D3;
+  color: #fff; }
+
+
+label.label-checkbox input[type="radio"]:checked + .item-media i.icon-form-checkbox,
+label.label-checkbox input[type="checkbox"]:checked + .item-media i.icon-form-checkbox {
+  background-color: #7B00D3; }
+
+
+.my-bar {
+  background: #7B00D3;
+  color: #7B00D3; }
+
+.choose-bar {
+  background: rgba(0,0,0,0.2);
+  color: #fff; }
+
+.icon-btn_xj1.active {
+  color: #7B00D3; }
+  .icon-btn_sp1.active {
+    color: #7B00D3; }
+.icon-11addressdel {
+  color: #f00; }
+
+.icon-86star.active {
+  color: #7B00D3; }
+
+.button-warning {
+  background: #7B00D3;
+  color: #fff; }
+
+.bar-nav {
+  border: 0; }
+
+.bar-nav1 {
+  color: #000;
+  border: 0; }
+
+  #getCode {
+    background-color: #7B00D3 !important;
+    color: #fff;
+  }
+.icon-btn_dzp-.active,.content-unboundWeixin .list-block .login-tips{
+    color: #7B00D3;
+}
+.content-people .poster .tpl-box .wrap-title table .haibaoModel .active{
+  border-color:#7b00d3;
+  color: #7b00d3;
+}
+
+.page-myIntegral .img-code-box ul li .buttons-tab .button.active{
+  border-color:#7b00d3;
+  color: #7b00d3;
+}
+.page-orderDistributor #tab1 li .row .listCount,.page-orderDistributor #tab2 li .row .listCount,.page-withdrawDeposit ul .withdrawBtn{
+  background-color: #7b00d3;
+}
+/*地址管理*/
+
+    
+.address-manager .address-list li .bottom-ctrl table span {
+          font-size: 0.9rem;
+          margin-right: 0.2rem;
+          color: #7B00D3; }
+     
+          .popup-new-address .content .new-add-list .tag-box table a.active {
+            color: #7B00D3;
+            border-color: #7B00D3; }
+       
+          .popup-edit-address .content .new-edit-list .tag-box table a.active {
+            color: #7B00D3;
+            border-color: #7B00D3; }
+       
+      .left-bar li a.active {
+        border-left: 3px solid #7B00D3;
+        background: #fff;
+        color: #000; }
+
+
+
+/*我的*/
+.page-account .content .my-bar {
+  position: relative;
+  background: #7B00D3;
+  padding: 1rem 1.5rem;
+  color: #fff; }
+ 
+.order-list-wrap .buttons-tab .button.active {
+  color: #7B00D3;
+  border-color: #E8A44F; }
+    .order-list li h4 em {
+      color: #7B00D3;
+      font-style: normal; }
+    
+      .order-list li .show-order table tr td em {
+        font-style: normal;
+        color: #7B00D3;
+        border: 1px solid #7B00D3;
+        display: inline-block;
+        border-radius: 0.3rem;
+        padding: 0 0.2rem;
+        line-height: 1.5em; }
+
+    .order-status-list li > i {
+      display: block;
+      width: 0.5rem;
+      height: 0.5rem;
+      background: #7B00D3;
+      position: absolute;
+      top: 50%;
+      left: -1.2rem;
+      margin-top: -0.25rem;
+      border-radius: 50%; }
+   
+      .popup-papers3-about .content .waterboys .big-photo .contacts-people {
+        background: #7B00D3;
+        display: inline-block;
+        width: 100%;
+        border-radius: 1rem;
+        font-size: 0.7rem; }
+     

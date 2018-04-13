@@ -1,0 +1,88 @@
+package com.eviano2o.controller;
+
+import javax.servlet.http.HttpServletRequest;
+
+import net.sf.json.JSONObject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.alibaba.druid.util.StringUtils;
+import com.eviano2o.util.DES3_CBCUtil;
+import com.eviano2o.util.HttpClientUtil;
+import com.eviano2o.util.SysParamNames;
+import com.eviano2o.util.WxTokenAndJsticketCache;
+
+@Controller
+@RequestMapping("/api")
+public class APIController extends BaseController {
+
+	private static final Logger logger = LoggerFactory.getLogger(APIController.class);
+	//logger.error("[remark:{}]", new Object[] { "获取微信OpenId" });
+	
+	
+	/** 微信推送配送员信息，彭安调用 */
+	@RequestMapping(value = "wxCourierLocationMsg", produces = "text/plain; charset=utf-8")
+	public @ResponseBody String wxCourierLocationMsg(HttpServletRequest request) {
+		String json = request.getParameter("json");
+		logger.info("api->wxCourierLocationMsg) json:" + json);
+		
+		if(StringUtils.isEmpty(json))
+			return "empty";
+		
+		try{
+			// 解密
+			json = DES3_CBCUtil.des3DecodeCBC(json);
+		}catch(Exception ex){return "error";}
+		
+		/*try{
+			json = new String(json.getBytes("iso8859-1"), "utf-8");
+		}catch(Exception ex){}*/
+		
+		logger.info("发送微信配送员信息："+json);
+		if(StringUtils.isEmpty(json))
+			return "参数为空!";
+		JSONObject objJson =JSONObject.fromObject(json);
+		
+		if(!objJson.has("openId"))
+			return "openId为空!";
+		
+		if(!objJson.has("content"))
+			return "content为空!";
+		
+		if(!objJson.has("contentType"))
+			return "contentType为空!";
+
+		if(!objJson.has("appId"))
+			return "appId为空!";
+		
+		//0:普通信息
+		//1：带坐标的信息
+		//
+		int contentType = objJson.getInt("contentType");
+		
+		String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + WxTokenAndJsticketCache.getAccess_token(objJson.getString("appId"));
+		String contentLink = "http://" + getSysParamMapValue(SysParamNames.ParamWXWebSit) + "/api/wxCourierLocationMap?location="+objJson.getString("location");
+		String content = objJson.optString("createTime") + "：" + objJson.getString("content");
+		if(contentType == 1)
+			content += "<a href='"+contentLink+"'>点击在地图查看</a>";
+		String sendJson = "{\"touser\":\"" + objJson.getString("openId") + "\",\"msgtype\":\"text\",\"text\":{\"content\":\"" + content + "\"}}";
+		String result = HttpClientUtil.post(url, sendJson);
+		return result;
+	}
+	
+	
+	/** 地图上查看配送员位置 vm */
+	@RequestMapping(value = "wxCourierLocationMap", method = RequestMethod.GET)
+	public String wxCourierLocationMap(Model model, String location) {
+		model.addAttribute("location1", location.split("\\|")[0]);
+		model.addAttribute("location2", location.split("\\|")[1]);
+		model.addAttribute("location3", location.split("\\|")[2]);
+		return "screen/api/wxCourierLocationMap";
+	}
+}

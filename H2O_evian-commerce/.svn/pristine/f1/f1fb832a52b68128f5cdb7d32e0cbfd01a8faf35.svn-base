@@ -1,0 +1,12 @@
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>大力水手</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+    <link rel="shortcut icon" href="/files/images/$!webStyle/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="/files/common/css/$!webStyle/sm.min.css?v=$version">
+    <link rel="stylesheet" href="/files/common/css/$!webStyle/sm-extend.min.css?v=$version">
+    <link rel="stylesheet" href="/files/common/css/$!webStyle/index.css?v=$version">
+</head>

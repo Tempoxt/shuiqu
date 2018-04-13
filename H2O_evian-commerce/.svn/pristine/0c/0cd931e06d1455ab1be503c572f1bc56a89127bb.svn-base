@@ -1,0 +1,454 @@
+ <!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "myTeam")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/shopCss.vm")
+<body>
+    <div class="page-group">
+        <div class="page page-finish page-current">
+            <header class="bar bar-nav light-nav">
+                <a href="javascript:history.go(-1);" class="icon icon-35icoback pull-left bar-left"></a>  
+                <h1 id="tuikeOrTeamHeader" class="title"></h1>
+                <a href="http://mp.weixin.qq.com/s?__biz=MzIzMjU3MDMyMw==&mid=100000196&idx=1&sn=7a48e0650fb6c6ab84c3ff867295b9c6&scene=19#wechat_redirect" class="icon icon-help pull-right"></a>
+            </header>
+            <div class="content myClient-content">
+                <div class="buttons-tab" data-role="myClient-tab">
+                    <a id="tuikeOrTeamNav1" href="#tab1" class="tab-link active button" data-role="tab1" data-type="1"><span data-role="watch-tab"></span></a>
+                    <a id="tuikeOrTeamNav2" href="#tab2" class="tab-link button" data-role="tab2" data-type="2"><span data-role="register-tab"></span></a>
+                </div>
+                <div class="content-block no-p-m infinite-scroll" data-role="myClient-list"  data-distance="50">
+                    <div class="tabs">
+                        <ul id="tab1" class="tab active">
+                            
+                        </ul>
+                        <ul id="tab2" class="tab">
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        ## 显示收益明细
+        <div class="popup popup-tuikeEarningsDetail">
+            <div class="content-block">
+            <header class="bar bar-nav light-nav" style="border-bottom: 1px solid #ECECEC;">
+                <span class="icon icon-35icoback pull-left close-popup bar-left"></span>  
+                <h1 class="title">收益明细</h1>
+                <p id="detailTime" class="pull-right detailTime" style="font-size: 0.7rem;margin-right: 10px;"><span id="detailTimeP">三个月内</span><span class="icon icon-63navbaricoarrowdown" style="width: 20%;font-size: 0.7rem;padding-right: 5px;padding-left: 5px;"></span></p>
+            </header>
+            <div id="earningsDetail" class="content" >
+                
+            </div>        
+        </div>
+        </div>
+    </div>
+    <script id="tuikeOrTeamHeaderTab" type="text/x-handlebars-template">
+        我的{{#is data.role '0'}}客户{{else}}团队{{/is}}
+    </script>
+    <script id="tuikeOrTeamNav1Tab" type="text/x-handlebars-template">
+        {{#is data.role '0'}}客户{{else}}团队{{/is}}动态({{data.dynamicNum}})
+    </script>
+    <script id="tuikeOrTeamNav2Tab" type="text/x-handlebars-template">
+        {{#is data.role '0'}}客户{{else}}团队{{/is}}收益({{data.shouyiNum}})
+    </script>
+    <!-- 团队动态模板 -->
+    <script id="watch" type="text/x-handlebars-template">
+        {{#each data.clients}}
+            <li>
+                <div class="info-left">
+                    <div class="photo">
+                        {{#is photo ""}}<img src="/files/images/$!webStyle/default.png" >{{else}}<img src="{{photo}}">{{/is}}
+                    </div>
+                    <div class="nick-name">
+                        <p>{{nickName}}</p>
+                    </div>
+                    <div class="nick-name">
+                        <p id="nick-data-p" style="font-size: 15px;">{{date}}</p>
+                    </div>
+                </div>
+                <div class="info-right">
+                    <span>{{account}}</span>
+                </div>
+                <div class="info-right">
+                    <span>{{dynamic}}</span>
+                </div>
+            </li>
+        {{/each}}
+    </script>
+    <!-- 团队收益模板 -->
+    <script id="register" type="text/x-handlebars-template">
+        {{#each data.clients}}
+            <li data-xgcid="{{xgcid}}">
+                <div class="info-left">
+                    <div class="photo">
+                        {{#is photo ""}}<img src="/files/images/$!webStyle/default.png" >{{else}}<img src="{{photo}}" class="default">{{/is}}
+                    </div>
+                    
+                    <div class="nick-name">
+                        <h5>{{nickName}}</h5>
+                        <span class="phone">{{account}}</span>
+                    </div>
+                </div>
+                <div class="info-right">
+                    <span>{{dynamic}}</span>
+                </div>
+                <div class="info-right">
+                    <h5>￥{{money}}</h5>
+                </div>
+            </li>
+        {{/each}}
+    </script>
+    <!-- 收益明细模板 -->
+    <script id="bargain" type="text/x-handlebars-template">
+        <div class="content-padded earningsDetailHeader">
+            <div class="row" style="padding-left: 10px;padding-right: 20px;"> 
+                <div class="col-20 photo">
+                    {{#is data.photo ""}}<img src="/files/images/$!webStyle/default.png" >{{else}}<img src="{{data.photo}}" class="default">{{/is}}
+                </div>
+                <p class="col-12 nickName" >
+                    {{data.nickName}}
+                </p>
+                <p class="col-20 account">
+                    {{data.account}}
+                </p>
+                <p class="dynamic pull-right bar-right" >
+                    {{data.dynamic}}
+                </p>
+            </div>
+        </div>
+        <ul >
+            {{#each data.orders}}
+            <li style="padding-left: 10px;border-bottom: 1px solid #ECECEC;">
+                <div class="content-padded earningsDetailUl">
+                    <div class="row">
+                        <div class="orderNo">单号：{{orderNo}}</div>
+                    </div>
+                    {{#each products}}
+                    <div class="row">
+                        <p class="col-80 pname">{{pname}}</p><p class="col-20 money pull-right bar-right">￥{{money}}</p>
+                    </div>
+                    {{/each}}
+                </div>
+            </li>
+            {{/each}}
+        </ul>
+    </script>
+    #*加载JS文件*# 
+    #parse("control/$!webStyle/publicJs.vm")
+    <script type='text/javascript' src='/files/common/js/selector.js' charset='utf-8'></script>
+    <!-- <script type='text/javascript' src='https://cdn.shuiqoo.cn/$!webStyle/selector.js' charset='utf-8'></script> -->
+    #parse("control/$!webStyle/globalJs.vm")
+    <script>
+        // 初始化
+        $.ajax({
+            type: "post",
+            url: "/weixin/myEarningInfo",
+            dataType: 'json',
+            async:false,
+            complete: function(json) {
+                var data = json.response;
+                var status = json.status;
+                if (status != 200) {
+                    $.alert('网络异常，状态为22.1' + status);
+                    return;
+                }
+                if ($.type(data) == 'string') {
+                    data = JSON.parse(data);
+                }
+                if (data.code != 'E00000') {
+                    $.alert(data.message);
+                    return;
+                } else {
+                  
+                    var context = {
+                        data: data.data
+                    };
+                    var tuikeOrTeamHeaderTab = $("#tuikeOrTeamHeaderTab").html();
+                    var tuikeOrTeamHeaderTemplate = Handlebars.compile(tuikeOrTeamHeaderTab);
+                    var tuikeOrTeamHeaderCont = tuikeOrTeamHeaderTemplate(context);
+                    $('#tuikeOrTeamHeader').html(tuikeOrTeamHeaderCont);
+
+                    var tuikeOrTeamNav1Tab = $("#tuikeOrTeamNav1Tab").html();
+                    var tuikeOrTeamNav1Template = Handlebars.compile(tuikeOrTeamNav1Tab);
+                    var tuikeOrTeamNav1Cont = tuikeOrTeamNav1Template(context);
+                    $('#tuikeOrTeamNav1').html(tuikeOrTeamNav1Cont);
+
+                    var tuikeOrTeamNav2Tab = $("#tuikeOrTeamNav2Tab").html();
+                    var tuikeOrTeamNav2Template = Handlebars.compile(tuikeOrTeamNav2Tab);
+                    var tuikeOrTeamNav2Cont = tuikeOrTeamNav2Template(context);
+                    $('#tuikeOrTeamNav2').html(tuikeOrTeamNav2Cont);
+                }
+            }
+        });
+
+        var pageSize = 10;
+        var pageIndex1 = 1;
+        var pageIndex2 = 1;
+        var loading = false;
+        
+            //我的团队详情
+            var getDevelopTeams = {
+                //团队动态
+                watch:function(method){
+                    $.ajax({
+                        type: "post",
+                        url: "/weixin/getDevelopClients",
+                        data: {
+                            type:4,
+                            pageIndex:pageIndex1
+                        },
+                        dataType: 'json',
+                        complete: function(json) {
+                            var data = json.response;
+                            var status = json.status;
+                            if (status != 200) {
+                                $.alert('网络异常，状态为11.2' + status);
+                            }
+                            if ($.type(data) == 'string') {
+                                data = JSON.parse(data);
+                            }
+                            if (data.code != 'E00000') {
+                                if(data.code == "-1"){
+                                    window.location.href = "/weixin/bind";
+                                }else{
+                                    $.alert(data.message);
+                                    return;
+                                }
+                            } else {
+                                var context = {
+                                    data: data.data
+                                };
+                                /*var watchTab = $("#watchTab").html();
+                                var watchTabTemplate = Handlebars.compile(watchTab);
+                                var watchTabCont = watchTabTemplate(context);
+                                $('[data-role="watch-tab"]').html(watchTabCont);*/
+                                
+                                if(data.data.count>0){
+                                    var tpl = $("#watch").html();
+                                    var template = Handlebars.compile(tpl);
+                                    
+                                    var cont = template(context);
+
+                                    if(method=='pull'){
+                                        loading=false;
+                                        $('#tab1').append(cont);
+                                    }else{
+                                        $('#tab1').html(cont); 
+                                    }
+                                }else{
+                                    if(method!='pull'){
+                                    $('#tab1').html('<div style="text-align:center;"><i class="icon icon-default" style="color:#ddd;display:block;text-align:center;padding-top:8rem;"></i><span style="color:#bbb;font-size:0.6rem;">您还没有相关信息!</span></div>');
+                                    }
+                                }
+                                
+                            }
+                        }
+                    });
+                },
+                //团队收益
+                register:function(method){
+                    $.ajax({
+                        type: "post",
+                        url: "/weixin/getDevelopClients",
+                        async:false,
+                        data: {
+                            type:5,
+                            pageIndex:pageIndex2
+                        },
+                        dataType: 'json',
+                        complete: function(json) {
+                            var data = json.response;
+                            var status = json.status;
+                            if (status != 200) {
+                                $.alert('网络异常，状态为11.2' + status);
+                            }
+                            if ($.type(data) == 'string') {
+                                data = JSON.parse(data);
+                            }
+                            if (data.code != 'E00000') {
+                                if(data.code == "-1"){
+                                    window.location.href = "/weixin/bind";
+                                }else{
+                                    $.alert(data.message);
+                                    flag=0;
+                                    return;
+                                }
+                            } else {
+                                var context = {
+                                    /*clients: [{"nickName":"谢海鑫","photo":"http://7xszh8.com1.z0.glb.clouddn.com/Upload/Client/photos/images/20171103/201711031509701743250.jpg","dynamic":"用户","money":"15.50","account":"12341243"},{"nickName":"谢海鑫","photo":"http://7xszh8.com1.z0.glb.clouddn.com/Upload/Client/photos/images/20171103/201711031509701743250.jpg","dynamic":"用户","money":"15.50","account":"12341243"},{"nickName":"谢海鑫","photo":"http://7xszh8.com1.z0.glb.clouddn.com/Upload/Client/photos/images/20171103/201711031509701743250.jpg","dynamic":"用户","money":"15.50","account":"12341243"}]*/
+                                    data:data.data
+                                };
+                                /*var registerTab = $("#registerTab").html();
+                                var registerTabTemplate = Handlebars.compile(registerTab);
+                                var registerTabCont = registerTabTemplate(context);
+                                $('[data-role="register-tab"]').html(registerTabCont);*/
+                                
+                                
+                                if(data.data.count>0){
+                                    var tpl = $("#register").html();
+                                    var template = Handlebars.compile(tpl);
+                                    // var context = {
+                                    //     data: data.data
+                                    // };
+                                    var cont = template(context);
+
+                                    if(method=='pull'){
+                                        loading=false;
+                                        $('#tab2').append(cont);
+                                    }else{
+                                        $('#tab2').html(cont); 
+                                    }
+                                    /*for(var i=0,len=$(".phone").length;i<len;i++){
+                                       if($('.phone').eq(i).html()!=""){
+                                           $('.phone').eq(i).html($('.phone').eq(i).html().replace(/(\d{3})\d{4}(\d{4})/,'$1****$2'));  
+                                       } 
+                                    }*/
+                                    
+                                }else{
+                                    if(method!='pull'){
+                                    $('#tab2').html('<div style="text-align:center;"><i class="icon icon-default" style="color:#ddd;display:block;text-align:center;padding-top:8rem;"></i><span style="color:#bbb;font-size:0.6rem;">您还没有相关信息!</span></div>');
+                                    }
+                                }
+                                
+                            }
+                        }
+                    });
+                },
+                //收益明细
+                bargain:function(xgcid,month){
+                    $.ajax({
+                        type: "post",
+                        url: "/weixin/tuikeEarningsDetail",
+                        data: {
+                            xgcid:xgcid,
+                            month:month
+                        },
+                        dataType: 'json',
+                        complete: function(json) {
+                            var data = json.response;
+                            var status = json.status;
+                            if (status != 200) {
+                                $.alert('网络异常，状态为11.2' + status);
+                            }
+                            if ($.type(data) == 'string') {
+                                data = JSON.parse(data);
+                            }
+                            if (data.code != 'E00000') {
+                                if(data.code == "-1"){
+                                    window.location.href = "/weixin/bind";
+                                }else{
+                                    $.alert(data.message);
+                                    return;
+                                }
+                            } else {
+                                var context = {
+                                    data: data.data
+                                };
+                                if(data.data.hasValue){
+                                    var tpl = $("#bargain").html();
+                                    var template = Handlebars.compile(tpl);
+                                    // var context = {
+                                    //     data: data.data
+                                    // };
+                                    var cont = template(context);
+                                    $("#earningsDetail").html(cont);
+                                }else{
+                                    $('#tab3').html('<div style="text-align:center;"><i class="icon icon-default" style="color:#ddd;display:block;text-align:center;padding-top:8rem;"></i><span style="color:#bbb;font-size:0.6rem;">您还没有相关信息!</span></div>');
+                                }
+                                $.popup('.popup-tuikeEarningsDetail');
+                                $.hidePreloader();
+                            }
+                        }
+                    });
+                    /*var context = {
+                        // data: data.data
+                        "clients":[{"nickName":"谢海鑫","photo":"http://7xszh8.com1.z0.glb.clouddn.com/Upload/Client/photos/images/20171103/201711031509701743250.jpg","dynamic":"用户"}]
+                    };
+                    var tpl = $("#bargain").html();
+                    var template = Handlebars.compile(tpl);
+                    var cont = template(context);
+                    $("#earningsDetail").html(cont);*/
+                }
+            }
+            getDevelopTeams.watch();
+            getDevelopTeams.register();
+            // getDevelopTeams.bargain();
+            /*$('.myClient-content').delegate('[data-role="myClient-tab"] a','click',function(){
+                pageIndex = 1;
+                
+            });*/
+
+        
+
+        $(document).on("pageInit", function(e, id, page) {
+            
+            $(page).on('infinite',function(){
+                // debugger;
+                var type = $('[data-role="myClient-tab"]').find('a.active').data('type');
+                // 如果正在加载，则退出
+                if (loading) return;
+
+                // 设置flag
+                loading = true;
+
+                $('.infinite-scroll-preloader').show();
+                
+                //新增一页
+                if(type==1){
+                pageIndex1 = pageIndex1 + 1;
+                    getDevelopTeams.watch('pull');
+                }else if(type==2){
+                pageIndex2 = pageIndex2 + 1;
+                    getDevelopTeams.register('pull');
+                }else if(type==3){
+                    // getDevelopTeams.bargain('pull');
+                }
+
+            });
+        });
+        $(document).on('click', '#tab2 li', function() {
+            $.showPreloader();
+            $("#detailTime").attr("data-xgcid",$(this).attr("data-xgcid"));
+            getDevelopTeams.bargain($(this).attr("data-xgcid"),3);
+        });
+        $(document).on('click','#detailTime', function () {
+                var dataXgcid = $(this).attr("data-xgcid");
+              var buttons1 = [
+                {
+                  text: '请选择',
+                  label: true
+                },
+                {
+                  text: '三个月内',
+                  onClick: function() {
+                    getDevelopTeams.bargain(dataXgcid,3);
+                    $("#detailTimeP").html("三个月内");
+                  }
+                },
+                {
+                  text: '半年内',
+                  onClick: function() {
+                    getDevelopTeams.bargain(dataXgcid,6);
+                    $("#detailTimeP").html("半年内");
+                  }
+                },
+                {
+                  text: '一年内',
+                  onClick: function() {
+                    getDevelopTeams.bargain(dataXgcid,12);
+                    $("#detailTimeP").html("一年内");
+                  }
+                }
+              ];
+              var buttons2 = [
+                {
+                  text: '取消',
+                }
+              ];
+              var groups = [buttons1, buttons2];
+              $.actions(groups);
+          });
+        $.init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "tuiKeManagerAudit")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/shopCss.vm")
+<body>
+<div class="page-group">
+	<div class="page page-finish page-current page-tuikeManagerAudit">
+            <header class="bar bar-nav light-nav">
+                <a class="icon icon-guanbi-copy pull-right bar-right closeTuike" href="#"></a>  
+                <h1 class="title">推客审核</h1>
+            </header>
+            <div class="content img-code-box">
+                <ul class="tuikes-list tab active infinite-scroll infinite-scroll-bottom" data-role="tuikes-list" data-distance="100">
+                   
+                </ul>
+                <!-- <div id="tuikeAduitUser" >
+                    <table id="tuikeAduitTab" >
+                        
+                    </table>
+                </div> -->
+            </div>
+    </div>
+    <!-- 查看图片详情 -->
+    <div class="popup popup-tuiKeImgAudit">
+        <div class="content-block">
+            <header class="bar bar-nav light-nav">
+                <span class="icon icon-35icoback pull-left close-popup bar-left"></span>  
+                <h1 class="title">查看图片详情</h1>
+            </header>
+            <div class="content">
+              <div class="swiper-container" data-space-between='10'>
+                <div class="swiper-wrapper">
+                </div>
+                <div class="swiper-pagination"></div>
+              </div>
+            </div>        
+        </div>
+    </div>
+</div>
+    #*加载JS文件*# 
+    #parse("control/$!webStyle/publicJs.vm")
+    <script src="/files/common/js/echarts.min.js"></script>
+    <!-- <script src="https://cdn.shuiqoo.cn/$!webStyle/echarts.min.js"></script> -->
+    #parse("control/$!webStyle/globalJs.vm")
+    <script id="tuikeULInfo" type="text/x-handlebars-template">
+        {{#each data}}
+            <li>
+            <div class="content-padded">
+                <div class="row">
+                    <div class="col-33">
+                        {{#unless photo}}
+                            <img style="border-radius:5px" src="/files/images/$!webStyle/default.png" alt="" >
+                        {{else}}
+                            <img style="border-radius:50%" src="{{photo}}" alt="" >
+                        {{/unless}} 
+                        <br>
+                        <p style="position: relative;left: 15px; text-align:center;width:50%;height: 25px;overflow: hidden;">{{fullname}}</p>
+                  </div>
+                  <div class="col">
+                      <div class="row">
+                        <div class="col-90">
+                            <table>
+                              <tr>
+                                  <td>手机号：</td>
+                                  <td >{{account}}</td>
+                              </tr>
+                              <tr>
+                                  <td>资&nbsp;&nbsp;&nbsp;&nbsp;源：</td>
+                                  <td><div>{{resourceRemark}}</div></td>
+                              </tr>
+                            </table>
+                        </div>
+                      </div>
+                       <div class="row">
+                          {{#is imgs.length}}<p class="picsAudit">{{#each imgs}}<img pics-index="{{@index}}" src="{{this}}" />{{/each}}</p>{{/is}}
+                      </div> 
+                      <div class="row">
+                          <p class="auditBtn" applyId="{{applyId}}" eid="{{eid}}"  remark="{{remark}}"><a href="#" class="button .navbar-right" >审核</a></p>
+                      </div>
+                  </div>
+                </div>
+            </div>
+            </li>
+            <!-- <li>
+            <div class="content-padded">
+                <div class="row">
+                    <div class="col-33">
+                        {{#unless photo}}
+                            <img style="border-radius:5px" src="/files/images/$!webStyle/default.png" alt="" >
+                        {{else}}
+                            <img style="border-radius:50%" src="{{photo}}" alt="" >
+                        {{/unless}} 
+                        <br>
+                        <p style="position: relative;left: 15px;">{{fullname}}</p>
+                  </div>
+                  <div class="col" style="color: #7A7979">
+                      <div class="row">
+                        <div class="col-63">
+                            <table>
+                              <tr>
+                                  <td>手机号：</td>
+                                  <td>{{account}}</td>
+                              </tr>
+                              <tr>
+                                  <td style="width: 40%;text-align:right;vertical-align:text-top;">资源：</td>
+                                  <td>{{resourceRemark}}</td>
+                              </tr>
+                            </table>
+                        </div>
+                      </div>
+                      <div class="row">
+                          {{#is imgs.length}}<p class="pics">{{#each imgs}}<img style="width: 10%" src="{{this}}" />{{/each}}</p>{{/is}}
+                      </div>
+                      <div class="row">
+                          <p style="padding: 15px" class="auditBtn" applyId="{{applyId}}" eid="{{eid}}"  remark="{{remark}}"><a href="#" class="button .navbar-right" >审核</a></p>
+                      </div>
+                  </div>
+                </div>
+            </div>
+            </li> -->
+        {{/each}}
+
+    </script>
+    <script type="text/javascript">
+       $(function(){
+        // 点击关闭界面
+        function closeWin() {
+            WeixinJSBridge.invoke('closeWindow', {}, function(res) {
+                //res.err_msg(close_window:ok/close_window:error)
+            });
+        }
+        function clickCloseTuike(){
+          $(".closeTuike").click(function(){
+              closeWin();
+          });
+        }
+
+        clickCloseTuike();
+
+        function showNullTuike(){
+          $('[data-role="tuikes-list"]').before('<div class="defaut-wrapp" style="padding: 5rem 1rem 1rem;color: #b7b8b7;" ><span class="icon icon-88tipicoorder" style="display: block;font-size: 3rem;width: 3rem;height: 3rem;margin: 0 auto 2rem;"></span><h2 class="def-note" style="font-size: 0.8rem;text-align: center;">暂无需要审核的推客</h2><p style="width: 5rem;margin: 0 auto;" class="closeTuike" ><a href="#" class="button button-fill btn-yello">确定</a></p></div>');
+
+          clickCloseTuike();
+        }
+
+        $.ajax({
+                type: "post",
+                url: "/weixin/getManagerTuiKes?num="+Math.random(),
+                data: {
+                   
+                },
+                dataType: 'json',
+                complete: function(json){
+                    var data = json.response;
+                    var status = json.status;
+                    console.log(data);
+                    if(status != 200){
+                        $.alert('网络异常，状态为10.2' + status);
+                        return;
+                    }
+                    if ($.type(data) == 'string') {
+                        data = JSON.parse(data);
+                    }
+                    if(data.code != 'E00000'){
+                        if(data.code == "-1"){
+                            window.location.href = "/weixin/bind";
+                        }else{
+                            $.alert(data.message);
+                            return;
+                        }
+                    }else{
+                        // 隐藏手机号码
+                        for(var i =0;i<data.data.tuikes.length;i++){
+                            var tel=data.data.tuikes[i].account;
+                            data.data.tuikes[i].account=tel.substr(0, 3) + '****' + tel.substr(7);
+                        }
+                        var test = data.data.tuikes;
+                        //test[0].imgs.splice(0,test[0].imgs.length);
+                        // for(var i =0;i<test.length;i++){
+                        //     for(var j=0;j<4;j++){
+                        //         test[i].imgs.push(test[i].imgs[0]);
+                        //     }
+                        // }
+                        // 当无推客时显示的内容
+                        if(data.data.tuikes<1){
+                           showNullTuike();
+
+                        }
+                        var context = {
+                             data: data.data.tuikes
+
+                        };
+                        var tuikeInfo = $("#tuikeULInfo").html();
+                        var tuikeInfoTemplate = Handlebars.compile(tuikeInfo);
+                        var tuikeInfoCont = tuikeInfoTemplate(context);
+                        console.log(context);
+                        $('[data-role="tuikes-list"]').html(tuikeInfoCont);
+                        // for(var i=0;i<data.data.tuikes.length;i++){
+                        //     if(data.data.tuikes[i].imgs.length>4){
+
+                        //     }
+                        // }
+                        var float=0;
+                        $(".auditBtn").click(function(){
+                            var auditBtnThis = $(this);
+                            if(float>0){
+                                return;
+                            }
+                            float++;
+                            $.ajax({
+                                type: "post",
+                                url: "/weixin/auditTuike?num="+Math.random(),
+                                data: {
+                                   "applyId":auditBtnThis.attr("applyId"),
+                                   "eid":auditBtnThis.attr("eid"),
+                                   "status":"1",
+                                   "remark":"DAdasdA"  //auditBtnThis.attr("remark")
+                                },
+                                dataType: 'json',
+                                complete: function(json){
+                                    var data = json.response;
+                                    if(typeof data == "String"){
+                                        data=JSON.parse(data);
+                                    }
+                                     var data = JSON.parse(json.response);
+                                     var status = json.status;
+                                     console.log(json);
+                                     if(data.code=="E00000"){
+                                        $.toast("操作成功");
+                                        auditBtnThis.parent().parent().parent().parent().parent().remove();
+                                        float=0;
+                                        if($(".tuikes-list").children('li').length<1){
+                                          showNullTuike();
+                                        }
+                                     }else{
+                                        float=0;
+                                        if(data.code == "-1"){
+                                            window.location.href = "/weixin/bind";
+                                        }else{
+                                            $.alert(data.message);
+                                            return;
+                                        }
+                                     }
+                                }
+                            });
+                        });
+                    }
+                }
+                
+       });
+    });
+    $(document).on('click', '.picsAudit img', function() {
+        // 将轮播页面内容清空
+        $(".swiper-wrapper").html("");
+        // 记住当前点击的图片下标
+        var picsIndex= $(this).attr("pics-index");
+        // 循环当前图片的上级的下级的所有图片
+        $(this).parent().children("img").each(function(index){
+          // 将所有图片的src赋值到 轮播界面的图片src
+          $(".swiper-wrapper").append("<div class='swiper-slide'><img style='width: 100%;' src='"+$(this).attr("src")+"' alt=''></div>");
+        });
+        // 显示popup
+        $.popup('.popup-tuiKeImgAudit');
+        /*$(".popup-tuiKeImgAudit .content img").attr('src',$(this).attr('src'));*/
+        // 显示轮播图 
+        $(".swiper-container").swiper({
+          // 初始化当前图片
+          initialSlide:picsIndex
+        });
+    });
+    $.init();
+    </script>
+</body>
+</html>	

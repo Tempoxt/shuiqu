@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/indexCss.vm")
+<body>
+    <img src="http://ssqoo.com/files/images/DefaultTemplate.jpg" style="display:block; width:100%;  ">
+#*加载JS文件*# 
+#parse("control/$!webStyle/publicJs.vm")
+<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+#parse("control/$!webStyle/globalJs.vm")
+<script type="text/javascript">
+    /*
+    * 注意：
+    * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+    * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+    * 3. 完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+    *
+    * 如有问题请通过以下渠道反馈：
+    * 邮箱地址：weixin-open@qq.com
+    * 邮件主题：【微信JS-SDK反馈】具体问题
+    * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+    */
+    wx.config({
+        debug: false,
+        appId: '$!{appId}',
+        timestamp: $!{timestamp},
+        nonceStr: '$!{nonceStr}',
+        signature: '$!{signature}',
+        jsApiList: [
+        'checkJsApi',
+        'onMenuShareTimeline',
+        'onMenuShareAppMessage',
+        'onMenuShareQQ',
+        'onMenuShareWeibo',
+        'showOptionMenu',
+        'hideOptionMenu',
+        'hideMenuItems',
+        'showMenuItems',
+        'hideAllNonBaseMenuItem',
+        'showAllNonBaseMenuItem',
+        'translateVoice',
+        'startRecord',
+        'stopRecord',
+        'onRecordEnd',
+        'playVoice',
+        'pauseVoice',
+        'stopVoice',
+        'uploadVoice',
+        'downloadVoice',
+        'chooseImage',
+        'previewImage',
+        'uploadImage',
+        'downloadImage',
+        'getNetworkType',
+        'openLocation',
+        'getLocation',
+        'hideOptionMenu',
+        'showOptionMenu',
+        'closeWindow',
+        'scanQRCode',
+        'chooseWXPay',
+        'openProductSpecificView',
+        'addCard',
+        'chooseCard',
+        'openCard'
+      ]
+    });
+
+    var myTitle = '$!{shareTitle}';
+    var myLink = 'http://ssqoo.com/files/images/DefaultTemplate.jpg';
+    var myDesc = '$!{shareDesc}';
+    var myImgUrl = 'http://ssqoo.com/files/images/DefaultTemplate.jpg';
+    
+    function shareFriend() {
+        WeixinJSBridge.invoke('sendAppMessage', {
+            "appid": "",
+            "img_url": myImgUrl,
+            "img_width": "200",
+            "img_height": "200",
+            "link": myLink,
+            "desc": myDesc,
+            "title": myTitle
+        }, function(res) {
+            //_report('send_msg', res.err_msg);
+            //alert(res.err_msg);
+
+            if (res.err_msg.indexOf('ok') >= 0)
+                shardResult(1);
+            else
+                shardResult(-1);
+        })
+    }
+
+    function shareTimeline() {
+        WeixinJSBridge.invoke('shareTimeline', {
+            "img_url": myImgUrl,
+            "img_width": "200",
+            "img_height": "200",
+            "link": myLink,
+            "desc": myDesc,
+            "title": myTitle
+        }, function(res) {
+            //_report('timeline', res.err_msg);
+            if (res.err_msg.indexOf('ok') >= 0)
+                shardResult(1);
+            else
+                shardResult(-1);
+        });
+    }
+    function shareWeibo() {
+        WeixinJSBridge.invoke('shareWeibo', {
+            "content": myDesc,
+            "url": myLink
+        }, function(res) {
+            //_report('weibo', res.err_msg);
+            if (res.err_msg.indexOf('ok') >= 0)
+                shardResult(1);
+            else
+                shardResult(-1);
+        });
+    }
+
+    // 当微信内置浏览器完成内部初始化后会触发WeixinJSBridgeReady事件。
+    //function initOldFunction() {
+    document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+        // 发送给好友
+        WeixinJSBridge.on('menu:share:appmessage', function(argv) {
+            shareFriend();
+        });
+        // 分享到朋友圈
+        WeixinJSBridge.on('menu:share:timeline', function(argv) {
+            shareTimeline();
+        });
+        // 分享到微博
+        WeixinJSBridge.on('menu:share:weibo', function(argv) {
+            shareWeibo();
+        });
+
+    }, false);
+    //}
+
+
+
+
+    wx.ready(function() {
+        // 1 判断当前版本是否支持指定 JS 接口，支持批量判断
+        wx.checkJsApi({
+            jsApiList: [
+                'getNetworkType',
+                'previewImage'
+            ],
+            success: function(res) {
+                var shareData = {
+                    title: myTitle,
+                    desc: myDesc,
+                    link: myLink,
+                    imgUrl: myImgUrl
+                };
+                wx.onMenuShareAppMessage(shareData);
+                wx.onMenuShareTimeline(shareData);
+
+                //alert("支持最新SDK");
+                //alert(JSON.stringify(res));
+                if (isHideOptionMenu)
+                    wx.hideOptionMenu();
+
+                showAndBind();
+            },
+            fail: function(res) {
+                //alert("不支持最新SDK");
+                document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+                    // 发送给好友
+                    WeixinJSBridge.on('menu:share:appmessage', function(argv) {
+                        shareFriend();
+                    });
+                    // 分享到朋友圈
+                    WeixinJSBridge.on('menu:share:timeline', function(argv) {
+                        shareTimeline();
+                    });
+                    // 分享到微博
+                    WeixinJSBridge.on('menu:share:weibo', function(argv) {
+                        shareWeibo();
+                    });
+                }, false);
+            }
+       });
+        var shareData = {
+            title: myTitle,
+            desc: myDesc,
+            link: myLink,
+            imgUrl: myImgUrl
+        };
+        wx.onMenuShareAppMessage(shareData);
+        wx.onMenuShareTimeline(shareData);
+
+
+        wx.onMenuShareAppMessage({
+            title: myTitle,
+            desc: myDesc,
+            link: myLink,
+            imgUrl: myImgUrl,
+            trigger: function(res) {
+                //alert('用户点击发送给朋友');
+            },
+            success: function(res) {
+                //alert('已分享');
+                shardResult(1);
+            },
+            cancel: function(res) {
+                //alert('已取消');
+                shardResult("-1");
+            },
+            fail: function(res) {
+                //alert(JSON.stringify(res));
+                shardResult("-1");
+            }
+        });
+
+        wx.onMenuShareTimeline({
+            title: myTitle,
+            link: myLink,
+            imgUrl: myImgUrl,
+            trigger: function(res) {
+                //alert('用户点击分享到朋友圈');
+            },
+            success: function(res) {
+                //alert('已分享');
+                shardResult(1);
+            },
+            cancel: function(res) {
+                //alert('已取消');
+                shardResult("-1");
+            },
+            fail: function(res) {
+                //alert(JSON.stringify(res));
+                shardResult("-1");
+            }
+        });
+
+        wx.onMenuShareQQ({
+            title: myTitle,
+            desc: myDesc,
+            link: myLink,
+            imgUrl: myImgUrl,
+            trigger: function(res) {
+                //alert('用户点击分享到QQ');
+            },
+            complete: function(res) {
+                //alert(JSON.stringify(res));
+                shardResult("-1");
+            },
+            success: function(res) {
+                //alert('已分享');
+                shardResult(1);
+            },
+            cancel: function(res) {
+                //alert('已取消');
+                shardResult("-1");
+            },
+            fail: function(res) {
+                //alert(JSON.stringify(res));
+                shardResult("-1");
+            }
+        });
+
+        wx.onMenuShareWeibo({
+            title: myTitle,
+            desc: myDesc,
+            link: myLink,
+            imgUrl: myImgUrl,
+            trigger: function(res) {
+                //alert('用户点击分享到微博');
+            },
+            complete: function(res) {
+                //alert(JSON.stringify(res));
+                shardResult("-1");
+            },
+            success: function(res) {
+                //alert('已分享');
+                shardResult(1);
+            },
+            cancel: function(res) {
+                //alert('已取消');
+                shardResult("-1");
+            },
+            fail: function(res) {
+                //alert(JSON.stringify(res));
+                shardResult("-1");
+            }
+        });
+        
+        
+    });    
+    
+     
+     function SavePay(appId, timeStamp, nonceStr, packageStr, paySign) {
+        $.alert('savepay: ' + appId);
+            WeixinJSBridge.invoke('getBrandWCPayRequest', {
+                "appId": appId, //公众号名称，由商户传入
+                "timeStamp": timeStamp, //时间戳
+                "nonceStr": nonceStr, //随机串
+                "package": packageStr, //扩展包
+                "signType": "MD5", //微信签名方式:1.sha1
+                "paySign": paySign //微信签名
+            },
+            function (res) {
+                if (res.err_msg == "get_brand_wcpay_request:ok") {
+                    $.toast("微信支付成功!");
+                } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
+                    $.alert("用户取消支付!");
+                } else {
+                    $.alert("支付失败:" + res.err_msg);
+                }
+                // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+                //因此微信团队建议，当收到ok返回时，向商户后台询问是否收到交易成功的通知，若收到通知，前端展示交易成功的界面；若此时未收到通知，商户后台主动调用查询订单接口，查询订单的当前状态，并反馈给前端展示相应的界面。
+            });
+        }
+</script>
+
+
+    <script>
+        
+        $(function() {
+            
+        });
+        $.init();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "productEvaluate")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/indexCss.vm")
+<body>
+<div class="page-group">
+    <div class="page page-finish page-current product-evaluate">
+        <header class="bar bar-nav light-nav">
+            <a href="javascript:history.go(-1);" class="icon icon-35icoback pull-left go-back bar-left"></a>  
+            <h1 class="title">商品评价</h1>
+        </header>
+
+        <div class="content" data-role="evaluate-content">
+            <div class="choose-evaluate">
+                <p class="evaluate-tab" data-role="evaluate-tab">
+                    
+                </p>
+                <label class="label-checkbox item-content" id="openflag">
+                    <input type="checkbox" value="1" name="cart-child" />
+                    <div class="item-media"><i class="icon icon-form-checkbox"></i><span>只显示有图片的内容</span></div>
+                </label>
+            </div>
+            <ul class="evaluate-list tab active infinite-scroll infinite-scroll-bottom" data-role="evaluate-list" data-distance="100">
+                
+            </ul>
+            <!-- 加载提示符 拖拉加载，暂不开放 -->
+            <div class="infinite-scroll-preloader">
+                <div class="preloader">
+                </div>
+            </div>
+
+        </div>    
+    </div>
+    <!-- 查看图片详情 -->
+    <div class="popup popup-imgDetail">
+        <div class="content-block">
+            <header class="bar bar-nav light-nav">
+                <span class="icon icon-35icoback pull-left close-popup bar-left"></span>  
+                <h1 class="title">查看图片详情</h1>
+            </header>
+            <div class="content">
+                <div class="swiper-container" data-space-between='10'>
+                    <div class="swiper-wrapper">
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>        
+        </div>
+    </div>
+</div>
+<script id="tabTpl" type="text/x-handlebars-template">
+    <a data-grade="-1" class="active" href="#">全部{{data.count}}</a>
+    <a data-grade="1" href="#">好评{{data.goodCount}}</a>
+    <a data-grade="2" href="#">中评{{data.centerCount}}</a>
+    <a data-grade="3" href="#">差评{{data.badCount}}</a>
+</script>
+<script id="evaluateTpl" type="text/x-handlebars-template">
+    {{#each data.evaluates}}
+        <li>
+            <table>
+                <tr>
+                    <td>
+                        {{#unless photo}}
+                        <img src="/files/images/$!webStyle/default.png" alt="">
+                        {{else}}
+                        <img src="{{photo}}" alt="">
+                        {{/unless}}
+                    </td>
+                    <td>
+                        <h5>{{userName}}<span class="time">{{createDate}}</span></h5>
+                        <div class="stars" data-grade="{{grade}}">
+                            <div><span class="pinzhi">{{projectName}}&nbsp;&nbsp;</span>{{{showstars grade }}}<span class="pinzhi-text">&nbsp;&nbsp;{{tags}}</span></div>
+                        </div>
+                      <!--   <p>
+                            {{content}}
+                        </p>
+                        <div class="pics">{{#each pics}}<img src="{{this}}" />{{/each}}</div> -->
+                    </td>
+
+                </tr>
+            </table>
+            <p>{{content}}</p>
+            {{#is pics.length}}<p class="pics">{{#each pics}}<img pics-index="{{@index}}" src="{{this}}" />{{/each}}</p>{{/is}}
+        </li>
+    {{/each}}
+</script>
+    #*加载JS文件*# 
+    #parse("control/$!webStyle/publicJs.vm")
+#parse("control/$!webStyle/globalJs.vm")
+<script>
+	var pid = Number(getQueryString('pid'));
+    var pageSize = 10;
+    var pageIndex = 1;
+    var isPic=false;
+    var loading = false;
+    var grade = -1;
+	
+        
+	//获取评价数据
+    function getEvaluateTab(pageIndex,grade){
+        
+        $.ajax({
+            url: "/weixin/getProductEvaluates",
+            data: {
+               pid: pid, 
+               isPic:isPic,
+               pageIndex: pageIndex,
+               grade: grade
+            },
+            type: "get",
+            dataType: "json",
+            complete: function (result) {
+                
+                var status = result.status;
+                if(status != 200){
+                    $.alert('网络异常，状态为18.2' + status);
+                    return;
+                }
+                var resp = result.response;
+               
+                if ($.type(resp) == 'string') {
+                    resp = JSON.parse(resp);
+                }
+                if(resp.code != 'E00000'){
+                    if(resp.code == "-1"){
+                        window.location.href = "/weixin/bind";
+                    }else{
+                        $.alert(resp.message);
+                        return;
+                    }
+                }else{
+                    var context = {
+                        data: resp.data
+                    };
+                    var tabTpl = $("#tabTpl").html();
+                    var tabTemplate = Handlebars.compile(tabTpl);
+                    var tabCont = tabTemplate(context);
+                    $('[data-role="evaluate-tab"]').html(tabCont);
+                    
+                }
+            }
+        });
+    }
+    getEvaluateTab(pageIndex, grade);
+    function getEvaluates(pageIndex,grade,method){
+        
+        $.ajax({
+            url: "/weixin/getProductEvaluates",
+            data: {
+               pid: pid, 
+               isPic:isPic,
+               pageIndex: pageIndex,
+               grade: grade
+            },
+            type: "get",
+            async:false,
+            dataType: "json",
+            complete: function (result) {
+                
+                var status = result.status;
+                if(status != 200){
+                    $.alert('网络异常，状态为18.2' + status);
+                    return;
+                }
+                var resp = result.response;
+               
+                if ($.type(resp) == 'string') {
+                    resp = JSON.parse(resp);
+                }
+                if(resp.code != 'E00000'){
+                    if(resp.code == "-1"){
+                        window.location.href = "/weixin/bind";
+                    }else{
+                        $.alert(resp.message);
+                        return;
+                    }
+                }else{
+                    
+                    if(resp.data.count > 0){
+                        var context = {
+                            data: resp.data
+                        };
+                        var evaluateTpl = $("#evaluateTpl").html();
+                        var evaluateTemplate = Handlebars.compile(evaluateTpl);
+                        var evaluateCont = evaluateTemplate(context);
+                        
+                        if(method=='pull'){
+                        	$('[data-role="evaluate-list"]').append(evaluateCont);
+                        	loading = false;
+                        }else{
+                        	$('[data-role="evaluate-list"]').html(evaluateCont);
+                        }
+                        if(resp.data.count < 10){
+                            $('.infinite-scroll-preloader').remove();
+                            loading = true;
+                        }
+                    }else{
+                        $('.infinite-scroll-preloader').hide();
+                        $('[data-role="evaluate-list"]').html('<div class="defaut-wrap"><h2 class="def-note">暂无商品评价哦~</h2></div>');
+                    }
+                    $.refreshScroller();
+                }
+            }
+        });
+    }
+    getEvaluates(pageIndex,grade);
+    //下拉加载分页数据
+    function pullEvaluates(pageIndex,grade,method){
+        
+        $.ajax({
+            url: "/weixin/getProductEvaluates",
+            data: {
+               pid: pid, 
+               isPic:isPic,
+               pageIndex: pageIndex,
+               grade: grade
+            },
+            type: "get",
+            async:false,
+            dataType: "json",
+            complete: function (result) {
+                
+                var status = result.status;
+                if(status != 200){
+                    $.alert('网络异常，状态为18.2' + status);
+                    return;
+                }
+                var resp = result.response;
+               
+                if ($.type(resp) == 'string') {
+                    resp = JSON.parse(resp);
+                }
+                if(resp.code != 'E00000'){
+                    if(resp.code == "-1"){
+                        window.location.href = "/weixin/bind";
+                    }else{
+                        $.alert(resp.message);
+                        return;
+                    }
+                }else{
+                    
+                    if(resp.data.count > 0){
+                        var context = {
+                            data: resp.data
+                        };
+                        var evaluateTpl = $("#evaluateTpl").html();
+                        var evaluateTemplate = Handlebars.compile(evaluateTpl);
+                        var evaluateCont = evaluateTemplate(context);
+                        
+                        if(method=='pull'){
+                            $('[data-role="evaluate-list"]').append(evaluateCont);
+                            loading = false;
+                        }else{
+                            $('[data-role="evaluate-list"]').html(evaluateCont);
+                        }
+                        if(resp.data.count < 10){
+                            $('.infinite-scroll-preloader').remove();
+                            loading = true;
+                        }
+                    }else{
+                        $('.infinite-scroll-preloader').hide();
+                        // $('[data-role="evaluate-list"]').html('<div class="defaut-wrap"><h2 class="def-note">暂无商品评价哦~</h2></div>');
+                    }
+                    $.refreshScroller();
+                }
+            }
+        });
+    }
+    function clickGetEvaluates(pageIndex,grade){
+        
+        $.ajax({
+            url: "/weixin/getProductEvaluates",
+            data: {
+               pid: pid, 
+               isPic:isPic,
+               pageIndex: pageIndex,
+               grade: grade
+            },
+            type: "get",
+            dataType: "json",
+            complete: function (result) {
+                
+                var status = result.status;
+                if(status != 200){
+                    $.alert('网络异常，状态为18.2' + status);
+                    return;
+                }
+                var resp = result.response;
+               
+                if ($.type(resp) == 'string') {
+                    resp = JSON.parse(resp);
+                }
+                if(resp.code != 'E00000'){
+                    if(resp.code == "-1"){
+                        window.location.href = "/weixin/bind";
+                    }else{
+                        $.alert(resp.message);
+                        return;
+                    }
+                }else{
+                    
+                	$('.infinite-scroll-preloader').hide();
+                    if(resp.data.count > 0){
+                        var context = {
+                            data: resp.data
+                        };
+                        var evaluateTpl = $("#evaluateTpl").html();
+                        var evaluateTemplate = Handlebars.compile(evaluateTpl);
+                        var evaluateCont = evaluateTemplate(context);
+                        $('[data-role="evaluate-list"]').html(evaluateCont);
+                        
+                    }else{
+
+                        $('[data-role="evaluate-list"]').html('<div class="defaut-wrap"><h2 class="def-note">暂无商品评价哦~</h2></div>');
+                        loading = true;
+                        
+                    }
+                    
+                }
+            }
+        });
+    }
+    
+    // $("[data-role='evaluate-list']").delegate('#pics img','click',function(){
+    //     console.log($(this).src);
+    // })
+    $('[data-role="evaluate-content"]').delegate('.evaluate-tab a','click',function(e){
+        var flag = 0;
+        if(flag >1){
+            return;
+        }
+        e.preventDefault();
+        var me = $(this);
+        grade = me.data('grade');
+        pageIndex = 1;
+        loading = false;
+        me.addClass('active');
+        me.siblings().removeClass('active');
+        
+        clickGetEvaluates(pageIndex,grade);
+        flag = 1;
+    });
+      
+    // $("#openflag").on('click',function(e){
+    //     debugger;
+        // e.stopPropagation();
+        // if($('[name="cart-child"]').is(':checked')){
+            // debugger;
+            // isPic = true;
+        // }
+        // console.log($('input[type="checkbox"]').prop('checked'));
+        
+    $('input[type="checkbox"]').on('change',function(){
+        if($('input[type="checkbox"]').prop('checked')){
+            isPic = true;
+        }else{
+            isPic = false;
+        }
+        pageIndex = 1;
+       
+        getEvaluates(pageIndex,grade);
+    })
+
+	$(document).on("pageInit", function(e, id, page) {
+        
+        $(page).on('infinite',function(){
+            
+            // 如果正在加载，则退出
+            if (loading) return;
+            $('.infinite-scroll-preloader').show();
+            // 设置flag
+            loading = true;
+            
+            //新增一页
+            pageIndex = pageIndex + 1;
+            // console.log(pageIndex);
+            pullEvaluates(pageIndex,grade,'pull');
+
+        });
+    });
+    $(document).on('click', '.pics img', function() {
+        // 将轮播页面内容清空
+        $(".swiper-wrapper").html("");
+        // 记住当前点击的图片下标
+        var picsIndex= $(this).attr("pics-index");
+        // 循环当前图片的上级的下级的所有图片
+        $(this).parent().children("img").each(function(index){
+          // 将所有图片的src赋值到 轮播界面的图片src
+          $(".swiper-wrapper").append("<div class='swiper-slide'><img style='width: 100%;' src='"+$(this).attr("src")+"' alt=''></div>");
+        });
+        // 显示popup
+        $.popup('.popup-imgDetail');
+        // $(".popup-imgDetail .content img").attr('src',$(this).attr('src'));
+        $(".swiper-container").swiper({
+          // 初始化当前图片
+          initialSlide:picsIndex
+        });
+    });
+    $.init();
+</script>
+</body>
+</html>

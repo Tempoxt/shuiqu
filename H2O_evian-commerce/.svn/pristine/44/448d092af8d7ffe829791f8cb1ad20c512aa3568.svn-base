@@ -1,0 +1,8 @@
+ENDORSED_DIRS="C\:\\Users\\QYSOFT\\Desktop\\temp\\apache-tomcat-7.0.55\\apache-tomcat-7.0.55/common/endorsed"
+JDK_HOME=D\:\\myeclipsepro\\binary\\com.sun.java.jdk7.win32.x86_64_1.7.0.u45
+LIBRARY_PATH="D\:\\myeclipsepro\\binary\\com.sun.java.jdk7.win32.x86_64_1.7.0.u45\\bin;C\:\\Users\\QYSOFT\\Desktop\\temp\\apache-tomcat-7.0.55\\apache-tomcat-7.0.55\\bin"
+SERVER_ENABLEMENT=true
+TOMCAT_BASE=C\:\\Users\\QYSOFT\\Desktop\\temp\\apache-tomcat-7.0.55\\apache-tomcat-7.0.55
+TOMCAT_HOME=C\:\\Users\\QYSOFT\\Desktop\\temp\\apache-tomcat-7.0.55\\apache-tomcat-7.0.55
+TOMCAT_TEMP=C\:\\Users\\QYSOFT\\Desktop\\temp\\apache-tomcat-7.0.55\\apache-tomcat-7.0.55\\temp
+eclipse.preferences.version=1

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/indexCss.vm")
+<body>
+    <div class="page-group">
+        <div class="page page-finish page-current">
+            <header class="bar bar-nav light-nav">
+                <a href="/weixin/account"><span class="icon icon-35icoback pull-left bar-left"></span></a>
+                <h1 class="title">优惠券</h1>
+                <a href="#" class="open-used"><svg class="icon icon-svg title-icon pull-right white-color" aria-hidden="true">
+                    <use xlink:href="#icon-101couponused"></use>
+                </svg></a>
+            </header>
+
+            <div class="content">
+                <ul class="discount-list" data-role="coupon-list">
+                    
+                    
+                </ul>
+            </div>
+        
+
+         
+        </div>
+       
+    </div>
+<div class="popup popup-detail">
+    <header class="bar bar-nav light-nav">
+        <span class="icon icon-35icoback pull-left close-detail bar-left"></span>
+        <h1 class="title">优惠券详情</h1>
+        
+    </header>
+
+    <div class="content" data-role="detail-wrap">
+        
+    </div>
+</div>
+<div class="popup popup-used">
+    <header class="bar bar-nav light-nav">
+        <span class="icon icon-35icoback pull-left close-used bar-left"></span>
+        <h1 class="title">已使用</h1>
+    </header>
+
+    <div class="content" style="background: #EFEFF4;">
+        <ul class="discount-list" data-role="used-list">
+            
+            
+        </ul>
+    </div>
+</div>
+<script id="detailTpl" type="text/x-handlebars-template">
+    <div class="discount-wrap">
+        <img src="{{logoUrl}}" alt="">
+        <h4>{{className}}专用</h4>
+        <h3>{{typeName}}</h3>
+        <p><a href="/weixin/address?from=coupon&codeid={{id}}" class="button button-fill btn-yello link">立即使用</a></p>
+        <p><a href="#" data-action="give-other" class="button button-fill btn-yello" data-code="{{code}}">赠送他人</a></p>
+        <p><span>有效期:{{begintime}}至{{overtime}}</span></p>
+    </div>
+    <ul class="discount-info">
+        <li><span>使用说明</span><em>一个订单只能使用一张优惠券</em></li>
+        <li><span>服务热线</span><em>{{tel}}</em></li>
+        <li><span>相关活动</span><em></em></li>
+    </ul>
+</script>
+<script id="couponTpl" type="text/x-handlebars-template">
+    
+    {{#each data}}
+        {{#is ifUse false}}
+        {{#is ifovertime false}}
+            <li>
+                <a href="" data-action="get-detail" data-logo="{{logoUrl}}" data-class="{{className}}" data-type="{{typeName}}" data-tel="{{tel}}" data-overtime="{{overtime}}" data-reamrk="{{reamrk}}" data-code="{{code_no}}" data-id="{{code_id}}" data-begintime="{{begintime}}">
+                    <table>
+                        <tr>
+                            <td><img src="{{logoUrl}}" alt=""></td>
+                            <td>
+                                <h6>{{className}}专用</h6>
+                                <p><span>{{convert_money}}元</span>优惠券</p>
+                            </td>
+                            <td>
+                                {{#is ifovertime true}}
+                                    <img src="http://7xlmry.com1.z0.glb.clouddn.com/passed.png" alt="">
+                                {{else}}
+                                    {{#is datelimit true}}
+                                        <img src="http://7xlmry.com1.z0.glb.clouddn.com/hasdate.png" alt="">
+                                    {{else}}
+                                        <img src="http://7xlmry.com1.z0.glb.clouddn.com/used.png" alt="">
+                                    {{/is}}
+                                {{/is}}
+                            </td>
+                        </tr>
+                    </table>
+                    <div>
+                        <span><i class="icon icon-46location"></i>{{cityName}}</span>
+                        <em>可用时间：{{begintime}}~{{overtime}}</em>
+                    </div>
+                </a>
+            </li>
+
+        {{/is}}    
+        {{/is}}
+        
+    {{/each}}
+    {{#is data.length 0}}
+        <li style="margin:8rem auto;text-align:center;background:#EFEFF4;"><i class="icon icon-no_coupon" style="display:block;text-align:center;font-size: 2.2rem;"></i><span style="color:#A3A6B0;font-size:0.7rem;">您还没有优惠券</span></li>
+    {{/is}}
+    
+</script>
+<script id="usedTpl" type="text/x-handlebars-template">
+    {{#each data}}
+        {{#is ifUse true}}
+        <li>
+            <a href="#" data-action="get-detail" data-logo="{{logoUrl}}" data-class="{{className}}" data-type="{{typeName}}" data-tel="{{tel}}" data-overtime="{{overtime}}" data-reamrk="{{reamrk}}" data-begintime="{{begintime}}">
+                <table>
+                    <tr>
+                        <td><img src="{{logoUrl}}" alt=""></td>
+                        <td>
+                            <h6>{{className}}专用</h6>
+                            <p><span>{{convert_money}}元</span>优惠券</p>
+                        </td>
+                        <td>
+                            <img src="http://7xlmry.com1.z0.glb.clouddn.com/hadused.png" alt="">
+                        </td>
+                    </tr>
+                </table>
+                <div>
+                    <span><i class="icon icon-46location"></i>{{cityName}}</span>
+                    <em>可用时间：{{begintime}}~{{overtime}}</em>
+                </div>
+            </a>
+        </li>
+        {{else}}
+        {{#is ifovertime true}}
+        <li>
+            <a href="" data-action="get-detail" data-logo="{{logoUrl}}" data-class="{{className}}" data-type="{{typeName}}" data-tel="{{tel}}" data-overtime="{{overtime}}" data-reamrk="{{reamrk}}" data-begintime="{{begintime}}">
+                <table>
+                    <tr>
+                        <td><img src="{{logoUrl}}" alt=""></td>
+                        <td>
+                            <h6>{{className}}专用</h6>
+                            <p><span>{{convert_money}}元</span>优惠券</p>
+                        </td>
+                        <td>
+                            <img src="http://7xlmry.com1.z0.glb.clouddn.com/hadused.png" alt="">
+                        </td>
+                    </tr>
+                </table>
+                <div>
+                    <span><i class="icon icon-46location"></i>{{cityName}}</span>
+                    <em>可用时间：{{begintime}}~{{overtime}}</em>
+                </div>
+            </a>
+        </li>
+        {{/is}}
+        {{/is}}
+    {{/each}}
+</script>    
+#*加载JS文件*# 
+#parse("control/$!webStyle/publicJs.vm")
+<script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=CFecNbZbabHRfdW8QCz40xqkvrNrB3Bu"></script>
+#parse("control/$!webStyle/globalJs.vm")
+    <script>
+    $(function() {
+        //获取优惠券
+        var getCoupons = function(){
+            $.ajax({
+                type: "get",
+                url: "/weixin/getMyVouchers",
+                async:false,
+                dataType: 'json',
+                complete: function(json) {
+                  
+                    var data = json.response;
+                    var status = json.status;
+                    if(status != 200){
+                        $.alert('网络异常2.1，状态为' + status);
+                        return;
+                    }
+                    
+                    if ($.type(data) == 'string') {
+                        data = JSON.parse(data);
+                    }
+                    if(data.code != 'E00000'){
+                        if(data.code == "-1"){
+                            window.location.href = "/weixin/bind";
+                        }else{
+                            $.alert(data.message);
+                            return;
+                        }
+                    }else{
+                        var tpl = $("#couponTpl").html();
+                        var template = Handlebars.compile(tpl);
+                        var context = {
+                            data: data.data.vouchers
+                        };
+                        var cont = template(context);
+                        
+                        $('[data-role="coupon-list"]').html(cont);
+                        var count = [];
+                        for(var i=0;i<data.data.vouchers.length;i++){
+                            //如果没有使用过且没过期
+                            if(data.data.vouchers[i].ifUse==false && data.data.vouchers[i].ifovertime==false){
+                                count[i]=1; 
+                            }
+                        }
+                        if(count.length==0){
+                            $('[data-role="coupon-list"]').html('<li style="margin:8rem auto;text-align:center;background:#EFEFF4;"><i class="icon icon-no_coupon" style="display:block;text-align:center;font-size: 2.2rem;"></i><span style="color:#A3A6B0;font-size:0.7rem;">您还没有优惠券</span></li>')
+                        }
+                        var usedTpl = $("#usedTpl").html();
+                        var usedTemplate = Handlebars.compile(usedTpl);
+                        var Ucontext = {
+                            data: data.data.vouchers
+                        };
+                        var Ucont = usedTemplate(Ucontext);
+                        
+                        $('[data-role="used-list"]').html(Ucont);
+                    }
+                    
+                }
+            });
+        };
+        getCoupons();
+        //查看详情
+       $('[data-role="coupon-list"]').delegate("a", "click", function(e){
+            e.preventDefault();
+            var me = $(this),
+                action = me.data('action');
+
+                if(action == 'get-detail'){
+                    var logoUrl = me.data('logo'),
+                        begintime = me.data('begintime'),
+                        className = me.data('class'),
+                        typeName = me.data('type'),
+                        tel = me.data('tel'),
+                        overtime = me.data('overtime'),
+                        code = me.data('code'),
+                        id = me.data('id'),
+                        reamrk = me.data('reamrk');
+
+                        var tpl = $("#detailTpl").html();
+                        var template = Handlebars.compile(tpl);
+                        var context = {
+                            begintime:begintime,
+                            logoUrl: logoUrl,
+                            className: className,
+                            typeName: typeName,
+                            tel: tel,
+                            overtime: overtime,
+                            code: code,
+                            id: id,
+                            reamrk: reamrk
+                        };
+                        var cont = template(context);
+                        
+                        $('[data-role="detail-wrap"]').html(cont);
+
+                        $.popup('.popup-detail');
+                }
+        });
+
+       $('.close-detail').click(function(){
+            $.closeModal('.popup-detail');
+       });
+       //转赠他人券
+       $('[data-role="detail-wrap"]').delegate("a:not(.link)", "click", function(e){
+            e.preventDefault();
+            var me = $(this),
+                action = me.data('action');
+
+                if(action == "give-other"){
+                    var code = me.data('code');
+
+                    $.prompt('请输入要赠送的人的手机号', '转赠券',
+                        function (value) {
+                         
+                          if($.trim(value)){
+                             $.ajax({
+                                type: "get",
+                                url: "/weixin/voucherGive",
+                                data: {
+                                    account: value,
+                                    code_no: code
+                                },
+                                dataType: 'json',
+                                complete: function(json) {
+                                  
+                                    var data = json.response;
+                                    var status = json.status;
+                                    if(status != 200){
+                                        $.alert('网络异常2.2，状态为' + status);
+                                        return;
+                                    }
+                                    if ($.type(data) == 'string') {
+                                        data = JSON.parse(data);
+                                    }
+                                    
+                                    if(data.code != 'E00000'){
+                                        if(data.code == "-1"){
+                                            window.location.href = "/weixin/bind";
+                                        }else{
+                                            $.alert(data.message);
+                                            flag=0;
+                                            return;
+                                        }
+                                    }else{
+                                        $.alert('转赠成功', function(){
+                                            window.location.reload();
+                                        });
+                                    }
+                                    
+                                }
+                            });   
+                          }else{
+                             $.alert('手机号不能为空！');
+                          }
+                        },
+                        function (value) {
+                          //$.alert('标签是 "' + value + '". You clicked Cancel button');
+                        }
+                    );
+                }
+        });
+       //查看已使用券
+       $('.open-used').click(function(){
+            $.popup('.popup-used');
+       });
+       $('.close-used').click(function(){
+            $.closeModal('.popup-used');
+       });
+    });
+    $.init();
+    </script>
+</body>
+</html>

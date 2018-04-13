@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>异步接口测试</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <style>
+        body{
+            margin: 0;
+        }
+        .model{
+            padding: 1rem;
+            margin: 0;
+        }
+        .model ul{
+            margin: 0;
+            padding: 0;
+        }
+        .model ul li{
+            list-style: none;
+            padding: 1rem;
+        }
+        textarea{
+            display: block;
+            width: 80%;
+            height: 10em;
+        }
+    </style>
+    
+  </head>
+  <body>
+
+    <div class="model">
+        <h4>get测试</h4>
+        <ul>
+            <li>
+                <label for="">url</label>
+                <input type="text" name="url"/>
+                <button data-role="do-get">测试</button>
+                <p>示例数据：/weixin/userAddress</p>
+            </li>
+            <li>  
+                <textarea name="getResult" id="getResult" placeholder="这里会展示接口的返回结果"></textarea>
+            </li>
+        </ul>
+    </div>
+    <div class="model">
+        <h4>post测试</h4>
+        <ul>
+            <li>
+                <label for="">url</label>
+                <input type="text" name="posturl"/>
+                <button data-role="do-post">测试</button>
+                <p>示例数据：/weixin/addUserAddress</p>
+            </li>
+            <li>
+                <textarea name="postdata" placeholder="填写需要传的data"></textarea>
+                <p>示例数据：{"streetName":"农轩路","streetDescribe":"广东省深圳市福田区","location":"114.027299,22.543301","doorplate":"dfdffdfdfd","phone":"13556813593","contacts":"接口测试","tag":"测试"}</p>
+            </li>
+            <li>  
+                <textarea name="postResult" placeholder="这里会展示接口的返回结果"></textarea>
+            </li>
+        </ul>
+    </div>
+    <script type='text/javascript' src='http://83311111.com:8081/tools/js/common/zepto.min.js' charset='utf-8'></script>
+    <script>
+        $(function() {
+            $('[data-role="do-get"]').click(function(){
+                var url = $(this).parents('ul').find('[name=url]').val();
+
+                $.ajax({
+                    type: "get",
+                    url: url,
+                    dataType: 'json',
+                    complete: function(json) {
+                        alert('接口status:' + json.status);
+                        $('[name=getResult]').val(JSON.stringify(json.response));
+                    }
+                });
+            });
+            $('[data-role="do-post"]').click(function(){
+                var url = $(this).parents('ul').find('[name=posturl]').val();
+                var data = $('[name=postdata]').val();
+                console.log(JSON.parse(data));
+                $.ajax({
+                    type: "post",
+                    url: url,
+                    data: JSON.parse(data),
+                    dataType: 'json',
+                    complete: function(json) {
+                        alert('接口status:' + json.status);
+                        $('[name=postResult]').val(JSON.stringify(json.response));
+                    }
+                });
+            });
+        });
+    </script>
+  </body>
+</html>

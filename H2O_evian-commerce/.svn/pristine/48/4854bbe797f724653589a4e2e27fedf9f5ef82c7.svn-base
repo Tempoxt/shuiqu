@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "boundWeixin")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/shopCss.vm")
+<body>
+  	<div class="page-group">
+		<div class="page page-finish page-current">
+			
+	        <div class="content content-boundWeixin theme-dark">
+	            <div class="list-block new-boundWeixin-list">
+				  <div class="tips">亲，您的手机号已注册水趣公众微信了！</div>
+				  <p>
+				    <a href="/weixin/home" class="button button-fill btn-yello">回首页</a>
+				  </p>
+				  <a class="login-tips" href="http://a.app.qq.com/o/simple.jsp?pkgname=com.evian.daojia">登录水趣APP更多优惠</a>
+				</div>
+	        </div>
+	        
+	    </div>
+	</div>
+	#*加载JS文件*# 
+	#parse("control/$!webStyle/publicJs.vm")
+	#parse("control/$!webStyle/globalJs.vm")
+	<script>
+        $.init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!-- Services Popup -->
+<div class="popup popup-services">
+  <div class="content-block">
+    <div class="bar bar-nav">
+      <a href="#" class="pull-left close-popup needsclick">
+        取消
+      </a>
+      <a href="#" class="pull-right needsclick" data-client-id="0" data-parent-id="0" data-role="send">
+        发送
+      </a>
+      <h1 class="title">发评论</h1>
+    </div>
+    <div class="content module-publisher">
+        <div class="txt-publisher-wrapper"><textarea data-role="msg-box" name="content" class="J-textarea txt-publisher" placeholder="写评论..."></textarea></div>
+    </div>
+  </div>
+</div>
+<script type='text/javascript' src='/files/common/js/zepto.min.js' charset='utf-8'></script>
+<script>
+    $.config = {router: false}
+</script>
+<script type='text/javascript' src='/files/common/js/sm.min.js?v=$version' charset='utf-8'></script>
+<script type='text/javascript' src='/files/common/js/sm-extend.min.js?v=$version' charset='utf-8'></script>
+<script type='text/javascript' src='/files/common/js/handlebars-v4.0.5.js?v=$version'></script>
+<script type='text/javascript' src='/files/js/found/detail.js?v=$version'></script>
+<script id="tpl" type="text/x-handlebars-template">  
+{{#each data}} 
+    <li>
+        <table>
+            <tr>
+                <td><img src="{{photo}}" alt=""></td>
+                <td>
+                    <p>{{replyName}}</p>
+                    <p>{{createTimeStr}}</p>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    {{commentContent}}
+                    <ul class="reply-list">
+                    {{#each commentList}} 
+                        <li data-role="comment" class="open-services" data-name="{{replyName}}" data-client-id="{{replyClientId}}" data-parent-id="{{../commentId}}"><a href="">{{replyName}}</a>回复<a href="">{{commentName}}</a>：{{commentContent}}</li>
+                      
+                    {{/each}}
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        <div class="bottom-operate">
+            <div class="util-right">
+                <a data-role="comment" class="open-services" data-name="{{replyName}}" data-client-id="{{replyClientId}}" data-parent-id={{commentId}} href="">
+                  <span class="icon icon-107comment"></span>
+                  <span class="mr_5em">评论</span> 
+                </a>
+                
+                {{#unless isLike}} 
+                <a data-role="support" data-comment-id={{commentId}} class="needsclick" href="">
+                    <span data-role="support-icon" class="icon icon-108click needsclick"></span>
+                    <span data-role="support-count" class="needsclick"  data-val="{{likeCount}}">{{likeCount}}</span>
+                </a>
+                {{else}} 
+                <a data-role="support" data-comment-id={{commentId}} class="needsclick active" href="">
+                    <span data-role="support-icon" class="icon icon-108click needsclick"></span>
+                    <span data-role="support-count" class="needsclick"  data-val="{{likeCount}}">{{likeCount}}</span>
+                </a>
+                {{/unless}}
+            </div>
+        </div>
+    </li>
+{{/each}}
+</script>

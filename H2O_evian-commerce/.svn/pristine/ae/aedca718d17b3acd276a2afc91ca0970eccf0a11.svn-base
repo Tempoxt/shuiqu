@@ -1,0 +1,25 @@
+#parse("control/found/foundCss.vm")
+<body>
+  <input type="hidden" name="articleId" value="$!{detail.articleId}">
+  <input type="hidden" name="isApp" value="1">
+    <div class="page-group">
+        <div class="page page-current">
+            <header class="bar bar-nav">
+                <a href="/found/class" class="icon icon-dizhi  pull-left"></a>
+                <h1 class="title">发现生活话题</h1>
+            </header>
+
+            <div class="content">
+                <div class="topic-title">
+                    <img class="util-left" src="$!{detail.logoUrl}" alt="">$!{detail.auchor}：
+                    <span class="mwt_border">楼主</span>
+                    <a data-role="company" href="/found/brand?eid=$!{detail.eid}&from=$!{detail.articleId}" data-eid="$!{detail.eid}" class="button button-fill">$!{detail.eShortName}</a>
+                </div>
+                #parse("control/found/detailCont.vm")
+            </div>
+
+        </div>
+        
+    </div>
+    #parse("control/found/detailPanel.vm")
+</body>

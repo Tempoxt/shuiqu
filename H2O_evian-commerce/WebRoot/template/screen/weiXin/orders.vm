@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/indexCss.vm")
+<body>
+    <div class="page-group order-list-wrap">
+        <div class="page page-finish page-current">
+            <header class="bar bar-nav light-nav">
+                <a href="/weixin/account" class="icon icon-35icoback pull-left bar-left"></a>  
+                <h1 class="title">我的订单</h1>
+            </header>
+
+            <div class="content">
+                <div class="buttons-tab">
+                    <a href="#tab1" data-status="0" class="tab-link active button">全部</a>
+                    <a href="#tab2" data-status="100" class="tab-link button">待付款</a>
+                    <a href="#tab3" data-status="101" class="tab-link button">待发货</a>
+                    <a href="#tab4" data-status="102" class="tab-link button">待收货</a>
+                    <a href="#tab5" data-status="103" class="tab-link button">待评价</a>
+                    <!-- <a href="#tab6" data-status="104" class="tab-link button">已取消</a> -->
+                </div>
+                <div class="content-block">
+                    <div class="tabs">
+                      <div id="tab1" data-status="0" class="tab infinite-scroll active" data-distance="50">
+                        <div class="content-block">
+                          <ul class="order-list list-container">
+                              
+                          </ul>
+                          <span class="null-data" data-role="null-data"></span>
+                        </div>
+                        <!-- 加载提示符 -->
+                        <div class="infinite-scroll-preloader" id="a">
+                            <div class="preloader"></div>
+                        </div>
+                      </div>
+                      <div id="tab2" data-status="100" class="tab infinite-scroll" data-distance="50">
+                        <div class="content-block list-container">
+                          <ul class="order-list">
+                              
+                          </ul>
+                          <span class="null-data" data-role="null-data"></span>
+                        </div>
+                        <!-- 加载提示符 -->
+                        <div class="infinite-scroll-preloader" id="b">
+                            <div class="preloader"></div>
+                        </div>
+                      </div>
+                      <div id="tab3" data-status="101" class="tab infinite-scroll" data-distance="50">
+                        <div class="content-block list-container">
+                            <ul class="order-list">
+                              
+                            </ul>
+                            <span class="null-data" data-role="null-data"></span>
+                        </div>
+                        <!-- 加载提示符 -->
+                        <div class="infinite-scroll-preloader" id="c">
+                            <div class="preloader"></div>
+                        </div>
+                      </div>
+                      <div id="tab4" data-status="102" class="tab infinite-scroll" data-distance="50">
+                        <div class="content-block list-container">
+                            <ul class="order-list">
+                              
+                            </ul>
+                            <span class="null-data" data-role="null-data"></span>
+                        </div>
+                        <!-- 加载提示符 -->
+                        <div class="infinite-scroll-preloader" id="d">
+                            <div class="preloader"></div>
+                        </div>
+                      </div>
+                      <div id="tab5" data-status="103" class="tab infinite-scroll" data-distance="50">
+                        <div class="content-block list-container">
+                            <ul class="order-list">
+                              
+                            </ul>
+                            <span class="null-data" data-role="null-data"></span>
+                        </div>
+                        <!-- 加载提示符 -->
+                        <div class="infinite-scroll-preloader" id="e">
+                            <div class="preloader"></div>
+                        </div>
+                      </div>
+                      <!-- <div id="tab6" data-status="104" class="tab infinite-scroll" data-distance="50">
+                        <div class="content-block list-container">
+                            <ul class="order-list">
+                              
+                            </ul>
+                            <span class="null-data" data-role="null-data"></span>
+                        </div>
+                        
+                        <div class="infinite-scroll-preloader" id="f">
+                            <div class="preloader"></div>
+                        </div>
+                      </div> -->
+                    </div>
+                </div>
+            </div>
+    
+            
+        </div>
+        <!-- 取消订单 -->
+        <div class="popup popup-cancel-order">
+            <header class="bar bar-nav light-nav">
+                <span class="icon icon-35icoback pull-left close-popup bar-left"></span>  
+                <h1 class="title">取消订单</h1>
+            </header>
+            <div class="content content-cancel-order" data-role="content-cancel-order">
+              
+            </div>
+        </div>
+    </div>
+    <script id="cancelOrderTpl" type="text/x-handlebars-template">
+        <ul>
+            {{#each data.reasons}}
+            <li>
+                <span>{{this}}</span>
+                <label class="label-checkbox">
+                    <input type="radio" value="{{this}}" name="reason" />
+                    <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                </label>
+            </li>
+            {{/each}}
+            <li class="other-reason">
+                <input type="text" placeholder="其他原因(选填)" id="otherReason">
+            </li>
+
+        </ul>
+        <a href="#" class="button button-fill btn-yello" id="confirm-cancel">提交</a>
+    </script>
+    <script id="orderTpl" type="text/x-handlebars-template">
+        {{#each data}}
+        <li>
+            <h4><a href="/weixin/products?shopId={{shopId}}">
+                  <table>
+                      <tr>
+                          <td><img src="{{pictureUrl}}" alt=""></td>
+                          <td>{{shopName}}<span class="icon icon-ico_awwor_right"></span></td>
+                          <td><em>{{status}}</em></td>
+                      </tr>
+                  </table>
+            </a></h4>
+            <div class="show-order"><a href="/weixin/orderDetail?orderId={{orderId}}">
+                <h5>订单号：{{orderNo}} <span>{{#each details}}{{#is @index 0}}{{this.dateCreated}}{{/is}} {{/each}}</span></h5>
+                {{#each details}}
+                <table>
+                    <tr>
+                        <td><img src="{{pictureUrl}}" alt=""></td>
+                        <td>{{pname}}</td>
+                        <td>
+                            <p><i>￥{{price}}</i></p>
+                            <p>X{{number}}</p>
+                            <p><em>{{settlementType}}</em></p>
+                        </td>
+                    </tr>
+                </table>
+                {{/each}}
+                </a>
+            </div>
+            <div class="order-sum-ctrl">
+                <p>共{{sum details 'number'}}件商品 合计：￥{{receivableTotal}}{{#is freight '>' 0}}（含运费￥{{freight}}）{{/is}}</p>
+                <p class="handle-btn">
+                {{#is payEnabled true}}<a data-id="{{orderId}}" data-action="goon-pay" class="button button-fill btn-yello operate-btn" href="#" data-shopid={{shopId}} data-ordergroup="{{orderGroup}}">继续支付</a>{{/is}}
+                {{#is reapEnabled true}}<a data-id="{{orderId}}" data-action="confirm-arrived" class="button button-fill btn-yello operate-btn" href="#" data-shopid={{shopId}}>确认收货</a>{{/is}}
+                {{#is evaluateEnabled true}}<a data-id="{{orderId}}" class="button button-fill btn-yello" href="/weixin/evaluate?orderId={{orderId}}&shopId={{shopId}}" >评价</a>{{/is}}
+                <!-- {{#is delEnabled true}}<a data-id="{{orderId}}" data-action="delete-order" class="button button-fill btn-yello operate-btn" href="#" >删除订单</a>{{/is}} -->
+                {{#is cancelEnabled true}}
+                <a href="#" data-id="{{orderId}}" data-action="cancel-order" class="button button-fill btn-yello operate-btn" data-shopid={{shopId}}>取消订单</a>
+                {{/is}}
+                </p>
+            </div>
+        </li>
+        {{/each}}
+        
+    </script>
+    #*加载JS文件*# 
+    #parse("control/$!webStyle/publicJs.vm")
+    #parse("control/$!webStyle/globalJs.vm")
+    <script>
+    // 截取url参数
+    function GetQueryString(name){
+         var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+         var r = window.location.search.substr(1).match(reg);
+         if(r!=null)return  unescape(r[2]); return null;
+    }
+    var appid = GetQueryString("authorizer_appid");
+    if(!appid){
+        appid=localStorage.getItem("authorizer_appid");
+    }else{
+        localStorage.setItem("authorizer_appid",appid);
+    }
+    
+    // alert(appid);
+    /*$.ajax({
+        type: "post",
+        url: "/weixin/setAuthorizerAppid",
+        data: {
+            authorizer_appid:appid
+        },
+        async:false,
+        dataType: 'json',
+        complete: function(json) {
+
+            // 重置加载flag
+            loading = false;
+            var data = json.response;
+                
+            var status = json.status;
+
+            
+            if(status != 200){
+                $.alert('网络异常1.1，状态为' + status);
+                flag =0;
+                return;
+            }
+            if ($.type(data) == 'string') {
+                data = JSON.parse(json.response);
+            }
+            if(data.code != 'E00000'){
+                $.alert(data.message)
+                return;
+            }else{
+                // $.alert(data.data.authorizer_appid);
+            }
+        }
+    });*/
+        var pageInfo = [{
+            no: 1,
+            canload: false,
+            loaded:false
+        }, {
+            no: 1,
+            canload: false,
+            loaded:false
+        }, {
+            no: 1,
+            canload: false,
+            loaded:false
+        }, {
+            no: 1,
+            canload: false,
+            loaded:false
+        }, {
+            no: 1,
+            canload: false,
+            loaded:false
+        },{
+            no: 1,
+            canload: false,
+            loaded:false
+        }];
+        //选项卡索引，总共有6个选项卡
+        var tabIndex = 0;
+        //查询字符串后面的状态码
+        var _status = getQueryString('statusId');
+        //每页显示10条数据
+        var pageSize = 10;
+        var loading = false;
+        var userInfo = '';
+        var getData = function(method) {
+
+            $.ajax({
+                type: "get",
+                url: "/weixin/getStatusOrders",
+                data:{
+                    statusId:(_status=='0'?'':_status),
+                    pageIndex:pageInfo[tabIndex].no
+                },
+                dataType: 'json',
+                complete: function(json) {
+                    // 重置加载flag
+                    loading = false;
+                    var data = json.response;
+                    if ($.type(data) == 'string') {
+
+                        data = JSON.parse(json.response);
+                    }
+                    if(data.code != 'E00000'){
+                        if(data.code == "-1"){
+                            window.location.href = "/weixin/bind";
+                        }else{
+                            $.alert(data.message);
+                            return;
+                        }
+                    }
+                    pageInfo[tabIndex].loaded = true;
+                    if (data.data.orderMaps.length == 0) {
+                      
+                        // 加载完毕，则注销无限加载事件，以防不必要的加载:$.detachInfiniteScroll($('.infinite-scroll').eq(tabIndex));多个无线滚动请自行根据自己代码逻辑判断注销时机
+                          //$.detachInfiniteScroll($('.tab').eq(tabIndex));
+
+                        pageInfo[tabIndex].canload = false;
+                        // alert($('.infinite-scroll-preloader').eq(tabIndex).attr("id") + " | " + tabIndex);
+                        // 删除加载提示符
+                        $('.infinite-scroll-preloader').eq(tabIndex).parent().find('[data-role="null-data"]').html('没有更多内容了，请稍后刷新');
+                        $('.infinite-scroll-preloader').eq(tabIndex).hide();
+                        // $('[data-role="null-data"]').html('没有更多内容了，请稍后刷新');
+                        return;
+                    } else {
+
+  						if(data.data.orderMaps.length < pageSize) {
+    						pageInfo[tabIndex].canload = false;
+    						// 删除加载提示符
+                            $('.infinite-scroll-preloader').eq(tabIndex).parent().find('[data-role="null-data"]').html('没有更多内容了，请稍后刷新');
+                            $('.infinite-scroll-preloader').eq(tabIndex).hide();
+                                //$('.infinite-scroll-preloader').eq(tabIndex).remove();
+              			}else{
+                                pageInfo[tabIndex].canload = true;
+                        }
+                        //if(data.data.orderMaps.length >= pageSize){
+                        //   $('.infinite-scroll-preloader').eq(tabIndex).show(); 
+                        //}else{
+                        //    $('.infinite-scroll-preloader').eq(tabIndex).hide();
+                        //}
+                        var context = {
+                            data: data.data.orderMaps
+                        };
+                        var orderTpl = $("#orderTpl").html();
+                        var orderTemplate = Handlebars.compile(orderTpl);
+                        var orderCont = orderTemplate(context);
+                        //debugger;
+                        //alert(status)
+                        if(!_status || _status == '0'){
+                            if(method == 'pull'){
+                                $('#tab1 .order-list').append(orderCont);
+                                $.refreshScroller();
+                            }else{
+                                $('#tab1 .order-list').html(orderCont);
+                                $.refreshScroller();
+                            }
+                        }else if(_status == '100'){
+                            if(method == 'pull'){
+                                $('#tab2 .order-list').append(orderCont);
+                                $.refreshScroller();
+                            }else{
+                                $('#tab2 .order-list').html(orderCont);
+                                $.refreshScroller();
+                            }
+                        }else if(_status == '101'){
+                            if(method == 'pull'){
+                                $('#tab3 .order-list').append(orderCont);
+                                $.refreshScroller();
+                            }else{
+                                $('#tab3 .order-list').html(orderCont);
+                                $.refreshScroller();
+                            }
+                        }else if(_status == '102'){
+                            if(method == 'pull'){
+                                $('#tab4 .order-list').append(orderCont);
+                                $.refreshScroller();
+                            }else{
+                                $('#tab4 .order-list').html(orderCont);
+                                $.refreshScroller();
+                            }
+                        }else if(_status == '103'){
+                            if(method == 'pull'){
+                                $('#tab5 .order-list').append(orderCont);
+                                $.refreshScroller();
+                            }else{
+                                $('#tab5 .order-list').html(orderCont);
+                                $.refreshScroller();
+                            }
+                        }else if(_status == '104'){
+                            if(method == 'pull'){
+                                $('#tab6 .order-list').append(orderCont);
+                                $.refreshScroller();
+                            }else{
+                                $('#tab6 .order-list').html(orderCont);
+                                $.refreshScroller();
+                            }
+                        }
+                          
+                      
+                    }
+                }
+            });
+        };
+        $(document).on("pageInit", function(e, id, page) {
+
+            $(page).on('infinite', function() {
+
+                // 如果正在加载，则退出
+                if (loading) return;
+
+                // 设置flag
+                loading = true;
+                //alert(pageInfo[tabIndex].canload);
+			    if(pageInfo[tabIndex].canload){
+				    //新增一页
+				    pageInfo[tabIndex].no = pageInfo[tabIndex].no + 1;
+				    getData('pull');
+                }
+            });
+        });
+        //切换选项卡的时候
+        $('.buttons-tab a').on('click', function(){
+            // var me = $(this);
+            _status = $(this).data('status');
+            checkTag();
+          
+        });
+        function checkTag(){
+        
+        $('.buttons-tab a').removeClass('active');
+            $('.tab').removeClass('active');
+            if(!_status || _status == '0'){
+                tabIndex = 0;
+                $.refreshScroller();
+            }else if(_status == '100'){
+                tabIndex = 1;
+                $.refreshScroller();
+            }else if(_status == '101'){
+                tabIndex = 2;
+                $.refreshScroller();
+            }else if(_status == '102'){
+                tabIndex = 3;
+                $.refreshScroller();
+            }else if(_status == '103'){
+                tabIndex = 4;
+                $.refreshScroller();
+            }else if(_status == '104'){
+                tabIndex = 5;
+                $.refreshScroller();
+            }
+
+            if(_status != 0){
+                $('[data-status="' + _status + '"]').addClass('active');
+            }else{
+                $('[data-status="0"]').addClass('active');
+            }
+            //alert(pageInfo[tabIndex].loaded)
+            if(!pageInfo[tabIndex].loaded){
+                //alert(tabIndex)
+                getData();
+            }
+
+        }
+        checkTag();
+
+        $('.order-list').delegate(".operate-btn", "click", function(e){
+            e.preventDefault();
+
+            var me = $(this),
+            action = me.data('action');
+            if(action == 'confirm-arrived'){
+                  
+                var orderId = me.data('id'),
+                    shopId  = me.data('shopid');
+                $.ajax({
+                    type: "get",
+                    url: "/weixin/reapOrder?orderId=" + orderId,
+                    dataType: 'json',
+                    complete: function(json) {
+                      
+                        var data = json.response;
+                        var status = json.status;
+                        if(status != 200){
+                            $.alert('网络异常，状态为17.2' + status);
+                            return;
+                        }
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if(data.code != 'E00000'){
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                                return;
+                            }
+                        }else{
+                            $.alert('确认成功', function(){
+                                //跳到评价页面
+                                window.location.href="/weixin/evaluate?orderId="+orderId+"&shopId="+shopId;
+                            });
+                            
+                        }
+                        
+                    }
+                });
+            //取消订单 
+            }else if(action == 'cancel-order'){
+                  
+                var orderId = me.data('id');
+                $.popup('.popup-cancel-order');
+                $.ajax({
+                    type: "post",
+                    url: "/weixin/orderCancelReason",
+                    dataType: 'json',
+                    complete: function(json) {
+                    
+                        var data = json.response;
+                        var status = json.status;
+                        if(status != 200){
+                            $.alert('网络异常，状态为16.5' + status);
+                            return;
+                        }
+                        if ($.type(data) == 'string') {
+                          data = JSON.parse(data);
+                        }
+                        if(data.code != 'E00000'){
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                                return;
+                            }
+                        }else{
+                            // debugger;
+                            var context = {
+                                data: data.data
+                            };
+                            var cancelOrderlTpl = $("#cancelOrderTpl").html();
+                            var cancelOrderTemplate = Handlebars.compile(cancelOrderlTpl);
+                            var cancelOrderCont = cancelOrderTemplate(context);
+                            $('[data-role="content-cancel-order"]').html(cancelOrderCont);
+                            // $('.icon-form-checkbox').on('click',function(){
+                            //     $(this).parent().siblings('input').attr("checked","checked");
+                            // })
+                            $('#confirm-cancel').on('click',function(e){
+                                e.preventDefault();
+                                var reason      = $.trim($('[name="reason"]:checked').val());
+                                var otherReason = $.trim($('#otherReason').val());
+                                if(reason || otherReason){
+                                    $.confirm("是否确认取消当前订单?",function(){
+                                        $.ajax({
+                                            type: "post",
+                                            url: "/weixin/cancelOrder",
+                                            data:{
+                                                orderId:orderId,
+                                                reason:reason+","+otherReason,
+                                            },
+                                            dataType: 'json',
+                                            complete: function(json) {
+                                                
+                                                var data = json.response;
+                                                var status = json.status;
+                                                if(status != 200){
+                                                    $.alert('网络异常，状态为16.5' + status);
+                                                    return;
+                                                }
+                                                if($.type(data) == 'string') {
+                                                    data = JSON.parse(data);
+                                                }
+                                                if(data.code != 'E00000'){
+                                                    if(data.code == "-1"){
+                                                        window.location.href = "/weixin/bind";
+                                                    }else{
+                                                        $.alert(data.message);
+                                                        return;
+                                                    }
+                                                }else{
+                                                    $.alert('取消成功', function(){
+                                                        window.location.href="/weixin/orders?statusId=0&pageIndex=1";
+                                                    });
+                                                      
+                                                }
+                                              
+                                            }
+                                        });
+                                    })
+                                    
+                                }else{
+                                    $.toast('请确认您的取消原因');
+                                }
+                            });
+                        }
+                      
+                    }
+                });
+            //继续支付
+            }else if(action == 'goon-pay'){
+                  
+                var orderId = me.data('id');
+                var orderGroup= me.data('ordergroup');
+                $.ajax({
+                    url: "/weixin/payOrder?orderId="+orderId+"&orderGroup="+orderGroup,
+                    type: "get",
+                    dataType: "json",
+                    complete: function (result) {
+                      
+                        var status = result.status;
+                        if(status != 200){
+                            $.alert('网络异常17.4，状态为' + status);
+                            return;
+                        }
+                        var resp = result.response;
+                     
+                        if ($.type(resp) == 'string') {
+                            resp = JSON.parse(resp);
+                        }
+                        if(resp.code != 'E00000'){
+                            if(resp.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(resp.message);
+                                return;
+                            }
+                        }else{
+                            continueSavePay(resp.appId, resp.timeStamp, resp.nonceStr, resp.package, resp.paySign);
+                        }
+                    }
+                });
+            }
+      })
+      $.init();
+      </script>
+      <script>    
+        //   $(function() {
+        //       //获取订单列表
+        //       function getOrders(status){
+        //           // var url = "/weixin/getStatusOrders";
+        //           // if(status){
+        //           //     url = "/weixin/getStatusOrders?statusId=" + status;
+        //           // }
+        //           $.ajax({
+        //             type: "get",
+        //             url: "/weixin/getStatusOrders",
+        //             data:{
+        //               statusId:status,
+        //               pageIndex:1
+        //             },
+        //             dataType: 'json',
+        //             complete: function(json) {
+                      
+        //                 var data = json.response;
+        //                 var httpStatus = json.status;
+        //                 if(httpStatus != 200){
+        //                     $.alert('网络异常，状态为17.1' + httpStatus);
+        //                     return;
+        //                 }
+        //                 if ($.type(data) == 'string') {
+        //                     data = JSON.parse(data);
+        //                 }
+        //                 if(data.code != 'E00000'){
+        //                     $.alert(data.message);
+        //                     return;
+        //                 }else{
+        //                     var context = {
+        //                         data: data.data.orderMaps
+        //                     };
+        //                     var orderTpl = $("#orderTpl").html();
+        //                     var orderTemplate = Handlebars.compile(orderTpl);
+        //                     var orderCont = orderTemplate(context);
+                            
+        //                     if(!status){
+        //                         debugger;
+        //                         $('#tab1 .order-list').html(orderCont);
+        //                         // downrefresh();
+        //                     }else if(status == '100'){
+        //                         $('#tab2 .order-list').html(orderCont);
+        //                         // downrefresh();
+        //                     }else if(status == '101'){
+        //                         $('#tab3 .order-list').html(orderCont);
+        //                         // downrefresh();
+        //                     }else if(status == '102'){
+        //                         $('#tab4 .order-list').html(orderCont);
+        //                         // downrefresh();
+        //                     }else if(status == '103'){
+        //                         $('#tab5 .order-list').html(orderCont);
+        //                         // downrefresh();
+        //                     }
+                            
+        //                 }
+                        
+        //             }
+        //           });
+        //       }
+        //       var statusId = getQueryString('statusId');
+        //       if(statusId){
+        //           //$('.buttons-tab').hide();
+        //           getOrders(statusId);
+        //           $('.buttons-tab a').removeClass('active');
+        //           $('.tab').removeClass('active');
+        //           $('[data-status="' + statusId + '"]').addClass('active');
+        //       }else{
+        //           getOrders();
+        //       }
+        //       $('.buttons-tab a').on('click', function(){
+        //           var me = $(this);
+        //           var status = me.data('status');
+                  
+        //           $('.buttons-tab a').removeClass('active');
+        //           $('.tab').removeClass('active');
+        //           if(status != 0){
+        //               $('[data-status="' + status + '"]').addClass('active');
+        //               getOrders(status);
+        //           }else{
+        //               $('[data-status="0"]').addClass('active');
+        //               getOrders();
+        //           }
+                  
+        //       });
+        //       $('.order-list').delegate(".operate-btn", "click", function(e){
+        //           e.preventDefault();
+
+        //           var me = $(this),
+        //               action = me.data('action');
+
+        //               if(action == 'confirm-arrived'){
+                          
+        //                   var orderId = me.data('id');
+        //                   $.ajax({
+        //                     type: "get",
+        //                     url: "/weixin/reapOrder?orderId=" + orderId,
+        //                     dataType: 'json',
+        //                     complete: function(json) {
+                              
+        //                         var data = json.response;
+        //                         var status = json.status;
+        //                         if(status != 200){
+        //                             $.alert('网络异常，状态为17.2' + status);
+        //                             return;
+        //                         }
+        //                         if ($.type(data) == 'string') {
+        //                             data = JSON.parse(data);
+        //                         }
+        //                         if(data.code != 'E00000'){
+        //                             $.alert(data.message);
+        //                             return;
+        //                         }else{
+        //                             $.alert('确认成功', function(){
+        //                               window.location.reload();
+        //                             });
+                                    
+        //                         }
+                                
+        //                     }
+        //                   });
+        //               }else if(action == 'delete-order'){
+                          
+        //                   var orderId = me.data('id');
+        //                   $.ajax({
+        //                     type: "get",
+        //                     url: "/weixin/delOrder?orderId=" + orderId,
+        //                     dataType: 'json',
+        //                     complete: function(json) {
+                              
+        //                         var data = json.response;
+        //                         var status = json.status;
+        //                         if(status != 200){
+        //                             $.alert('网络异常，状态为17.3' + status);
+        //                             return;
+        //                         }
+        //                         if ($.type(data) == 'string') {
+        //                             data = JSON.parse(data);
+        //                         }
+        //                         if(data.code != 'E00000'){
+        //                             $.alert(data.message);
+        //                             return;
+        //                         }else{
+        //                             $.alert('删除成功', function(){
+        //                               window.location.reload();
+        //                             });
+                                    
+        //                         }
+                                
+        //                     }
+        //                   });
+        //               }else if(action == 'goon-pay'){
+                          
+        //                   var orderId = me.data('id');
+        //                   $.ajax({
+        //                       url: "/weixin/payOrder?orderId=" + orderId ,
+        //                       type: "get",
+        //                       dataType: "json",
+        //                       complete: function (result) {
+                                  
+        //                           var status = result.status;
+        //                           if(status != 200){
+        //                               $.alert('网络异常17.4，状态为' + status);
+        //                               return;
+        //                           }
+        //                           var resp = result.response;
+                                 
+        //                           if ($.type(resp) == 'string') {
+        //                               resp = JSON.parse(resp);
+        //                           }
+        //                           if(resp.code != 'E00000'){
+        //                               $.alert(resp.message);
+        //                               return;
+        //                           }else{
+        //                               SavePay(resp.appId, resp.timeStamp, resp.nonceStr, resp.package, resp.paySign);
+        //                           }
+        //                       }
+        //                   });
+        //               }
+        //       })
+        //   });
+          
+        // $.init();
+      </script>
+      </body>
+</html>

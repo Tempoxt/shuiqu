@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+#set($currentPage = "address")
+#parse("control/$!webStyle/version.vm")
+#parse("control/$!webStyle/indexCss.vm")
+<body>
+    <div class="page-group">
+        <div class="page page-finish page-current address-manager">
+            <header class="bar bar-nav light-nav">
+                <a href="#" data-role="go-back" class="icon icon-35icoback pull-left bar-left"></a>  
+                <h1 class="title">地址管理</h1>
+            </header>
+
+            <div class="content">
+                <ul class="address-list" data-role="address-list">
+                    
+                </ul>
+                <form action="/weixin/confirmCar"  method="POST" id="shoppingCar">
+                    <input type="hidden" name="quickSpJson">
+                </form>
+                <form action="/weixin/quickShoppingConfirm"  method="POST" id="quickShoppingCar">
+                    <input type="hidden" name="quickSpJson">
+                </form>
+            </div>
+            <!-- Block button in standard bar fixed above the footer -->
+            <div class="bar bar-footer order-bar">
+                <a href="#" class="button button-fill btn-yello open-new" id="open-new">新增地址</a>
+            </div>    
+        </div>
+        <!-- 新增地址 Popup -->
+        <div class="popup popup-new-address">
+            
+            <div class="content-block">
+                <header class="bar bar-nav light-nav">
+                    <span class="icon icon-35icoback pull-left close-new-popup bar-left"></span>  
+                    <h1 class="title">新增地址</h1>
+                </header>
+                <div class="content">
+                    <div class="list-block new-add-list">
+                        <ul>
+                            <li>
+                                <div class="item-content">
+                                  <div class="item-inner">
+                                    <div class="item-title label"><span class="required">*</span>联系人</div>
+                                    <div class="item-input">
+                                      <input type="text" name="contacts" placeholder="您的姓名">
+                                    </div>
+                                  </div>
+                                </div>
+                            </li>
+                            <li class="align-top map-wrap">
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label"><span class="required">*</span>收货地址</div>
+                                        <div class="item-input pop-map">
+                                            <i class="icon icon-ico_awwor_right"></i>
+                                            <input type="text" name="streetDescribe" class="streetDescribe" readonly="readonly" placeholder="请选择您所在位置"/>
+                                            <input type="text" name="streetName" readonly="readonly"/>
+                                            <input type="hidden" name="location" value="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label"></div>
+                                        <div class="item-input">
+                                            <input type="text" name="doorplate" placeholder="请输入小区门牌等详细信息">
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label"><span class="required">*</span>手机</div>
+                                        <div class="item-input">
+                                            <input type="tel" id="tel" name="phone" placeholder="配送人员联系您的方式" maxlength="11">
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="tag-box">
+                            <input type="hidden" name="tag" />
+                            <table>
+                                <tr>
+                                    <td><span class="required">*</span>地址标签</td>
+                                    <td data-role="tag-box">
+                                        
+                                    </td>
+                                    <td><span class="icon icon-83shoppingbtnnumadd add-tag"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>  
+                </div>
+                <!-- Block button in standard bar fixed above the footer -->
+                <div class="bar bar-footer order-bar">
+                    <a href="#" data-role="save-address" class="button button-fill btn-yello">保存地址</a>
+                </div>
+            </div>
+        </div>
+        <!-- 修改地址 Popup -->
+        <div class="popup popup-edit-address">
+            
+            <div class="content-block">
+                <header class="bar bar-nav light-nav">
+                    <span class="icon icon-35icoback pull-left close-edit-popup  bar-left"></span>  
+                    <h1 class="title">修改地址</h1>
+                </header>
+                <div class="content">
+                    <div class="list-block new-edit-list">
+                        <ul>
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label"><span class="required">*</span>联系人</div>
+                                        <div class="item-input">
+                                            <input type="text" name="contacts" placeholder="您的姓名">
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="align-top map-wrap">
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label"><span class="required">*</span>收货地址</div>
+                                        <div class="item-input">
+                                            <i class="icon icon-ico_awwor_right"></i>
+                                            <input type="text" name="streetDescribe" class="streetDescribe" readonly="readonly" placeholder="请选择您所在位置"/>
+                                            <input type="text" name="streetName"  readonly="readonly"/>
+                                            <input type="hidden" name="location" value="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label"><span class="required">*</span>手机</div>
+                                        <div class="item-input">
+                                            <input type="tel" name="phone" placeholder="配送人员联系您的方式" maxlength="11">
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="tag-box">
+                            <input type="hidden" name="tag" />
+                            <table>
+                                <tr>
+                                    <td><span class="required">*</span>地址标签</td>
+                                    <td data-role="tag-box">
+                                        
+                                    </td>
+                                    <td><span class="icon icon-83shoppingbtnnumadd add-tag"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                </div>
+                <!-- Block button in standard bar fixed above the footer -->
+                <div class="bar bar-footer order-bar">
+                    <a href="#" data-role="edit-address" class="button button-fill btn-yello">确定修改</a>
+                </div>
+            </div>
+        </div>
+        <!-- 地图定位 Popup -->
+        <div class="popup popup-map-location">
+            <div class="content-block">
+                <header class="bar bar-nav light-nav">
+                    <span class="icon icon-35icoback pull-left close-pop-map  bar-left"></span>  
+                    <h1 class="title">当前定位</h1>
+                </header>
+                <div class="content" style="display:flex;flex-direction: column;justify-content: center;">
+                    <div id="allmap" style="flex:1;"></div>
+                    <div class="search-wrap" style="height:4.4rem;">
+                        <!-- <input type="text" id="locationInfo" style="border:0px;width:100%; font-size:1rem;" /> -->
+                        <input type="textarea" value="定位中..."  style="width:100%;height:50%;background-color: #fff;border:0;text-align:center;overflow: hidden;white-space: nowrap;text-overflow:ellipsis;" readonly="readonly" data-role="address" />
+                        <input type="button" value="不在配送范围" class="submitBtn" style="width:50%;height:50%;background-color: #D9D9D9;border:0;float: left;border-right: 1px #FFF solid;"/>
+                        <input type="button" value="查看店铺配送范围" class="showRange" style="width:50%;height:50%;background-color: #FAD603;border:0;border-left: 1px #FFF solid;" />
+                    </div>
+                    <!--<div class="search-wrap"><input type="text" id="suggestId"  placeholder="请输入关键字" /><input type="button" value="搜索" id="searchBtn" /></div>
+                    <p class="location-notice">
+                        您的收货地址是不是在这附近？
+                    </p>
+                    <ul id="r-result">
+                        
+                    </ul>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+<script id="addressTpl" type="text/x-handlebars-template">
+    {{#each data}}
+    {{#is status '1'}}
+    <li data-did="{{did}}" data-city="{{cityId}}" data-streetName="{{streetName}}" data-streetDescribe="{{streetDescribe}}" data-doorplate="{{doorplate}}" data-phone="{{phone}}" data-contacts="{{contacts}}" data-location="{{location}}" data-tag="{{tag}}">
+        <a href="#" data-action="go-sub">
+        <h4><span>{{contacts}}</span>{{phone}}</h4>
+        <p>{{streetDescribe}}{{doorplate}}</p></a>
+        <div class="bottom-ctrl">
+            <table>
+                <tr>
+                    <td>
+                        <label class="label-checkbox" data-action="set-default">
+                            <input {{#is ifDefault true}}checked="checked"{{/is}} type="radio" value="1" name="default" />
+                            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                        </label>默认地址
+                    </td>
+                    <td>
+                        <span class="icon icon-40icoedit" data-action="edit-add"></span><em data-action="edit-add">编辑</em>
+                    </td>
+                    <td>
+                        <span class="icon icon-onlyforaddressdelete" data-action="delete-add"></span><em data-action="delete-add">删除</em>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </li>
+    {{/is}}
+    {{#is status '-1'}}
+    <li data-did="{{did}}" data-city="{{cityId}}" data-streetName="{{streetName}}" data-streetDescribe="{{streetDescribe}}" data-doorplate="{{doorplate}}" data-phone="{{phone}}" data-contacts="{{contacts}}" data-location="{{location}}" data-tag="{{tag}}" style="position: relative;">
+        <a href="#">
+        <h4><span>{{contacts}}</span>{{phone}}</h4>
+        <p>{{streetDescribe}}{{doorplate}}</p></a>
+        <div class="bottom-ctrl">
+            <table>
+                <tr>
+                    <td>
+                        <!-- <label class="label-checkbox" data-action="set-default">
+                            <input {{#is ifDefault true}}checked="checked"{{/is}} type="radio" value="1" name="default" />
+                            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                        </label> -->
+                        <em style="color: red;">{{reason}}</em>
+                    </td>
+                    <td>
+                        
+                    </td>
+                    <td>
+                        <span class="icon icon-onlyforaddressdelete" data-action="delete-add"></span><em data-action="delete-add">删除</em>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <svg class="icon icon-svg audit" aria-hidden="true" style="font-size: 3rem;position: absolute;top: -0.25rem;right: 0;">
+            <use xlink:href="#icon-vat__ico_andit"></use>
+        </svg>
+    </li>
+    {{/is}}
+    {{/each}}
+    
+</script>
+#*加载JS文件*# 
+#parse("control/$!webStyle/publicJs.vm")
+<script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=CFecNbZbabHRfdW8QCz40xqkvrNrB3Bu"></script>
+#parse("control/$!webStyle/globalJs.vm")
+    <script>
+        // 是否可以提交
+        var isSumbit = false;
+        // 是否加载过浮层
+        var isFuceng = false;
+
+        $('.submitBtn').click(function(){
+            if(isSumbit){
+                $.closeModal('.popup-map-location') 
+            }
+        });
+
+        var from = getQueryString('from');
+
+        // 从account页面进来没有店铺 只是单纯的新增地址
+        if(!from||from=="coupon"){
+            $('.showRange').hide();
+            $('.submitBtn').css({"width":"100%","background-color":"#FAD603","border":"none"});
+            $('.submitBtn').val("确定地址");
+            isSumbit = true;
+        }
+
+        var shopStr0 = getQueryString('shopStr');
+        var shopLocationArray = new Array();
+        if(shopStr0 != null && shopStr0 != ""){
+            $.ajax({
+                url: "/weixin/getShopsWeiLans",
+                data:{
+                    shopStr:shopStr0
+                },
+                type:"post",
+                dataType:"json",
+                success:function(result){
+                    if(result.code == "E00000" && result.data.count > 0){
+                        for(var j=0;j<result.data.shopLocations.length;j++){
+                            var shopLocation1 = result.data.shopLocations[j].sendLocation;
+                            var shopLocationArray1 = "";
+                            for(var i=0;i<shopLocation1.length;i++){
+                                if(i==0){
+                                    shopLocationArray1 ='['
+                                }
+                                shopLocationArray1 = shopLocationArray1+'{"lng":'+shopLocation1[i].lng+',"lat":'+shopLocation1[i].lat+'}';
+                                if(i==shopLocation1.length-1){
+                                    shopLocationArray1 = shopLocationArray1 + ']'
+                                }else{
+                                    shopLocationArray1 = shopLocationArray1 + ','
+                                }
+                            }
+                            shopLocationArray.push(shopLocationArray1);
+                        }
+                    }
+                }
+            });
+        }
+        $(function() {
+            
+            //判断返回链接
+            var goBack = $('[data-role="go-back"]');
+           
+            goBack.on('click',function(e){
+                e.preventDefault();
+                
+                history.pushState({page: 1}, "", "/weixin/shoppingCar");
+                //来自确认订单页面
+                if(from == 'confirmCar'){
+                    $('#shoppingCar input[name=quickSpJson]').val(localStorage.getItem("shoppingCarData"));
+                    $('#shoppingCar').submit();
+                    window.onpopstate = function(event) {
+                      console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
+                    };
+                    
+                //来自快速订水确认页面    
+                }else if(from == 'QKconfirm'){
+                    $('#quickShoppingCar input[name=quickSpJson]').val(localStorage.getItem("quickShoppingCarData"));
+                    $('#quickShoppingCar').submit();
+                //来自优惠券页面    
+                }else if(from == 'coupon'){
+                    window.location.href="/weixin/coupon";
+                }else{
+                    window.location.href = '/weixin/account';
+                }
+            });
+            if(from == 'coupon'){
+                $.alert('请选择使用该优惠券的地址，也可新增后选择新地址');
+            }
+            //获取用户地址
+            var getUserAddress = function(){
+                $.ajax({
+                    type: "get",
+                    url: "/weixin/userAddress",
+                    async:'false',
+                    dataType: 'json',
+                    complete: function(json) {
+                      
+                        var data = json.response;
+                        var status = json.status;
+                        if(status != 200){
+                            $.alert('网络异常，状态为11.2' + status);
+                            return;
+                        }
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if(data.code != 'E00000'){
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                                return;
+                            }
+                        }else{
+                                var tpl = $("#addressTpl").html();
+                                var template = Handlebars.compile(tpl);
+                                var context = {
+                                    data: data.data
+                                };
+                                var cont = template(context);
+                                $('[data-role="address-list"]').html(cont);
+                                if(data.data.length==1 && data.data[0].ifDefault==false){
+                                    var did = $('[data-role="address-list"]').find('li').data('did');
+                                    $.ajax({
+                                        type: "get",
+                                        url: "/weixin/setDefaultAddress?did="+did,
+                                        dataType: 'json',
+                                        complete: function(json) {
+                                            var status = json.status;
+
+                                            if(status != 200){
+                                                $.alert('网络异常，状态为11.4' + status);
+                                                return;
+                                            }
+                                            var data = json.response;
+                                           
+                                            if ($.type(data) == 'string') {
+                                                data = JSON.parse(data);
+                                            }
+                                            if(data.code != 'E00000'){
+                                                if(data.code == "-1"){
+                                                    window.location.href = "/weixin/bind";
+                                                }else{
+                                                    $.alert(data.message);
+                                                    return;
+                                                }
+                                            }else{        
+                                                getUserAddress();
+                                                // window.location.reload();
+                                            }
+                                            
+                                        }
+                                    });
+                                }
+                                if(data.data.length>=6){
+                                    $("#open-new").removeClass('open-new').attr('disabled','disabled').css('background','#bbb').html('最多只能添加6个地址');
+                                }else{
+                                    $("#open-new").addClass('open-new').attr('disabled','false').css("background","").html("新增地址");
+                                    // window.location.reload();
+                                }
+                            
+                        }
+                        
+                    }
+                });
+            };
+            getUserAddress();
+            //获取用户地址标签
+            var getAddTags = function(){
+                $.ajax({
+                    type: "post",
+                    url: "/weixin/getAddressTags",
+                    dataType: 'json',
+                    complete: function(json) {
+                      
+                        var data = json.response;
+                        var status = json.status;
+                        if(status != 200){
+                            $.alert('网络异常，状态为11.1' + status);
+                            return;
+                        }
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if(data.code != 'E00000'){
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                                return;
+                            }
+                        }else{
+                            var str = [];
+                            for(var i=0; i < data.data.tags.length; i++){
+                                if(data.data.tags[i] != ''){
+                                    str.push("<a href='' >" + data.data.tags[i] + "</a>");
+                                }
+                            }
+                            $('[data-role="tag-box"]').html(str.join(""));
+                        }
+                        
+                    }
+                });
+            };
+            getAddTags();
+            // 百度地图API功能
+            var map = new BMap.Map("allmap");
+            var point = new BMap.Point(116.331398,39.897445);
+            map.centerAndZoom(point,15);
+            
+            var geolocation = new BMap.Geolocation();
+            var geoc = new BMap.Geocoder(); 
+            
+            //单击获取点击的经纬度
+			map.addEventListener("click",function(e){
+				sendLocationInfo(e, '');
+			});
+            
+            //本地搜索配置
+            var options = {
+                onSearchComplete: function(results){
+                    // 判断状态是否正确
+                    if (local.getStatus() == BMAP_STATUS_SUCCESS){
+                        var s = [];
+                        for (var i = 0; i < results.getCurrentNumPois(); i ++){
+                           
+                            s.push("<li data-lat=" + results.getPoi(i).point.lat + " data-lng=" + results.getPoi(i).point.lng + "><h4>" + results.getPoi(i).title + "</h4><p>" + results.getPoi(i).address) + "</p></li>";
+                        }
+                        document.getElementById("r-result").innerHTML = s.join("");
+                    }
+                }
+            };
+            //var local = new BMap.LocalSearch(map, options);//百度搜索
+            //新增地址
+            $(document).on('click','.open-new', function (e) {
+                // debugger;
+                e.preventDefault();
+                //搜索附近的地标
+                // geolocation.getCurrentPosition(function(r){
+                //     if(this.getStatus() == BMAP_STATUS_SUCCESS){
+                //         //var mk = new BMap.Marker(r.point);
+                //         //map.addOverlay(mk);
+                //         //map.panTo(r.point);
+                //         sendLocationInfo(r, 'new');
+                //         console.log(r.point);
+                //         //alert('您的位置：'+r.point.lng+','+r.point.lat);
+                //         geoc.getLocation(r.point, function(rs){
+                //             var addComp = rs.addressComponents;
+                //             //alert(addComp.province + ", " + addComp.city + ", " + addComp.cityCode + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+                            
+
+                //             //local.search(addComp.street);
+                //         }); 
+
+                //     }
+                //     else {
+                //         alert('failed'+this.getStatus());
+                //     }        
+                // },{enableHighAccuracy: true})
+                $.popup('.popup-new-address');
+                // 获取手机号码
+                if(localStorage.getItem('userTel')){ // 如果缓存没有 就调用接口
+                    $('[name="phone"]').val(localStorage.getItem('userTel'));
+                }else{
+                    $.ajax({
+                    type: "get",
+                    url: "/weixin/getUserCellphone",
+                    dataType: 'json',
+                    complete: function(json) {
+                    
+                        var data = json.response;
+                        var status = json.status;
+                        if(status != 200){
+                            $.alert('网络异常，状态为3.2' + status);
+                            return;
+                        }
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if(data.code != 'E00000'){
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                                return;
+                            }
+                          
+                        }else{
+                            $('[name="phone"]').val(data.data);
+                        }
+                    }
+                })
+                }
+            });
+            $(document).on('click','.close-new-popup', function () {
+                $.closeModal('.popup-new-address');
+                clearAddress();
+            });
+            $(document).on('click','.close-edit-popup', function () {
+                $.closeModal('.popup-edit-address');
+                clearAddress();
+            });
+
+            
+
+            //添加地址标签
+            $(document).on('click', '.add-tag',function () {
+                var curAddressTag = $(this).parent().siblings('[data-role="tag-box"]');
+                var len = $(this).parent().siblings('[data-role="tag-box"]').find('a').length;
+                $.prompt('请填写您需要添加的地址标签', '地址标签',
+                    function (value) {
+                        
+                        if($.trim(value)){
+                        
+                            // console.log(curAddressTag,len);
+                            for(var i=0;i<len;i++){
+                                if(curAddressTag.find('a').eq(i).html()==value){
+                                    $.alert('该标签已存在');
+                                    return;
+                                }   
+                            }
+                            $.ajax({
+                                type: "post",
+                                url: "/weixin/addAddressTags",
+                                data: {
+                                    tag: value
+                                },
+                                dataType: 'json',
+                                complete: function(json) {
+                                  
+                                    var data = json.response;
+                                    var status = json.status;
+                                    if(status != 200){
+                                        $.alert('网络异常，状态为11.3' + status);
+                                        return;
+                                    }
+                                    if ($.type(data) == 'string') {
+                                        data = JSON.parse(data);
+                                    }
+                                    
+                                    if(data.code != 'E00000'){
+                                        if(data.code == "-1"){
+                                            window.location.href = "/weixin/bind";
+                                        }else{
+                                            $.alert(data.message);
+                                            return;
+                                        }
+                                    }else{
+                                        getAddTags();
+                                    }
+                                    
+                                }
+                            });
+                            
+                        }else{
+                            $.alert('标签不能为空！');
+                        }
+                    },
+                    function (value) {
+                      //$.alert('标签是 "' + value + '". You clicked Cancel button');
+                    }
+                );
+            });
+            //地址增删改查
+            $('[data-role="address-list"]').delegate("label,span,em,a", "click", function(e){
+                //设置默认地址
+                e.preventDefault();
+                var me = $(this),
+                    action = me.data('action'),
+                    did = me.parents('li').data('did');
+                    if(action == 'set-default' && me.find('[name="default"]').attr('checked')!='checked'){
+                        $.confirm('是否设置为默认地址?',function(){
+                            $.ajax({
+                                type: "get",
+                                url: "/weixin/setDefaultAddress?did=" + did,
+                                dataType: 'json',
+                                complete: function(json) {
+                                    var status = json.status;
+
+                                    if(status != 200){
+                                        $.alert('网络异常，状态为11.4' + status);
+                                        return;
+                                    }
+                                    var data = json.response;
+                                   
+                                    if ($.type(data) == 'string') {
+                                        data = JSON.parse(data);
+                                    }
+                                    if(data.code != 'E00000'){
+                                        if(data.code == "-1"){
+                                            window.location.href = "/weixin/bind";
+                                        }else{
+                                            $.alert(data.message);
+                                            return;
+                                        }
+                                    }else{
+                                        
+                                        $.alert("默认地址设置成功！", function(){
+                                            getUserAddress();
+                                        });
+                                    }
+                                    
+                                }
+                            });
+                        });
+                    }else if(action == 'delete-add'){
+                        $.confirm('是否确认删除该地址?',function() {
+                            $.ajax({
+                                type: "get",
+                                url: "/weixin/delAddress?did=" + did,
+                                dataType: 'json',
+                                complete: function(json) {
+                                    var status = json.status;
+                                    if(status != 200){
+                                        $.alert('网络异常，状态为11.5' + status);
+                                        return;
+                                    }
+                                    var data = json.response;
+                                 
+                                    if ($.type(data) == 'string') {
+                                        data = JSON.parse(data);
+                                    }
+                                    if(data.code != 'E00000'){
+                                        if(data.code == "-1"){
+                                            window.location.href = "/weixin/bind";
+                                        }else{
+                                            $.alert(data.message);
+                                            return;
+                                        }
+                                    }else{
+                                        $.alert("地址删除成功！", function(){
+                                            getUserAddress();
+                                        });
+
+                                    }
+                                  
+                                }
+                            });
+                        });
+                        
+                    //选择地址后返回    
+                    }else if(action == 'go-sub'){
+
+                        var parentsli = $(this).parents('li');
+                        var did = parentsli.data('did');
+                        //返回确认订单页面
+                        if(from == 'confirmCar'){
+                            localStorage.setItem("carDid",did);
+                            //模拟表单提交回到确认订单页面
+                            $('#shoppingCar input[name=quickSpJson]').val(localStorage.getItem("shoppingCarData"));
+                            $('#shoppingCar').submit();
+                        
+                            // window.history.back();
+                        //返回快速订水确认页面     
+                        }else if(from == 'QKconfirm'){
+                            localStorage.setItem("qkDid",did);
+                            $('#quickShoppingCar input[name=quickSpJson]').val(localStorage.getItem("quickShoppingCarData"));
+                            $('#quickShoppingCar').submit();
+                            // window.history.back();
+                        //返回优惠券列表页     
+                        }else if(from == 'coupon'){
+                            var cityId = parentsli.data('city');
+                            var location = parentsli.data('location');
+                            var code_id = getQueryString('codeid');
+
+                            localStorage.setItem("couponCode",code_id);
+                            localStorage.setItem("couponCityId",cityId);
+                            localStorage.setItem("couponLocation",location);
+
+                            window.location.href = '/weixin/codeShops';
+                        }
+                        
+                    }else if(action == 'edit-add'){
+                            
+                            $.popup('.popup-edit-address');
+                            // debugger;
+                            var myParents = $(this).parents('.bottom-ctrl').parent();
+                            var did = myParents.data('did');
+                            var streetName = myParents.data('streetname');
+                            var streetDescribe = myParents.data('streetdescribe');
+                            var doorplate = myParents.data('doorplate');
+                            var phone = myParents.data('phone');
+                            var contacts = myParents.data('contacts');
+                            var location = myParents.data('location');
+                            var tag = myParents.data('tag');
+
+                            $('.popup-edit-address').attr('data-did', did);
+                            var pageGroup = $(this).parents('.page-group');
+                            pageGroup.find(".new-edit-list [name='contacts']").val(contacts);
+                            pageGroup.find(".new-edit-list [name='streetName']").val(streetName);
+                            pageGroup.find(".new-edit-list [name='streetName']").prop('disabled','disabled');
+                            pageGroup.find(".new-edit-list [name='streetDescribe']").val(streetDescribe);
+                            pageGroup.find(".new-edit-list [name='streetDescribe']").prop('disabled','disabled');
+                            pageGroup.find(".new-edit-list [name='doorplate']").val(doorplate);
+                            pageGroup.find(".new-edit-list [name='doorplate']").prop('disabled','disabled');
+                            if(!$(".new-edit-list .map-wrap").next('li').hasClass('haser')){
+                               $(".new-edit-list .map-wrap").after("<li class='haser' style='font-size:0.5rem;color:red;text-align:center;'>（已经确定配送水店,不能修改地址,您可以新增,谢谢）</li>");
+                            }
+                            
+                            pageGroup.find(".new-edit-list [name='location']").val(location);
+                            pageGroup.find(".new-edit-list [name='location']").prop('disabled','disabled');
+                            pageGroup.find(".new-edit-list [name='phone']").val(phone);
+                            pageGroup.find("a:contains('"+tag+"')").addClass('active');
+
+
+                            
+                        //});
+                        
+                    }
+            });
+            //保存修改后的地址
+            var updateFlag=0;
+            // debugger;
+            // console.log(this);
+            $('[data-role="edit-address"]').on('click',function(e){
+                e.preventDefault();
+                updateFlag++;
+                console.log(updateFlag);
+                if(updateFlag > 1){
+                    return;
+                }
+                var did = $(this).parents('.popup-edit-address').data('did');
+                var streetName = $.trim($(this).parent().prev().find('[name=streetName]').val());
+                var streetDescribe = $.trim($(this).parent().prev().find('[name=streetDescribe]').val());
+                var location = $.trim($(this).parent().prev().find('[name=location]').val());
+                console.log(location);
+                var doorplate = $.trim($(this).parent().prev().find('[name=doorplate]').val());
+                var phone = $.trim($(this).parent().prev().find('[name=phone]').val());
+                var contacts = $.trim($(this).parent().prev().find('[name=contacts]').val());
+                var tag = $.trim($(this).parent().prev().find("[data-role='tag-box'] a.active").html());
+                $(".err-msg").remove();
+
+                if(contacts == ""){
+                    $('.new-edit-list [name=contacts]').parents('.item-content').after('<p class="err-msg">联系人不能为空</p>');
+                    updateFlag=0;
+                    return;
+                }
+                if(location == ""){
+                    $('.new-edit-list [name=location]').parents('.item-content').after('<p class="err-msg">收货地址不能为空</p>');
+                    updateFlag=0;
+                    return;
+                }
+                if(doorplate == ""){
+                    $('.new-edit-list [name=doorplate]').parents('.item-content').after('<p class="err-msg">详细地址不能为空</p>');
+                    updateFlag=0;
+                    return;
+                }
+                if(phone == ""){
+                    $('.new-edit-list [name=phone]').parents('.item-content').after('<p class="err-msg">手机号不能为空</p>');
+                    updateFlag=0;
+                    return;
+                }
+                if(/^1[3|4|5|7|8][0-9]{9}$/.test(phone)==false){
+                    $('.new-edit-list [name=phone]').parents('.item-content').after('<p class="err-msg">手机号不正确</p>');
+                    updateFlag=0;
+                    return;
+                }
+                if(tag == ""){
+                    $('.new-edit-list [name=tag]').parents('.tag-box').append('<p class="err-msg">请选择地址标签，或添加一个并选中</p>');
+                    updateFlag=0;
+                    return;
+                }
+                
+                $.ajax({
+                    type: "post",
+                    url: "/weixin/editAddress",
+                    data: {
+                        did:did,
+                        streetName: streetName,
+                        streetDescribe: streetDescribe,
+                        doorplate: doorplate,
+                        phone: phone,
+                        contacts: contacts,
+                        location: location,
+                        tag: tag,
+                        sdkType:"3"
+                    },
+                    dataType: 'json',
+                    complete: function(json) {
+                      
+                        var status = json.status;
+                        if(status != 200){
+                            $.alert('网络异常，状态为11.6' + status);
+                            updateFlag=0;
+                            return;
+                        }
+                        var data = json.response;
+                       
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if(data.code != 'E00000'){
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                                updateFlag=0;
+                                return;
+                            }
+                        }else{
+                            updateFlag=0;
+                            $.alert("地址修改成功！", function(){
+                                $.closeModal('.popup-edit-address');
+                                getUserAddress();
+                                clearAddress();
+                            });
+                        }
+                    }
+                });
+            });
+            $('.new-edit-list input').on('change', function(){
+                $(this).parents('li').find('.err-msg').remove();
+            });
+            //定位浮层
+            var mapFlag = 0;
+            $(document).on('click','.pop-map', function () {
+                if(shopStr0 != null && shopStr0 != "" && !isFuceng){
+                    $.ajax({
+                        url: "/weixin/getShopsWeiLans",
+                        data:{
+                            shopStr:shopStr0
+                        },
+                        type:"post",
+                        dataType:"json",
+                        success:function(result){
+                            if(result.code == "E00000" && result.data.count > 0){
+                                for(var i = 0; i < result.data.count; i++){
+                                    var point = new BMap.Point(result.data.shopLocations[i].location.split(',')[0], result.data.shopLocations[i].location.split(',')[1]);
+                                    if(i == 0)
+                                        map.panTo(point);
+         //                         var opts = {
+                                    //     position : point,    // 指定文本标注所在的地理位置
+                                    //     offset   : new BMap.Size(-45, -55)    //设置文本偏移量
+                                    // }
+         //                         var label = new BMap.Label(result.data.shopLocations[i].shopName, opts);  // 创建文本标注对象
+         //                         map.addOverlay(label);
+                                    
+                                    var pointArray=new Array()
+                                    
+                                    for(var j = 0; j < result.data.shopLocations[i].sendLocation.length; j++){
+                                        pointArray[j] = new BMap.Point(result.data.shopLocations[i].sendLocation[j].lng, result.data.shopLocations[i].sendLocation[j].lat);
+                                    }
+                                    
+                                    var polygon = new BMap.Polygon(pointArray, {strokeColor:"blue", strokeWeight:2, strokeOpacity:0.5});
+                                    map.addOverlay(polygon);
+                                }
+                                // 确认已加载过浮层
+                                isFuceng = true;
+                            }
+                        }
+                    });
+
+                }
+                //搜索附近的地标
+                geolocation.getCurrentPosition(function(r){
+                    if(this.getStatus() == BMAP_STATUS_SUCCESS){
+                        //var mk = new BMap.Marker(r.point);
+                        //map.addOverlay(mk);
+                        //map.panTo(r.point);
+                        mapFlag++;
+                        if (mapFlag>1){
+                            return;
+                        }
+                        sendLocationInfo(r, '');
+                        console.log(r.point);
+                        //alert('您的位置：'+r.point.lng+','+r.point.lat);
+                        geoc.getLocation(r.point, function(rs){
+                            var addComp = rs.addressComponents;
+                            //alert(addComp.province + ", " + addComp.city + ", " + addComp.cityCode + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+                            
+
+                            //local.search(addComp.street);
+                        }); 
+
+                    }
+                    else {
+                        alert('failed'+this.getStatus());
+                    }        
+                },{enableHighAccuracy: true})
+                $.popup('.popup-map-location'); 
+            });
+            $(document).on('click','.close-pop-map', function () {
+                $.closeModal('.popup-map-location');
+            });
+            
+            $("#suggestId").on("input",function(e){
+                e.preventDefault();
+                var suggestId = $.trim($('#suggestId').val());
+                if(suggestId!=""){
+                    $('#searchBtn').addClass('bar-nav1'); 
+                }else{
+                    $('#searchBtn').removeClass('bar-nav1');
+                }
+            })
+            //用户自行搜索位置
+            $('#searchBtn').on('click',function(){
+                var suggestId = $.trim($('#suggestId').val());
+                local.search(suggestId);
+            }); 
+            
+            
+
+            //百度坐标返回对应位置信息
+            $('#r-result').delegate("li", "click", function(e){
+                e.preventDefault();
+
+                var me = $(this),
+                    lat = me.data('lat'),
+                    lon = me.data('lng'),
+                    streetName = me.find('h4').html(),
+                    streetDescribe = me.find('p').html();
+
+                    $('input[name=streetName]').val(streetName);
+                    $('input[name=streetDescribe]').val(streetDescribe);
+                    $('input[name=location]').val(lon + ',' + lat);
+                    $('.map-wrap .err-msg').remove();
+                    $.closeModal('.popup-map-location');
+                /*$.ajax({
+                    type: "get",
+                    url: "/weixin/changeBaiduLocationInfo?lat=" + lat + "&lon=" + lon,
+                    dataType: 'json',
+                    complete: function(json) {
+                        var status = json.status;
+                        if(status != 200){
+                            $.alert('系统异常，状态为' + status);
+                            return;
+                        }
+                        var data = json.response;
+                       
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if(data.code != 'E00000'){
+                            $.alert(data.message);
+                            return;
+                        }else{
+                            var streetName = 
+                            
+                        }
+                        
+                    }
+                }); */   
+            });
+            //选择地址标签
+            $('[data-role="tag-box"]').delegate("a", "click", function(e){
+                e.preventDefault();
+
+                var me = $(this);
+                $('input[name=tag]').val(me.html());
+                $('[data-role="tag-box"] a').removeClass('active');
+                me.addClass('active');
+                me.parents('.tag-box').find('.err-msg').remove();
+            });
+            //保存新增地址
+            var flag=0;
+            $('[data-role="save-address"]').click(function(e){
+                e.preventDefault();
+                flag++;
+                console.log(flag);
+                if(flag > 1){
+                    return;
+                }
+                var streetName = $.trim($('input[name=streetName]').val());
+                var streetDescribe = $.trim($('input[name=streetDescribe]').val());
+                var location = $.trim($('input[name=location]').val());
+                var doorplate = $.trim($('input[name=doorplate]').val());
+                var address = streetDescribe+streetName+doorplate;
+                var phone = $.trim($('input[name=phone]').val());
+                var contacts = $.trim($('input[name=contacts]').val());
+                var tag = $.trim($('input[name=tag]').val());
+                $(".err-msg").remove();
+                if(contacts == ""){
+                    $('input[name=contacts]').parents('.item-content').after('<p class="err-msg">联系人不能为空</p>');
+                    flag=0;
+                    return;
+                }
+                if(location == ""){
+                    $('input[name=location]').parents('.item-content').after('<p class="err-msg">收货地址不能为空</p>');
+                    flag=0;
+                    return;
+                }
+                if(doorplate == ""){
+                    $('input[name=doorplate]').parents('.item-content').after('<p class="err-msg">详细地址不能为空</p>');
+                    flag=0;
+                    return;
+                }
+                if(phone == ""){
+                    $('input[name=phone]').parents('.item-content').after('<p class="err-msg">手机号不能为空</p>');
+                    flag=0;
+                    return;
+                }
+                if(/^1[3|4|5|7|8][0-9]{9}$/.test(phone)==false){
+                    $('input[name=phone]').parents('.item-content').after('<p class="err-msg">手机号不正确</p>');
+                    flag=0;
+                    return;
+                }
+                if(tag == ""){
+                    $('input[name=tag]').parents('.tag-box').append('<p class="err-msg">请选择地址标签，或添加一个并选中</p>');
+                    flag=0;
+                    return;
+                }
+
+                $.ajax({
+                    type: "post",
+                    url: "/weixin/addAddress_v2",
+                    data: {
+                        streetName: streetName,
+                        streetDescribe: streetDescribe,
+                        address:address,
+                        doorplate: doorplate,
+                        phone: phone,
+                        contacts: contacts,
+                        location: location,
+                        sdkType:'WX',
+                        tag: tag
+                    },
+                    dataType: 'json',
+                    complete: function(json) {
+                        
+                        var status = json.status;
+                        if(status != 200){
+                            $.alert('网络异常，状态为11.6' + status);
+                            flag=0;
+                            return;
+                        }
+                        var data = json.response;
+                       
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if(data.code != 'E00000'){
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                                flag=0;
+                                return;
+                            }
+                        }else{
+                            flag=0;
+                            $.alert("新增地址成功！", function(){
+                                $.closeModal('.popup-new-address');
+                                getUserAddress();
+                                clearAddress();
+                            });
+                        }
+                    }
+                });
+            });
+            function deletePoint(){
+				var allOverlay = map.getOverlays();
+				for (var i = 0; i < allOverlay.length -1; i++){
+					//alert(allOverlay[i].toString());
+					if (allOverlay[i].toString() == "[object Marker]")
+						map.removeOverlay(allOverlay[i]);
+				}
+			}
+
+            $('.showRange').click(function(){
+                drawShopLocation();
+            });
+
+            function sendLocationInfo(e, t){
+            	//alert(e.point.lng + "," + e.point.lat);
+				//map.clearOverlays();
+				deletePoint();
+				//var marker = new BMap.Marker(new BMap.Point(e.point.lng, e.point.lat)); // 创建点
+				//map.addOverlay(marker); //增加点
+				var mk = new BMap.Marker(e.point);
+                map.addOverlay(mk);
+                map.panTo(e.point);
+				console.log(e.point); 
+                if(from){
+                    for(var i=0;i<shopLocationArray.length;i++){
+                        $.ajax({
+                            type: "post",
+                            url: "/weixin/baiduRailLocation",
+                            data:{
+                                "baiduRail":shopLocationArray[i],
+                                "addressLocation":e.point.lng + ',' + e.point.lat
+                            },
+                            async: false,
+                            dataType: 'json',
+                            complete: function(json) {
+                                var data = json.response;
+                                count = data;
+                                var status = json.status;
+                                if(status != 200){
+                                    $.alert('网络异常，状态为11.2' + status);
+                                    return;
+                                }
+                                if ($.type(data) == 'string') {
+                                    data = JSON.parse(data);
+                                }
+                                if(data == "0"){
+                                    $('.submitBtn').css("background-color","#D9D9D9");
+                                    $('.submitBtn').val("不在配送范围");
+                                    isSumbit = false;
+                                }else if(data == "1"){
+                                    $('.submitBtn').css("background-color","#FAD603");
+                                    $('.submitBtn').val("确定地址");
+                                    isSumbit = true;
+                                }
+                            }
+                        });
+                        if(isSumbit){
+                            break;
+                        }
+                    }
+                }
+				//初开页面
+				if(t=="new"){
+					drawShopLocation();
+				}
+				        										
+				geoc.getLocation(e.point, function(rs){
+					var addComp = rs.addressComponents;
+                     // var label = new BMap.Label(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber,{offset:new BMap.Size(-60,-20)});
+                     // $('[data-role="address"]').val(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+                     // mk.setLabel(label);  
+                    // var opts = {
+                    //   width : 200,     // 信息窗口宽度
+                    //   height: 50,     // 信息窗口高度
+                    //   title : "" , // 信息窗口标题
+                    //   enableMessage:false//设置允许信息窗发送短息
+                    // }
+                    //var infoWindow = new BMap.InfoWindow(addComp.province + addComp.city + addComp.district  + addComp.street + addComp.streetNumber, opts);  // 创建信息窗口对象
+                    //map.openInfoWindow(infoWindow,e.point);
+					//alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+                    // $('#locationInfo').val(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+                    
+					$('input[name=doorplate]').val(addComp.streetNumber);
+					$('input[name=streetName]').val(addComp.street);
+                    $('input[name=streetDescribe]').val(addComp.city + "" + addComp.district);
+                    $('input[name=location]').val(e.point.lng + ',' + e.point.lat);
+                    $('[data-role="address"]').val(addComp.province+addComp.city+addComp.district+addComp.street+addComp.streetNumber);
+                    //$('.map-wrap .err-msg').remove();
+                    //$.closeModal('.popup-map-location');
+				}); 
+            }
+            //如果有水店，则查询水店围栏
+            function drawShopLocation(){
+            	var shopStr = getQueryString('shopStr');
+            	if(shopStr != null && shopStr != ""){
+            		$.ajax({
+            			url: "/weixin/getShopsWeiLans",
+                        data:{
+                            shopStr:shopStr
+                        },
+            			type:"post",
+            			dataType:"json",
+            			success:function(result){
+            				if(result.code == "E00000" && result.data.count > 0){
+            					for(var i = 0; i < result.data.count; i++){
+            						var point = new BMap.Point(result.data.shopLocations[i].location.split(',')[0], result.data.shopLocations[i].location.split(',')[1]);
+            						if(i == 0)
+            							map.panTo(point);
+         //    						var opts = {
+									//     position : point,    // 指定文本标注所在的地理位置
+									//     offset   : new BMap.Size(-45, -55)    //设置文本偏移量
+									// }
+         //    						var label = new BMap.Label(result.data.shopLocations[i].shopName, opts);  // 创建文本标注对象
+         //    						map.addOverlay(label);
+            						
+            						var pointArray=new Array()
+            						
+                                    if(!isFuceng){
+                						for(var j = 0; j < result.data.shopLocations[i].sendLocation.length; j++){
+                							pointArray[j] = new BMap.Point(result.data.shopLocations[i].sendLocation[j].lng, result.data.shopLocations[i].sendLocation[j].lat);
+                						}
+                                    }
+            						
+            						var polygon = new BMap.Polygon(pointArray, {strokeColor:"blue", strokeWeight:2, strokeOpacity:0.5});
+									map.addOverlay(polygon);
+            					}
+
+                                // 确认浮层已经加载
+                                isFuceng = true;
+            				}
+            			}
+            		});
+            	}
+            }
+            function clearAddress(){
+                $('input[name=streetName]').val("");
+                $('input[name=streetDescribe]').val("");
+                $('input[name=location]').val("");
+                $('input[name=doorplate]').val("");
+                $('input[name=phone]').val("");
+                $('input[name=contacts]').val("");
+                $('input[name=tag]').val("");
+                $('[data-role="tag-box"] a').removeClass('active');
+            }
+            $('.new-add-list input').on('change', function(){
+                $(this).parents('li').find('.err-msg').remove();
+            });
+        });
+        $.init();
+    </script>
+  </body>
+  </html>

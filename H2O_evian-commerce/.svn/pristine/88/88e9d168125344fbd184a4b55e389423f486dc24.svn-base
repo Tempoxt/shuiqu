@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="en">
+#parse("control/$!webStyle/version.vm")
+#set($currentPage = "shoppingCar")
+#parse("control/$!webStyle/indexCss.vm")
+<body>
+    <div class="page-group">
+        <div class="page page-finish page-current">
+            <header class="bar bar-nav light-nav" style="line-height: 2.2rem;padding: 0;">
+
+                <a href="javascript:history.go(-1);" class="icon icon-35icoback pull-left bar-left special-left" data-role="special-left"></a> 
+                
+                <div data-role="enterprise-name" class="enterprise-name" style="text-align: center;">
+                已选购    
+                </div> 
+            </header>
+
+            <div class="content" style="top:2.2rem;">
+                <ul class="car-list" data-role="car-list">
+                    
+                </ul>
+            </div>
+            <!-- Block button in standard bar fixed above the footer -->
+            <div class="bar bar-footer-secondary">
+              <table data-id="3">
+                  <tr>
+                      <td>
+                        <label class="label-checkbox item-content" data-role="choose-all">
+                            <input type="checkbox" value="1" />
+                            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                        </label>
+                        共<span>￥ <em data-role="total">0</em></span> 水票<span data-role="ticket">0</span> 电子票<span data-role="eticket">0</span> 
+                      </td>
+                      <td class="go-buy">
+                          <p><a data-role="submit-to" href="#" class="button button-fill btn-yello">选好了</a></p>
+                      </td>
+                  </tr>
+              </table>
+            </div>
+
+            <!-- nav bar -->
+            #parse("control/$!webStyle/nav.vm")
+        </div>
+        <!-- popup押桶说明 -->
+        <div class="popup popup-yatong">
+            <header class="bar bar-nav light-nav">
+                <a href="#" class="icon icon-35icoback pull-left close-popup-yatong bar-left"></a>
+                <h1 class="title">押桶说明</h1>
+            </header>
+
+            <div class="content content-yatong" data-role="yatong" style="padding: 1rem;">
+                
+            </div>
+        </div>
+    </div>
+    <form action="/weixin/confirmCar"  method="POST">
+      <input type="hidden" name="quickSpJson">
+    </form>
+    <div class="popup popup-code">
+        <header class="bar bar-nav light-nav habit-nav">
+            <a href="#" class="icon icon-35icoback pull-left close-pop-code bar-left"></a>
+            <h1 class="title">优惠券</h1>
+        </header>
+
+        <div class="content coupon-bg">
+            <h4 class="coupon-notice">注：一个订单只能使用一张优惠券</h4>
+            <ul class="discount-list" data-role="coupon-list">
+                
+            </ul>
+        </div>
+        <div class="bar bar-footer order-bar cancel-use">
+          <a href="#" data-role="cancel-use" class="button button-fill btn-yello">取消使用</a>
+        </div>
+    </div>
+    <script id="yatongTpl" type="text/x-handlebars-template">
+        {{{data}}}
+    </script>
+    <script id="enterpriseTpl" type="text/x-handlebars-template">
+
+        {{#each enterprises}}
+        {{#is check true}}
+        <a class="togglea" href="#" >{{eName}}<span class="icon icon-63navbaricoarrowdown" style="position: absolute;"></span></a>
+        <svg class="icon icon-svg pull-right yatong" aria-hidden="true" id="yatongBtn" data-eid="{{eid}}">
+            <use xlink:href="#icon-cart_btn_ythelp"></use>
+        </svg>
+        {{/is}}
+        {{/each}}
+        <ul class="togglemenu">
+            {{#each enterprises}}
+            <li><a href="#" data-eid="{{eid}}" data-eName="{{eName}}">{{eName}}</a></li>
+            {{/each}}
+        </ul>     
+    </script>
+    <!-- //如果是赠品使用电子票结算
+    {{#is fpid}}
+        2
+    {{else}}
+        //如果是电子票商品使用现金结算
+        {{#is hashTicket true}}
+            1
+        {{else}}
+            //如果剩余电子票大于0
+            {{#is surplusNum '>' 0}}
+                //如果剩余电子票大于当前购物车的数量，电子票结算，否则使用现金结算
+                {{#is surplusNum '>=' number}}
+                    2
+                {{else}}
+                    1
+                {{/is}}
+            {{else}}
+                //如果可水票结算，使用水票结算，否则使用现金
+                {{#is ifTicket true}}
+                        3
+                    {{else}}
+                        1
+                {{/is}}
+            {{/is}}
+        {{/is}}
+    {{/is}} -->
+    <script id="itemTpl" type="text/x-handlebars-template">
+    {{#each data}}
+    
+        <li data-shop-id="{{shopId}}" data-eid="{{eid}}" data-activityType="{{activityType}}" data-activityId="activityId">
+            <h3>
+                <label class="label-checkbox item-content" data-role="store-choose">
+                    <input type="checkbox" value="1" name="cart-item" />
+                    <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                </label>
+                {{shopName}}
+                <a data-action="editControl" href="#" data-json="" class="button button-fill btn-yello">编辑</a>
+                <!-- 1：现金 2：电子票 3：水票 -->
+                <textarea name="" id="" class="hide">
+                [{{#each products}}{"id":{{pid}},
+                      "fpid":"{{fpid}}",
+                      "pid":"{{pid}}",
+                      "maxnum":"{{maxnum}}",
+                      "img":"{{pictureUrl}}",
+                      "name":"{{pname}}",
+                      "settleStyle":"{{settleStyle}}",
+                      "price":{{vipPrice}},
+                      "number":{{number}},
+                      "hashTicket":{{hashTicket}},
+                      "surplusNum":{{surplusNum}},
+                      "repertoryNum":{{repertoryNum}},
+                      "curValue":{{#is fpid}}2{{else}}{{#is hashTicket true}}1{{else}}{{#is surplusNum '>' 0}}{{#is surplusNum '>=' number}}2{{else}}1{{/is}}{{else}}1{{/is}}{{/is}}{{/is}},
+                      #*"curName":"{{#is fpid}}电子票{{else}}{{#is hashTicket true}}现金{{else}}{{#is surplusNum '>' 0}}{{#is surplusNum '>=' number}}电子票{{else}}现金{{/is}}{{else}}现金{{/is}}{{/is}}{{/is}}",*#
+                      "curName":"{{settleStyle}}",
+                      "payType":
+                      {{#is settleStyle "押桶"}}[{"name":"押桶","value":4}]{{else}}
+                      {{#is fpid}}[{"name":"电子票","value":2}]{{else}}
+                        {{#is hashTicket true}}[{"name":"现金","value":1}]{{else}}
+                            {{#is surplusNum '>' 0}}
+                                [{"name":"电子票","value":2},{"name":"现金","value":1}]{{else}}
+                                {{#is ifTicket true}}[{"name":"现金","value":1},{"name":"水票","value":3}]{{else}}[{"name":"现金","value":1}]
+                                {{/is}}
+                            {{/is}}
+                        {{/is}}
+                      {{/is}}
+                      {{/is}}
+                  }{{#is @last false}},{{/is}}{{/each}}]
+                </textarea>
+            </h3>
+            <div class="car-cont">
+            {{#each products}}
+            
+                <table data-id="{{pid}}" style="position: relative;">
+                    {{#is fpid}}
+                        <svg class="icon-svg" aria-hidden="true" style="width: 2.5rem;height: 1rem;position: absolute;left: 0;">
+                            <use xlink:href="#icon-peison"></use>
+                        </svg>
+                    {{/is}}   
+                    <tr>
+                        <td>
+                            <label class="label-checkbox item-content" piao-fpid={{fpid}} piao-pid="{{pid}}">
+                                <input type="checkbox" value="1" name="cart-child" piao-pid="{{pid}}" piao-fpid="{{fpid}}" />
+                                <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                            </label>
+                        </td>
+                        <td>
+                            <img src="{{pictureUrl}}" alt="">
+                        </td>
+                        <td class="edit-box" data-surplusNum="{{surplusNum}}">
+
+                            <h4 data-price="{{vipPrice}}" data-num="{{number}}" data-fpid="{{fpid}}" data-maxnum="{{maxnum}}" data-cur="{{#is settleStyle '押桶'}}4{{/is}}{{#is settleStyle '电子票'}}2{{/is}}{{#is settleStyle '现金'}}1{{/is}}{{#is settleStyle '水票'}}3{{/is}}" class="pname">{{pname}}</h4>
+                            <p data-price="{{vipPrice}}" data-num="{{number}}" data-cur="{{#is settleStyle '押桶'}}4{{/is}}{{#is settleStyle '电子票'}}2{{/is}}{{#is settleStyle '现金'}}1{{/is}}{{#is settleStyle '水票'}}3{{/is}}" class="price {{#is fpid}}no-money{{else}}{{#is surplusNum '>' 0}}{{#is surplusNum '>=' number}}no-money{{/is}}{{/is}}{{/is}}">￥ {{vipPrice}}</p>
+                            #*<p data-price="{{vipPrice}}" data-num="{{number}}" data-cur="{{#is fpid}}2{{else}}{{#is hashTicket true}}1{{else}}{{#is surplusNum '>' 0}}{{#is surplusNum '>=' number}}2{{else}}1{{/is}}{{else}}1{{/is}}{{/is}}{{/is}}" class="price {{#is fpid}}no-money{{else}}{{#is surplusNum '>' 0}}{{#is surplusNum '>=' number}}no-money{{/is}}{{/is}}{{/is}}">￥ {{vipPrice}}</p>*#
+                            <p>
+                                <span>数量：<em class="commNum">{{number}}</em></span>
+                                <span>结算方式：
+                                {{#is settleStyle}} <em>{{settleStyle}}</em>{{else}}
+                                {{#is fpid}}
+                                <em>电子票</em>
+                                {{else}}
+                                {{#is hashTicket true}}
+                                  <em>现金</em>
+                                {{else}}
+                                    {{#is surplusNum '>' 0}}
+                                        {{#is surplusNum '>=' number}}
+                                            <em>电子票</em>
+                                        {{else}}
+                                            <em>现金</em>
+                                        {{/is}}
+                                    {{else}}
+                                        <em>现金</em>    
+                                    {{/is}}
+                                {{/is}}
+                                {{/is}} {{/is}}
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            {{/each}}
+            </div>
+        </li>
+    
+    {{/each}}
+    </script>
+    <script id="editTpl" type="text/x-handlebars-template">
+        <h4 class="pname" data-price="{{data.price}}" data-num="{{data.number}}" data-cur="{{data.curValue}}" data-fpid="{{data.fpid}}" data-maxnum="{{data.maxnum}}" data-pid="{{data.pid}}">{{data.name}}</h4>
+        <p class="car-count">
+            <em data-action="minus">
+                <svg class="icon-svg" aria-hidden="true">
+                    <use xlink:href="#icon-shopping_btn_num_minus"></use>
+                </svg>
+            </em>
+            
+            <input type="hidden" name="num" data-sum="{{data.repertoryNum}}" value="{{data.number}}" data-maxnum="{{data.maxnum}}" data-fpid="{{data.fpid}}" data-pid="{{data.pid}}" data-number="{{data.number}}"><i class="shownum" data-fpid="{{data.fpid}}">{{data.number}}</i>
+            
+            
+            <em data-action="add">
+                <svg class="icon-svg" aria-hidden="true">
+                   <use xlink:href="#icon-shopping_btn_num_add"></use>
+                </svg> 
+            </em>
+            
+        </p>
+        <p class="car-btn">
+            <input type="hidden" name="payType" value="{{data.curValue}}" data-name="{{data.curName}}">
+            {{#each data.payType}}
+                {{#is value 1}}
+                <span data-role="pay-type" data-action="xianjin" class="icon icon-btn_xj1 {{#is ../data.curValue 1}}active{{/is}}"></span>
+                {{/is}}
+                {{#is value 2}}
+                <span data-role="pay-type" data-action="dianzipiao" class="icon icon-btn_dzp- {{#is ../data.curValue 2}}active{{/is}}"></span>
+                {{/is}}
+                {{#is value 3}}
+                <span data-role="pay-type" data-action="shuipiao" class="icon icon-btn_sp1 {{#is ../data.curValue 3}}active{{/is}}"></span>
+                {{/is}}
+            {{/each}}
+        </p>
+        <span data-id="{{data.id}}" data-action="delete-item" class="icon icon-11addressdel"></span>
+    </script>
+    <script id="finishTpl" type="text/x-handlebars-template">
+        <h4 class="pname" data-price="{{data.price}}" data-num="{{data.number}}" data-cur="{{data.curValue}}" data-fpid="{{data.fpid}}" data-maxnum="{{data.maxnum}}">{{data.name}}</h4>
+        <p data-price="{{data.price}}" data-num="{{data.number}}" data-cur="{{data.curValue}}" class="price {{#is data.curValue 2}}no-money{{/is}} {{#is data.curValue 3}}no-money{{/is}}">￥ {{data.price}}</p>
+        <input type="hidden" name="num" data-sum="{{data.repertoryNum}}" value="{{data.number}}">
+        <p>
+            <span>数量：<em>{{data.number}}</em></span>
+            <span>结算方式：<em>{{data.curName}}</em></span>
+        </p>
+    </script>
+    <script id="couponTpl" type="text/x-handlebars-template">
+        {{#each data}}
+            {{#is ifUse false}}
+            <li>
+                <a href="" data-action="choose-code" data-logo="{{logoUrl}}" data-class="{{className}}" data-type="{{typeName}}" data-tel="{{tel}}" data-reamrk="{{reamrk}}" >
+                    <table>
+                        <tr>
+                            <td><img src="{{logoUrl}}" alt=""></td>
+                            <td>
+                                <h6>{{className}}专用</h6>       
+                            </td>
+                            <td>
+                                {{#is ifovertime true}}
+                                    <img src="http://7xlmry.com1.z0.glb.clouddn.com/passed.png" alt="">
+                                {{else}}
+                                    {{#is datelimit true}}
+                                        <img src="http://7xlmry.com1.z0.glb.clouddn.com/hasdate.png" alt="">
+                                    {{else}}
+                                        <img src="http://7xlmry.com1.z0.glb.clouddn.com/used.png" alt="">
+                                    {{/is}}
+                                {{/is}}
+                            </td>
+                        </tr>
+                    </table>
+                    <div>
+                        <span><i class="icon icon-46location"></i>{{cityName}}</span>
+                    </div>
+                </a>
+            </li>
+            {{/is}}
+        {{/each}}
+    </script>
+    #*加载JS文件*# 
+    #parse("control/$!webStyle/publicJs.vm")
+    #parse("control/$!webStyle/globalJs.vm")
+    <script>
+
+    $(function() {
+        //清理localstorage
+        localStorage.removeItem("carCoupon");
+        localStorage.removeItem("currentShop");
+        localStorage.removeItem("currentPid");
+
+        // var from = getQueryString('from');
+        // $('[data-role="special-left"]').on('click',function(e){
+        //     e.preventDefault();
+        //     if(getQueryString=="products"){
+        //         window.history.back();
+        //     }else{
+        //         window.history.back();
+        //         // window.location.href="/weixin/home";
+        //     }
+        // })
+        //var b = localStorage.getItem("b");
+
+        //获取所有数据
+        var getAllData = function(){
+            $('[data-role="car-list"] li').each(function(){
+                
+                if($(this).find('.ischecked').length){
+                    $(this).addClass('ischoosed');
+                }else{
+                    $(this).removeClass('ischoosed');
+                }
+            });
+            var allData = [];
+            $('.ischoosed').each(function(index){
+                // debugger;
+                var shopId = $(this).data('shopId');
+                var eid    = $(this).data('eid');
+                var products = [];
+
+                $(this).find('.ischecked').each(function(index){
+                    var item = $(this).parents('table');
+                    var pid = item.data('id');
+                    var me = item.find('.pname');
+                    
+                    if(me.length > 0 && $(this).attr("checked")){
+                        var buyType = me.data('cur');
+                        var price = me.data('price');
+                        var number = me.data('num');
+                        var codeNo = me.data('code');
+                        var codeMoney = me.data('money');
+                        var fpid = me.data('fpid');
+                        var maxnum = me.data('maxnum');
+                        products[index] = {
+                            pid : pid,
+                            buyType : buyType,
+                            price : price,
+                            number : number,
+                            money : codeMoney,
+                            fpid:fpid,
+                            maxnum:maxnum
+                        };
+                    }
+                    
+                    
+                });
+           
+                allData[index] = {
+                    shopId : shopId,
+                    eid:eid,
+                    products : products
+                };             
+            })
+            return allData;
+        };
+        //页面计算金额
+        var calculate = function(){
+            var allData = getAllData();
+            var total = 0;
+            var ticket = 0;
+            var eticket = 0;
+            // debugger;
+            for(var i=0; i < allData.length; i++){
+                
+                var products = allData[i]['products'];
+                for(var j=0; j < products.length; j++){
+                    if(products[j]['buyType'] == 1){
+                        total = total + parseFloat(products[j]['price'])*parseFloat(products[j]['number']);
+                        /*if(products[j]['money']){
+                            total = total -  - parseFloat(products[j]['money']);
+                        }*/
+                    }else if(products[j]['buyType'] == 2){
+                        eticket = eticket + parseInt(products[j]['number']);
+                    }else if(products[j]['buyType'] == 3){
+                        ticket = ticket + parseInt(products[j]['number']);
+                    }else if(products[j]['buyType'] == 4){
+                        total = total + parseFloat(products[j]['price'])*parseFloat(products[j]['number']);
+                    }
+                }
+                
+            }
+            $('[data-role="total"]').html(Math.round(total*100)/100);
+            $('[data-role="ticket"]').html(ticket);
+            $('[data-role="eticket"]').html(eticket);
+        };
+        //全选切换
+        $('[data-role="choose-all"]').on('click',function(e){
+            e.preventDefault();
+            chooseAllOperate();
+        })
+        //单选切换
+        $('[data-role="car-list"]').delegate("label", "click", function(e){
+            // debugger;
+            e.preventDefault();
+            var chooseAll = $('[data-role="choose-all"]');
+            if($(this).children('input').attr('checked')){
+
+                // 如果取消选中套票，就将它对应的赠品取消选中
+                var pid=$(this).attr('piao-pid');
+                $(this).parents('li').find('[piao-fpid="'+pid+'"]').removeAttr("checked");
+
+                $(this).children('input').removeAttr("checked");
+                //完成状态
+                if($(this).children('input').attr("name") == "cart-item"){
+                    chooseAll.children('input').removeAttr("checked");
+                    $(this).parents('li').find('[name="cart-child"]').removeAttr("checked");
+                    $(this).parents('li').find('[name="cart-child"]').removeClass("ischecked");
+                }
+                if($(this).children('input').attr("name") == "cart-child"){
+                    chooseAll.children('input').removeAttr("checked");
+                    $(this).children('input').removeClass("ischecked");
+                    $(this).parents('li').find('[data-role="store-choose"] input').removeAttr("checked");
+                }
+                    
+                    
+            }else{
+
+                // 如果选中赠送的商品，就将它对应的套票选中
+                if($(this).attr('piao-fpid')>0){
+                    var fpid=$(this).attr('piao-fpid');
+                    $(this).parents('li').find('[piao-pid="'+fpid+'"]').attr("checked",true);
+                }
+
+                $(this).children('input').attr("checked",true);
+                
+                if($(this).children('input').attr("name") == "cart-item"){
+                    $(this).parents('li').find('[name="cart-child"]').attr("checked",true);
+                    $(this).parents('li').find('[name="cart-child"]').addClass("ischecked");
+                }
+                if($(this).children('input').attr("name") == "cart-child"){
+                    $(this).children('input').addClass("ischecked");
+                }
+                if($(this).parents('li').find('input[name=cart-child]').length == $(this).parents('li').find('input[name=cart-child]:checked').length){
+
+                    $(this).parents('li').find('[data-role="store-choose"] input').attr("checked",true);
+                }
+                //完成状态
+                if($(this).parents('ul').find('input[name=cart-item]').length == $(this).parents('ul').find('input[name=cart-item]:checked').length){
+                    chooseAll.children('input').attr("checked",true);
+                }
+            }
+            calculate();
+        });
+        var chooseAllOperate = function(){
+            //全局全选
+            var chooseAll = $('[data-role="choose-all"]');
+            var items = $('.car-list li label input[name=cart-item]');
+            var children = $('.car-list li label input[name=cart-child]');
+
+            //切换商品列表是否选择
+            debugger;
+            if(chooseAll.find('input:checked').length == 0){
+                
+                items.attr("checked",true);
+                children.attr("checked",true);
+                children.addClass("ischecked");
+                
+            }else{
+                
+                items.removeAttr("checked");
+                children.removeAttr("checked");
+                children.removeClass("ischecked");
+            }
+            //切换自身是否选中
+            if(chooseAll.children('input').attr('checked')){
+                
+                chooseAll.children('input').removeAttr("checked");
+               
+            }else{
+                
+                chooseAll.children('input').attr("checked",true);
+            }
+            
+            calculate();
+        
+        };
+        //默认选中
+        var chooseAllDefault = function(){
+            var items = $('.car-list li label input[name=cart-item]');
+            var children = $('.car-list li label input[name=cart-child]');
+            items.attr("checked",true);
+            children.attr("checked",true);
+            children.addClass("ischecked");
+            $('[data-role="choose-all"]').children('input').attr("checked",true);
+            calculate();
+        }
+        //判断是否登录
+        $.ajax({
+            type: "get",
+            url: "/weixin/checkWeiXinLogin",
+            dataType: 'json',
+            complete: function(json) {
+                
+                var data = json.response;
+                var status = json.status;
+                if(status != 200){
+                    $.alert('网络异常，状态为3.1' + status);
+                    return;
+                }
+                if ($.type(data) == 'string') {
+                      data = JSON.parse(data);
+                }
+                if(data.code != 'E00000'){
+                    if(data.code == "-1"){
+                        window.location.href = "/weixin/bind";
+                    }else{
+                        $.alert(data.message);
+                        return;
+                    }
+                      
+                }else{
+                    //获取购物车商品
+                    $.ajax({
+                            type: "get",
+                            url: "/weixin/getShopCartProductJson",
+                            dataType: 'json',
+                            complete: function(json) {
+                            
+                                var data = json.response;
+                                var status = json.status;
+                                if(status != 200){
+                                    $.alert('网络异常，状态为3.2' + status);
+                                    return;
+                                }
+                                if ($.type(data) == 'string') {
+                                    data = JSON.parse(data);
+                                }
+                                if(data.code != 'E00000'){
+                                    if(data.code == "-1"){
+                                        window.location.href = "/weixin/bind";
+                                    }else{
+                                        $.alert(data.message);
+                                        return;
+                                    }
+                                  
+                                }else{
+                                    if(data.data.count > 0){
+                                        //购物车有商品就在导航栏加小红点标记
+                                        $('[data-role="purchased"]').after('<span class="badge"></span>');
+                                        var context = {
+                                            data: data.data.shopcarts,
+                                            enterprises:data.data.enterprises
+                                        };
+                                        // debugger;  
+                                        var itemTpl = $("#itemTpl").html();
+                                        var itemTemplate = Handlebars.compile(itemTpl);
+                                        var itemCont = itemTemplate(context);
+                                        $('[data-role="car-list"]').html(itemCont);
+
+                                        // debugger;
+                                        // console.log(Context['enterprises'].length);
+                                      
+                                        var etnTpl = $("#enterpriseTpl").html();
+                                        var etnTemplate = Handlebars.compile(etnTpl);
+                                        var entCont = etnTemplate(context);
+                                        $('[data-role="enterprise-name"]').html(entCont);
+                                     
+                                        if(context['enterprises'].length==1){
+                                            $('.togglea span').remove();
+                                            $('.togglemenu li').remove();
+                                        }
+                                        var carCoupon = [];
+                                        
+                                        //默认全选商品
+                                        chooseAllDefault();
+                                        // var items = $('.car-list li label input[name=cart-item]');
+                                        // var children = $('.car-list li label input[name=cart-child]');
+                                        // items.attr("checked",true);
+                                        // children.attr("checked",true);
+                                        // children.addClass("ischecked");
+                                        // $('[data-role="choose-all"]').children('input').attr("checked",true);
+                                        // calculate();
+                                        // chooseAllOperate();
+
+                                        // $('[data-role="choose-all"]').trigger('click');
+
+                                        $('[data-role="car-list"] .hadCode').each(function(index){
+                                            // debugger;
+                                            $(this).parents('li').addClass('hadCode');
+                                            var shopId = $(this).parents('li').data('shopId');
+                                            var pid = $(this).data('pid');
+                                            // var eid  = $(this).data('eid');
+
+                                            var code = $(this).data('code');
+                                            var products = $(this).data('products');
+                                            var number  = $(this).data('number');
+                                            carCoupon[index] = {
+                                                shopId : shopId,
+                                                eid : eid,
+                                                pid : pid,
+                                                products: products,
+                                                code : code
+                                            };
+                                            localStorage.setItem("carCoupon",JSON.stringify(carCoupon));
+                                        });
+                                        
+
+                                    }else{
+                                        $('.bar-footer-secondary').hide();
+                                        $('[data-role="car-list"]').before('<div class="defaut-wrap"><span class="icon icon-88tipicoorder"></span><h2 class="def-note">购物车暂无商品，快去买买买！</h2><p><a href="/weixin/home/" class="button button-fill btn-yello">确定</a></p></div>');
+                                    }
+                                }
+                              
+                            }
+                    });
+                }
+                  
+            }
+        });
+
+        //选择企业重新获取购物车商品
+        $('[data-role="enterprise-name"]').delegate(".togglea","click",function(e){
+            e.preventDefault();
+            $('.togglea span').toggleClass('active');
+            $('.togglemenu li').toggleClass('active');
+            $('.togglemenu li a').on('click',function(e){
+                e.preventDefault();
+                var eid = $(this).data('eid');
+                $.ajax({
+                    type: "get",
+                    url: "/weixin/getShopCartProductJson?eid="+eid,
+                    dataType: 'json',
+                    complete: function(json) {
+                        
+                        var data = json.response;
+                        var status = json.status;
+                        if(status != 200){
+                            $.alert('网络异常，状态为3.2' + status);
+                                return;
+                            }
+                        if ($.type(data) == 'string') {
+                            data = JSON.parse(data);
+                        }
+                        if(data.code != 'E00000'){
+                            if(data.code == "-1"){
+                                window.location.href = "/weixin/bind";
+                            }else{
+                                $.alert(data.message);
+                                return;
+                            }
+                              
+                        }else{
+                            // debugger;
+                            if(data.data.count > 0){
+                                
+                                var context = {
+                                    data: data.data.shopcarts,
+                                    enterprises:data.data.enterprises
+                                };
+                                // debugger;  
+                                var itemTpl = $("#itemTpl").html();
+                                var itemTemplate = Handlebars.compile(itemTpl);
+                                var itemCont = itemTemplate(context);
+
+                                var etnTpl = $("#enterpriseTpl").html();
+                                var etnTemplate = Handlebars.compile(etnTpl);
+                                var entCont = etnTemplate(context);
+                                var carCoupon = [];
+
+                                //购物车有商品就在导航栏加小红点标记
+                                $('[data-role="purchased"]').after('<span class="badge" style="height:0.6rem;min-width:0.6rem;"></span>');
+                                $('[data-role="car-list"]').html(itemCont);
+                                $('[data-role="enterprise-name"]').html(entCont);
+                                
+
+                                $('[data-role="car-list"] .hadCode').each(function(index){
+                                    // debugger;
+                                    $(this).parents('li').addClass('hadCode');
+                                    var shopId = $(this).parents('li').data('shopId');
+                                    var pid = $(this).data('pid');
+                                    // var eid  = $(this).data('eid');
+
+                                    var code = $(this).data('code');
+                                    var products = $(this).data('products');
+                                    var number  = $(this).data('number');
+                                    carCoupon[index] = {
+                                        shopId : shopId,
+                                        eid : eid,
+                                        pid : pid,
+                                        products: products,
+                                        code : code
+                                    };
+                                    localStorage.setItem("carCoupon",JSON.stringify(carCoupon));
+                                });
+                                }else{
+                                    $('.bar-footer-secondary').hide();
+                                    $('[data-role="car-list"]').before('<div class="defaut-wrap"><span class="icon icon-88tipicoorder"></span><h2 class="def-note">购物车暂无商品，快去买买买！</h2><p><a href="/weixin/home/" class="button button-fill btn-yello">确定</a></p></div>');
+                                }
+                                // window.location.reload();
+                                //默认全选商品
+                                chooseAllDefault();
+                            }
+                          
+                        }
+                    });
+                });
+
+        });
+        //数量加减
+        $('[data-role="car-list"]').delegate("em", "click", function(e){
+            e.preventDefault();
+            // debugger;
+            var me = $(this),
+                numbox = me.siblings('input'),
+                sum = numbox.data('sum'),
+                eTicketMax = me.parents('.edit-box').data('surplusnum'),
+                show = me.siblings('i'),
+                action = me.data('action'),
+                maxnum = numbox.data('maxnum'),
+                fpid = numbox.data('fpid'),
+                pid= numbox.data('pid'),
+                numValue = 0;
+                //支付方式
+                var payType = me.parent().siblings('.car-btn').find('input[type="hidden"]').val();
+                me.parents('table').siblings().find('input[type="hidden"]').val();
+                var data = JSON.parse(me.parents('.car-cont').siblings('h3').find('textarea').html());
+                var shopId = me.parents('li').data('shopId');
+                var product = [];
+                // console.log(data);
+                
+                for(var i=0;i<data.length;i++){
+                    if(fpid == data[i].pid){
+                        maxnum = maxnum*data[i].number;
+                        console.log(data[i].number);
+                    }
+                }
+                
+                
+                // console.log(eTicketMax);
+                if(action == 'add'){
+                    // if(max == 0){
+                    //     numValue = parseInt(numbox.val()) + 1;
+                    // }else if(numbox.val() <= max ){
+                    //     numValue = parseInt(numbox.val()) + 1;
+                    // }else{
+                    //     $.alert('购买数量超过店铺设置的最大购买量。');
+                    //     numValue = max;
+                    // }
+                    // console.log(numValue,maxnum);
+                    numValue = parseInt(numbox.val()) + 1;
+                    // maxnum = numbox.val() * maxnum;
+                    //如果是赠送套餐
+                    if(fpid){
+                        if(numValue>maxnum){
+                            numValue = maxnum;
+                            $.alert('超出配送数量'); 
+                        }
+                    }else{
+                        
+                        if(eTicketMax && numValue>eTicketMax && payType=="2"){
+                            numValue = eTicketMax;
+                            $.alert('超过配送数量'); 
+                        }
+                    }
+                    
+                }else if(action == 'minus'){
+                    //如果是赠送套餐
+
+                    if(numbox.val() > 1){
+                        numValue = parseInt(numbox.val()) - 1;
+                    }else if(numbox.val() == 1){
+                        numValue = 1;
+                    }
+                    // for(var i=0;i<data[i].length;i++){
+                    //     maxnum = numbox.val() * data[i].maxnum;
+                    //     maxnum>$(this).parents('table').siblings('table').find('.shownum').html();
+                    //     // if(numValue * data[i]maxnum< ){
+
+                    //     // }
+                    // }
+                }
+
+                //如果点击的不是赠品
+                if(fpid==0){
+                    // debugger;
+                    for(var i=0;i<data.length;i++){
+                        // console.log(pid,data,data[i].fpid);
+                        if(pid==data[i].fpid){
+                            // console.log(numbox.val());
+                            // maxnum = numbox.val()*data[i].maxnum;
+                            // console.log(maxnum);
+                            maxnum = numValue*data[i].maxnum;
+                            if($(".shownum[data-fpid='"+pid+"']").html()>maxnum){
+                                // $(".shownum[data-fpid="+pid+"]").html(data[i].maxnum);
+                                $(".shownum[data-fpid='"+pid+"']").html(maxnum);
+                                $(".shownum[data-fpid='"+pid+"']").siblings('input').val(maxnum)
+                            }
+                            
+                        }
+                        
+                    }
+                    // for(var i=0;i<data.length;i++){
+                        
+                    //     if(pid==data[i].fpid){
+                    //         if($(this).parents('table').siblings('table').find('.shownum').data('fpid')==pid){
+
+                    //         }
+                    //         $(this).parents('table').siblings('table').find('.shownum').data('fpid')html(maxnum);
+                    //         $(this).parents('table').siblings('table').find('.shownum').html(maxnum);
+                    //     }
+
+                    // }
+                }
+                
+                
+                numbox.val(numValue);
+                show.html(numValue);
+                // debugger;
+                // console.log(data);
+                for(var i=0; i < data.length; i++){
+                    // var lock = false;
+                    // console.log(data.length,data[i]['num']);
+
+                    
+                    // console.log(data[i]['number']);
+                    
+                    if(me.parents('table[data-id="' + data[i]["id"] + '"]').find('input[name=num]').val()){
+                    //     debugger;
+                        data[i]['number'] = me.parents('table[data-id="' + data[i]["id"] + '"]').find('input[name=num]').val();
+                        data[i]['curValue'] = me.parents('table[data-id="' + data[i]["id"] + '"]').find('input[name=payType]').val();
+                        data[i]['curName'] = me.parents('table[data-id="' + data[i]["id"] + '"]').find('input[name=payType]').attr('data-name');
+                        product = [{
+                            shopId: shopId,
+                            pid: data[i]["id"],
+                            number: data[i]['number'],
+                            fpid:data[i]['fpid'],
+                            maxnum:data[i]['maxnum']
+                        }];
+
+                        me.parents('.edit-box').find('.pname').attr('data-num',data[i]['number']);
+                        // console.log(data[i]['number']);
+                        // console.log(data);
+                    }
+                    
+                    
+                }
+                
+                me.parents('li').find('textarea').html(JSON.stringify(data));
+                
+                // //重新计算金额
+                // calculate();
+
+                // //提交购物车
+                // $.ajax({
+                //     type: "post",
+                //     url: "/weixin/editShopCart",
+                //     data:{
+                //         products:JSON.stringify(product)
+                //     },
+                //     dataType: 'json',
+                //     complete: function(json) {
+                      
+                //         var data = json.response;
+                //         var status = json.status;
+                //         if(status != 200){
+                //             $.alert('网络异常，状态为3.4' + status);
+                //             return;
+                //         }
+                //         if ($.type(data) == 'string') {
+                //             data = JSON.parse(data);
+                //         }
+                //         if(data.code != 'E00000'){
+                //             if(data.code == "-1"){
+                //                 window.location.href = "/weixin/bind";
+                //             }else{
+                //                 $.alert(data.message);
+                //                 return;
+                //             }
+                //         }else{
+                //             // $.toast("添加成功");
+                //             // console.log(JSON.stringify(product));
+                //         }
+                        
+                //     }
+                // });
+
+        });
+         //选择支付方式 or 删除购物车产品
+        $('[data-role="car-list"]').delegate("span", "click", function(e){
+            // debugger;
+            e.preventDefault();
+            
+            var me = $(this),
+                action = me.data('action'),
+                numbox = me.parents('.car-btn').siblings('.car-count').find('input[type="hidden"]').val(),
+
+                fpid = me.parents('.car-btn').siblings('.car-count').find('input[type="hidden"]').attr('data-fpid'),
+                maxnum = me.parents('.car-btn').siblings('.car-count').find('input[type="hidden"]').attr('data-maxnum'),
+                eTicketMax = me.parents('.edit-box').data('surplusnum');
+                // console.log(numbox,eTicketMax);
+
+                if(action == 'shuipiao'){
+                    if(!me.hasClass('active')){
+                        me.addClass('active');
+                        me.siblings('span').removeClass('active');
+                        me.siblings('input').val(3).attr('data-name','水票');
+                        me.parents('.edit-box').find('.pname').data('cur','3');
+                    }
+                    
+                }else if(action == 'dianzipiao'){
+                    if(numbox>eTicketMax){
+                        $.alert('电子票数量不足');
+                        return;
+                    }
+                    if(!me.hasClass('active')){
+                        me.addClass('active');
+                        me.siblings('span').removeClass('active');
+                        me.siblings('input').val(2).attr('data-name','电子票');
+                        me.parents('.edit-box').find('.pname').data('cur','2');
+                    }
+                    
+                }else if(action == 'xianjin'){
+                    // if(fpid){
+                    //     $.alert("赠送套餐只能使用电子票结算");
+                    // }else{
+                        if(!me.hasClass('active')){
+                            me.addClass('active');
+                            me.siblings('span').removeClass('active');
+                            me.siblings('input').val(1).attr('data-name','现金');
+                            me.parents('.edit-box').find('.pname').data('cur','1');
+                        }  
+                    // }
+                    
+                    
+                }else if(action == 'delete-item'){
+                    // debugger;
+                    var id = me.data('id'),
+                        valBox = me.parents('li').find('textarea'),
+                        data = JSON.parse(valBox.html());
+                        var shopId = me.parents('li').data('shopId');
+                        var number = me.siblings('.car-count').find('input').val();
+                        var eid = me.parents('li').data('eid');
+                        console.log(eid);
+                        var product = [{
+                            shopId : shopId,
+                            pid : id,
+                            number : parseInt(number)
+                        }];
+                        //提交购物车
+                        $.ajax({
+                            type: "post",
+                            url: "/weixin/editShopCart",
+                            data:{
+                                tag:"DEL",
+                                products:JSON.stringify(product)
+                            },
+                            dataType: 'json',
+                            complete: function(json) {
+                              
+                                var data = json.response;
+                                var status = json.status;
+                                if(status != 200){
+                                    $.alert('网络异常，状态为3.3' + status);
+                                    return;
+                                }
+                                if ($.type(data) == 'string') {
+                                    data = JSON.parse(data);
+                                }
+                                if(data.code != 'E00000'){
+                                    if(data.code == "-1"){
+                                        window.location.href = "/weixin/bind";
+                                    }else{
+                                        $.alert(data.message);
+                                        return;
+                                    }
+                                }else{
+                                    // $.toast("删除成功");
+                                    // window.location.reload(); 
+                                    $.ajax({
+                                        type: "get",
+                                        url: "/weixin/getShopCartProductJson?eid="+eid,
+                                        dataType: 'json',
+                                        complete: function(json) {
+                                            
+                                            var data = json.response;
+                                            var status = json.status;
+                                            if(status != 200){
+                                                $.alert('网络异常，状态为3.2' + status);
+                                                    return;
+                                                }
+                                            if ($.type(data) == 'string') {
+                                                data = JSON.parse(data);
+                                            }
+                                            if(data.code != 'E00000'){
+                                                if(data.code == "-1"){
+                                                    window.location.href = "/weixin/bind";
+                                                }else{
+                                                    $.alert(data.message);
+                                                    return;
+                                                }
+                                                  
+                                            }else{
+                                                // debugger;
+                                                if(data.data.count > 0){
+                                                    
+                                                    var context = {
+                                                        data: data.data.shopcarts,
+                                                        enterprises:data.data.enterprises
+                                                    };
+                                                    // debugger;  
+                                                    var itemTpl = $("#itemTpl").html();
+                                                    var itemTemplate = Handlebars.compile(itemTpl);
+                                                    var itemCont = itemTemplate(context);
+
+                                                    var etnTpl = $("#enterpriseTpl").html();
+                                                    var etnTemplate = Handlebars.compile(etnTpl);
+                                                    var entCont = etnTemplate(context);
+                                                    var carCoupon = [];
+                                                    
+                                                    //购物车有商品就在导航栏加小红点标记
+                                                    $('[data-role="purchased"]').after('<span class="badge" style="height:0.6rem;min-width:0.6rem;"></span>');
+                                                    $('[data-role="car-list"]').html(itemCont);
+                                                    $('[data-role="enterprise-name"]').html(entCont);
+                                                    
+
+                                                    $('[data-role="car-list"] .hadCode').each(function(index){
+                                                        // debugger;
+                                                        $(this).parents('li').addClass('hadCode');
+                                                        var shopId = $(this).parents('li').data('shopId');
+                                                        var pid = $(this).data('pid');
+                                                        // var eid  = $(this).data('eid');
+
+                                                        var code = $(this).data('code');
+                                                        var products = $(this).data('products');
+                                                        var number  = $(this).data('number');
+                                                        carCoupon[index] = {
+                                                            shopId : shopId,
+                                                            eid : eid,
+                                                            pid : pid,
+                                                            products: products,
+                                                            code : code
+                                                        };
+                                                        localStorage.setItem("carCoupon",JSON.stringify(carCoupon));
+                                                    });
+
+                                                    //默认全选商品
+                                                    // var items = $('.car-list li label input[name=cart-item]');
+                                                    // var children = $('.car-list li label input[name=cart-child]');
+                                                    // items.attr("checked",true);
+                                                    // children.attr("checked",true);
+                                                    // children.addClass("ischecked");
+                                                    // $('[data-role="choose-all"]').children('input').attr("checked",true);
+                                                    // calculate();
+                                                    chooseAllDefault();
+                                                }else{
+                                                    // debugger;
+                                                    // $('.bar-footer-secondary').hide();
+                                                    // $('[data-role="car-list"]').before('<div class="defaut-wrap"><span class="icon icon-88tipicoorder"></span><h2 class="def-note">购物车暂无商品，快去买买买！</h2><p><a href="/weixin/home/" class="button button-fill btn-yello">确定</a></p></div>');
+                                                
+                                                    window.location.reload();
+                                                }
+                                              
+                                            }
+                                        }
+                                    });
+                                }
+                                
+                            }
+                        });
+                        
+                        if(me.parents('li').find('table').length > 1){
+                            $('table[data-id="' + id + '"]').next('.can-use').remove();
+                            $('table[data-id="' + id + '"]').remove();
+                            //回填数据
+                            for(var i=0; i < data.length; i++){
+                                if(data[i]['id'] == id){
+                                    data.splice(i,1);
+                                }
+                                
+                            } 
+                            valBox.html(JSON.stringify(data));
+                        }else{
+                            me.parents('li').remove();
+                            // debugger;
+                            // setTimeout(function(){
+                            //     window.location.reload();//页面刷新
+                            // },500);
+
+                        }
+
+                }
+
+        });
+        //切换编辑完成
+        $('[data-role="car-list"]').delegate("a", "click", function(e){
+            e.preventDefault();
+            // debugger;
+            var me = $(this);
+            var action = me.data('action');
+                //str = me.next('textarea').html();
+               
+                //data = '[' + data.Substring(0,data.Length-1) + ']',
+            // debugger;
+            // console.log(me.next('textarea').html());
+            var data = JSON.parse(me.next('textarea').html());
+                var shopId = me.parents('li').data('shopId');
+                var product = [];
+
+                if(action == 'editControl'){
+                    if(!me.hasClass('active')){
+                        me.addClass('active');
+                        me.html('完成');
+
+                        // debugger;
+                        var tpl = $("#editTpl").html();
+                        var template = Handlebars.compile(tpl);
+                        for(var i=0; i < data.length; i++){
+                            var context = {
+                                data: data[i]
+                            };
+                            // console.log(context);
+                            me.parents('li').find('table[data-id="' + data[i]["id"] + '"] .edit-box').html(template(context));
+                        }
+                        console.log(data);
+                    }else{
+                        me.removeClass('active');
+                        me.html('编辑');
+                        
+                        //回填数据
+                        // debugger;
+                        for(var i=0; i < data.length; i++){
+                            data[i]['number'] = $('table[data-id="' + data[i]["id"] + '"]').find('input[name=num]').val();
+                            data[i]['curValue'] = $('table[data-id="' + data[i]["id"] + '"]').find('input[name=payType]').val();
+                            data[i]['curName'] = $('table[data-id="' + data[i]["id"] + '"]').find('input[name=payType]').data('name');
+
+                            product[i] = {
+                                shopId: shopId,
+                                pid: data[i]["id"],
+                                number: data[i]['number'],
+                                fpid:data[i]['fpid'],
+                                maxnum:data[i]['maxnum']
+                            };
+                        }
+                        // debugger;
+                        me.parents('li').find('textarea').html(JSON.stringify(data));
+                        // console.log(me.parents('li').find('textarea').html(JSON.stringify(data)));
+                        var tpl = $("#finishTpl").html();
+                        var template = Handlebars.compile(tpl);
+                        for(var i=0; i < data.length; i++){
+                            var context = {
+                                data: data[i]
+                            };
+                            me.parents('li').find('table[data-id="' + data[i]["id"] + '"] .edit-box').html(template(context));
+                        }
+                        //重新计算金额
+                        calculate();
+
+                        //提交购物车
+                        $.ajax({
+                            type: "post",
+                            url: "/weixin/editShopCart",
+                            data:{
+                                products:JSON.stringify(product)
+                            },
+                            dataType: 'json',
+                            complete: function(json) {
+                              
+                                var data = json.response;
+                                var status = json.status;
+                                if(status != 200){
+                                    $.alert('网络异常，状态为3.4' + status);
+                                    return;
+                                }
+                                if ($.type(data) == 'string') {
+                                    data = JSON.parse(data);
+                                }
+                                if(data.code != 'E00000'){
+                                    if(data.code == "-1"){
+                                        window.location.href = "/weixin/bind";
+                                    }else{
+                                        $.alert(data.message);
+                                        return;
+                                    }
+                                }else{
+                                    $.toast("编辑成功");
+                                }
+                                
+                            }
+                        });
+                    }
+                    
+                }else if(action == 'use-code'){
+                    var pid = me.data('pid');
+                    var code = me.data('code');
+                    var shopId = me.parents('li').data('shopId');
+
+                    $.ajax({
+                        type: "get",
+                        url: "/weixin/productVouchers?pid=" + pid,
+                        dataType: 'json',
+                        complete: function(json) {
+                            localStorage.setItem("why","111");
+                            var status = json.status;
+                            if(status != 200){
+                                $.alert('网络异常3.5，状态为' + status);
+                                
+                                return;
+                            }
+                            var data = json.response;
+                           
+                            if ($.type(data) == 'string') {
+                                data = JSON.parse(data);
+                            }
+                            if(data.code != 'E00000'){
+                                if(data.code == "-1"){
+                                    window.location.href = "/weixin/bind";
+                                }else{
+                                    $.alert(data.message);
+                                    return;
+                                }
+                            }else{
+                                if(me.hasClass('hadCode')){
+                                    $('.cancel-use').show();
+                                }else{
+                                    $('.cancel-use').hide();
+                                }
+                                var tpl = $("#couponTpl").html();
+                                var template = Handlebars.compile(tpl);
+                                var context = {
+                                    data: data.data.vouchers
+                                };
+                                var cont = template(context);
+                                $('[data-role="coupon-list"]').html(cont);
+
+                                localStorage.setItem("currentShop",shopId);
+                                localStorage.setItem("currentPid",pid);
+                                localStorage.setItem("currentCode",code);
+                                if(!me.hasClass('hadCode') && me.parents('li').hasClass('hadCode') && me.parents('li').find('.can-use').length>1){
+                                    $.confirm('一个店铺只能用一张优惠券，您确定要更换产品使用优惠券吗？', '提示',
+                                        function () {
+                                          $.popup('.popup-code');
+                                        },
+                                        function () {
+                                         // $.alert('You clicked Cancel button');
+                                        }
+                                    );
+                                }else{
+                                    $.popup('.popup-code');
+                                }
+
+                            }
+                        }
+                    });
+                    
+                }
+        });
+        $('.close-pop-code').click(function(){
+            $.closeModal('.popup-code');
+        });
+        //提交数据到确认订单
+        $('[data-role="submit-to"]').click(function(e){
+            // debugger;
+            e.preventDefault();
+
+            if($('[data-action="editControl"]').hasClass('active')){
+                $.alert('购物车中商品需完成编辑才能去结算！');
+                return;
+            }
+            var allData = getAllData();
+            // localStorage.setItem("allData",JSON.stringify(allData));
+            
+            for(var i=0; i < allData.length; i++){
+                
+                var products = allData[i]['products'];
+                for(var j=0; j < products.length; j++){
+                        if(products[j]['number']=='0'){
+                            $.alert('商品数量不能为0。');
+                            return;
+                        }
+                }
+            }
+
+            if(allData.length == 0){
+                $.alert('请选中商品后再提交订单。');
+                return;
+            }
+
+
+
+            $('input[name=quickSpJson]').val(JSON.stringify(allData));
+            localStorage.setItem("shoppingCarData",JSON.stringify(allData));
+            console.log($('input[name=quickSpJson]').val());
+            // return;
+            // debugger;
+            
+            $('form').submit();
+        });
+        //点击押桶说明按钮
+        $('[data-role="enterprise-name"]').delegate('#yatongBtn','click',function(e){
+            e.preventDefault();
+            var eid = $(this).attr('data-eid');
+            //获取企业押桶说明
+            $.ajax({
+                type: "post",
+                url: "/weixin/getenterpriseyatong",
+                data:{
+                    eid:eid
+                },
+                dataType: 'html',
+                complete: function(json) {
+                    var data = json.response;
+                    var status = json.status;
+                    // alert(res);
+                    // var data = res;
+                    if(status != 200){
+                        $.alert('网络异常，状态为3.2' + status);
+                            return;
+                        }
+                    if ($.type(data) == 'string') {
+
+                        $.popup('.popup-yatong');
+                        var context = {
+                            data: data
+                        };
+                        var yatongTpl = $("#yatongTpl").html();
+                        var yatongTemplate = Handlebars.compile(yatongTpl);
+                        var yatongCont = yatongTemplate(context);
+                        $('[data-role="yatong"]').html(yatongCont);
+
+                    }
+                }
+                
+        
+
+            });
+        });
+        $('.close-popup-yatong').on('click',function(e){
+            e.preventDefault();
+            $.closeModal('.popup-yatong');
+        });
+        
+        //选择优惠券
+        /*$('[data-role="coupon-list"]').delegate("a", "click", function(e){
+            e.preventDefault();
+
+            var me = $(this),
+                action = me.data('action');
+
+                if(action == 'choose-code'){
+                    var money = me.data('money');
+                    var code = me.data('code');
+                    var currentShop = localStorage.getItem("currentShop");
+                    var currentPid = localStorage.getItem("currentPid");
+                    var carCoupon = JSON.parse(localStorage.getItem("carCoupon"));
+                    var changeStyle = 0;
+                    var cLength = carCoupon ? carCoupon.length : 0;
+                    var flag = 0;
+
+                    if(cLength == 0){
+                        flag = 1;
+                        changeStyle = 1;
+                        carCoupon = [];
+                        carCoupon[0] = {
+                            shopId : currentShop,
+                            pid : currentPid,
+                            code : code
+                        };
+                    }else{
+                        for(var i=0; i<cLength; i++){
+                            if(carCoupon[i]['shopId'] == currentShop && carCoupon[i]['code'] == code && carCoupon[i]['pid'] == currentPid){
+                                flag = 1;
+                            }else if(carCoupon[i]['shopId'] == currentShop && carCoupon[i]['code'] == code && carCoupon[i]['pid'] != currentPid){
+                                flag = 1;
+                                changeStyle = 1;
+                                $('a[data-pid="' + carCoupon[i]['pid'] + '"]').find('i').html('');
+                                $('a[data-pid="' + carCoupon[i]['pid'] + '"]').removeAttr('data-code');
+                                carCoupon[i]['pid'] = currentPid;
+                            }else if(carCoupon[i]['shopId'] != currentShop && carCoupon[i]['code'] == code){
+                                $.alert('优惠券已在购物车中使用，不可重复使用');
+                                return;
+                            }
+                        }
+                    }
+
+                    if(!flag){
+                        changeStyle = 1;
+                        carCoupon[cLength] = {
+                            shopId : currentShop,
+                            pid : currentPid,
+                            code : code
+                        };
+                    }
+                    if(changeStyle){
+                        var curshop = $('li[data-shop-id="' + currentShop + '"]');
+                        var curcut = $('a[data-pid="' + currentPid + '"]');
+                        var curprice = $('table[data-id="' + currentPid +'"] .price');
+                        curcut.find('i').html('-' + money + '元');
+                        curshop.find('a').removeClass('hadCode');
+                        curshop.find('.price').attr('data-code', '');
+                        curshop.find('.price').attr('data-money', 0);
+                        curcut.addClass('hadCode');
+                        curcut.attr('data-code', code);
+                        curprice.attr('data-code', code);
+                        curprice.attr('data-money', money);
+                        curshop.addClass('hadCode');
+                    }
+                    calculate();
+                    $.closeModal('.popup-code');
+                    localStorage.setItem("carCoupon",JSON.stringify(carCoupon));
+
+                }        
+        })*/
+        //取消使用优惠券
+        /*$('[data-role="cancel-use"]').click(function(){
+            var currentShop = localStorage.getItem("currentShop");
+            var currentPid = localStorage.getItem("currentPid");
+            var currentCode = localStorage.getItem("currentCode");
+            var carCoupon = JSON.parse(localStorage.getItem("carCoupon"));
+            var cLength = carCoupon ? carCoupon.length : 0;
+            var curItem = $('a[data-pid="' + currentPid + '"]');
+            var curPrice = $('table[data-id="' + currentPid + '"] .price');
+
+            curItem.find('i').html('');
+            curItem.removeClass('hadCode');
+            curItem.attr('data-code', '');
+            curPrice.attr('data-code', '');
+            curPrice.attr('data-money', 0);
+            calculate();
+            $('li[data-shop-id="' + currentShop + '"]').removeClass('hadCode');
+            for(var i=0; i<cLength; i++){
+                if(carCoupon[i]['shopId'] == currentShop && carCoupon[i]['code'] == currentCode){
+                    carCoupon.splice(i, 1);
+
+                    $.closeModal('.popup-code');
+                    localStorage.setItem("carCoupon",JSON.stringify(carCoupon));
+
+                    return;
+                }
+            }
+            
+        });*/
+    });
+    $.init();
+    </script>
+  </script>
+ 
+</body>
+</html>

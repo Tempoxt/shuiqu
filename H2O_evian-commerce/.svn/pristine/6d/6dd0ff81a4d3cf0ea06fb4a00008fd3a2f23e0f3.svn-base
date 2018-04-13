@@ -1,0 +1,157 @@
+package com.eviano2o.controller.helper;
+
+import java.text.MessageFormat;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.json.JSONObject;
+
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.ui.Model;
+
+import com.eviano2o.bean.request.WXOauthCodeParamModel;
+import com.eviano2o.bean.weixin.ClientModel;
+import com.eviano2o.bean.weixin.WxCityInfoModel;
+import com.eviano2o.util.HttpClientUtil;
+import com.eviano2o.util.SessionConstantDefine;
+import com.eviano2o.util.SysParamNames;
+import com.eviano2o.util.WxTokenAndJsticketCache;
+
+public class Oauth2Helper extends BaseControllerHelper {
+
+	private static final Logger logger = LoggerFactory.getLogger(Oauth2Helper.class);
+	
+
+	public Oauth2Helper(Model model, HttpServletRequest request, HttpServletResponse response) {
+		super(model, request, response);
+	}
+	
+	@Override
+	public void Init() {
+		String code = _request.getParameter("code");
+		String state = _request.getParameter("state");
+		String appId = _request.getParameter("appid");
+		if(StringUtils.isEmpty(code)){
+			logger.info("Oauth2获取code参数失败,请重新进入!");
+		}
+		//long starttime = new Date().getTime();
+		// 换取微信code
+		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + getSysParamMapValue(SysParamNames.wxParaWeiXinAppID) + "&secret=" + getSysParamMapValue(SysParamNames.wxParaWeiXinSecret) + "&code=" + code + "&grant_type=authorization_code";
+		//第三方授权方法
+		url = "https://api.weixin.qq.com/sns/oauth2/component/access_token?appid={0}&code={1}&grant_type=authorization_code&component_appid={2}&component_access_token={3}";
+		url = MessageFormat.format(url, appId, code, getSysParamMapValue(SysParamNames.wxParaComponentAppID), WxTokenAndJsticketCache.getComponent_access_token());
+
+		
+		String webContent = HttpClientUtil.get(url);
+		logger.info(appId + "      获取客户openId：" + url + "       webContent:" + webContent);
+		
+		JSONObject objJson = JSONObject.fromObject(webContent);
+		//logger.error("[remark:{}],[content:{}],[url:{}]", new Object[] { "获取微信code信息", webContent, url });
+		//long endtime =new Date().getTime();
+		//logger.info("[1所需时间：{} 秒]", new Object[] {endtime-starttime });
+		WXOauthCodeParamModel clientModel = (WXOauthCodeParamModel) JSONObject.toBean(objJson, WXOauthCodeParamModel.class);
+		if (clientModel == null || StringUtils.isEmpty(clientModel.getOpenid())) {
+			logger.info("[remark:{}],[content:{}],[url:{}]", new Object[] { "获取微信code失败", webContent, url });
+			return;
+		}
+		
+		//为集群服务器session 记录到数据库
+		//String sessionId=_request.getSession().getId();
+		//baService.SaveSessionId(clientModel.getOpenid(), sessionId);
+		//logger.info("sessionId:"+sessionId+"   openId:"+clientModel.getOpenid());
+		
+		Integer shareId = 0;
+		if(state.startsWith("qrscene_share")){
+			shareId = Integer.valueOf(state.replace("qrscene_share", ""));
+		}
+		
+		ClientModel userInfo = weiXinService.getWxLogin(clientModel.getOpenid(), appId);
+		if(userInfo==null){
+			_request.getSession().removeAttribute(SessionConstantDefine.CLIENT_INFO);
+		}else{
+			if(!StringUtils.isEmpty(userInfo.getClientId())){
+				_request.getSession().setAttribute(SessionConstantDefine.CLIENT_INFO, userInfo);
+			}else{
+				_request.getSession().removeAttribute(SessionConstantDefine.CLIENT_INFO);
+				logger.info("UserInfo: "+userInfo);
+			}
+			
+			//WxCityInfoModel curCity = weiXinService.getWxUserCityInfo(clientModel.getOpenid());
+			WxCityInfoModel curCity = userInfo.getCitys();
+			if(curCity != null){
+				_request.getSession().setAttribute(SessionConstantDefine.WX_CITY, curCity);
+				logger.info("CityInfo: "+curCity);
+			}else{
+				_request.getSession().removeAttribute(SessionConstantDefine.WX_CITY);
+			}
+			
+			if(userInfo.getExists() != null && userInfo.getExists()){
+				if(shareId > 0)
+					getWXUserInfo(clientModel.getOpenid(), "", shareId);
+			}else{
+				getWXUserInfo(clientModel.getOpenid(), "", shareId);
+				userInfo = weiXinService.getWxLogin(clientModel.getOpenid(), appId);
+				if(userInfo==null){
+					_request.getSession().removeAttribute(SessionConstantDefine.CLIENT_INFO);
+				}else{
+					_request.getSession().setAttribute(SessionConstantDefine.CLIENT_INFO, userInfo);	
+				}
+			}
+		}
+		
+		_request.getSession().removeAttribute(SessionConstantDefine.WX_APPID);
+		_request.getSession().setAttribute(SessionConstantDefine.WX_APPID, appId);	
+		
+		String result = weiXinService.getWxPublicDetail(appId);
+		JSONObject fromObject = JSONObject.fromObject(result).getJSONObject("data");
+		String liteappName = (String)fromObject.get("liteappName");
+		_request.getSession().setAttribute("liteappName", liteappName);	
+		
+		_request.getSession().setAttribute(SessionConstantDefine.WX_OPENID, clientModel.getOpenid());
+		
+		//logger.error("[remark:{}],[openid:{}],[webContent:{}],[url:{}]", new Object[] { "获取微信OpenId", _request.getSession().getAttribute(SessionConstantDefine.WX_OPENID), webContent, currentUrl() });
+		if(state.equals("quickshopping")){
+			_result = "redirect:/weixin/quickShopping";
+		}else if(state.equals("orders")){
+			_result = "redirect:/weixin/orders?statusId=0&authorizer_appid=wx5288d5e0e47b4f76";
+		}else if(state.equals("eticket")){
+			_result = "redirect:/weixin/myTicket";
+		}else if(state.equals("coupon")){
+			_result = "redirect:/weixin/coupon";
+		}else if(state.equals("antifake")){
+			_result = "redirect:/weixin/antifake";
+		}else if(state.equals("address")){
+			_result = "redirect:/weixin/address";
+		}else if(state.equals("shopregister")){
+			_result = "redirect:/weixin/shopRegister";
+		}else if(state.equals("tkshopcodestatistics")){  // 店铺码统计
+			_result = "redirect:/weixin/tuiKeShopStatistics";
+		}else if(state.equals("tkshopcodebind")){  // 店铺码绑定
+			_result = "redirect:/weixin/tuiKeManagerShop";
+		}else if(state.startsWith("qrscene_share") && (userInfo == null || StringUtils.isEmpty(userInfo.getClientId()))){//人人开店扫描永久二维码未绑定 
+			_result = "redirect:/weixin/register?shareId=" + state.replace("qrscene_share", "");
+		}else if(state.startsWith("qrscene_share") && userInfo != null && !StringUtils.isEmpty(userInfo.getClientId())){//人人开店扫描永久二维码已绑定
+			_result = "redirect:/weixin/unboundWeixin?shareId=" + state.replace("qrscene_share", "");
+		}else if(state.startsWith("shangjiaruzhu")){//菜单进入人人开店
+			_result = "redirect:/weixin/everyShop?authorizer_appid=wx4a323171552c7704";
+		}else if(state.startsWith("productdetail")){//跳转到商品详情
+			//state:  productDetailEVIAN"+水店ID+"EVIAN"+商品ID
+			state = state.replace("EVIAN", "|");
+			_result = "redirect:/weixin/productDetail?pid="+state.split("\\|")[2]+"&shopId="+state.split("\\|")[1];
+		}else if(state.equals("tuikemanageraudit")){//推客经理审核推客
+			_result = "redirect:/weixin/tuiKeManagerAudit";			
+		}else if(state.equals("test")){
+			_result = "redirect:/weixin/test";
+		}else{
+			_result = "redirect:/weixin/home";
+		}
+	}
+
+	@Override
+	public String getResult() {
+		return _result;
+	}
+}

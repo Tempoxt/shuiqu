@@ -1,0 +1,85 @@
+#parse("control/found/foundCss.vm")
+<body>
+<input type="hidden" name="isApp" value="1">
+  <div class="page-group">
+      <div class="page page-current">
+          <header class="bar bar-nav">
+            <h1 class="title">发现生活</h1>
+            <a data-role="search" href="/found/search?fromApp=1" class="icon icon-sousuo pull-right"></a>
+          </header>
+
+          <div class="content">
+              <div class="switch-wrap" data-active-class="1">
+                  #set( $tabid = 0)
+                  #foreach($ad in $classList)   
+                    #set( $tabid = $tabid + 1)
+                    #if(${ad.classId} == 1)
+                    <a href="" data-class-id="1" class="active switch-tabs" data-url="/1" data-tab="tab1">
+                      <span class="icon icon-hot"></span>
+                      <span class="tab-label">热点</span>
+                  </a>
+                    #else
+                    <a href="" data-class-id="${ad.classId}" class="switch-tabs" data-url="/5" data-tab="tab$tabid">
+                        <span class="icon ${ad.cssClass}"></span>
+                        <span class="tab-label">$!{ad.className}</span>
+                    </a>
+                    #end
+                  #end  
+              </div>
+              <div class="tabs" data-active-tag="">
+                  #set( $contid = 0)
+                  #foreach($ad in $classList) 
+                    #set( $contid = $contid + 1)  
+                    #if(${ad.classId} == 1)
+                      <div id="tab1" class="tab active infinite-scroll" data-distance="100">
+                        <div class="tag-box">
+                            #foreach($tag in $classTagList) 
+                              #if(${tag.classId} == 1) 
+                              <span data-tag-id="${tag.tagId}">$!{tag.tagName}</span>
+                              #end
+                            #end 
+                        </div>
+                        <div class="list-block">
+                            <ul class="show-list list-container" data-role="list-container">
+                            </ul>
+                        </div>
+                        <!-- 加载提示符 -->
+                        <div class="infinite-scroll-preloader">
+                            <div class="preloader">
+                            </div>
+                        </div>
+                      </div>
+                    #else
+
+                      <div id="tab$contid" class="tab infinite-scroll" data-distance="100">
+                        <div class="tag-box">
+                            #foreach($tag in $classTagList) 
+                              #if(${tag.classId} == ${ad.classId}) 
+                              <span data-tag-id="${tag.tagId}">$!{tag.tagName}</span>
+                              #end
+                            #end 
+                        </div>
+                        <div class="list-block">
+                            <ul class="show-list list-container" data-role="list-container">
+                         
+                            </ul>
+                        </div>
+                        <!-- 加载提示符 -->
+                        <div class="infinite-scroll-preloader">
+                            <div class="preloader">
+                            </div>
+                        </div>
+                    </div>
+                    #end
+                  #end 
+                  <span class="null-data" data-role="null-data"></span>
+              </div>
+                  
+              
+          </div>
+      </div>
+      
+  </div>
+
+  #parse("control/found/classPanel.vm")
+</body>
