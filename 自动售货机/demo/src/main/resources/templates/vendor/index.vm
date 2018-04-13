@@ -1,0 +1,303 @@
+﻿<!-- 首页 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta http-equiv="Pragma" content="no-cache">
+    <title>首页</title>
+    <link href="/css/mui.min.css" rel="stylesheet"/>
+    <link href="/css/loading.css" rel="stylesheet"/>
+    <link href="/css/index.css" rel="stylesheet"/>
+    <script src="/js/mui.min.js"></script>
+    <script src="/js/loading.js"></script>
+</head>
+<body class="mui-fullscreen">
+	<div class="mui-content">
+		<div class="content-box" id="contentBox">
+			
+		</div>
+	</div>
+	<nav class="mui-bar mui-bar-tab" id="tabContainer">
+	    
+	</nav>
+	<div id="app"></div>
+	
+	<script src="/js/handlebars-v4.0.5.js"></script>
+	<script src="/js/common.js"></script>
+	<script src="/js/app.js"></script>
+	<script src="https://cdnqiniu.shuiqoo.cn/zepto.min.js"></script>
+	<script id="goodsTemplate" type="text/x-handlebars-template">
+		{{#is data.length 2}}
+		<div id="segmentedControl" class="mui-segmented-control">
+			{{#each data}}
+			<!-- addOne  索引加1 -->
+			<a class="mui-control-item {{#is @index 0}} mui-active{{/is}}" href="#item{{addOne @index}}">
+				<div class="cabinet-item">
+					<div class="status"></div>
+					<div class="cabinet"></div>
+					<div class="cabinet-num">{{addOne @index}}</div>
+				</div>
+			</a>
+			{{/each}}
+		</div>
+		{{/is}}
+		<div>
+		{{#each data}}
+			<div id="#item{{addOne @index}}" class="mui-control-content {{#is @index 0}} mui-active{{/is}}"  data-cabinetNum="{{mcId}}">
+				{{#each vendorDoorProucts}}
+				<div class="mui-row">
+					{{#each this}}
+			        <div class="mui-col-sm-4 mui-col-xs-4">
+			        	<span class="box-number">{{doorIndex}}</span>
+			        	{{#is productState 1}}
+				        	{{#is doorState 'not' -1}}
+				            <li class="mui-table-view-cell mui-disabled">
+				            	<div class="info">
+				            		<img src="{{picture}}" />
+					             	<span class="pname">{{productName}}</span>
+					             	<span class="price">¥{{price}}</span>
+				            	</div>
+				             	<button type="button" class="mui-btn mui-btn-theme buy" data-productid="{{productId}}" data-price="{{price}}" data-mcid="{{mcId}}">购买</button>
+				            </li>
+				            {{else}}
+				            <li class="mui-table-view-cell mui-disabled">
+				            	<div class="info">
+				            		<img src="/images/device_broken.png" />
+					             	<span class="pname">设备异常</span>
+					             	<span class="price" style="font-size: 12px;color: #999;">等待维修</span>
+				            	</div>
+				             	<button type="button" class="mui-btn mui-disabled mui-btn-disabled" data-productid="{{productId}}" data-price="{{price}}" data-mcid="{{mcId}}">购买</button>
+				            </li>
+				            {{/is}}
+			            {{else}}
+
+			            <li class="mui-table-view-cell mui-disabled">
+			            	<div class="info">
+			            		<img src="/images/no_goods.png" />
+				             	<span class="pname">商品卖完啦</span>
+				             	<span class="price" style="font-size: 12px;color: #999;">等待补货</span>
+			            	</div>
+			             	<button type="button" class="mui-btn mui-disabled mui-btn-disabled" data-productid="{{productId}}" data-price="{{price}}" data-mcid="{{mcId}}">购买</button>
+			            </li>
+			            {{/is}}
+			
+			        </div>
+			        {{/each}}
+			        <div class="bottom-decorate"></div>
+			        
+			    </div>
+			    {{/each}}
+			</div>
+		{{/each}}
+		</div>
+	</script>
+	<script id="tabTemplate" type="text/x-handlebars-template">
+		<a class="mui-tab-item mui-active">
+			{{#is theme 1}}
+	        <img class="mui-icon" id="homePage" src="/images/index_active_a.png" / >
+	        {{/is}}
+	        {{#is theme 2}}
+	        <img class="mui-icon" id="homePage" src="/images/index_active_b.png" / >
+	        {{/is}}
+	        {{#is theme 3}}
+	        <img class="mui-icon" id="homePage" src="/images/index_active_c.png" / >
+	        {{/is}}
+	        {{#is theme 4}}
+	        <img class="mui-icon" id="homePage" src="/images/index_active_d.png" / >
+	        {{/is}}
+	        {{#is theme 5}}
+	        <img class="mui-icon" id="homePage" src="/images/index_active_e.png" / >
+	        {{/is}}
+	        <span class="mui-tab-label">首页</span>
+	    </a>
+	    <a class="mui-tab-item" href="order.html">
+	        <img class="mui-icon" src="/images/order.png"/>
+	        <span class="mui-tab-label">订单</span>
+	    </a>
+	    <a class="mui-tab-item" href="my.html" :goodsId>
+	        <img class="mui-icon" src="/images/my.png"/>
+	        <span class="mui-tab-label">我的</span>
+	    </a>
+	</script> 
+	#parse("vendor/weixinPay.vm")
+	<script type="text/javascript">
+		// 动态引入对应样式
+		
+		// 获取商品数据
+		(function(){
+			mui.showLoading("正在加载...","div");
+			mui.ajax('/find/findContainers?random='+Math.random(),{
+				data:{
+					
+				},
+				dataType:'json',//服务器返回json格式数据
+				type:'get',//HTTP请求类型
+				timeout:10000,//超时时间设置为10秒              
+				success:function(res){
+				console.log(res);
+					if(res.code=="E00000"){
+						mui.hideLoading(function(){
+							
+							//获取主题色 
+							var theme = res.data.vendorMainboardContainers[0].vendorDoorProucts[0].styleCode;
+							localStorage.setItem("theme",theme);
+							var context = {
+				                theme: theme
+				            };
+				       
+				   			//获取底部导航栏模板
+							var tpl   =  $("#tabTemplate").html();
+							//预编译模板
+							var template = Handlebars.compile(tpl);
+							//匹配json内容
+							var html = template(context);
+							//输入模板
+							$('#tabContainer').html(html);
+							// 设置主题色
+							#parse("/version.vm")
+
+
+
+							// 获取货柜数据
+							var data = res.data.vendorMainboardContainers;
+							// 一行显示三个商品
+							for(var i=0;i<data.length;i++){
+					
+								var result = [];
+
+								for(var j=0,len=data[i].vendorDoorProucts.length;j<len;j+=3){
+								   result.push(data[i].vendorDoorProucts.slice(j,j+3));
+								}
+								data[i].vendorDoorProucts = result;
+
+							}
+							var context = {
+		                        data: data
+		                    };
+		           			//获取货柜模板
+							var tpl   =  $("#goodsTemplate").html();
+							//预编译模板
+							var template = Handlebars.compile(tpl);
+							//匹配json内容
+							var html = template(context);
+							//输入模板
+							$('#contentBox').html(html);
+
+
+						});
+						
+
+					}else{
+						mui.hideLoading(function(){
+							mui.alert(res.message);
+							return;
+						});
+						
+
+					}
+
+					
+				},
+				error:function(err){
+					mui.hideLoading(function(){
+						mui.alert(err.response);
+						return;
+					});
+					
+				}
+			});
+		})();
+		// 购买商品
+		mui('.content-box').on('tap','.buy',function(){
+			// var cabinetNum = this.parentNode.parentNode.parentNode.parentNode.getAttribute('data-cabinetNum');
+			// var boxNum = this.parentNode.parentNode.childNodes[1].innerText;
+			// var productId = this.getAttribute('data-productid');
+			// var price = this.getAttribute('data-price');
+			// var mcId = this.getAttribute('data-mcid');
+
+			var cabinetNum = $(this).parents('.mui-control-content').attr('data-cabinetNum');
+			var boxNum = $(this).parents('.mui-col-sm-4').find('.box-number').html();
+			var productId = $(this).attr('data-productid');
+			var price = $(this).attr('data-price');
+			var mcId = $(this).attr('data-mcid');
+			// alert(cabinetNum);
+			// alert(boxNum);
+			// alert(productId);
+			// alert(price);
+			// alert(mcId);
+			//微信支付
+			if (/MicroMessenger/.test(window.navigator.userAgent)) { 
+
+		    	mui.ajax('/pay/wxPay?random='+Math.random(),{
+					data:{
+						cabinetNum:cabinetNum,
+						boxNum:boxNum,
+						productId:productId,
+						price:price,
+						mcId:mcId
+					},
+					dataType:'json',//服务器返回json格式数据
+					type:'get',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒              
+					success:function(res){
+						if(res.code=="E00000"){
+
+							SavePay(res.data.appId, res.data.timeStamp, res.data.nonceStr, res.data.package, res.data.paySign,cabinetNum,boxNum);
+
+						}else{
+
+							mui.alert(res.message);
+							return;
+						}
+						
+					},
+					error:function(err){
+						// alert(err);
+						mui.alert(err.response);
+						return;
+					}
+				});
+		    //支付宝支付	
+			} else if (/AlipayClient/.test(window.navigator.userAgent)) {
+				
+			    mui.ajax('/pay/zfbzf?random='+Math.random(),{
+					data:{
+						cabinetNum:cabinetNum,
+						boxNum:boxNum,
+						productId:productId,
+						price:price,
+						mcId:mcId
+					},
+					dataType:'json',//服务器返回json格式数据
+					type:'get',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒              
+					success:function(res){
+						
+						if(res.code=="E00000"){
+							console.log(res.code);
+							console.log(res.message);
+							$("#app").html(res.data);
+
+						}else{
+
+							mui.alert(res.message);
+							return;
+						}
+					},
+					error:function(err){
+						mui.alert(err.response);
+						return;
+					}
+				});
+			}
+			
+			
+		})
+
+	</script>
+	 <script type="text/javascript" charset="utf-8">
+      	mui.init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+.mui-content{
+	display: flex;
+	height: 100%;
+	flex-direction: column;
+	align-items:center;
+	background: #F8F8F8;
+}
+.success-logo{
+	width: 64px;
+	height: 64px;
+	margin-top: 144px;
+}
+.status{
+	font-size: 20px;
+	color: #333333;
+	margin-top: 12px;
+	margin-bottom: 36px;
+}
+.mui-content .tips{
+	font-size: 24px;
+	color: #333333;
+	margin-bottom: 4px;
+}
+.take-goods{
+	font-size: 14px;
+	color: #979797;
+	margin-bottom: 16px;
+}
+.ok{
+	width: 176px;
+	height: 43px;
+	border: 1px solid #FFC400;
+	border-radius: 8px;
+	font-size: 20px;
+	color: #FFC400;
+}
+.mui-content .footer-box{
+	width: 100%;
+	padding: 0 10px;
+	height: 92px;
+	/*background: #fff;*/
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
+.mui-content .footer-box .footer{
+	border-top:1px solid #EFEFEF;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.mui-content .footer-box .footer .kindly-reminder{
+	font-size: 14px;
+	color: #979797;
+	margin-top: 20px;
+	margin: 14px;
+}
+.mui-popover .mui-table-view{
+	background: #fff;
+}
+.mui-popover.mui-popover-action .mui-table-view{
+	font-size: 16px;
+	color: #333333;
+}
+.mui-popover.mui-popover-action .mui-table-view .mui-table-view-cell:after{
+	background-color: #E6E6E6;
+}

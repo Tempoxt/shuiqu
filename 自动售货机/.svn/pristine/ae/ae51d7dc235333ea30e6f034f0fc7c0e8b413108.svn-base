@@ -1,0 +1,158 @@
+<!--我的-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>我的</title>
+    
+    <link href="/css/mui.min.css" rel="stylesheet"/>
+    <link href="/css/loading.css" rel="stylesheet"/>
+    <link href="/css/my.css" rel="stylesheet"/>
+    <script src="/js/mui.min.js"></script>
+    <script src="/js/loading.js"></script>
+</head>
+<body class="mui-fullscreen">
+	<div class="mui-content" id="myContent">
+		
+	</div>
+	<nav class="mui-bar mui-bar-tab" id="tabContainer">
+	    
+	</nav>
+	<script src="/js/app.js"></script>
+	<script src="/js/handlebars-v4.0.5.js"></script>
+	<script src="/js/common.js"></script>
+	<script src="https://cdnqiniu.shuiqoo.cn/zepto.min.js"></script>
+	<script id="myTemplate" type="text/x-handlebars-template">
+		<div class="my-info">
+			<img src="{{data.userInfo.photo}}"/>
+			<span id="nickName">{{data.userInfo.nickName}}</span>
+			<span id="know-time">{{#is data.day 0}}我们刚认识哦{{else}}我们相识{{data.day}}天啦{{/is}}</span>
+		</div>
+	    <ul class="mui-table-view">
+		    <li class="mui-table-view-cell">
+		        <a class="mui-navigate-right">
+		        	<span class="left">消费记录</span>
+		        	<span class="right">1</span>
+		        </a>
+		    </li>
+		    <li class="mui-table-view-cell">
+		        <a class="mui-navigate-right">
+		        	<span class="left">账户余额</span>
+		        	<span class="right">0</span>
+		       	</a>
+		    </li>
+		    <li class="mui-table-view-cell">
+		        <a class="mui-navigate-right" href="myCoupon.html">
+		        	<span class="left">我的优惠券</span>
+		        	<span class="right">0</span>
+		        </a>
+		    </li>
+		</ul>
+	</script>
+	<script id="tabTemplate" type="text/x-handlebars-template">
+		<a class="mui-tab-item" href="index.html">
+	        <img class="mui-icon" src="/images/index.png"/ >
+	        <span class="mui-tab-label">首页</span>
+	    </a>
+	    <a class="mui-tab-item" href="order.html">
+	        <img class="mui-icon" src="/images/order.png"/>
+	        <span class="mui-tab-label">订单</span>
+	    </a>
+	    <a class="mui-tab-item mui-active" href="my.html">
+	    	{{#is theme 1}}
+	        <img class="mui-icon" src="/images/my_active_a.png"/>
+	        {{/is}}
+	        {{#is theme 2}}
+	        <img class="mui-icon" src="/images/my_active_b.png"/>
+	        {{/is}}
+	        {{#is theme 3}}
+	        <img class="mui-icon" src="/images/my_active_c.png"/>
+	        {{/is}}
+	        {{#is theme 4}}
+	        <img class="mui-icon" src="/images/my_active_d.png"/>
+	        {{/is}}
+	        {{#is theme 5}}
+	        <img class="mui-icon" src="/images/my_active_e.png"/>
+	        {{/is}}
+	        <span class="mui-tab-label">我的</span>
+	    </a>
+	</script>
+	<script>
+		(function(){
+			mui.showLoading("正在加载...","div");
+			// 获取用户信息
+			mui.ajax('/find/findUserInfo?random='+Math.random(),{
+				data:{
+					// 本地测试需加test参数
+					test:666
+				},
+				dataType:'json',//服务器返回json格式数据
+				type:'get',//HTTP请求类型
+				timeout:10000,//超时时间设置为10秒          
+				success:function(res){
+					if(res.code=="E00000"){
+						console.log(res);
+						
+						mui.hideLoading(function(){
+							
+							var context = {
+					            data: res.data
+					        };
+							//获取模板
+							var tpl   =  $("#myTemplate").html();
+							//预编译模板
+							var template = Handlebars.compile(tpl);
+							//匹配json内容
+							var html = template(context);
+							//输入模板
+							$('#myContent').html(html);
+							
+
+						});
+						
+
+					}else{
+						mui.hideLoading(function(){
+							mui.alert(res.message);
+							return;
+						});
+						
+
+					}
+
+					
+				},
+				error:function(err){
+					mui.hideLoading(function(){
+						mui.alert(err.response);
+						return;
+					});
+					
+				}
+			});
+		})();
+		var theme = localStorage.getItem("theme");
+		// 获取导航栏模板
+		var context = {
+            theme: theme
+        };
+			//获取模板
+		var tpl   =  $("#tabTemplate").html();
+		//预编译模板
+		var template = Handlebars.compile(tpl);
+		//匹配json内容
+		var html = template(context);
+		//输入模板
+		$('#tabContainer').html(html);
+
+		#parse("/version.vm")
+
+		
+	</script>
+	<script type="text/javascript" charset="utf-8">
+      	mui.init();
+    </script>
+</body>
+
+</html>

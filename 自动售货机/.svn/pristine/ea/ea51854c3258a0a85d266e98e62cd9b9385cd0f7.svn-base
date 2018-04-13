@@ -1,0 +1,242 @@
+<!--订单-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>我的订单</title>
+    <link href="/css/mui.min.css" rel="stylesheet"/>
+    <link href="/css/loading.css" rel="stylesheet"/>
+    <link href="/css/order.css" rel="stylesheet"/>
+    <script src="/js/mui.min.js"></script>
+    <script src="/js/loading.js"></script>
+</head>
+<body class="mui-fullscreen">
+	<!--<div class="mui-content no-order">
+	    <img class="order-logo" src="/images/order.png"/>
+	    <span class="tips">您还没有订单哦！</span>
+	</div>-->
+	<div  id="pullrefresh" class="mui-content has-order mui-scroll-wrapper">
+		<div class="mui-scroll">
+			<div class="mui-table-view mui-table-view-chevron" id="content">
+
+			</div>
+		</div>
+	</div>	
+	<nav class="mui-bar mui-bar-tab" id="tabContainer">
+	    
+	</nav>
+	<script src="/js/app.js"></script>
+	<script src="/js/handlebars-v4.0.5.js"></script>
+	<script src="/js/common.js"></script>
+	<script src="https://cdnqiniu.shuiqoo.cn/zepto.min.js"></script>
+	<script id="ordersTemplate" type="text/x-handlebars-template">
+		
+		{{#each data}}
+		<div class="mui-card">
+			<div class="mui-card-header">
+				<span class="order-number">订单号：{{orderNo}}</span>
+				{{#is orderState 0}}
+				<button type="button" class="mui-btn mui-btn-red">下单成功</button>
+				{{/is}}
+				{{#is orderState 1}}
+				<button type="button" class="mui-btn mui-btn-red">成功提货</button>
+				{{/is}}
+				{{#is orderState -1}}
+				<button type="button" class="mui-btn mui-btn-red">退款</button>
+				{{/is}}
+			</div>
+			<div class="mui-card-content">
+				<div class="mui-card-content-inner">
+					<div>设备名称：{{doorIndex}}</div>
+					<div>购买信息：{{productName}}</div>
+					<div>时间：{{dateCreated}}</div>
+				</div>
+			</div>
+			<div class="mui-card-footer">
+				<span>微信支付：</span>
+				<span class="price">¥{{realityPrice}}元</span>
+			</div>
+		</div>
+		{{/each}}
+		
+	</script>
+	<script id="tabTemplate" type="text/x-handlebars-template">
+		<a class="mui-tab-item" href="index.html">
+	        <img class="mui-icon" src="/images/index.png" />
+	        <span class="mui-tab-label">首页</span>
+	    </a>
+	    <a class="mui-tab-item mui-active" href="order.html">
+	    	{{#is theme 1}}
+	        <img class="mui-icon" src="/images/order_active_a.png"/>
+	        {{/is}}
+	        {{#is theme 2}}
+	        <img class="mui-icon" src="/images/order_active_b.png"/>
+	        {{/is}}
+	        {{#is theme 3}}
+	        <img class="mui-icon" src="/images/order_active_c.png"/>
+	        {{/is}}
+	        {{#is theme 4}}
+	        <img class="mui-icon" src="/images/order_active_d.png"/>
+	        {{/is}}
+	        {{#is theme 5}}
+	        <img class="mui-icon" src="/images/order_active_e.png"/>
+	        {{/is}}
+	        <span class="mui-tab-label">订单</span>
+	    </a>
+	    <a class="mui-tab-item" href="my.html">
+	        <img class="mui-icon" src="/images/my.png"/>
+	        <span class="mui-tab-label">我的</span>
+	    </a>
+	</script> 
+	<script type="text/javascript">
+		// 默认显示第一页,每页展示5个订单
+		var page = 1;
+		var count = 5;
+		// 加载订单数据
+		function loadData(page,count,that){
+
+			mui.ajax('/find/findMyOrders?random='+Math.random(),{
+				data:{
+					page:page,
+					count:count,
+					// 本地测试需加test参数
+					test:666
+				},
+				dataType:'json',//服务器返回json格式数据
+				type:'get',//HTTP请求类型
+				timeout:10000,//超时时间设置为10秒              
+				success:function(res){
+					console.log(res.data.orders);
+					if(res.code=="E00000"){
+						mui.hideLoading(function(){
+							var data = res.data.orders;
+							var dataCount = data.length;
+							for(var i=0;i<data.length;i++){
+								
+								data[i].dateCreated = FormatDate(data[i].dateCreated);
+							}
+							var context = {
+		                        data: data
+		                    };
+		                    if(page==1){
+		                    	//获取模板
+								var tpl =  $("#ordersTemplate").html();
+								//预编译模板
+								var template = Handlebars.compile(tpl);
+								//匹配json内容
+								var html = template(context);
+								//输入模板
+								$('#content').html(html);
+		                    }else{
+		                    	// debugger;
+		                    	var tpl   =  $("#ordersTemplate").html();
+								//预编译模板
+								var template = Handlebars.compile(tpl);
+								//匹配json内容
+								var html = template(context);
+
+								//输入模板
+								$('#content').append(html);
+								if(dataCount>0){
+									that.endPullupToRefresh(false);
+								}else{
+									that.endPullupToRefresh(true);
+								}
+		  
+	                    		
+		                    	
+		                    	
+		                    }
+		           			
+
+
+						});
+						
+
+					}else{
+						mui.hideLoading(function(){
+							mui.alert(res.message);
+							return;
+						});
+						
+
+					}
+
+					
+				},
+				error:function(err){
+					mui.hideLoading(function(){
+						mui.alert(err.response);
+						return;
+					});
+					
+				}
+			});
+		}
+		// 展示第一页
+		(function(){
+			mui.showLoading("正在加载...","div");
+			
+			var theme = localStorage.getItem("theme");
+			// 获取导航栏模板
+			var context = {
+                theme: theme
+            };
+   			//获取模板
+			var tpl   =  $("#tabTemplate").html();
+			//预编译模板
+			var template = Handlebars.compile(tpl);
+			//匹配json内容
+			var html = template(context);
+			//输入模板
+			$('#tabContainer').html(html);
+			#parse("/version.vm")
+			loadData(page,count);
+		})();
+
+		
+		mui(".mui-card").on("tap","#orderExplain",function(){
+
+			mui.openWindow({
+				url:"orderExplain.html",
+				extras:{
+			       random:Math.random()
+			    }
+			})
+
+		})
+		// 时间格式化
+		function FormatDate(strTime) {
+		    var date = new Date(strTime);
+		    return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+		}
+	</script>
+	<script>
+		mui.init({
+			pullRefresh: {
+				container: '#pullrefresh',
+				up: {
+					height:20,//可选.默认50.触发上拉加载拖动距离
+				    auto:false,//可选,默认false.自动上拉加载一次
+				    contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+				    contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+					callback: pullupRefresh
+				}
+			}
+		});
+		/**
+		 * 上拉加载具体业务实现
+		 */
+		function pullupRefresh() {
+			var that = this;
+			setTimeout(function() {
+				page++;
+				loadData(page,count,that);
+				// mui('#pullrefresh').pullRefresh().enablePullupToRefresh();
+				
+			}, 1500);
+		}
+	</script>
+</body>
+</html>

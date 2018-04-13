@@ -1,0 +1,106 @@
+<!--支付成功-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>支付成功</title>
+    <script src="/js/mui.min.js"></script>
+    <script src="/js/loading.js"></script>
+    <link href="/css/mui.min.css" rel="stylesheet"/>
+    <link href="/css/loading.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/paySuccess.css">
+</head>
+<body class="mui-fullscreen">
+	<div class="mui-content" id="payContainer">
+    
+	</div>
+	<script src="/js/app.js"></script>
+  <script src="/js/handlebars-v4.0.5.js"></script>
+  <script src="/js/common.js"></script>
+  <script src="https://cdnqiniu.shuiqoo.cn/zepto.min.js"></script>
+  <script id="payTemplate" type="text/x-handlebars-template">
+      {{#is theme 1}}
+      <img class="success-logo" src="/images/success_a.png" />
+      {{/is}}
+      {{#is theme 2}}
+      <img class="success-logo" src="/images/success_b.png" />
+      {{/is}}
+      {{#is theme 3}}
+      <img class="success-logo" src="/images/success_c.png" />
+      {{/is}}
+      {{#is theme 4}}
+      <img class="success-logo" src="/images/success_d.png" />
+      {{/is}}
+      {{#is theme 5}}
+      <img class="success-logo" src="/images/success_e.png" />
+      {{/is}}
+      <div class="status">支付成功</div>
+      <div class="tips" id="tips"></div>
+      <div class="take-goods">请及时取走您购买的商品</div>
+      <!-- <button type="button" class="mui-btn mui-btn-yellow mui-btn-outlined ok">完成</button> -->
+      <div class="autoJump" id="autoJump"></div>
+      <div class="footer-box">
+        <div class="footer">
+          <div class="kindly-reminder">温馨提示：使用过程中遇到任何问题请联系客服</div>
+          <a href="tel:13764567708" id="call" class="mui-btn custom-service" >联系客服</a>
+        </div>
+      </div>
+  </script>
+	<script>
+        // 获取数据
+        var theme = localStorage.getItem("theme");
+        // 获取导航栏模板
+        var context = {
+          theme: theme
+        };
+          //获取模板
+        var tpl   =  $("#payTemplate").html();
+        //预编译模板
+        var template = Handlebars.compile(tpl);
+        //匹配json内容
+        var html = template(context);
+        //输入模板
+        $('#payContainer').html(html);
+        #parse("/version.vm")
+        var cabinetNum = getQueryString('cabinetNum');
+        var boxNum = getQueryString('boxNum');
+        
+        $("#tips").html(cabinetNum+"号柜"+boxNum+"箱已开启");
+        // 跳转首页5秒倒计时
+        var countDown = 5;
+        $("#autoJump").html("<span style='color:red;'>"+countDown+"</span>"+"秒钟自动调转");
+
+        setInterval(function(){
+            countDown -= 1;
+            if(countDown==0){
+                mui.openWindow({
+                    url:"index.html",
+                    extras:{
+                       random:Math.random()
+                    }
+                })
+            }
+            $("#autoJump").html("<span style='color:red;'>"+countDown+"</span>"+"秒钟自动调转");  
+        },1000);
+		// mui('.mui-content').on('tap','.ok',function(){
+  // //           // mui.showLoading("正在加载..","div");
+  // //           setTimeout(function(){
+  // //               // mui.hideLoading();
+  // //               mui.openWindow({
+  // //                   url:"index.html",
+  // //                   extras:{
+  // //                      random:Math.random()
+  // //                   }
+  // //               })
+  // //           },5000);
+  // //           // window.location.href = "https://svm.shuiqoo.cn/funVm/index?clear="+Math.random();
+			
+		// // })
+		
+	</script>
+  <script type="text/javascript" charset="utf-8">
+        mui.init();
+  </script>
+</body>
+</html>

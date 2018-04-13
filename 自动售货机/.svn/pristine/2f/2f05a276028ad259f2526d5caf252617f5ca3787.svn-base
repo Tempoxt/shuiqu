@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script>
+		window.location.href="https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=2018012602080855&scope=auth_userinfo&redirect_uri=https://svm.shuiqoo.cn"
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!--申述订单-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>申诉订单</title>
+    <script src="/js/mui.min.js"></script>
+    <link href="/css/mui.min.css" rel="stylesheet"/>
+    <link href="/css/orderExplain.css" rel="stylesheet"/>
+</head>
+<body>
+	<div class="mui-content">
+		<header class="mui-bar mui-bar-nav">订单号：2017122200001</header>
+		<div class="reason">
+			<div class="title">申诉原因</div>
+			<textarea class="content" placeholder="无商品掉落"></textarea>
+		</div>
+		<div class="phone-box">
+			<div class="phone-title">手机号：</div>
+			<input type="tel" name="phone-num" class="phone-num" maxlength="11" pattern="^1[345678][0-9]{9}$" required/>
+			<div class="tips">请留下您的手机号，以便于您可以及时收到申诉结果</div>
+			<div class="validate-title">验证码：</div>
+			<input type="tel" name="validate-code" class="validate-code" maxlength="6" required />
+			<button type="button" class="getCode">获取验证码</button>
+		</div>
+		<div class="footer">
+			<button type="button" class="mui-btn foot-btn-theme">提交申诉</button>
+		</div>
+		
+	</div>
+	<script src="/js/app.js"></script>
+	<script src="/js/handlebars-v4.0.5.js"></script>
+	<script src="/js/common.js"></script>
+	<script src="https://cdnqiniu.shuiqoo.cn/zepto.min.js"></script>
+	<script>
+		var theme = localStorage.getItem("theme");
+		
+		#parse("/version.vm")
+
+		var flag  = 0;
+		mui('.phone-box .getCode')[0].addEventListener('tap',function(){
+			console.log(flag);
+			flag++;
+			if(flag>1){
+				return;
+			}else{
+				var count = document.getElementsByClassName('getCode')[0];
+				count.classList.add('countdown');
+				count.innerHTML = 30;
+				var timer = setInterval(function(){
+					 count.innerHTML -= 1;
+					 if(count.innerHTML==0){
+					 	clearInterval(timer);
+					 	count.innerHTML = "获取验证码";
+					 	count.classList.remove('countdown');
+					 	flag = 0;
+					 }
+				},1000)		
+			}
+			
+		});
+		
+		document.body.style.height=document.documentElement.clientHeight+"px";
+	</script>
+	<script type="text/javascript" charset="utf-8">
+      	mui.init();
+    </script>
+</body>
+</html>

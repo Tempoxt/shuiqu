@@ -1,0 +1,41 @@
+<!--我的优惠券-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>error</title>
+    <script src="/js/mui.min.js"></script>
+    <link href="/css/mui.min.css" rel="stylesheet"/>
+    <style type="text/css">
+    	.mui-content{
+    		display: flex;
+    		flex-direction: column;
+    		height: 100%;
+    		justify-content: center;
+    		align-items: center;
+    		background: #F8F8F8;
+    	}
+    	.mui-content .err-type{
+    		color: #979797;
+    	}
+    	.mui-content .tips{
+    		font-size: 17px;
+			color: #979797;
+			margin-top: 10px;
+    	}
+    	
+    </style>
+    <script type="text/javascript" charset="utf-8">
+      	mui.init();
+    </script>
+</head>
+<body class="mui-fullscreen">
+	<div class="mui-content">
+		<!-- <span class="err-type">404</span>
+	    <span class="tips">找不到页面！</span> -->
+	    <span class="err-type">500</span>
+	    <span class="tips">找不到页面！</span>
+	</div>
+</body>
+</html>

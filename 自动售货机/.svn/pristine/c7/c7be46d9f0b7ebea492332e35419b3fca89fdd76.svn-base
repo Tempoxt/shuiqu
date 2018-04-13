@@ -1,0 +1,71 @@
+.mui-content{
+	height: 100%;
+	background: #F8F8F8;
+	display: flex;
+	flex-direction: column;
+}
+.mui-bar-nav{
+	position: relative;
+	box-shadow: 0 0 0;
+	margin-bottom: 7px;
+	display: flex;
+    align-items: center;
+    background: #fff;
+    font-size: 16px;
+	color: #333333;
+	padding: 0px 25px 0px 16px;
+}
+.reason{
+	padding: 14px 25px 14px 16px;
+	height: 130px;
+	background: #fff;
+	margin-bottom: 15px;
+}
+.reason .content{
+	background: #F8F8F8;
+	border-radius: 4px;
+	height: 72px;
+	margin-top: 8px;
+	font-size: 14px;
+	padding-left: 10px;
+	padding-top: 10px;
+	border: 0;
+}
+.reason .content::-webkit-input-placeholder{
+	color: #979797;
+}
+.reason .title{
+	font-size: 16px;
+	color: #333333;
+}
+.phone-box{
+	height: 228px;
+	background: #fff;
+	padding: 14px 25px 14px 16px;
+}
+.phone-box .phone-title,.phone-box .validate-title{
+	font-size: 16px;
+	color: #333333;
+	margin-bottom: 8px;
+}
+.phone-box .phone-num,.phone-box .validate-code{
+	height: 44px;
+	background: #F8F8F8;
+	border-radius: 4px;
+	margin-bottom: 8px;
+	border: 0;
+}
+.phone-box .validate-code{
+	width: 62%;
+	margin-bottom: 0;
+	border-top-left-radius:4px;
+	border-top-right-radius:0;
+	border-bottom-right-radius:0;
+	border-bottom-left-radius:4px;
+	float: left;
+}
+.phone-box .tips{
+	font-size: 12px;
+	color: #979797;
+	margin-bottom: 24px;
+}

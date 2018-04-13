@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>支付宝页面测试</title>
+    <script type='text/javascript' src='https://cdnqiniu.shuiqoo.cn/zepto.min.js' charset='utf-8'></script>
+    
+</head>
+<body>
+	<a href="https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=2018012602080855&scope=auth_userinfo&redirect_uri=https://x10.shuiqoo.cn/funVm/testVm"><h1>跳转</h1></a>
+	<a href="#" id="aaa"><h1>支付测试</h1></a>
+	<div id="bbb"></div>
+</body>
+	<script type="text/javascript">
+    	$('#aaa').click(function(){
+    		$.ajax({
+		        type: "get",
+		        url: "/pay/zfbzf",
+		        dataType: 'json',
+		        async:false,
+		        complete: function(json) {
+		            
+		            var data = json.response;
+		            var status = json.status;
+		            
+		            if(status != 200){
+		                $.alert('网络异常9.2，状态为' + status);
+		                return;
+		            }
+		            if(data.data){
+		                appid = data.data.appid;
+		            }
+		           
+		            	$("#bbb").html(data);
+		            
+		        }
+		    });
+    	});
+    </script>
+</html>

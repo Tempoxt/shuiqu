@@ -1,0 +1,32 @@
+
+
+	
+	var head = document.getElementsByTagName('head')[0];
+	var link = document.createElement('link');
+	    link.rel = 'stylesheet';
+	    link.type = 'text/css';
+	// 黄色
+	if(theme == 1){
+	    link.href = "/css/themeA.css";
+	}
+	// 紫色
+	else if(theme == 2){
+	    link.href = "/css/themeB.css";
+	}
+	// 红色 
+	else if(theme == 3){
+	    link.href = "/css/themeC.css";
+	}
+	// 蓝色
+	else if(theme == 4){
+	    link.href = "/css/themeD.css";
+	}
+	// 绿色
+	else if(theme == 5){
+	    link.href = "/css/themeE.css";
+	}
+	else{
+		link.href = "/css/themeA.css";
+	}
+	head.appendChild(link);
+
