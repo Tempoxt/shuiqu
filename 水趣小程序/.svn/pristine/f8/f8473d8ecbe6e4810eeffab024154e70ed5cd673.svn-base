@@ -1,0 +1,15 @@
+<!--支付结果-->
+<view class="container" wx:if="{{result == 'success'}}">
+    <image src="{{theme==1?'../../images/1/204ico_pay.png':''}}{{theme==2?'../../images/2/204ico_pay.png':''}}{{theme==3?'../../images/3/204ico_pay.png':''}}{{theme==4?'../../images/4/204ico_pay.png':''}}{{theme==5?'../../images/5/204ico_pay.png':''}}"></image>
+    <text class="payment-status">订单支付成功!</text>
+    <text class="tips">您可以点击查看订单详情。</text>
+    <button class="show-detail {{theme==1?' theme1':''}}{{theme==2?' theme2':''}}{{theme==3?' theme3':''}}{{theme==4?' theme4':''}}{{theme==5?' theme5':''}}" size='mini' bindtap="showDetail">查看订单详情</button>
+    <button class="go-home {{theme==1?' theme1':''}}{{theme==2?' theme2':''}}{{theme==3?' theme3':''}}{{theme==4?' theme4':''}}{{theme==5?' theme5':''}}" size='mini' bindtap="goHome">继续购买</button>
+</view>
+<view class="container" wx:else>
+    <image src="../../images/205ico_no_pay.png"></image>
+    <text class="payment-status">订单已提交，支付未成功!</text>
+    <text class="tips">您可以点击订单详情继续支付。</text>
+    <button class="show-detail {{theme==1?' theme1':''}}{{theme==2?' theme2':''}}{{theme==3?' theme3':''}}{{theme==4?' theme4':''}}{{theme==5?' theme5':''}}" size='mini' bindtap="paymentAgain">查看订单详情</button>
+    <button class="go-home {{theme==1?' theme1':''}}{{theme==2?' theme2':''}}{{theme==3?' theme3':''}}{{theme==4?' theme4':''}}{{theme==5?' theme5':''}}" size='mini' bindtap="goHome">继续购买</button>
+</view>

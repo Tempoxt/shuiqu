@@ -1,0 +1,26 @@
+<!--pages/activityDetail/activityDetail.wxml-->
+<view class="container">
+   <view class="notice">
+        <view>通知</view>
+        <text wx:if="{{title || notice}}">本群发 [2017] 1号</text>
+   </view>
+   <view class="content {{title || notice?' border':''}}">
+        <view class="wrap">
+            <view class="title">{{title}}</view>
+            <view class="group-notice">{{notice}}</view>
+            <block wx:if="{{files.length>0}}">
+                <block wx:for="{{files}}">
+                    <image src="{{item}}" style='width:100%;'></image>
+                </block>
+            </block>
+            
+            <view class="other">
+                <view class="author">{{author}}</view>
+                <view class="time">{{time}}</view>
+            </view>
+        </view>
+        
+   </view>
+   <text class="publish" bindtap='publish'>我也要发群通知</text>
+   <button open-type="share" class="footer" wx:if="{{showPublish}}" bindtap='share'>发布到群里</button>
+</view>

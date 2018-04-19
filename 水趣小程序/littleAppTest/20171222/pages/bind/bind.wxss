@@ -1,0 +1,49 @@
+/* pages/bind/bind.wxss */
+page{
+    background-color: #eee;
+}
+.tipsBox{
+    text-align: center;
+    margin: 80rpx;
+}
+.validateBox{
+    margin:50rpx 50rpx 20rpx 50rpx;
+    /* position:relative; */
+    display: flex;
+    border:1rpx solid #ccc;
+    background: #fff;
+}
+.validateBox .validateNum{
+    font-size:32rpx;
+    width: 150rpx;
+    height:80rpx;
+    line-height:80rpx;
+    /* position:absolute;
+    top:0;
+    left:0; */
+    text-align: center;
+}
+.validateBox .inputCode{
+    flex: 1;
+    font-size:32rpx;
+    height:80rpx;
+    /* padding-left:150rpx; */
+    /* background-color:#fff; */
+}
+.validateBox .getCode{
+    font-size:24rpx;
+    width:160rpx;
+    height:80rpx;
+    line-height: 80rpx;
+    text-align: center;
+    position:static;
+    border-radius: 0;
+    padding: 0;
+    color: #000;
+}
+.confirm-button{
+    margin:70rpx 50rpx 0 50rpx;
+    height:80rpx;
+    line-height:80rpx;
+    font-size:32rpx;
+}

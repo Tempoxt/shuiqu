@@ -1,0 +1,10 @@
+<!--消息详情-->
+<view class="container">
+    <view wx:for="{{textMsg}}" class="msg-wrap">
+        <view class="time-box">
+            <view class="time">{{item.createTime}}</view>
+            <view>{{item.notifyTitle}}</view>
+        </view>
+        <view class="notifyContent">{{item.notifyContent}}</view>
+    </view>
+</view>

@@ -1,0 +1,31 @@
+{
+    "pages": [
+        "pages/index/index",
+        "pages/publish/publish",
+        "pages/joinList/joinList",
+        "pages/activityDetail/activityDetail"
+    ],
+    "window": {
+        "backgroundTextStyle": "light",
+        "navigationBarBackgroundColor": "#F56C64",
+        "navigationBarTitleText": "WeChat",
+        "navigationBarTextStyle": "#fff",
+        "navigationBarTitleText": "趣儿事"
+    },
+    "tabBar": {
+        "list": [
+            {
+                "pagePath": "pages/index/index",
+                "text": "我发布的活动"
+            },
+            {
+                "pagePath": "pages/joinList/joinList",
+                "text": "我参与的活动"
+            }
+        ],
+        "position": "top",
+        "backgroundColor": "#F56C64",
+        "selectedColor": "#fff",
+        "color": "#EDB7B4"
+    }
+}

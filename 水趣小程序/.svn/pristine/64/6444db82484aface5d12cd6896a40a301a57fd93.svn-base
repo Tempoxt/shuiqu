@@ -1,0 +1,32 @@
+<!-- 地址管理 -->
+<scroll-view scroll-y="true" style="height:{{winHeight-50}}px">
+    <view class="address" wx:for="{{address}}">
+        <view class="item-address" data-did="{{item.did}}" bindtap='selectAddress'>
+            <view class="personalInfo">
+                <text class="myName" style="font-size:14px">{{item.contacts}}</text>
+                <text class="phoneNum" style="font-size:14px">{{item.phone}}</text>
+            </view>
+            <view class="address" style="font-size:14px">{{item.streetDescribe}}</view>
+        </view>
+        <view class="Edit">
+            <view class="setDefault"  bindtap="setDefault" data-ifDefault="{{item.ifDefault}}" data-did="{{item.did}}">
+                <image wx:if="{{item.ifDefault}}" src="{{theme==1?'../../images/1/xuanze.png':''}}{{theme==2?'../../images/2/xuanze.png':''}}{{theme==3?'../../images/3/xuanze.png':''}}{{theme==4?'../../images/4/xuanze.png':''}}{{theme==5?'../../images/5/xuanze.png':''}}"></image>
+                <image wx:else src="../../images/checkbox_big_disabled.png"></image>    
+                <text style="font-size:13px">设为默认</text>
+            </view>
+            <view class="other">
+                <view catchtap="deleteAddress" data-did="{{item.did}}" style="font-size:14px"> 删除</view>
+            </view>
+        </view>
+        
+    </view>
+</scroll-view>
+<view class="btn-box">
+    <view class="addAddress cannot-add" wx:if="{{addLenth>=6}}" bindtap="addAddress" disabled>
+        最多只能添加6个地址
+    </view>
+    <view class="addAddress {{theme==1?' theme1':''}}{{theme==2?' theme2':''}}{{theme==3?' theme3':''}}{{theme==4?' theme4':''}}{{theme==5?' theme5':''}}"  wx:else bindtap="addAddress">
+        新增地址
+    </view>
+</view>
+

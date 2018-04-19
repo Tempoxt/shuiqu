@@ -1,0 +1,5 @@
+<!--pages/faq/faq.wxml-->
+<view class="container">
+    <view class="quesiton">{{question}}</view>
+    <view class="answer">{{answer}}</view>
+</view>

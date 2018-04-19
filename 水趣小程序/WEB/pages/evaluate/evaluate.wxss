@@ -1,0 +1,131 @@
+/* pages/evaluate/evaluate.wxss */
+page{
+    height: 100%;
+    background: #eee;
+}
+.container{
+    margin-bottom:40px;
+}
+.container .service-evaluate{
+    display:flex;
+    align-items:center;
+    background: #fff;
+    margin-top: 20rpx;
+    padding:20rpx;
+}
+.container .service-evaluate .staff-photo{
+    width:100rpx;
+    height:100rpx;
+    border-radius:50%;
+    margin:0 40rpx;
+}
+.container .service-evaluate .evaluate-list{
+    font-size:30rpx;
+}
+.container .service-evaluate .evaluate-list .orderTags{
+    display:flex;
+    align-items:center;
+}
+
+.container .service-evaluate .evaluate-list .orderTags .star{
+    width:40rpx;
+    height:40rpx;
+    background-size: 40rpx 40rpx;
+    background-image: url('../../images/86darkStar.png');
+    
+}
+.container .service-evaluate .evaluate-list .orderTags .star.on{
+    background-image: url('../../images/86star.png');
+}
+.container .service-feel{
+    font-size:24rpx;
+    width:100%;
+    height:180rpx;
+    padding:20rpx 0;
+    background: #fff;
+    margin-top: 20rpx;
+}
+.container .service-feel textarea{
+    width: auto;
+    padding: 0 20rpx;
+    height:180rpx; 
+}
+.container .goods-evaluate{
+    margin-top: 20rpx;
+    background: #fff;
+    padding-bottom:100rpx;
+}
+.container .goods-evaluate .goods{
+    padding:20rpx;
+    border-bottom:1rpx solid #ddd;
+}
+.container .goods-evaluate .goods .title{
+    font-size:30rpx;
+}
+.container .goods-evaluate .goods .goods-content{
+    display:flex;
+    align-items:center;
+    height:180rpx;
+    padding:20rpx 0;
+}
+.container .goods-evaluate .goods .goods-content image{
+    width:180rpx;
+    height:180rpx;
+}
+.container .goods-evaluate .goods .goods-content .evaluate-content{
+    height:100rpx;
+    font-size:24rpx;
+    border:1rpx solid #ddd;
+}
+.container .goods-evaluate .goods .goods-star{
+    font-size:30rpx;
+    display:flex;
+    align-items:center;
+}
+.container .goods-evaluate .goods .goods-star .star{
+    width:40rpx;
+    height:40rpx;
+    background-size: 40rpx 40rpx;
+    background-image: url('../../images/86darkStar.png');
+}
+.container .goods-evaluate .goods .goods-star .star.on{
+    background-image: url('../../images/86star.png');
+}
+.container .btn-box{
+    height: 50px;
+    display: flex;
+    align-items: center;
+    position:fixed;
+    width:100%;
+    bottom:0;
+}
+.container .footer{
+    font-size:26rpx;
+    flex: 1;
+    height:40px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border-radius: 40px;
+}
+.container .footer.theme1{
+    background: linear-gradient(to right,#F6CC47,#FFAD52);
+    color:#fff;
+}
+.container .footer.theme2{
+    background:linear-gradient(to right,#7b00d3,#b25aff);
+    color:#fff; 
+}
+.container .footer.theme3{
+    background:linear-gradient(to right,#cf1731,#ff4060);
+    color:#fff; 
+}
+.container .footer.theme4{
+    background:linear-gradient(to right,#15a0ff,#3ebaff);
+    color:#fff; 
+}
+.container .footer.theme5{
+    background:linear-gradient(to right,#2cc136,#5de04f);
+    color:#fff; 
+}
+

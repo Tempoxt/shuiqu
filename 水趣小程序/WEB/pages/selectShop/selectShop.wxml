@@ -1,0 +1,45 @@
+<!--  选择店铺  -->
+<scroll-view scroll-y="true" class="container">
+    <view class="header">
+        <view class="top-choose-location" bindtap='topGetCity'>
+            <text>{{currentCity}}</text>
+            <image src="../../images/63navbar_ico_arrow_down.png"></image>
+        </view>
+        <view class="search">
+            <input type="text" maxlength="100" placeholder="请输入地址寻找周边水店" bindinput="inputHandler" bindconfirm="search"/>
+            <icon type="search" color="#4c4c4c" size="18" bindtap="search"></icon>
+        </view>
+    </view>
+    <view class="sug_info"> 
+        <view class="sug_list" wx:for="{{sugData}}" data-lat="{{item.location.lat}}" data-lng="{{item.location.lng}}" bindtap="searchNearby" data-city="{{item.city}}" data-district="{{item.district}}" data-street="{{item.name}}">
+            <text>{{item.name}}</text>
+            <view>{{item.city}}{{item.district}}</view>
+        </view> 
+    </view>
+    <view class="location">
+        <image src="../../images/47location.png" class="select-here"></image>
+        <text>{{address ? address:''}}</text>
+        <button size="mini" class="location-again" bindtap="locationAgain">重新定位当前位置</button>
+    </view>
+    <view wx:if="{{shopList && shopList.length>0}}" class="shop-list">
+        <view class="shop-item" wx:for="{{shopList}}" data-shopid="{{item.shopId}}" bindtap='goShop'>
+            <image src="{{item.pictureUrl}}" class="picture-img"></image>
+            <view class="shop-detail">
+                <text class="shop-name">{{item.shopName}}</text>
+                <view class="level"><image src="../../images/86star.png" wx:for="{{item.grade/2}}"></image><image src="../../images/86darkStar.png" wx:for="{{5-item.grade/2}}"></image></view>
+                <text class="dispatch-info">起送价￥{{item.minSendPrice}} | 配送费￥{{item.freight}} | {{item.sendOnTime}}分钟到达</text>
+                <view class="distance">
+                    <image src="../../images/46location.png"></image>
+                    <text>{{item.distance}}</text>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view wx:else class="main">
+        <image src="../../images/location_fendou.png" class="no-shop-img"></image>
+        <text>亲，这地儿暂时送不到，
+        趣儿会努力开店的!</text>
+    </view>
+</scroll-view>
+<!--注册-->
+<include src="../../common/register/register.wxml" />

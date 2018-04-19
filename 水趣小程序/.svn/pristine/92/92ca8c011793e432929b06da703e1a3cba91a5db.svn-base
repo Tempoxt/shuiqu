@@ -1,0 +1,66 @@
+/* pages/customService/customService.wxss */
+page{
+    background: #F0F0F0;
+}
+.container view{
+    padding-left: 40rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    font-size: 15px;
+    border-bottom: 1rpx solid #E5E5E5;
+}
+.container .questions{
+    padding-left: 40rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    border-bottom: 1rpx solid #E5E5E5;
+    font-size: 13px;
+    color: #666;
+}
+.container .more-help{
+    padding-left: 40rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    font-size: 26rpx;
+    border-bottom:0;
+    color: #666; 
+}
+.container .btn-box{
+    background: #F0F0F0;
+    border:0;
+    position:fixed;
+    bottom:0;
+    width:100%;
+    display: flex;
+    padding:15rpx 30rpx;
+}
+.container .btn-box::after{
+    border: 0;
+}
+.container .online-kefu{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    font-size: 16px;
+    z-index:10000;
+    box-sizing: border-box;
+    color: #fff;
+    background: linear-gradient(to right,#F6CC47,#FFAD52);
+}
+.container .online-kefu.theme1{
+    background: linear-gradient(to right,#F6CC47,#FFAD52);
+}
+.container .online-kefu.theme2{
+    background: linear-gradient(to right,#7b00d3,#b25aff);
+}
+.container .online-kefu.theme3{
+    background: linear-gradient(to right,#cf1731,#ff4060);
+}
+.container .online-kefu.theme4{
+    background: linear-gradient(to right,#15a0ff,#3ebaff);
+}
+.container .online-kefu.theme5{
+    background: linear-gradient(to right,#2cc136,#5de04f);
+}

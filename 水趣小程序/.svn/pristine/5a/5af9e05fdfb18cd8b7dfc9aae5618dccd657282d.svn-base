@@ -1,0 +1,66 @@
+/* pages/integral/integral.wxss */
+page{
+    height: 100%;
+}
+.container{
+    height: 100%;
+    background-color: #eee;
+}
+.container .header{
+    margin: 0 0 10rpx 0;
+    padding: 20rpx 0; 
+    background-color: #F8D52F;
+    display: flex;
+}
+.container .header .can-use{
+    flex: 1;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 30rpx;
+    flex-direction: column;
+}
+.container .header .can-use{
+    border-right:1rpx solid #CCB22E;
+}
+.container .header .total{
+    flex: 1;
+    display: flex;
+    justify-content: space-around; 
+}
+.container .header .total view{
+    display: flex;
+    justify-content: space-around;  
+    align-items: center;
+    font-size: 30rpx;
+    flex-direction: column;
+}
+.container .header .total image{
+    width:40rpx;
+    height: 40rpx;
+}
+.container .desc{
+    display: flex;
+    height: 80rpx;
+    background-color: #fff;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20rpx;
+    font-size: 30rpx;
+}
+.container .desc .title{
+    font-size: 32rpx;
+    font-weight: bold;
+}
+.container .desc .time{
+    display:flex;
+}
+.container .desc .time view{
+    width:0;
+    height:0;
+    border-bottom: 20rpx solid #000;
+    border-left: 20rpx solid transparent;
+    align-self:flex-end;
+}
+/*注册窗口*/
+@import "../../common/register.wxss"; 

@@ -1,0 +1,34 @@
+/* pages/payResult/payResult.wxss */
+.container {
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+}
+.container image{
+    width:160rpx;
+    height:160rpx;
+    margin-top:100rpx;
+}
+.container .payment-status{
+    font-size:32rpx;
+    font-weight:bold;
+    margin:40rpx 0 20rpx 0;
+}
+.container .tips{
+    font-size:28rpx;
+    margin-bottom:60rpx;
+}
+.container .show-detail{
+    width:80%;
+    height:70rpx;
+    line-height:70rpx;
+    margin-bottom:40rpx;
+    background:#F8D52F;
+}
+.container .go-home{
+    width:80%;
+    height:70rpx;
+    line-height:70rpx;
+    background:#F8D52F;
+}

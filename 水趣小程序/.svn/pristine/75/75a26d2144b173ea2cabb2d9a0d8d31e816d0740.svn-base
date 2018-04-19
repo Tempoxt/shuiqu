@@ -1,0 +1,65 @@
+/* pages/addAddress/addAddress.wxss */
+.gray{
+    color:#bbb;
+}
+page{
+    background-color: #eee;
+}
+.container .address-info {
+    margin-top: 20rpx;
+    /* padding: 0 20rpx; */
+}
+
+.address-info  .item{
+    display: flex;
+    height: 90rpx;
+    line-height: 90rpx;
+    font-size: 26rpx;
+    background-color: #fff; 
+    border-bottom: 1rpx solid #eee;
+    padding:0 30rpx; 
+}
+.address-info  .item .tag{
+    flex: 1;
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: center;
+    padding: 0;
+}
+.address-info  .item .tag .tag-item{
+    width: 80rpx;
+    height: 40rpx;
+    line-height: 40rpx;
+    text-align: center;
+}
+.address-info  .item .tag .tag-item.active{
+    color: #EECE1F;
+    border:1rpx solid #EECE1F;
+    border-radius: 10rpx; 
+}
+.address-info  .item .add-tag{
+    width:220rpx;
+     text-align: right; 
+    justify-content: flex-end;
+    padding: 0;
+    font-size: 60rpx;
+    font-weight: normal;
+}
+.address-info .item  .item-text{
+    width:140rpx;
+}
+.address-info .item input{
+    flex: 1;
+    height: 90rpx;
+    line-height: 90rpx;
+}
+.container .save-address{
+    position:fixed;
+    height:80rpx;
+    line-height:80rpx;
+    bottom:0;
+    width:100%;
+    font-size:32rpx;
+    background:#EECE1F;
+    text-align:center;
+}

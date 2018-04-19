@@ -1,0 +1,42 @@
+<!--退货申请-->
+<view class="container">
+    <view class="explain">
+        <view class="title">退货退款服务说明:</view>
+        <view class="content">{{tuihuo.desc}}</view>
+    </view>
+    <view class="apply-type">
+        <view class="title">申请类型:</view>
+        <view class="select-box">
+            <view class="tuihuo-type" data-type="我要退款（无需退货）" bindtap="toggleType">
+                <text>我要退款（无需退货）</text>
+                <image wx:if="{{tuihuoType == '我要退款（无需退货）'}}" src="{{theme==1?'../../images/1/xuanze.png':''}}{{theme==2?'../../images/2/xuanze.png':''}}{{theme==3?'../../images/3/xuanze.png':''}}{{theme==4?'../../images/4/xuanze.png':''}}{{theme==5?'../../images/5/xuanze.png':''}}" ></image>
+                <image wx:else src="../../images/checkbox_big_disabled.png"></image>
+            </view>
+            <view class="tuihuo-type" data-type="我要退货" bindtap="toggleType">
+                <text>我要退货</text>
+                <image wx:if="{{tuihuoType == '我要退货'}}"src="{{theme==1?'../../images/1/xuanze.png':''}}{{theme==2?'../../images/2/xuanze.png':''}}{{theme==3?'../../images/3/xuanze.png':''}}{{theme==4?'../../images/4/xuanze.png':''}}{{theme==5?'../../images/5/xuanze.png':''}}" ></image>
+                <image wx:else src="../../images/checkbox_big_disabled.png"></image>
+            </view>
+        </view>
+    </view>
+    <view class="apply-reason">
+        <view class="title">申请原因:</view>
+        <view class="reason">
+            <picker mode="selector" range="{{tuihuo.th_reasons}}"  bindchange='changeReason'>
+            {{tuihuo.th_reasons[index]}}
+            </picker>
+        </view>
+        
+    </view>
+    <view class="message">
+        <view class="title">留言:</view>
+        <view class="content">
+            <textarea  placeholder='请输入留言' bindinput='inputMessage'></textarea>
+        </view>
+        
+    </view>
+    <view class="btn-box">
+        <view class="footer theme1" bindtap="submitApply">提交申请</view>
+    </view>
+</view>
+

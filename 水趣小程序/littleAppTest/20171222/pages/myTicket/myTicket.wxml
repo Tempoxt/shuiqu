@@ -1,0 +1,62 @@
+<!--pages/myTicket/myTicket.wxml-->
+<view class="swiper-tab"> 
+  <view class="swiper-tab-item {{currentTab==0 ? 'on' : ''}}" data-current="0" bindtap="swichNav">当前余票</view> 
+  <view class="swiper-tab-item {{currentTab==1 ? 'on' : ''}}" data-current="1" bindtap="swichNav">消费记录</view> 
+</view> 
+ 
+<swiper current="{{currentTab}}" class="swiper-box" duration="300" style="height:{{winHeight}}px" bindchange="bindChange"> 
+  <swiper-item> 
+    <view class="header">
+        <view class="info">累计余票量：<text class="red">{{surplus.totalCount}} </text></view>
+        <view class="recently">最近订购：<text class="red">{{surplus.lastDate}}</text></view>
+    </view>
+    <view class="content">
+        <view class="item" wx:for="{{surplus.ticketDatas}}" bindtap='ticketDetail' data-ticketid="{{item.ticketId}}" data-orderid="{{item.orderId}}" data-eid="{{item.eid}}" data-begindate="{{item.beginDate}}" data-enddate="{{item.endDate}}" data-pname="{{item.pname}}" data-surplusnum="{{item.surplusNum}}" data-sellnum="{{item.sellNum}}" data-selldate="{{item.sellDate}}">
+            <view class="item-detail">
+                <view class="info">
+                    <view class="title">{{item.pname}}</view>
+                    <view>订单号：{{item.orderNo}}</view>
+                    <view>购买量：{{item.sellNum}}</view>
+                    <view>剩余量：{{item.surplusNum}}</view>
+                    <view>有效期：{{item.beginDate}}至{{item.endDate}}</view>
+                </view>
+                
+                <image src="../../images/shopLogo.jpg"></image> 
+            </view>
+            <view class="to-use" data-shopid="{{item.shopId}}" data-convertpid="{{item.convertPid}}" catchtap='useIt'>
+                <text>点</text>
+                <text>击</text>
+                <text>使</text>
+                <text>用</text>
+                <image class="arrow" src="../../images/arrow.png"></image>
+            </view>
+        </view>
+    </view>
+  </swiper-item> 
+  <swiper-item> 
+    <view class="content" style="margin-top:10rpx;">
+        <view class="item" wx:for="{{record.consumeDatas}}" bindtap='ticketDetail' data-ticketid="{{item.ticketId}}" data-orderid="{{item.orderId}}" data-eid="{{item.eid}}" data-begindate="{{item.beginDate}}" data-enddate="{{item.endDate}}" data-pname="{{item.pname}}" data-surplusnum="{{item.surplusNum}}" data-sellnum="{{item.sellNum}}" data-selldate="{{item.sellDate}}">
+            <view class="item-detail">
+                <view class="info">
+                    <view class="title">{{item.pname}}</view>
+                    <view>订单号：{{item.orderNo}}</view>
+                    <view>购买量：{{item.sellNum}}</view>
+                    <view>剩余量：{{item.surplusNum}}</view>
+                    <view>有效期：{{item.beginDate}}至{{item.endDate}}</view>
+                </view>
+                
+                <image src="../../images/shopLogo.jpg"></image> 
+            </view>
+            <view class="to-use">
+                <text>查</text>
+                <text>看</text>
+                <text>记</text>
+                <text>录</text>
+                <image class="arrow" src="../../images/arrow.png"></image>
+            </view>
+        </view>
+    </view> 
+  </swiper-item> 
+</swiper> 
+<!--注册-->
+<include src="../../common/register.wxml" />  

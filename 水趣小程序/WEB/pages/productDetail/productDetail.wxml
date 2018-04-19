@@ -1,0 +1,95 @@
+<!--商品详情-->
+<scroll-view class="container" scroll-y="true" style="height:{{winHeight-50}}px;">
+    <swiper indicator-dots="true" autoplay="true" interval="5000" duration="1000" indicator-active-color="#147BFB">
+        <block wx:for="{{result.photos}}">
+            <swiper-item>
+            <image src="{{item}}" class="slide-image" mode="aspectFit" style="display:inline;" />
+            </swiper-item>
+        </block>
+    </swiper>
+    <view class="product-info">
+        <view class="title">{{result.product.pname}}</view>
+        <view class="info-detail">
+            <view class="pledgeRemark" wx:if="{{result.product.pledgeRemark}}" data-pid="{{result.product.pledgePid}}" bindtap="goYatong">{{result.product.pledgeRemark}}</view>          
+            <view class="price-box">
+                <view class="price">
+                    <text class="vip-price">￥{{result.product.vipPrice}}　</text>
+                    <text class="original-cost">价格:<text>{{result.product.price}}</text></text>
+                </view>
+                <view class="ticket" wx:if="{{result.product.ifTicket}}">可以票结算</view>
+            </view>
+            <view class="standard" wx:if="{{result.product.weight}}"><text>规格</text>　{{result.product.weight}}</view>
+            <view class="freight-box">
+                <text class="title">运费</text>　
+                <text class="freight" wx:if="{{result.product.freight}}">{{result.product.freight}}</text>
+                <text class="freight" wx:if="{{result.product.freightRemark}}">{{result.product.freightRemark}}</text>
+                <text class="freight" wx:else>免运费</text>　
+                <text class="range" wx:if="{{result.product.sendArea}}"><text>配送范围</text>　{{result.product.sendArea}}</text>
+            </view>  
+        </view>
+    </view>
+    <view class="related-preferences" wx:if="{{result.taocans.length > 0}}">
+        <view class="title">相关优惠</view>
+        <view class="suggest-list">
+            <view class="taocan" wx:for="{{result.taocans}}" data-pid="{{item.pid}}" bindtap='goTaocan'>
+                <image src="{{item.pictureUrl}}"></image>
+                <view class="pname">{{item.pname}}</view>
+                <view class="vip-price">￥{{item.vipPrice}}</view>
+            </view>
+        </view>
+    </view>
+    <view class="shop-info-wrap">
+        <view class="shop-title-box">
+            <view class="left">
+                <image class="shop-pic" src="{{result.shop.pictureUrl}}"></image>
+                <view class="shop-title">
+                    <text>{{result.shop.shopName}}</text>
+                    <view class="level">
+                        <image src="../../images/86star.png" wx:for="{{result.shop.grade/2}}"></image>
+                        <image src="../../images/86darkStar.png" wx:for="{{5-result.shop.grade/2}}"></image>
+                    </view>
+                </view>
+            </view>
+            <view class="right"><view class="go-shop" catchtap='goShop'>进店逛逛</view></view>
+        </view>
+        <view class="shop-info">
+            <view class="item">
+                <text>{{result.shop.sendOnTime}}分钟</text>
+                <text>平均送达时间</text>
+            </view>
+            <view class="item">
+                <text>￥{{result.shop.minSendPrice}}</text>
+                <text>起送价</text>
+            </view>
+            <view class="item">
+                <text>￥{{result.shop.freight}}</text>
+                <text>配送费</text>
+            </view>
+        </view>
+    </view>
+    <view class="show-evaluate" bindtap='productEvaluate'>
+        <view>查看商品评价</view>
+        <view class="navigator-arrow"></view>
+    </view>
+    
+</scroll-view>
+<view class="footer">
+    <view class="content-left">
+         <image src="{{theme==1?'../../images/1/shoppingCar.png':''}}{{theme==2?'../../images/2/shoppingCar.png':''}}{{theme==3?'../../images/3/shoppingCar.png':''}}{{theme==4?'../../images/4/shoppingCar.png':''}}{{theme==5?'../../images/5/shoppingCar.png':''}}" class="cart" catchtap="pay"></image>
+        <view class="num" wx:if="{{totalCount> 0}}">{{totalCount}}</view> 
+        <button catchtap="goHome">
+            <image src="../../images/home.png" ></image><text>首页</text>
+        </button>
+        <button catchtap="kefu">
+            <image src="../../images/kefu.png" ></image><text>客服</text>
+        </button>
+        <button open-type="share" catchtap="share">
+            <image src="../../images/fenxiang.png" ></image><text>分享</text>
+        </button>
+    </view>
+    <view class="content-right">
+        <view class="add-cart {{theme==1?' theme1':''}}{{theme==2?' theme2':''}}{{theme==3?' theme3':''}}{{theme==4?' theme4':''}}{{theme==5?' theme5':''}}" bindtap='addCart'>加入购物车</view>
+        <view class="buy-now {{theme==1?' theme1':''}}{{theme==2?' theme2':''}}{{theme==3?' theme3':''}}{{theme==4?' theme4':''}}{{theme==5?' theme5':''}}" bindtap='buyNow'>立即购买</view>  
+    </view>
+</view>
+

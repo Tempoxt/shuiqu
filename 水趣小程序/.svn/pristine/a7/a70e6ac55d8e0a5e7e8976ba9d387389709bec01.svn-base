@@ -1,0 +1,117 @@
+/* pages/myCoupons/myCoupons.wxss */
+.swiper-tab{ 
+  width: 100%; 
+  text-align: center;
+  height: 40px; 
+  line-height: 40px;
+  display: flex;
+} 
+.swiper-tab-item{ 
+    font-size: 30rpx; 
+    flex: 1;
+    width: 50%; 
+    color: #4d555d;
+    
+} 
+.on{
+  color: #000; 
+  font-weight: bold; 
+  
+} 
+.on.theme1{
+    border-bottom: 2px solid #F8D32F;
+}
+.on.theme2{
+    border-bottom: 2px solid #7b00d3;
+}
+.on.theme3{
+    border-bottom: 2px solid #ff4060;
+} 
+.on.theme4{
+    border-bottom: 2px solid #3ebaff;
+} 
+.on.theme5{
+    border-bottom: 2px solid #5de04f;
+}   
+.swiper-box{ display: block; height: 100%; width: 100%; overflow: hidden;background-color: #eee; } 
+.swiper-box swiper-item .content{
+    padding:20rpx;
+}
+.swiper-box swiper-item .content .coupon{
+    height:300rpx;
+    background:#fff;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20rpx;
+}
+.swiper-box swiper-item .content .coupon .info{
+    display: flex;
+    height: 200rpx;
+    align-items: center;
+    border-bottom: 1rpx dashed #ccc;
+}
+.swiper-box swiper-item .content .coupon .info .logoUrl{
+    flex:1;
+    
+}
+.swiper-box swiper-item .content .coupon .info .logoUrl image{
+    width:136rpx;
+    height:136rpx;
+    padding-left: 10rpx;
+}
+.swiper-box swiper-item .content .coupon .info .coupon-name{
+    flex:2;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    justify-content:center;
+}
+.swiper-box swiper-item .content .coupon .info .coupon-name .title{
+    height: 60rpx;
+    display: flex;
+    align-items: center;
+    font-size: 30rpx;
+    color: #7E8B98;
+}
+.swiper-box swiper-item .content .coupon .info .coupon-name .coupon-price{
+    height: 60rpx;
+    display: flex;
+    align-items: center; 
+    font-size: 30rpx;
+    font-weight: bold;
+    color: #f00;
+}
+/* .swiper-box swiper-item .content .coupon .info .coupon-name .coupon-price text{
+    color: #f00;
+} */
+.swiper-box swiper-item .content .coupon .info .is-use{
+    flex:1;
+}
+.swiper-box swiper-item .content .coupon .info .is-use image{
+    width:160rpx;
+    height:160rpx;
+}
+.swiper-box swiper-item .content .coupon .other{
+    flex: 1;
+    display: flex;
+    padding: 0 20rpx;
+    flex-direction:row;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 26rpx;
+}
+.swiper-box swiper-item .content .coupon .other .address{
+    display: flex;
+    align-items: center;
+}
+.swiper-box swiper-item .content .coupon .other .address image{
+    width:40rpx;
+    height:40rpx;
+}
+
+/*注册窗口*/
+ @import "../../common/register/register.wxss"; 
+
+
+
+

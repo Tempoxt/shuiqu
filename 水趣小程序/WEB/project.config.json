@@ -1,0 +1,168 @@
+{
+	"description": "项目配置文件。",
+	"setting": {
+		"urlCheck": true,
+		"es6": true,
+		"postcss": true,
+		"minified": true,
+		"newFeature": true
+	},
+	"compileType": "miniprogram",
+	"libVersion": "1.9.90",
+	"appid": "wxe1e7a3f2321d2658",
+	"projectname": "%E6%B0%B4%E5%AE%9C%E5%AE%B6%E6%B5%8B%E8%AF%95",
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"list": []
+		},
+		"miniprogram": {
+			"current": -1,
+			"list": [
+				{
+					"id": -1,
+					"name": "地址",
+					"pathName": "pages/addAddress/addAddress",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "搜索",
+					"pathName": "pages/oftenUseShop/oftenUseShop",
+					"query": ""
+				},
+				{
+					"id": 2,
+					"name": "店铺",
+					"pathName": "pages/products/products",
+					"query": "shopId=2"
+				},
+				{
+					"id": -1,
+					"name": "体验店",
+					"pathName": "pages/products/products",
+					"query": "shopId=2"
+				},
+				{
+					"id": -1,
+					"name": "证件信息",
+					"pathName": "pages/certificateImg/certificateImg",
+					"query": "shopId=12"
+				},
+				{
+					"id": -1,
+					"name": "证件信息",
+					"pathName": "pages/address/address",
+					"query": "shopId=12"
+				},
+				{
+					"id": -1,
+					"name": "积分",
+					"pathName": "pages/webIntegral/webIntegral",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "搜索2",
+					"pathName": "pages/search/search",
+					"query": " "
+				},
+				{
+					"id": 8,
+					"name": "购物车",
+					"pathName": "pages/shopCart/shopCart",
+					"query": "shopId=470"
+				},
+				{
+					"id": -1,
+					"name": "牙痛",
+					"pathName": "pages/myAccount /myAccount",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "牙痛",
+					"pathName": "pages/myAccount/myAccount",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "牙痛",
+					"pathName": "pages/index/index",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "牙痛",
+					"pathName": "pages/myAccount/myAccount",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "tuik ",
+					"pathName": "pages/myAccount/refundProcess/refundProcess",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "首页",
+					"pathName": "pages/index/index",
+					"query": "shopId=470"
+				},
+				{
+					"id": -1,
+					"name": "首页",
+					"pathName": "pages/index/index",
+					"query": "\\"
+				},
+				{
+					"id": -1,
+					"name": "首页",
+					"pathName": "pages/index/index",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "首页",
+					"pathName": "pages/index/index",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "首页",
+					"pathName": "pages/index/index",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "首页",
+					"pathName": "pages/index/index",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "购物车",
+					"pathName": "pages/customService/customService",
+					"query": "shopId=470"
+				},
+				{
+					"id": -1,
+					"name": "购物车",
+					"pathName": "pages/index/index",
+					"query": "shopId=470"
+				}
+			]
+		}
+	}
+}

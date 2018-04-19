@@ -1,0 +1,135 @@
+<!--确认订单-->
+<form class="container" bindsubmit="submitOrder" report-submit="true">
+    <!--地址容器  -->
+    <view class="address-container">
+        <!-- 用户已添加过地址 -->
+        <view class="has-address" bindtap="selectAddress" wx:if="{{address}}">
+			
+			<view class="info-box">
+                <view class="base-info">
+                    <text class="username">{{username}}</text>
+                    <text class="telphone">{{telphone}}</text>
+                </view>
+                <view class="user-address">{{address}}</view>
+            </view>
+            
+			<view class="arrow"></view>
+		</view>
+        
+		<!-- 用户尚未添加地址时 -->
+		 <view class="no-address" bindtap="selectAddress" wx:else>
+			<image src="../../images/location.png" class="location" />
+			<view class="title">请添加一个收货地址</view>
+			<view class="arrow"></view>
+		</view> 
+        <view class="mail"></view>
+	</view>
+    <!--支付方式  -->
+    <view class="pay-mode">
+        <view class="title">选择支付方式</view>
+        
+        <view class="pay-box">
+            <block wx:if="{{result.isOnlinePay}}">
+                <view  wx:if="{{result.totalMoney>0}}" class="payment-item" data-payment="微信支付" bindtap='choosePayment'>  
+                    <image class="icon" src="../../images/weChart.png"></image>
+                    <text>微信支付</text>
+                    <view>
+                        <image src="{{theme==1?'../../images/1/xuanze.png':''}}{{theme==2?'../../images/2/xuanze.png':''}}{{theme==3?'../../images/3/xuanze.png':''}}{{theme==4?'../../images/4/xuanze.png':''}}{{theme==5?'../../images/5/xuanze.png':''}}" wx:if="{{result.weixinPay}}"></image>
+                        <image src="../../images/checkbox_big_disabled.png" wx:else></image>
+                    </view>
+                </view>
+
+                <view wx:else class="payment-item" data-payment="货到付款" bindtap='choosePayment'>  
+                    <image class="icon" src="{{theme==1?'../../images/1/cash_on.png':''}}{{theme==2?'../../images/2/cash_on.png':''}}{{theme==3?'../../images/3/cash_on.png':''}}{{theme==4?'../../images/4/cash_on.png':''}}{{theme==5?'../../images/5/cash_on.png':''}}"></image>
+                    <text>货到付款</text>
+                    <view>
+                        
+                        <image src="{{theme==1?'../../images/1/xuanze.png':''}}{{theme==2?'../../images/2/xuanze.png':''}}{{theme==3?'../../images/3/xuanze.png':''}}{{theme==4?'../../images/4/xuanze.png':''}}{{theme==5?'../../images/5/xuanze.png':''}}" wx:if="{{result.cashOn}}"></image>
+                        <image src="../../images/checkbox_big_disabled.png" wx:else></image>
+                    </view>
+                </view>
+            </block>
+            <block wx:else>
+                <view  wx:if="{{result.totalMoney>0}}" class="payment-item" data-payment="微信支付" bindtap='choosePayment'>  
+                    <image class="icon" src="../../images/weChart.png"></image>
+                    <text>微信支付</text>
+                    <view>
+                        <image src="{{theme==1?'../../images/1/xuanze.png':''}}{{theme==2?'../../images/2/xuanze.png':''}}{{theme==3?'../../images/3/xuanze.png':''}}{{theme==4?'../../images/4/xuanze.png':''}}{{theme==5?'../../images/5/xuanze.png':''}}"  wx:if="{{result.weixinPay}}"></image>
+                        <image src="../../images/checkbox_big_disabled.png" wx:else></image>
+                    </view>
+                </view>
+
+                <view class="payment-item" data-payment="货到付款" bindtap='choosePayment'>  
+                    <image class="icon" src="{{theme==1?'../../images/1/cash_on.png':''}}{{theme==2?'../../images/2/cash_on.png':''}}{{theme==3?'../../images/3/cash_on.png':''}}{{theme==4?'../../images/4/cash_on.png':''}}{{theme==5?'../../images/5/cash_on.png':''}}"></image>
+                    <text>货到付款</text>
+                    <view>
+                        <image src="{{theme==1?'../../images/1/xuanze.png':''}}{{theme==2?'../../images/2/xuanze.png':''}}{{theme==3?'../../images/3/xuanze.png':''}}{{theme==4?'../../images/4/xuanze.png':''}}{{theme==5?'../../images/5/xuanze.png':''}}" wx:if="{{result.cashOn}}"></image>
+                        <image src="../../images/checkbox_big_disabled.png" wx:else></image>
+                    </view>
+                </view>
+            </block>
+        </view>
+    </view>
+    <!--商品详情-->
+    <view class="goods-detail">
+        <view class="title">商品详情</view>
+        <view class="goods-list">
+            <view class="shop-info">
+                <image src="{{result.model[0].pictureUrl}}"></image>
+                <text>{{result.model[0].shopName}}</text>
+            </view>
+            <view class="goods" wx:for="{{result.model[0].products}}">
+                <image wx:if="{{item.fpid}}" src="../../images/peison.png" class="fpid"></image>
+                <image src="{{item.pictureUrl}}" class="good-img"></image>
+                <view class="desc">
+                    <text class="goods-name">{{item.pname}}</text>
+                        <view class="goods-price" wx:if="{{item.buyType == 1}}">
+                            <image src="{{theme==1?'../../images/1/146icon_cash.png':''}}{{theme==2?'../../images/2/146icon_cash.png':''}}{{theme==3?'../../images/3/146icon_cash.png':''}}{{theme==4?'../../images/4/146icon_cash.png':''}}{{theme==5?'../../images/5/146icon_cash.png':''}}"></image>
+                            <text>￥{{item.vipPrice}}</text>
+                        </view>
+                        <view class="goods-price" wx:elif="{{item.buyType == 2}}">
+                            <image src="{{theme==1?'../../images/1/203icon_e_ticket.png':''}}{{theme==2?'../../images/2/203icon_e_ticket.png':''}}{{theme==3?'../../images/3/203icon_e_ticket.png':''}}{{theme==4?'../../images/4/203icon_e_ticket.png':''}}{{theme==5?'../../images/5/203icon_e_ticket.png':''}}"></image>
+                            <text class="no-cash">￥{{item.vipPrice}}</text>
+                        </view>
+                        <view class="goods-price" wx:elif="{{item.buyType == 3}}">
+                            <image src="{{theme==1?'../../images/1/148icon_ticket.png':''}}{{theme==2?'../../images/2/148icon_ticket.png':''}}{{theme==3?'../../images/3/148icon_ticket.png':''}}{{theme==4?'../../images/4/148icon_ticket.png':''}}{{theme==5?'../../images/5/148icon_ticket.png':''}}"></image>
+                            <text class="no-cash">￥{{item.vipPrice}}</text>
+                        </view>
+                        <view class="goods-price" wx:elif="{{item.buyType == 4}}">
+                            <image src="{{theme==1?'../../images/1/146icon_cash.png':''}}{{theme==2?'../../images/2/146icon_cash.png':''}}{{theme==3?'../../images/3/146icon_cash.png':''}}{{theme==4?'../../images/4/146icon_cash.png':''}}{{theme==5?'../../images/5/146icon_cash.png':''}}"></image>
+                            <text>￥{{item.vipPrice}}</text>
+                        </view>
+                </view>
+                
+                <view class="number-box">
+                    <text>x{{item.number}}</text>
+                </view>
+            </view>
+        </view>
+    </view>
+    <!--其他信息-->
+    <view class="other-info">
+        <view class="activity-box">
+            <view class="title">店铺优惠</view>
+            <picker mode="selector" value="{{index}}" range-key="activityName" range="{{result.model[0].discounts}}"  bindchange='bindActivityChange'>
+                {{result.model[0].discounts[index].activityName}}
+            </picker>
+        </view>
+        <view class="time">
+            <view class="title">配送时间</view>
+            <picker mode="multiSelector" value="{{multiIndex}}" range="{{result.model[0].timeStamps}}" bindchange="confirmChange" bindcolumnchange="columnChange">
+                {{result.model[0].timeStamps[0][dayIndex]}} {{result.model[0].timeStamps[1][timeIndex]}}
+            </picker>
+        </view>
+        <input type="text" placeholder='请在此输入您的其他要求' class="remark" maxlength="100" bindinput="orderRemark"></input>
+        <view class="total">共<text>{{num}}</text>件商品　现金:<text>{{cash}}</text>　水票:<text>{{ticket}}</text>张　电子票:<text>{{eticket}}</text>张　<block wx:if="{{result.model[0].freight == 0}}">免运费</block><block wx:else>运费:<text>{{result.model[0].freight}}</text></block></view>
+    </view>
+    <view class="footer-account-box">
+        <view class="total-price">
+            共<text class="cash">￥{{result.totalMoney}}</text>水票<text>{{ticket}}</text>电子票<text>{{eticket}}</text>
+        </view>
+        <view class="content-right">
+            <button class="all-price-submit {{noScope != 1? ' no-submit':''}}{{theme==1?' theme1':''}}{{theme==2?' theme2':''}}{{theme==3?' theme3':''}}{{theme==4?' theme4':''}}{{theme==5?' theme5':''}}" formType="submit">提交订单</button>
+        </view>
+    </view>
+</form>

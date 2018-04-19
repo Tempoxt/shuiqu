@@ -1,0 +1,20 @@
+<!--优惠券对应门店-->
+<view class="container">
+    <view class="shop-list" wx:if="{{shops.length>0}}">
+        <view class="shop-item" wx:for="{{shops}}" bindtap='goShop' data-shopid="{{item.shopId}}" data-shopname="{{item.shopName}}">
+            <image src="{{item.pictureUrl}}" class="picture-img"></image>
+            <view class="shop-detail">
+                <text class="shop-name">{{item.shopName}}</text>
+                <view class="level">
+                    <image src="../../images/86star.png" wx:for="{{item.grade/2}}"></image><image src="../../images/86darkStar.png" wx:for="{{5-item.grade/2}}"></image>
+                </view>
+                <text class="dispatch-info">起送价￥{{item.minSendPrice}} | 配送费￥{{item.freight}} | {{item.sendOnTime}}分钟到达</text>
+                <view class="distance">
+                </view>
+            </view>
+        </view>
+    </view>
+</view>
+<!--注册-->
+<include src="../../common/register/register.wxml" />  
+

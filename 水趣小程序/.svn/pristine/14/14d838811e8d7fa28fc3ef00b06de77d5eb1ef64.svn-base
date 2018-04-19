@@ -1,0 +1,112 @@
+/* pages/addAddress/addAddress.wxss */
+.gray{
+    color:#bbb;
+}
+page{
+    background-color: #eee;
+}
+.container .address-info {
+    margin-top: 20rpx;
+    /* padding: 0 20rpx; */
+}
+
+.address-info  .item{
+    display: flex;
+    height: 90rpx;
+    line-height: 90rpx;
+    font-size: 26rpx;
+    background-color: #fff; 
+    border-bottom: 1rpx solid #eee;
+    padding:0 30rpx; 
+}
+.address-info  .item .tag{
+    flex: 1;
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: center;
+    padding: 0;
+}
+.address-info  .item .tag .tag-item{
+    width: 80rpx;
+    height: 40rpx;
+    line-height: 40rpx;
+    text-align: center;
+    border:1rpx solid transparent;
+    border-radius: 10rpx; 
+}
+.address-info  .item .tag .tag-item.active.theme1{
+    color: #EECE1F;
+    border:1rpx solid #EECE1F;
+    border-radius: 10rpx; 
+}
+.address-info  .item .tag .tag-item.active.theme2{
+    color: #7b00d3;
+    border:1rpx solid #7b00d3;
+    border-radius: 10rpx; 
+}
+.address-info  .item .tag .tag-item.active.theme3{
+    color: #ff4060;
+    border:1rpx solid #ff4060;
+    border-radius: 10rpx; 
+}
+.address-info  .item .tag .tag-item.active.theme4{
+    color: #3ebaff;
+    border:1rpx solid #3ebaff;
+    border-radius: 10rpx; 
+}
+.address-info  .item .tag .tag-item.active.theme5{
+    color: #5de04f;
+    border:1rpx solid #5de04f;
+    border-radius: 10rpx; 
+}
+.address-info  .item .add-tag{
+    width:220rpx;
+     text-align: right; 
+    justify-content: flex-end;
+    padding: 0;
+    font-size: 60rpx;
+    font-weight: normal;
+}
+.address-info .item  .item-text{
+    width:160rpx;
+}
+.address-info .item input{
+    flex: 1;
+    height: 90rpx;
+    line-height: 90rpx;
+}
+.container .btn-box{
+    position:fixed;
+    height:50px;
+    bottom:0;
+    width:100%;
+    display: flex;
+}
+.container .save-address{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    font-size: 32rpx;
+    
+    z-index:10000;
+    margin: 5px;
+    box-sizing: border-box;
+    color: #fff;
+}
+.container .save-address.theme1{
+    background: linear-gradient(to right,#F6CC47,#FFAD52);
+}
+.container .save-address.theme2{
+    background: linear-gradient(to right,#7b00d3,#b25aff);
+}
+.container .save-address.theme3{
+    background: linear-gradient(to right,#cf1731,#ff4060);
+}
+.container .save-address.theme4{
+    background: linear-gradient(to right,#15a0ff,#3ebaff);
+}
+.container .save-address.theme5{
+    background: linear-gradient(to right,#2cc136,#5de04f);
+}

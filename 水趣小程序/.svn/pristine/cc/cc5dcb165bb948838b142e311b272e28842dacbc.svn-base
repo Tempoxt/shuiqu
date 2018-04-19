@@ -1,0 +1,28 @@
+<!--未授权-->
+<view class="container">
+    <view class="tips">
+        <image src="../../images/Login_failed_xiaochengxu.png"></image>
+        <view class="title">登陆失败</view>
+        <text class="go-empower">登陆水趣需允许授权，请重新进入并允许授权</text>
+        <text class="warn-tips">拒绝授权水趣小程序将无法使用查看电子票、下单、查看订单等功能</text>
+    </view>
+    <view class="empower">
+        <view class="title">如何允许微信授权</view>
+        <view class="step-one">
+            <view>1.退出水趣小程序，十分钟后重新进入；</view>
+            <view>或在小程序列表中左滑删除水趣小程序后，重新搜索"水趣"进入。</view>
+            <view class="delLittleApp">
+                <image src="../../images/delLittleApp.png"></image>
+            </view>
+             
+        </view>
+        <view class="step-two">
+            <view>2.点击进入水趣小程序后，将出现以下微信授权页面，点击"允许"。</view>
+            <view class="shouquan">
+                <image src="../../images/shouquan.png"></image> 
+            </view>
+            
+        </view>
+        
+    </view>
+</view>

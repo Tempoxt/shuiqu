@@ -1,0 +1,33 @@
+<!--商品评价-->
+<scroll-view scroll-y="true" class="container" lower-threshold="0" bindscrolltolower="loadMore">
+    <view class="choose-evaluate">
+        <view class="evaluate-type">
+            <view class="{{grade == -1? 'active':''}}{{theme==1?' theme1':''}}{{theme==2?' theme2':''}}{{theme==3?' theme3':''}}{{theme==4?' theme4':''}}{{theme==5?' theme5':''}}" data-grade="-1" bindtap='toggleEvaluate'>全部{{count}}</view>
+            <view class="{{grade == 1? 'active':''}}{{theme==1?' theme1':''}}{{theme==2?' theme2':''}}{{theme==3?' theme3':''}}{{theme==4?' theme4':''}}{{theme==5?' theme5':''}}"  data-grade="1" bindtap='toggleEvaluate'>好评{{goodCount}}</view>
+            <view class="{{grade == 2? 'active':''}}{{theme==1?' theme1':''}}{{theme==2?' theme2':''}}{{theme==3?' theme3':''}}{{theme==4?' theme4':''}}{{theme==5?' theme5':''}}"  data-grade="2" bindtap='toggleEvaluate'>中评{{centerCount}}</view>
+            <view class="{{grade == 3? 'active':''}}{{theme==1?' theme1':''}}{{theme==2?' theme2':''}}{{theme==3?' theme3':''}}{{theme==4?' theme4':''}}{{theme==5?' theme5':''}}"  data-grade="3" bindtap='toggleEvaluate'>差评{{badCount}}</view>
+        </view>
+        <view class="toggle-image" bindtap='toggleImage'>
+            <image wx:if="{{isPic}}" src="../../images/checkbox_big_checked.png"></image>
+            <image wx:else src="../../images/checkbox_big_disabled.png"></image>
+            <text>只显示有图片的内容</text>
+        </view>
+    </view>
+    <view class="evaluate-list">
+        <view class="evaluate" wx:for="{{result.evaluates}}">
+            <view class="evaluate-info">
+                <image class="user-photo" wx:if="{{item.photo}}" src="{{item.photo}}"></image>
+                <image class="user-photo" wx:else src="../../images/default.png"></image>
+                <view class="info">
+                    <view class="row-one"><text>{{item.userName}}</text><text>{{item.createDate}}</text></view>
+                    <view class="row-two">{{item.projectName}}<image src="../../images/86star.png" wx:for="{{item.grade}}"></image><image src="../../images/86darkStar.png" wx:for="{{5-item.grade}}"></image>{{item.tags}}</view>
+                </view>
+            </view>
+            <view class="evaluate-content">{{item.content}}</view>
+            <view class="pics" wx:if="{{item.pics.length > 0}}">
+                <image wx:for="{{item.pics}}" wx:for-item="pic" src="{{pic}}" data-current="{{pic}}" data-arr="{{item.pics}}" style="width:19%;height:120rpx;margin-right:1%;" bindtap='showImg'></image>
+            </view>
+        </view>
+    </view>
+</scroll-view>
+

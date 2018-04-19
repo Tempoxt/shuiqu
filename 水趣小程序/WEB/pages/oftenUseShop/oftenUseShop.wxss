@@ -1,0 +1,151 @@
+/* pages/oftenUseShop/oftenUseShop.wxss */
+
+page {
+  height: 100%;
+  background-color: #eee;
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.container .header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10rpx;
+  padding: 15rpx 30rpx;
+  background-color: #fff;
+ 
+}
+
+.container .header .search {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  background-color: #fff;
+  height: 60rpx;
+  line-height: 60rpx;
+  flex-wrap: nowrap;
+  vertical-align: middle;
+  align-items: center;
+  position: relative;
+}
+
+.container .header .search:before {
+  position: absolute;
+  border: 1px solid #ccc;
+  border-radius: 10rpx;
+  pointer-events: none;
+  width: 200%;
+  height: 200%;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  content: "";
+  -webkit-transform: scale(0.5);
+  -webkit-transform-origin: 0 0;
+  transform: scale(0.5);
+  transform-origin: 0 0;
+}
+
+.container .header .search icon {
+  padding: 14rpx 10rpx;
+  width: 36rpx;
+  height: 36rpx;
+  /* position: absolute;
+    right: 30rpx; */
+}
+
+.container .header .search text {
+  flex: 1;
+  vertical-align: middle;
+  height: 60rpx;
+  color: #666;
+  /* display: inline-block; */
+  font-size: 14px;
+  padding-left: 10rpx;
+}
+
+.shop-list .shop-item {
+  display: flex;
+  background-color: #fff;
+  padding: 10rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+.no-shop {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.no-shop .default {
+  width: 200rpx;
+  height: 200rpx;
+}
+
+.no-shop text {
+  font-size: 28rpx;
+  color: #aaa;
+}
+
+.shop-list .shop-item .picture-img {
+  width: 200rpx;
+  height: 200rpx;
+  margin-right: 10rpx;
+}
+
+.shop-list .shop-item .shop-detail {
+  flex: 1;
+  display: flex;
+  align-content: space-between;
+  justify-content: center;
+  flex-flow: row wrap;
+  padding:15rpx 0;
+  box-sizing: border-box;
+}
+.shop-list .shop-item .shop-detail>view,.shop-list .shop-item .shop-detail>text{
+  width: 100%;
+}
+.shop-list .shop-item .shop-detail .shop-name {
+  font-size: 15px;
+}
+
+.shop-list .shop-item .shop-detail .level {
+  height: 40rpx;
+  display: flex;
+  align-items: center;
+}
+
+.shop-list .shop-item .shop-detail .level image {
+  width: 30rpx;
+  height: 30rpx;
+  margin-right:8rpx;
+}
+
+.shop-list .shop-item .shop-detail .dispatch-info {
+  font-size: 24rpx;
+  color: #aaa;
+}
+
+.shop-list .shop-item .shop-detail .distance {
+  display: flex;
+  align-items: center;
+}
+
+.shop-list .shop-item .shop-detail .distance image {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.shop-list .shop-item .shop-detail .distance text {
+  font-size: 24rpx;
+  color: #aaa;
+}
+
+/*注册窗口*/
+@import "../../common/register/register.wxss";

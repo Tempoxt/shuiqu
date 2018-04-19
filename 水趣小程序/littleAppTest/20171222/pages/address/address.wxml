@@ -1,0 +1,32 @@
+<!--pages/address/address.wxml-->
+<scroll-view scroll-y="true" style="height:{{winHeight-40}}px">
+    <view class="address" wx:for="{{address}}">
+    
+        <view class="item-address" data-did="{{item.did}}" bindtap='selectAddress'>
+            <view class="personalInfo">
+                <text class="myName">{{item.contacts}}</text>
+                <text class="phoneNum">{{item.phone}}</text>
+            </view>
+            <view class="address">{{item.streetDescribe}}</view>
+        </view>
+        <view class="Edit">
+            <view class="setDefault"  bindtap="setDefault" data-ifDefault="{{item.ifDefault}}" data-did="{{item.did}}">
+                
+                <image wx:if="{{item.ifDefault}}" src="../../images/checkbox_big_checked.png"></image>
+                <image wx:else src="../../images/checkbox_big_disabled.png"></image>    
+                <text>设为默认</text>
+            </view>
+            <view class="other">
+                <!-- <view catchtap="editAddress" data-did="{{item.did}}"> 编辑</view> -->
+                <view catchtap="deleteAddress" data-did="{{item.did}}"> 删除</view>
+            </view>
+        </view>
+        
+    </view>
+</scroll-view>
+<view class="addAddress cannot-add" wx:if="{{addLenth>=6}}" bindtap="addAddress" disabled>
+        最多只能添加6个地址
+</view>
+<view class="addAddress"  wx:else bindtap="addAddress">
+    新增地址
+</view>

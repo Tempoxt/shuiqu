@@ -1,0 +1,15 @@
+<!--pages/payResult/payResult.wxml-->
+<view class="container" wx:if="{{result == 'success'}}">
+    <image src="../../images/204ico_pay.png"></image>
+    <text class="payment-status">订单支付成功!</text>
+    <text class="tips">您可以点击查看订单详情。</text>
+    <button class="show-detail" size='mini' bindtap="showDetail">查看订单详情</button>
+    <button class="go-home" size='mini' bindtap="goHome">继续购买</button>
+</view>
+<view class="container" wx:else>
+    <image src="../../images/205ico_no_pay.png"></image>
+    <text class="payment-status">订单已提交，支付未成功!</text>
+    <text class="tips">您可以点击订单详情继续支付。</text>
+    <button class="show-detail" size='mini' bindtap="paymentAgain">查看订单详情</button>
+    <button class="go-home" size='mini' bindtap="goHome">继续购买</button>
+</view>

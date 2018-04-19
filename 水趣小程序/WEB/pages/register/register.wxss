@@ -1,0 +1,48 @@
+/* pages/register/register.wxss */
+page{
+    background-color: #eee;
+}
+.phoneBox{
+    margin:200rpx 50rpx 20rpx 50rpx;
+    /* position:relative; */
+    display: flex;
+    border:1rpx solid #ccc;
+    background-color:#fff;
+}
+.phoneBox .phoneNum{
+    font-size:32rpx;
+    width: 150rpx;
+    height:80rpx;
+    line-height:80rpx;
+    /* position:absolute;
+    top:0;
+    left:0; */
+    text-align: center;
+}
+.phoneBox input{
+    flex: 1;
+    font-size:32rpx;
+    height:80rpx;
+    /* padding-left:150rpx; */
+}
+.tips{
+    font-size:26rpx;
+    margin:0 50rpx;
+    height:40rpx;
+}
+.tips image{
+    width:40rpx;
+    height:40rpx;
+    vertical-align:middle;
+    padding-right: 10rpx;
+}
+.tips text{
+    vertical-align:middle;
+    /* margin-left:10rpx; */
+}
+.confirm-button{
+    margin:100rpx 50rpx 0 50rpx;
+    height:80rpx;
+    line-height:80rpx;
+    font-size:32rpx;
+}

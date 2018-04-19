@@ -1,0 +1,62 @@
+/* pages/cancelOrder/cancelOrder.wxss */
+.container{
+    border-top:1rpx solid #eee;
+    display:flex;
+    flex-direction:column;
+}
+.container .item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:10rpx 20rpx;
+    border-bottom:1rpx solid #eee;
+    font-size:30rpx;
+}
+.container .item image{
+    width:50rpx;
+    height:50rpx;
+}
+.container .other-reason{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:10rpx 20rpx;
+    border-bottom:1rpx solid #eee;
+}
+.container .other-reason .input-reason{
+    border:1rpx solid #eee;
+    font-size:24rpx;
+    width:100%;
+    padding-left:20rpx;
+}
+.container .confirmCancel{
+    width:80%;
+    margin-top:40rpx;
+    height: 40px;
+    line-height: 40px;
+    border:0;
+    outline: 0;
+    border-radius:50px;
+    color: #fff;
+    font-size:32rpx;
+}
+.container .confirmCancel::after{
+    border: none;
+}
+.container .confirmCancel.theme1{
+    background: linear-gradient(to right,#F6CC47,#FFAD52); 
+}
+.container .confirmCancel.theme2{
+    background:linear-gradient(to right,#7b00d3,#b25aff); 
+}
+.container .confirmCancel.theme3{
+    background:linear-gradient(to right,#cf1731,#ff4060); 
+}
+.container .confirmCancel.theme4{
+    background:linear-gradient(to right,#15a0ff,#3ebaff); 
+}
+.container .confirmCancel.theme5{
+    background:linear-gradient(to right,#2cc136,#5de04f); 
+}
+
+

@@ -1,0 +1,35 @@
+
+<view class="{{modalWrap==true? 'modalWrap':'none'}}">
+    <view class="{{modal==true? 'modal':''}}">
+        <view class="header">
+            <view class="choose-location" bindtap='getCity'>
+                <text class="city">{{currentCity}}</text>
+                <image class="arrow" src="../../images/63navbar_ico_arrow_down.png"></image>
+            </view>
+            <text class="title">注册为会员</text>
+             <image class="close" catchtap='closeModal' src="../../images/close.png" ></image> 
+        </view>
+        <view class="inputs">
+            <view class="phone"><input placeholder='手机号' bindinput='inputPhoneNum'></input></view>
+            <view class="validate">
+                <input placeholder='验证码' bindinput='inputValidateCode'></input>
+                <button class="getCode {{theme==1? 'theme1':''}}{{theme==2? 'theme2':''}}{{theme==3? 'theme3':''}}{{theme==4? 'theme4':''}}{{theme==5? 'theme5':''}}" catchtap='getCode' style="background:{{getCodeColor}};color:{{textColor}}" disabled="{{getCodeStatus}}">{{getCodeText}}</button>
+        
+            </view>
+        </view>
+        <view class="agree">
+            <image wx:if="{{selectStatus}}" src="{{theme==1?'../../images/1/xuanze.png':''}}{{theme==2?'../../images/2/xuanze.png':''}}{{theme==3?'../../images/3/xuanze.png':''}}{{theme==4?'../../images/4/xuanze.png':''}}{{theme==5?'../../images/5/xuanze.png':''}}" catchtap="toggleStatus">
+            </image>
+            <image wx:else src="../../images/checkbox_big_disabled.png" catchtap="toggleStatus">
+            </image>    
+            <view>我已阅读并同意<text>《水趣用户协议》</text></view>
+        </view>
+        <view class="register-tips-box">
+            <view class="title">注册提醒：</view>
+            <view class="list-item">1.注册即可获取商家优惠。</view>
+            <view class="list-item">2.注册下订单即可获取积分</view>
+            <view>3.不必担心更换账号丢失优惠，使用更方便!</view>
+        </view>
+        <button class="commit {{theme==1?' theme1':''}}{{theme==2?' theme2':''}}{{theme==3?' theme3':''}}{{theme==4?' theme4':''}}{{theme==5?' theme5':''}}"  style="background:{{commitColor}};color:{{fontColor}}" disabled='{{bindStatus}}' bindtap="commit">提交注册</button>
+    </view>
+</view>

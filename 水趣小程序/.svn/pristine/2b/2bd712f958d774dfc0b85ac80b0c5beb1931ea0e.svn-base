@@ -1,0 +1,29 @@
+{
+  "pages":[
+        "pages/index/index",
+        "pages/products/products",
+        "pages/address/address",
+        "pages/addAddress/addAddress",
+        "pages/map/map",
+        "pages/myOrder/myOrder",
+        "pages/orderDetail/orderDetail",
+        "pages/payResult/payResult",
+        "pages/confirmCar/confirmCar",
+        "pages/selectShop/selectShop",
+        "pages/integral/integral",
+        "pages/oftenUseShop/oftenUseShop",
+        "pages/myTicket/myTicket",
+        "pages/ticketDetail/ticketDetail",
+        "pages/help/help",
+        "pages/shopCart/shopCart",
+        "pages/register/register",
+        "pages/bind/bind",
+        "pages/logs/logs"   
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "水趣",
+    "navigationBarTextStyle":"black"
+  }
+}

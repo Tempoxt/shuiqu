@@ -1,0 +1,8 @@
+<!--pages/map/map.wxml-->
+<view class="map_container"> 
+  <map class="map" id="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="14" bindmarkertap="makertap"  markers="{{markers}}" bindregionchange="regionchange" controls="{{controls}}"></map> 
+</view> 
+<view class="rgc_info"> 
+  <text>{{rgcData.address}}</text> 
+</view>
+

@@ -1,0 +1,2 @@
+<!--押桶说明-->
+<block wx:for="{{res}}"><view>{{item}}</view></block>

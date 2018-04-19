@@ -1,0 +1,16 @@
+<!--优惠券详情 -->
+<!--  暂时不用  -->
+<view class="container">
+    <view class="discount-wrap">
+        <image src="{{logourl}}" style="width:200rpx;height:200rpx;margin:20rpx 0;"></image>
+        <view style='font-size:26rpx;'>{{classname}}专用</view>
+        <view style='margin-top:10rpx;'>{{typename}}</view>
+        <button size='mini' style="background:#FAD600;margin-top:20rpx;">立即使用</button>
+        <view style='font-size:26rpx;margin-top:20rpx;'>有效期:{{begintime}}至{{overtime}}</view>
+    </view>
+    <view class="discount-info">
+        <view><text>使用说明</text><text>一个订单只能使用一张优惠券</text></view>
+        <view><text>服务热线</text><text>{{tel}}</text></view>
+        <view><text>相关活动</text></view>
+    </view>
+</view>

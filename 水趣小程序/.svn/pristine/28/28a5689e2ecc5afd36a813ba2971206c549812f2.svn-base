@@ -1,0 +1,18 @@
+<!--可使用优惠券商品-->
+<scroll-view scroll-y="true">
+    <view wx:for="{{products}}" class="product">
+        <view class="product-info">
+            <image src="{{item.pictureUrl}}" style="width:150rpx;height:150rpx;"></image>
+            <view class="product-textInfo">
+                <view>{{item.pname}}</view>
+                <text class="sales">已销售{{item.salesNum}}份</text>
+                <view class="bottom-line">
+                    <view>￥{{item.vipPrice}}</view><button class="{{theme==1?' theme1':''}}{{theme==2?' theme2':''}}{{theme==3?' theme3':''}}{{theme==4?' theme4':''}}{{theme==5?' theme5':''}}" size='mini' catchtap='useIt' data-pid="{{item.pid}}">立即使用</button>
+                </view>
+                
+            </view>
+        </view>
+        
+    </view>
+</scroll-view>
+

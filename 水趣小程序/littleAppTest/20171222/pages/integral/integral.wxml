@@ -1,0 +1,26 @@
+<!--pages/integral/integral.wxml-->
+<view class="container">
+    <view class="header">
+        <view class="can-use">
+            <view class="title">可用积分</view>
+            <view class="num">{{surplus}}</view>
+        </view>
+        <view class="total">
+            <view>
+                <view class="title">累计积分</view>
+                <view class="num">{{total}}</view>
+            </view>
+            <image src="../../images/help.png" bindtap='help'></image>
+        </view>
+    </view>
+    <view class="desc">
+        <view class="title">积分明细</view>
+        <view class="time">
+            <picker mode="selector" range="{{array}}" value="{{index}}" bindchange='bindPickerChange'>{{array[index]}}</picker>
+            <view bindchange='bindPickerChange'></view>
+        </view>
+    </view>
+</view>
+<!--注册-->
+<include src="../../common/register.wxml" />    
+

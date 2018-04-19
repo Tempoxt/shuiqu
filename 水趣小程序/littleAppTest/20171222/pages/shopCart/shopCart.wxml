@@ -1,0 +1,240 @@
+<!--购物车没有商品-->
+<view class="container cart-container" wx:if="{{!shopCartData || shopCartData.shopcarts.length == 0}}" style="display:flex;justify-content:center;align-items:center;height:100%;">
+    <image src="../../images/88tip_ico_order.png" style="width:120rpx;height:120rpx;"></image>
+    <text style="font-size:30rpx;margin:20rpx 0;color:#959595">购物车暂无商品，快去买买买！</text>
+    <button size='mini' style='background:#F9D52E;' bindtap='goHomePage'>确定</button>
+</view>
+<!--正常状态-->
+<view class="container cart-container" wx:elif="{{shopCartData.shopcarts[0].status == '编辑'}}">
+     <!-- <form action="/weixin/confirmCarJson"  method="POST">
+      <input type="hidden" name="quickSpJson">
+     </form> -->
+     <block wx:for="{{shopCartData.shopcarts}}"> 
+        
+        <view class="cart-box">
+                <view class="header">
+                    <view>
+                         <block wx:if="{{shopCartData.allSelectStatus}}" >
+                            <image src="../../images/checkbox_big_checked.png" data-shopid="{{item.shopId}}" bindtap="toggleSelectAll"></image>
+                            <text>{{item.shopName}}</text>
+                        </block>
+                        <block wx:else>
+                            <image src="../../images/checkbox_big_disabled.png" data-shopid="{{item.shopId}}" bindtap="toggleSelectAll"></image>
+                            <text>{{item.shopName}}</text>
+                        </block> 
+                    </view>
+                    <button size="mini" data-status="{{item.status}}" bindtap="edit">{{item.status}}</button>
+                </view>
+                <view class="cart-item"  wx:for="{{item.products}}">
+                    <image wx:if="{{item.fpid}}" src="../../images/peison.png" class="fpid"></image>
+                    <view class="cart-item-main">
+                        
+                        <view class="cart-item-checkbox">
+
+                            <image wx:if="{{item.productSelectStatus}}" src="../../images/checkbox_big_checked.png" bindtap="toggleStatus" data-pid="{{item.pid}}" data-fpid="{{item.fpid}}" data-shopid="{{item.shopId}}">
+                            </image>
+
+                            <image wx:else src="../../images/checkbox_big_disabled.png" bindtap="toggleStatus" data-pid="{{item.pid}}" data-fpid="{{item.fpid}}">
+                            </image>  
+
+                        </view>
+                        <view class="cart-item-img">
+                            <image class="good-image" src="{{item.pictureUrl}}">
+                            </image>
+                        </view>
+                        <view class="cart-item-word">
+                            <view class="title-box">{{item.pname}}
+                            </view>
+                            <view class="vipPrice {{item.settleStyle=='现金'||item.settleStyle=='押桶'? '':' noCash'}}">￥{{item.vipPrice}}</view>
+                            <view class="bottom-box">
+                                <view class="cart-item-counts">
+                                    <view class="number">数量:
+                                        <text class="counts">{{item.number}}</text>
+                                    </view>
+                                   
+                                </view>
+                                <view class="settle-box">结算方式:
+                                    <text class="settleStyle">{{item.settleStyle}}  </text>
+                                </view>
+                            </view>
+                        </view>
+
+                    </view>
+                </view>
+            <!-- </block> -->
+        </view>
+        <view class="footer-account-box all-accounts-box">
+            <view class="all-select">
+
+
+                <image wx:if="{{shopCartData.allSelectStatus}}" class="title-icon" src="../../images/checkbox_big_checked.png" bindtap="toggleSelectAll"></image>
+                <image wx:else class="title-icon" src="../../images/checkbox_big_disabled.png"  bindtap="toggleSelectAll"></image>
+
+                <view class="total-price">
+                    共<text>￥{{total}}</text>水票<text>{{ticket}}</text>电子票<text>{{eticket}}</text>
+                </view>
+            </view>
+            <view class="all-price-submit {{shopCartData.shopcarts[0].status == '完成'?'disabled no-product':'has-product'}}" bindtap="submitOrder">选好了</view>
+        </view>
+     </block>
+</view>
+<!--编辑状态-->
+<view wx:else class="container cart-container">
+    <block wx:for="{{shopCartData.shopcarts}}"> 
+        
+        <view class="cart-box">
+                <view class="header">
+                    <view>
+                         <block wx:if="{{shopCartData.allSelectStatus}}" >
+                            <image src="../../images/checkbox_big_checked.png" data-shopid="{{item.shopId}}" bindtap="toggleSelectAll"></image>
+                            <text>{{item.shopName}}</text>
+                        </block>
+                        <block wx:else>
+                            <image src="../../images/checkbox_big_disabled.png" data-shopid="{{item.shopId}}" bindtap="toggleSelectAll"></image>
+                            <text>{{item.shopName}}</text>
+                        </block> 
+                    </view>
+                    <button size="mini" data-status="{{item.status}}" bindtap="edit">{{item.status}}</button>
+                </view>
+                <view class="cart-item"  wx:for="{{item.products}}">
+                    <image wx:if="{{item.fpid}}" src="../../images/peison.png" class="fpid"></image>
+                    <view class="cart-item-main">
+                        
+
+                        <view class="cart-item-checkbox">
+
+                            <image wx:if="{{item.productSelectStatus}}" src="../../images/checkbox_big_checked.png" bindtap="toggleStatus" data-pid="{{item.pid}}" data-fpid="{{item.fpid}}" data-shopid="{{item.shopId}}">
+                            </image>
+
+                            <image wx:else src="../../images/checkbox_big_disabled.png" bindtap="toggleStatus" data-pid="{{item.pid}}" data-fpid="{{item.fpid}}">
+                            </image>  
+
+                        </view>
+                        <view class="cart-item-img">
+                            <image class="good-image" src="{{item.pictureUrl}}">
+                            </image>
+                        </view>
+                        <view class="cart-item-word">
+                            <view class="title-box">{{item.pname}}
+                            </view>
+                           
+                            <view class="cartControl">
+                                 <image class="cart-decrease" data-item-index="{{index}}" catchtap="decreaseCart" src="../../images/shopping_btn_num_minus.png" data-pid="{{item.pid}}" data-fpid="{{item.fpid}}" data-hashticket="{{item.hashTicket}}"></image>
+                                <view class="cart-count">{{item.number}}</view>
+                                <image class="cart-add" data-item-index="{{index}}" catchtap="addCart" src="../../images/shopping_btn_num_add.png" data-pid="{{item.pid}}" data-fpid="{{item.fpid}}" data-maxnum="{{item.maxnum}}" data-surplusnum="{{item.surplusNum}}" data-hashticket="{{item.hashTicket}}"></image>
+                               
+                            </view>
+                            <view class="bottom-box">
+                                <view class="settleStyle-box">
+                                    <!--1:现金，2：电子票，3：水票 4：押桶-->
+                                     <!-- {{#is fpid}}
+                                        2
+                                     {{else}}
+                                        {{#is hashTicket true}}
+                                            1
+                                        {{else}}
+                                            {{#is surplusNum '>' 0}}
+                                                {{#is surplusNum '>=' number}}
+                                                    2
+                                                {{else}}
+                                                    1
+                                                {{/is}}
+                                            {{else}}
+                                                1
+                                            
+                                            {{/is}}
+                                        {{/is}}
+                                     {{/is}} -->
+                                    <!-- <block wx:if="{{item.fpid}}">
+                                        2
+                                    </block>
+                                    <block wx:else>
+                                        <block wx:if="{{item.hashTicket}}">
+                                        1
+                                        </block>
+                                        <block wx:else>
+                                            <block wx:if="{{item.surplusNum > 0}}">
+                                                <block wx:if="{{item.surplusNum >= item.surplusNum}}">
+                                                2
+                                                </block>
+                                                <block wx:else>
+                                                1
+                                                </block>
+                                            </block>
+                                            <block wx:else>
+                                            1
+                                            </block>
+                                        </block>
+                                    </block> -->
+                                    <!-- {{
+                                        item.fpid? 2:(item.hashTicket?1:(item.surplusNum > 0?item.surplusNum >= item.number?2:1 ):1 )}} -->
+                                    
+                                    <!-- <input type="hidden" name="payType" > -->
+                                    <!-- {{#is fpid}}[{"name":"电子票","value":2}]{{else}}{{#is hashTicket true}}[{"name":"现金","value":1}]{{else}}{{#is surplusNum '>' 0}}[{"name":"电子票","value":2},{"name":"现金","value":1}]{{else}}{{#is ifTicket true}}[{"name":"现金","value":1},{"name":"水票","value":3}]{{else}}[{"name":"现金","value":1}]
+                                    {{item.fpid}} -->
+                                    <block wx:if="{{item.fpid}}">
+                                        <image src="../../images/200 btn_dzp-01.png" data-name="电子票" data-value="2"></image>
+                                    </block>
+                                    <block wx:else>
+                                        <block wx:if="{{item.hashTicket}}">  
+                                            <image wx:if="{{item.settleStyle == '现金'}}" src="../../images/163btn_xj.png"></image>
+                                        </block>
+                                        <block wx:else>
+                                            <block wx:if="{{item.surplusNum > 0}}">
+                                                <block wx:if="{{item.settleStyle == '电子票'}}">
+                                                    <image src="../../images/166btn_xj_off.png" data-pid="{{item.pid}}" bindtap="toggleSettleStyle" data-name="现金" data-value="1"></image>
+                                                    <image src="../../images/200 btn_dzp-01.png"></image>
+                                                    
+                                                </block>
+                                                <block wx:else>
+                                                    <image src="../../images/163btn_xj.png"></image>
+                                                    <image src="../../images/200 btn_dzp_off-01.png" data-pid="{{item.pid}}" bindtap="toggleSettleStyle" data-name="电子票" data-value="2" data-fpid="{{item.fpid}}" data-surplusnum="{{item.surplusnum}}" data-number="{{item.number}}"></image>
+                                                    
+                                                </block>
+                                            </block>
+                                            <block wx:else>
+                                                <block wx:if="{{item.ifTicket}}">
+                                                    <block wx:if="{{item.settleStyle == '现金'}}">
+                                                        <image src="../../images/163btn_xj.png"></image>
+                                                        <image src="../../images/165btn_sp_off.png" data-pid="{{item.pid}}" bindtap="toggleSettleStyle" data-name="水票" data-value="3"></image>                
+                                                    </block>
+                                                    <block wx:else>
+                                                        <image src="../../images/166btn_xj_off.png"  data-pid="{{item.pid}}" bindtap="toggleSettleStyle" data-name="现金" data-value="1"></image>
+                                                        <image src="../../images/160btn_sp.png" ></image>    
+                                                    </block>
+                                                </block>
+                                                <block wx:else>
+                                                    <block wx:if="{{item.settleStyle == '现金'}}">
+                                                        <image src="../../images/163btn_xj.png"></image>            
+                                                    </block>
+                                                    <block wx:else>
+                                                        <!-- <image src="../../images/163btn_xj.png"></image>    -->
+                                                    </block>
+                                                </block>
+                                            </block>
+                                        </block>
+                                    </block>
+                                </view>
+                                <image class="delete-item" src="../../images/11address_del.png" data-pid="{{item.pid}}" data-number="{{item.number}}" data-settlestyle="{{item.settleStyle}}" bindtap='delete'></image>
+                            </view>
+                        </view>
+
+                    </view>
+                </view>
+            <!-- </block> -->
+        </view>
+        <view class="footer-account-box all-accounts-box">
+            <view class="all-select">
+                <image wx:if="{{shopCartData.allSelectStatus}}" class="title-icon" src="../../images/checkbox_big_checked.png" bindtap="toggleSelectAll"></image>
+                <image wx:else class="title-icon" src="../../images/checkbox_big_disabled.png"  bindtap="toggleSelectAll"></image>
+
+                <view class="total-price">
+                    共<text>￥{{total}}</text>水票<text>{{ticket}}</text>电子票<text>{{eticket}}</text>
+                </view>
+            </view>
+            <view class="all-price-submit {{shopCartData.shopcarts[0].status == '完成'?'disabled no-product':'has-product'}}" bindtap="submitOrder">选好了</view>
+        </view>
+     </block>
+</view>
+<!--注册-->
+<include src="../../common/register.wxml" />

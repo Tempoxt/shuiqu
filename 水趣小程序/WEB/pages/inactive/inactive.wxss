@@ -1,0 +1,19 @@
+/* pages/inactive/inactive.wxss */
+page{
+    height: 100%;
+}
+.container{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #858282;
+    font-size: 30rpx;
+}
+.container image{
+    width:240rpx;
+    height:240rpx;
+    margin-bottom: 80rpx;
+
+}

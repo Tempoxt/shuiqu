@@ -1,0 +1,12 @@
+<!--取消订单-->
+<view class="container">
+    <view class="item" wx:for="{{reasons}}" catchtap='selectReason' data-index="{{index}}">
+        <text>{{item.reason}}</text>
+        <image wx:if="{{item.selected}}" src="{{theme==1?'../../images/1/xuanze.png':''}}{{theme==2?'../../images/2/xuanze.png':''}}{{theme==3?'../../images/3/xuanze.png':''}}{{theme==4?'../../images/4/xuanze.png':''}}{{theme==5?'../../images/5/xuanze.png':''}}"></image>
+        <image wx:else src="../../images/checkbox_big_disabled.png"></image>
+    </view>
+    <view class="other-reason">
+        <input class="input-reason" type="text" placeholder='其它原因(选填)'  bindinput="inputReason"></input>
+    </view>
+    <button class="confirmCancel theme1" size='mini'  catchtap="confirmCancel">提交</button>
+</view>

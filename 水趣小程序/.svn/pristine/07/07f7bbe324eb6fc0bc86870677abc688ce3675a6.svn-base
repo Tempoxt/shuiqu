@@ -1,0 +1,172 @@
+<!--pages/order/order.wxml-->
+<!--tab -->
+<view class="tab border-1px">
+   <view class="tab-item" class="{{status==0 ? 'active':''}}" bindtap="tabChange" data-type="0">
+    订水
+   </view> 
+   <view class="tab-item" class="{{status==1 ? 'active':''}}" bindtap="tabChange" data-type="1">
+    评价
+   </view> 
+   <view class="tab-item" class="{{status==2 ? 'active':''}}" bindtap="tabChange" data-type="2">
+    商家
+   </view>
+</view>
+<!--tab --> 
+<view class="waters" wx:if="{{status==0||item.status==status}}">
+    <view class="menu-wrapper">
+        <scroll-view scroll-y style="height:992rpx;margin-top:10rpx;">
+            <view wx:for="{{shopProducts}}" class="menu-item border-1px {{cats==index ? 'active':''}}" bindtap="selectMenu" data-item-index="{{index}}">
+            <view class="text">
+                {{item.className}}
+            </view>
+            </view>
+        </scroll-view>
+    </view>
+    <scroll-view scroll-y="true" scroll-into-view="{{toView}}" class="waters-wrapper" style="height:100%;" bindscroll="scroll">
+        <view wx:for="{{shopProducts}}" class="water-list water-list-hook" wx:for-index="parentIndex">
+            <view id="order{{parentIndex}}" class="title" bindtap="offsetTop">{{item.className}}</view>
+            <view wx:for="{{item.products}}" class="water-item" wx:for-item="product" data-water="{{item.products}}">
+                <view class="icon">
+                    <image src="{{product.pictureUrl}}"></image>
+                </view>
+                <view class="content">
+                    <view class="name">{{product.pname}}</view>
+                    <view class="extra">
+                        <text class="count">已销售{{product.salesNum}}</text>
+                    </view>
+                    <view class="price">
+                        ￥<text class="now">{{product.vipPrice}}</text>
+                        <!-- <view class="old" wx:if="{{food.oldPrice}}">￥{{food.oldPrice}}</view> -->
+                    </view>
+
+                    <!--cartControl-->
+                    <view class="cartControl-wrapper">
+                        <view class="cartControl">
+                            
+                                <!-- <view class="cart-decrease" wx:if="{{product.num > 0}}" data-item-index="{{index}}" data-parentIndex="{{parentIndex}}" catchtap="decreaseCart">
+                                    <view class="inner iconfont icon-jian" style="font-size:24px;color:#F9D600;"></view>
+                                </view> -->
+                                <image class="cart-decrease" wx:if="{{product.number > 0}}" data-item-index="{{index}}" data-parentIndex="{{parentIndex}}" catchtap="decreaseCart" src="../../images/shopping_btn_num_minus.png">
+
+                                </image>
+                                <view class="cart-count" wx:if="{{product.number > 0 }}">{{product.number}}</view>
+                                <!-- <view class=" iconfont icon-jia cart-add " style="font-size:24px;color:#F9D600;" data-item-index="{{index}}" data-parentIndex="{{parentIndex}}" catchtap="addCart"></view> -->
+                                <image class="cart-add" data-item-index="{{index}}" data-parentIndex="{{parentIndex}}" catchtap="addCart" src="../../images/shopping_btn_num_add.png"></image>
+                        </view>
+                        
+                    </view>
+                </view>
+            </view>
+        </view>
+    </scroll-view>
+
+  <!--shopCart-->
+  
+    <view class="shopCart">
+        <view class="content" bindtap="toggleList">
+            <view class="content-left">
+                <!-- <view class="logo-wrapper">
+                   <view class="logo highlight iconfont icon-gouwuche">
+                     <view class="iconfont icon-gouwuche highlight"></view> 
+                  </view> 
+                  <image src="../../images/shoppingCar.png" style="width:32px;height:32px;"></image>
+                  <view class="num" wx:if="{{totalCount> 0}}">{{totalCount}}</view>
+                </view>
+                <view class="price highlight">￥{{totalPrice}}</view>
+                <view class="desc">另需配送费￥{{deliveryPrice}}元</view> -->
+                <image src="../../images/shoppingCar.png" catchtap="pay"></image>
+                <view class="num" wx:if="{{totalCount> 0}}">{{totalCount}}</view>
+            </view>
+            <view class="content-right" catchtap="pay">
+                <view class="{{totalCount> 0? 'pay enough':'pay not-enough'}}">
+                  去购物车结算
+                </view>
+            </view>
+        </view>
+        
+    </view>
+    
+    <view name="fade">
+        <view class="list-mask" wx:if="{{listShow}}" bindtap="hideList"></view>
+    </view>
+</view>
+
+<view class="all-evaluate" wx:if="{{status==1||item.status==status}}" style="height:{{winHeight-40}}px">
+<scroll-view scroll-y style="height:{{winHeight-40}}px">
+    <block wx:for="{{evaluateList.evaluates}}">
+        <view class="item-evaluate">
+            <view class="user-info">
+                <view class="photo-box">
+                    <image src="{{item.photo?item.photo:'../../images/default.png'}}"></image>
+                    <text>{{item.userName}}</text>
+                </view>
+                <view>{{item.createDate}}</view>
+            </view>
+            <view class="level-info">
+                <view class="level-box" wx:for="{{item.projectMaps}}">
+                        <text class="projectName">{{item.projectName}}</text><text class="grade">{{item.grade}}星</text><text>{{item.tags}}</text>
+                </view>
+            </view>
+            <view class="evaluate-content">{{item.content}}</view>
+        </view>
+    </block>
+</scroll-view>
+</view>
+<view class="shop-wrap" wx:if="{{status==2||item.status==status}}">
+    <scroll-view scroll-y style="height:{{winHeight-44}}px">
+        <view class="bg-box">
+            <view class="picture-box">
+                <view class="picture-left"></view>
+                <image src="{{shopMap.pictureUrl}}" class="shop-picture"></image>
+                <view class="exponent">
+                    <view class="item"><text>{{shopMap.integrityYear}}</text></view>
+                    <view class="item"><text>{{shopMap.chainNum}}</text></view>
+                </view>
+            </view>
+            
+            <view class="shop-name">{{shopMap.shopName}}</view>
+            <view class="star-box">
+                <image src="../../images/86star.png" wx:for="{{shopMap.grade/2}}"></image><image src="../../images/86darkStar.png" wx:for="{{5-item.grade/2}}"></image>
+            </view>
+            
+        </view>
+        <view class="dispatch-info">
+            <view class="item">
+                <view><text>{{shopMap.sendOnTime}}</text>分</view>
+                <view>平均送达时间</view>
+            </view>
+            <view class="item">
+                <view>￥<text>{{shopMap.minSendPrice}}</text></view>
+                <view>起送价</view>
+            </view>
+            <view class="item">
+                <view>￥<text>{{shopMap.freight}}</text></view>
+                <view>配送费</view>
+            </view>
+        </view>
+        <view class="shop-info">
+            <view class="item-info">
+                <image src="../../images/42ico_time.png"></image><text>送水时间:{{shopMap.startTime}}-{{shopMap.endTime}}</text>
+            </view>
+            <view class="item-info">
+                <image src="../../images/location.png"></image><text>水店地址:{{shopMap.address}}</text>
+            </view>
+            <view class="item-info" data-tel="{{shopMap.tel}}" bindtap='callShop'>
+                <image src="../../images/208ico_tel.png"></image><text>水店电话:{{shopMap.tel}}</text><view class="navigator-arrow"></view>
+            </view>
+            <!-- <view class="item-info">
+                <image src="../../images/209ico_map.png"></image><text>水店配送范围:</text>
+            </view> -->
+        </view>
+        <view class="licence">
+            <view class="logo">
+                <image src="../../images/188zhengjian.png"></image><text>资质证照</text>
+            </view>
+            <view class="photo-box" style="display:flex;">
+                <image wx:for="{{shopMap.certificate}}" src="{{item}}" catchtap='previewlmg' data-index="{{index}}"></image>
+            </view>
+        </view>
+    </scroll-view>
+</view>
+<!--注册-->
+<include src="../../common/register.wxml" />

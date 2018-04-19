@@ -1,0 +1,248 @@
+<!--商品列表-->
+<view class="container {{modalWrap==true?' bg-blur':''}} {{blurBg==true?' bg-blur':''}} {{unBindBg==true?' bg-blur':''}}">
+  <view class="tab">
+    <view class="tab-item" class="{{status==0 ? 'active':''}}{{theme==1?' theme1':''}}{{theme==2?' theme2':''}}{{theme==3?' theme3':''}}{{theme==4?' theme4':''}}{{theme==5?' theme5':''}}" bindtap="tabChange" data-type="0">
+      订水
+    </view>
+    <view class="tab-item" class="{{status==1 ? 'active':''}}{{theme==1?' theme1':''}}{{theme==2?' theme2':''}}{{theme==3?' theme3':''}}{{theme==4?' theme4':''}}{{theme==5?' theme5':''}}" bindtap="tabChange" data-type="1">
+      评价
+    </view>
+    <view class="tab-item" class="{{status==2 ? 'active':''}}{{theme==1?' theme1':''}}{{theme==2?' theme2':''}}{{theme==3?' theme3':''}}{{theme==4?' theme4':''}}{{theme==5?' theme5':''}}" bindtap="tabChange" data-type="2">
+      商家
+    </view>
+  </view>
+  <!--tab -->
+  <view class="waters" wx:if="{{status==0||item.status==status}}">
+    <view class="menu-wrapper">
+      <scroll-view scroll-y style="height:992rpx;margin-top:10rpx;">
+        <view wx:for="{{shopProducts}}" class="menu-item {{cats==index ? 'active':''}}{{theme==1?' theme1':''}}{{theme==2?' theme2':''}}{{theme==3?' theme3':''}}{{theme==4?' theme4':''}}{{theme==5?' theme5':''}}" bindtap="selectMenu" data-item-index="{{index}}">
+          <view class="text">
+            {{item.className}}
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+    <scroll-view scroll-y="true" scroll-into-view="{{toView}}" class="waters-wrapper" style="height:100%;" bindscroll="scroll">
+      <view wx:for="{{shopProducts}}" class="water-list water-list-hook" wx:for-index="parentIndex">
+        <view id="order{{parentIndex}}" class="title" bindtap="offsetTop">{{item.className}}</view>
+        <view wx:for="{{item.products}}" class="water-item" wx:for-item="product" data-water="{{item.products}}">
+          <!--首桶优惠  -->
+          <image class="first-free" wx:if="{{product.fristFreeTag==11}}" src="../../images/197free.png"></image>
+          <!--首桶半价  -->
+          <image class="first-half" wx:if="{{product.fristFreeTag==12}}" src="../../images/196half.png"></image>
+          <view class="icon">
+            <image src="{{product.pictureUrl}}" bindtap="productDetail" data-pid="{{product.pid}}" data-shopid="{{shopId}}"></image>
+          </view>
+          <view class="content">
+            <view class="name" bindtap="productDetail" data-pid="{{product.pid}}" data-shopid="{{shopId}}">{{product.pname}}</view>
+            <view class="extra">
+              <text class="count" bindtap="productDetail" data-pid="{{product.pid}}" data-shopid="{{shopId}}">已销售{{product.salesNum}}</text>
+            </view>
+            <view class="price">
+              ￥
+              <text class="now">{{product.vipPrice}}</text>
+            </view>
+
+            <!--cartControl-->
+            <view class="cartControl-wrapper">
+              <view class="cartControl">
+                <image class="cart-decrease" wx:if="{{product.number > 0}}" data-item-index="{{index}}" data-parentIndex="{{parentIndex}}" catchtap="decreaseCart" src="{{theme==1?'../../images/1/minus_btn.png':''}}{{theme==2?'../../images/2/minus_btn.png':''}}{{theme==3?'../../images/3/minus_btn.png':''}}{{theme==4?'../../images/4/minus_btn.png':''}}{{theme==5?'../../images/5/minus_btn.png':''}}"></image>
+                <view class="cart-count" wx:if="{{product.number > 0 }}">{{product.number}}</view>
+                <image class="cart-add" data-item-index="{{index}}" data-parentIndex="{{parentIndex}}" catchtap="addCart" src="{{theme==1?'../../images/1/add_btn.png':''}}{{theme==2?'../../images/2/add_btn.png':''}}{{theme==3?'../../images/3/add_btn.png':''}}{{theme==4?'../../images/4/add_btn.png':''}}{{theme==5?'../../images/5/add_btn.png':''}}"></image>
+              </view>
+
+            </view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <!--shopCart-->
+
+    <view class="shopCart">
+      <view class="content" catchtap="toggleList">
+        <view class="content-left">
+          <button catchtap="goHome">
+            <image src="../../images/home.png"></image>
+            <text>首页</text>
+          </button>
+          <button catchtap="kefu">
+            <image src="../../images/kefu.png"></image>
+            <text>客服</text>
+          </button>
+          <button open-type="share" catchtap="share">
+            <image src="../../images/fenxiang.png"></image>
+            <text>分享</text>
+          </button>
+        </view>
+        <view class="content-right">
+          <view class="pay {{totalCount> 0? ' enough':' not-enough'}}{{theme==1?' theme1':''}}{{theme==2?' theme2':''}}{{theme==3?' theme3':''}}{{theme==4?' theme4':''}}{{theme==5?' theme5':''}}" catchtap="pay">
+            去购物车结算
+          </view>
+
+        </view>
+      </view>
+
+    </view>
+  </view>
+
+  <view class="all-evaluate" wx:if="{{status==1||item.status==status}}" style="height:{{winHeight-40}}px">
+    <scroll-view scroll-y style="height:{{winHeight-40}}px" bindscrolltolower="loadMore" lower-threshold="0">
+      <block wx:for="{{evaluateList.evaluates}}" wx:if="{{evaluateList.evaluates.length>0}}">
+        <view class="item-evaluate">
+          <view class="user-info">
+            <view class="photo-box">
+              <image src="{{item.photo?item.photo:'../../images/default.png'}}"></image>
+              <text>{{item.userName}}</text>
+            </view>
+            <view>{{item.createDate}}</view>
+          </view>
+          <view class="level-info">
+
+            <view class="level-box" wx:for="{{item.projectMaps}}">
+              <image src="../../images/86star.png" wx:for="{{item.grade}}"></image>
+              <image src="../../images/86darkStar.png" wx:for="{{5-item.grade}}"></image>
+              <text class="projectName">{{item.projectName}}</text>
+              <text class="grade">{{item.grade}}星</text>
+              <text>{{item.tags}}</text>
+            </view>
+
+            <view class="bubble">
+              <text class="pin"></text>
+            </view>
+          </view>
+          <view class="evaluate-content">{{item.content}}</view>
+        </view>
+      </block>
+   
+      <block wx:if="{{evaluateList.evaluates.length<=0}}">
+        <view class="no-evaluation">
+          <image src='../../images/no_mesg_icon@2x.png'></image>
+          <view>小店新开张，暂无评价</view>
+        </view>
+      </block>
+    </scroll-view>
+  </view>
+  <view class="shop-wrap" wx:if="{{status==2||item.status==status}}">
+    <scroll-view scroll-y style="height:{{winHeight-44}}px">
+      <view class="bg-box">
+        <view class="picture-box">
+          <image src="{{shopMap.pictureUrl}}" class="shop-picture"></image>
+        </view>
+        <view class="right-content">
+          <view class="right-content-left">
+            <view class="shop-name">{{shopMap.shopName}}</view>
+            <view class="age-limit" style="display:flex">
+              <view style="margin-right:16rpx; white-space:nowrap;">
+                <text style="color:#F89834;">{{shopMap.integrityYear[0]}}</text>
+                <text>{{shopMap.integrityYear[1]}}</text> </view>
+              <view style=" white-space:nowrap;">
+                <text style="color:#F89834;">{{shopMap.chainNum[0]}}</text>
+                <text>{{shopMap.chainNum[1]}}</text>
+              </view>
+            </view>
+          </view>
+
+          <view class="right-content-right">
+            <view>
+              平均送达:
+              <text style="color:#F89834">{{shopMap.sendOnTime}}分钟</text>
+            </view>
+          </view>
+        </view>
+        <!--  <view class="star-box">
+                    <image src="../../images/86star.png" wx:for="{{shopMap.grade/2}}"></image>
+                    <image src="../../images/86darkStar.png" wx:for="{{5-item.grade/2}}"></image>
+                </view>
+-->
+      </view>
+
+      <view class="shop-info">
+        <view class="item-info">
+          <view>
+            <label>送水时间</label>
+            <text> {{shopMap.startTime}}-{{shopMap.endTime}}</text>
+          </view>
+        </view>
+        <view class="item-info" data-tel="{{shopMap.tel}}" bindtap='callShop'>
+          <view>
+            <label>水店电话</label>
+            <text>{{shopMap.tel}}</text>
+          </view>
+          <image src="../../images/phone@2x.png" class="pix-right"></image>
+        </view>
+        <view class="item-info" data-tel="{{shopMap.tel}}" catchtap='previewlmg'>
+          <view>
+            <label>店铺二维码</label>
+            <text></text>
+          </view>
+          <image src="{{shopMap.publicWxCode}}" class="pix-right"></image>
+        </view>
+        <view class="item-info" data-tel="{{shopMap.tel}}">
+          <view>
+            <label>证照信息</label>
+          </view>
+          <image src="../../images/Shape@2x.png" class="pix-right" bindtap='goTo'></image>
+        </view>
+      </view>
+
+      <!--店铺简介-->
+      <view class="shop-info twomod">
+        <view class="item-info">
+          <view>
+            <label>店铺简介</label>
+            <text>{{shopMap.scopeDescription}}</text>
+          </view>
+          <text class="navigator-arrow"></text>
+        </view>
+
+        <view class="item-info">
+          <view>
+            <label>开店时间</label>
+            <text>{{shopMap.openDate}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!--经营品牌-->
+      <view class="brand-wrap">
+        <view class="title">经营品牌</view>
+        <view class="brand-list">
+          <view wx:for="{{brands}}">
+            <image src="{{item.pictureUrl}}" mode="widthFix"></image>
+            <text>{{item.brandName}}</text>
+          </view>
+        </view>
+      </view>
+      
+
+    </scroll-view>
+  </view>
+</view>
+<!--tab -->
+
+<view class="ququan-bg" wx:if="{{blurBg}}">
+  <view class="ququan-box">
+    <image class="close-bg" src="../../images/close_bg.png" bindtap="closeBg"></image>
+    <image class="coupon-bg" src="{{sendDuanData.largePicture}}" mode="widthFix"></image>
+    <image class="get-coupon" src="../../images/getCoupon.png" bindtap="getCoupon" mode="widthFix"></image>
+  </view>
+</view>
+<view class="bind-bg" wx:if="{{unBindBg}}">
+  <view class="bind-box">
+    <view class="bing-close" bindtap='closeBindBg'>
+      <image src="../../images/off-icon@2x.png"></image>
+    </view>
+    <view class="title">登录或注册订水账号</view>
+    <button class="weixin-bind" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">
+      <image src="../../images/weixin_logo.png"></image>微信账号快速登录</button>
+    <button class="phone-bind" bindtap='openModal'>
+      <image src="../../images/phone_logo.png"></image>手机号注册 / 登录</button>
+  </view>
+</view>
+<!--未注册小弹出框-->
+<view class="register-acticv {{minActiveImg&&!blurBg?'':'none'}}" bindtap='minImgTap' wx:if="{{minActiveImg}}">
+  <image src="{{sendDuanData.smallPicture}}" mode='widthFix'></image>
+</view>
+<!--注册-->
+<include src="../../common/register/register.wxml" />

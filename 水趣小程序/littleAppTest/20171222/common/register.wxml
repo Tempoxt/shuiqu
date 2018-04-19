@@ -1,0 +1,48 @@
+<view class="{{modalWrap==true? 'modalWrap':'none'}}">
+    <view class="{{modal==true? 'modal':''}}">
+        <view class="header">
+            <view class="choose-location" bindtap='getCity'>
+                <text class="city">{{currentCity}}</text>
+                <image class="arrow" src="../../images/63navbar_ico_arrow_down.png"></image>
+            </view>
+            <text class="title">注册</text>
+             <image class="close" catchtap='closeModal' src="../../images/close.png" ></image> 
+             <!-- <text class="close" catchtap='closeModal'>x</text>  -->
+        </view>
+        <view class="inputs">
+            <view class="phone"><input placeholder='手机号' bindinput='inputPhoneNum' maxlength='11'></input></view>
+            <view class="validate">
+                <input placeholder='验证码' bindinput='inputValidateCode' maxlength='6'></input>
+                <button class="getCode" catchtap='getCode' style="background-color:{{getCodeColor}}" disabled="{{getCodeStatus}}">{{getCodeText}}</button>
+            </view>
+        </view>
+        <view class="agree">
+            <image wx:if="{{selectStatus}}" src="../../images/checkbox_big_checked.png" catchtap="toggleStatus">
+            </image>
+            <image wx:else src="../../images/checkbox_big_disabled.png" catchtap="toggleStatus">
+            </image>    
+            <view>我已阅读并同意<text>《水趣用户协议》</text></view>
+        </view>
+        <button class="commit"  style="background-color:{{commitColor}}" disabled='{{bindStatus}}' bindtap="commit">提交</button> 
+    </view>
+</view>
+<scroll-view scroll-y="true" class="city-list {{cityList?' city-show':' city-hide'}}">
+    <view class="city-box">
+        <view class="title-list-wrap">
+            <view class="title">热门城市</view>
+             <view class="list-hot-city">
+                <text wx:for="{{cityList.hotCitys}}" data-id="{{item.cityId}}" data-cityname="{{item.cityName}}" data-location="{{item.location}}" catchtap='selectCity'>{{item.cityName}}</text>
+            </view> 
+        </view>
+        <view class="title-list-wrap">
+            <view class="title">选择城市</view>
+            <view class="list-city">
+                <view wx:for="{{cityList.allCitys}}">
+                    <view class="first-letter">{{item.firstLetter}}</view>
+                    <view  wx:for="{{item.cityInfo}}" wx:for-item="cityInfo" class='city-name'  data-id="{{cityInfo.cityId}}" data-cityname="{{cityInfo.cityName}}" data-location="{{cityInfo.location}}" catchtap='selectCity'>{{cityInfo.cityName}}</view>
+                </view>
+            </view>
+        </view>
+    </view>
+    <image src="../../images/28ico_close.png" catchtap='closeCityList'></image>
+</scroll-view>

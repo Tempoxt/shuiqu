@@ -1,0 +1,105 @@
+<!--pages/orderDetail/orderDetail.wxml-->
+<view class="swiper-tab"> 
+  <view class="swiper-tab-item {{currentTab==0 ? 'on' : ''}}" data-current="0" bindtap="swichNav">订单状态</view> 
+  <view class="swiper-tab-item {{currentTab==1 ? 'on' : ''}}" data-current="1" bindtap="swichNav">订单详情</view> 
+</view> 
+ 
+<swiper current="{{currentTab}}" class="swiper-box" duration="300" style="height:{{winHeight-40}}px" bindchange="bindChange"> 
+  <swiper-item> 
+    <view class="content logistics">
+      <view class="logistics-progress">
+        <view class="line-gray"></view>
+      </view>
+      <view class="text-tips">
+        <view class="item-window" wx:for="{{orderLog.logisticsMaps}}">          
+            <text class="msg">{{item.logisticsDescribe}}</text>
+            <text class="little-arrow"></text>
+            <image class="phone-icon" wx:for="{{orderLog.logisticsMaps}}" src="../../images/67order_flow_ico_mb.png"></image>
+            <view class="line-yellow"></view>
+        </view>
+        
+      </view>   
+    </view>
+  </swiper-item> 
+  <swiper-item> 
+    <scroll-view scroll-y="true" style="height:{{winHeight-80}}px">
+    <view class="content">
+        <view class="shop-title">商家信息</view>
+        <view class="shop-tel-box" bindtap='callSeller' data-tel="{{orderDetail.tel}}">
+            <view class="shop-tel">商家电话:{{orderDetail.tel}}</view>
+            <image src="../../images/173btn_tel.png"></image>
+        </view>
+        <view class="product-title">商品信息</view>
+        <view class="shop-name-box">
+            <image src="{{orderDetail.pictureUrl}}"></image>
+            <text class="shop-name">{{orderDetail.shopName}}</text>
+            <view class="navigator-arrow"></view>
+        </view>
+        <view class="product-detail" wx:for="{{orderDetail.details}}">
+            <view class="pname-box">
+                <view>{{item.pname}}</view>
+                <image src="../../images/141btn_sp_habit.png"></image>
+            </view>
+            <view class="price-box">
+                <view class="price">单价:{{item.price}}</view>
+                <view class="number">数量:{{item.number}}</view>
+                <view wx:if="{{item.settlementType == '现金'}}" class="settlementType" >金额:{{item.total}}</view>
+                <view wx:else class="settlementType">结算:{{item.settlementType}}</view>
+            </view>
+        </view>
+        <view class="item-info">
+            <text>商品:</text>
+            <text>{{totalCash}}</text>
+        </view>
+        <view class="item-info">
+            <text>运费:</text>
+            <text wx:if="{{orderDetail.freight == 0}}">免运费</text>
+            <text wx:else>{{orderDetail.freight}}</text>
+        </view>
+        <view class="item-info">
+            <text>优惠:</text>
+            <text>-￥{{totalVoucherMoney}}</text>
+        </view>
+        <view class="item-info">
+            <text>水票:</text>
+            <text>{{ticket}}张</text>
+        </view>
+        <view class="item-info">
+            <text>电子票:</text>
+            <text>{{eticket}}张</text>
+        </view>
+        <view class="item-info-total">
+            <text class="total-num">共{{totalNum}}件商品</text>
+            <view>应付款<text class="need-pay">￥{{orderDetail.receivableTotal}}</text></view>
+        </view>
+        <view class="order-info">
+            <view class="order-title">订单信息</view>
+            <view class="order-content">
+                <view>订单号：{{orderDetail.orderNo}}</view>
+                <view>订单状态：{{orderDetail.status}}</view>
+                <view>支付方式：{{orderDetail.payStyle}}</view>
+                <view>创建时间：{{orderDetail.dateCreated}}</view>
+                <view>预约时间：{{orderDetail.appointmentTime}}</view>
+                <view wx:if="{{orderDetail.paymentDate}}">付款时间：{{orderDetail.paymentDate}}</view>
+            </view>
+        </view>
+        <view class="address-info">
+            <view class="address-title">地址信息</view>
+            <view class="address-content">
+                <view>联系人：{{orderDetail.contacts}}</view>
+                <view>联系电话：{{orderDetail.phone}}</view>
+                <view>配送地址：{{orderDetail.sendAddress}}</view>
+            </view>
+        </view>
+    </view>
+    <view class="footer">
+        <!-- <button size="mini" wx:if="{{orderDetail.cancelEnabled}}">取消订单</button>  
+        <button size="mini" wx:if="{{orderDetail.ifOpenTH}}">我要退货</button>
+        <button size="mini" wx:if="{{orderDetail.th_orderId > 0}}">查看退货</button>
+        <button size="mini" wx:if="{{orderDetail.payEnabled}}">继续支付</button>     -->
+    </view>
+    </scroll-view> 
+  </swiper-item> 
+</swiper> 
+<!--注册-->
+ <include src="../../common/register.wxml" />  

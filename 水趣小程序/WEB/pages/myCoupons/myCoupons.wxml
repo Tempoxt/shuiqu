@@ -1,0 +1,51 @@
+<!--我的优惠券-->
+<view class="swiper-tab"> 
+  <view class="swiper-tab-item {{currentTab==0 ? 'on' : ''}}{{theme==1?' theme1':''}}{{theme==2?' theme2':''}}{{theme==3?' theme3':''}}{{theme==4?' theme4':''}}{{theme==5?' theme5':''}}" data-current="0" bindtap="swichNav">有效</view> 
+  <view class="swiper-tab-item {{currentTab==1 ? 'on' : ''}}{{theme==1?' theme1':''}}{{theme==2?' theme2':''}}{{theme==3?' theme3':''}}{{theme==4?' theme4':''}}{{theme==5?' theme5':''}}" data-current="1" bindtap="swichNav">无效</view> 
+</view>
+<swiper current="{{currentTab}}" class="swiper-box" duration="300" style="height:{{winHeight}}px" bindchange="bindChange"> 
+  <swiper-item> 
+    <view class="content">
+        <block wx:for="{{validCoupons}}">
+            <view class="coupon" bindtap='useCoupon' data-classname="{{item.className}}" data-typename="{{item.typeName}}" data-code="{{item.code_id}}" data-logourl="{{item.logoUrl}}" data-begintime="{{item.begintime}}" data-overtime="{{item.overtime}}" data-tel="{{item.tel}}">
+                <view class="info">
+                    <view class="logoUrl"><image src="{{item.logoUrl}}"></image></view>
+                    <view class="coupon-name">
+                        <view class="title">{{item.className}}优惠券</view>
+                        <view class="coupon-price">{{item.convert_money}}元</view>
+                    </view>
+                    <view class="is-use">
+                        <image src="../../images/used.png"></image>
+                    </view>
+                </view>
+                <view class="other">
+                    <view class="address"><image src="../../images/46location.png"></image>{{item.cityName}}</view>
+                    <view>可用时间：{{item.begintime}}~{{item.overtime}}</view>
+                </view>
+            </view>
+        </block>
+    </view>
+  </swiper-item> 
+  <swiper-item> 
+    <view class="content">
+        <block wx:for="{{invalidCoupons}}">
+            <view class="coupon">
+                <view class="info">
+                    <view class="logoUrl"><image src="{{item.logoUrl}}"></image></view>
+                    <view class="coupon-name">
+                        <view class="title">{{item.className}}优惠券</view>
+                        <view class="coupon-price">{{item.convert_money}}元</view>
+                    </view>
+                    <view class="is-use">
+                        <image src="../../images/hadused.png"></image>
+                    </view>
+                </view>
+                <view class="other">
+                    <view class="address"><image src="../../images/46location.png"></image>{{item.cityName}}</view>
+                    <view>可用时间：{{item.begintime}}~{{item.overtime}}</view>
+                </view>
+            </view>
+        </block>
+    </view> 
+  </swiper-item> 
+</swiper>

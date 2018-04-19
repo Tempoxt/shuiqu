@@ -1,0 +1,28 @@
+<!--pages/joinList/joinList.wxml-->
+<view class="container">
+    <view class="acticity">
+        <view class="title"><text class="acticity-type">[通知]</text>会议通知</view>
+        <view class="content">活动内容</view>
+        <view class="info">
+            <view>访问用户</view>
+            <view>发布时间</view>
+        </view>
+    </view>
+    <view class="acticity">
+        <view class="title"><text class="acticity-type">[通知]</text>会议通知</view>
+        <view class="content">活动内容</view>
+        <view class="info">
+            <view>访问用户</view>
+            <view>发布时间</view>
+        </view>
+    </view>
+    <view class="acticity">
+        <view class="title"><text class="acticity-type">[通知]</text>会议通知</view>
+        <view class="content">活动内容</view>
+        <view class="info">
+            <view>访问用户</view>
+            <view>发布时间</view>
+        </view>
+    </view>
+    <view class="footer" bindtap='publish'>+我要发布</view>
+</view>

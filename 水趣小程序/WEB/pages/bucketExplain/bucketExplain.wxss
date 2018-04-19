@@ -1,0 +1,4 @@
+/* pages/bucketExplain/bucketExplain.wxss */
+view{
+    margin:40rpx;font-size:30rpx;
+}

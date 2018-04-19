@@ -1,0 +1,63 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+    <view class="login">
+        <text>好消息，水趣小程序公测啦...</text>
+        <text wx:if="{{hasBind != 1}}" bindtap="openModal">登录|注册</text>
+    </view>
+    <view class="user-info">
+       <image wx:if="{{userInfo.avatarUrl}}" class="userinfo-avatar" src="{{userInfo.avatarUrl}}"></image>
+       <image wx:else class="userinfo-avatar" src="../../images/default.png"></image>
+       <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+       <!-- <image class="set-icon" src="../../images/40ico_edit.png" bindtap="setInfo"></image> 
+       <text class="setInfo" bindtap="setInfo">设置</text> -->
+    </view>
+    <view class="coin">
+        <view class="integral"  bindtap='integral'>
+            <view class="desc">
+                <image src="../../images/home_points.png"></image>
+                <text>积分</text>
+            </view>
+            
+            <view class="num">{{integral? integral:0}}</view>
+        </view>
+        <text class="line">|</text>
+        <view class="e-ticket" bindtap='eTicket'>
+            <view class="desc">
+                <image src="../../images/home_e_ticket.png"></image>
+                <text>电子票</text>
+            </view>
+            <view class="num">{{ticket_number? ticket_number:0}}</view>
+        </view>
+    </view>
+    <view class="main">
+        <view class="item quickShopping" bindtap="quickOrderWater">
+            <image class="item-logo" src="../../images/sd.png"></image>
+            <text class="item-text">快速订水</text>
+            <!-- <image class="right-arrow" src="../../images/174ico_awwor_right.png"></image> -->
+            <view class="navigator-arrow"></view>
+        </view>
+        <view class="item" bindtap="oftenUseShop">
+            <image class="item-logo"  src="../../images/home_store.png"></image>
+            <text class="item-text">常用店铺</text>
+            <view class="navigator-arrow"></view>
+        </view>
+        <view class="item" bindtap="myOrders">
+            <image class="item-logo"  src="../../images/home_order.png"></image>
+            <text class="item-text">我的订单</text>
+            <view class="navigator-arrow"></view>
+        </view>
+        <view class="item" bindtap="myAddress">
+            <image class="item-logo"  src="../../images/home_add.png"></image>
+            <text class="item-text">我的地址</text>
+            <view class="navigator-arrow"></view>
+        </view>
+        <!-- <view class="item" bindtap="shareGetGift">
+            <image class="item-logo"  src="../../images/home_share.png"></image>
+            <text class="item-text">分享有礼</text>
+            <view class="navigator-arrow"></view>
+        </view> -->
+    </view>
+</view>
+<!--注册-->
+<include src="../../common/register.wxml" />
+   

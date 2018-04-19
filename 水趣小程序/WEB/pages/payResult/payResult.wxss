@@ -1,0 +1,66 @@
+/* pages/payResult/payResult.wxss */
+.container {
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+}
+.container image{
+    width:160rpx;
+    height:160rpx;
+    margin-top:100rpx;
+}
+.container .payment-status{
+    font-size:32rpx;
+    font-weight:bold;
+    margin:40rpx 0 20rpx 0;
+}
+.container .tips{
+    font-size:28rpx;
+    margin-bottom:60rpx;
+}
+.container .show-detail{
+    width:80%;
+    height:70rpx;
+    line-height:70rpx;
+    margin-bottom:40rpx;
+    border-radius: 70rpx;
+    color: #fff;
+}
+.container .show-detail.theme1{
+    background: linear-gradient(to right,#F6CC47,#FFAD52);
+}
+.container .show-detail.theme2{
+    background: linear-gradient(to right,#7b00d3,#b25aff);
+}
+.container .show-detail.theme3{
+    background: linear-gradient(to right,#cf1731,#ff4060);
+}
+.container .show-detail.theme4{
+    background: linear-gradient(to right,#15a0ff,#3ebaff);
+}
+.container .show-detail.theme5{
+    background: linear-gradient(to right,#2cc136,#5de04f);
+}
+.container .go-home{
+    width:80%;
+    height:70rpx;
+    line-height:70rpx;
+    border-radius: 70rpx;
+    color: #fff;
+}
+.container .go-home.theme1{
+    background: linear-gradient(to right,#F6CC47,#FFAD52);
+}
+.container .go-home.theme2{
+    background: linear-gradient(to right,#7b00d3,#b25aff);
+}
+.container .go-home.theme3{
+    background: linear-gradient(to right,#cf1731,#ff4060);
+}
+.container .go-home.theme4{
+    background: linear-gradient(to right,#15a0ff,#3ebaff);
+}
+.container .go-home.theme5{
+    background: linear-gradient(to right,#2cc136,#5de04f);
+}

@@ -1,0 +1,10 @@
+<!--   关于我们    -->
+<view class="container">
+    <image class="logo" src="../../images/logo.png"></image>
+    <text class="version">{{version}}</text>
+    <view class="ename">{{ename}}</view>
+    <view class="footer">
+        <view class="support"><image src="../../images/shuiqu_logo.png"></image>提供技术支持</view>
+        <text>©2018 ShenZhen C&BO Technology Co .,Ltd</text>
+    </view>
+</view>

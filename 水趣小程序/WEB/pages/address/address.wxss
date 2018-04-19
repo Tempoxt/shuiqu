@@ -1,0 +1,138 @@
+/* pages/address/address.wxss */
+
+page {
+    background: #eee;
+    /* height: 100%; */
+}
+.container{
+     /* margin-bottom:40rpx;  */
+}
+.address{
+    padding: 0 40rpx 0 40rpx;
+    /* margin-top: 20rpx; */
+    background: white;
+   
+}
+
+.address:first-child {
+    margin-top: 20rpx;
+}
+
+.item-address {
+    width: 100%;
+    /* padding-bottom: 20rpx; */
+    padding: 10rpx 0;
+    border-bottom: 2rpx #f2f2f2 solid;
+}
+.item-address view{
+    height: 50rpx;
+    line-height: 50rpx;
+}
+
+/* .Edit .icon-true:before {
+    font-size: 40rpx;
+    position: relative;
+    color: #ffe400;
+    top: -4rpx;
+    left: -4rpx;
+} */
+.btn-box{
+    position: fixed;
+    height: 50px;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    box-sizing: border-box;
+}
+.addAddress {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    font-size: 16px;
+    z-index:100;
+ margin:5px;
+
+    box-sizing: border-box;
+    color: #fff;
+}
+.addAddress.theme1{
+    background: linear-gradient(to right,#F6CC47,#FFAD52);
+}
+.addAddress.theme2{
+    background: linear-gradient(to right,#7b00d3,#b25aff);
+}
+.addAddress.theme3{
+    background: linear-gradient(to right,#cf1731,#ff4060);
+}
+.addAddress.theme4{
+    background: linear-gradient(to right,#15a0ff,#3ebaff);
+}
+.addAddress.theme5{
+    background: linear-gradient(to right,#2cc136,#5de04f);
+}
+.addAddress.cannot-add{
+    background: #ddd;
+    color:#aaa; 
+}
+.add {
+    display: inline-block;
+    width: 80rpx;
+    height: 80rpx;
+    color: #999;
+    margin-bottom: 30rpx;
+    border: 2rpx #ddd solid;
+    border-radius: 8rpx;
+    font-size: 40px;
+}
+
+.del {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    background: #333;
+    color: white;
+    padding: 40rpx 0;
+}
+
+.personalInfo {
+    font-size: 16px;
+}
+.personalInfo .myName{
+    margin-right: 20rpx;
+}
+.address{
+    font-size: 16px;
+}
+.Edit {
+    font-size: 16px;
+    height: 80rpx;
+    display: flex;
+}
+.Edit .setDefault{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    height: 80rpx;
+    line-height: 80rpx;
+}
+.Edit .setDefault image{
+    width:44rpx;
+    height:44rpx;
+    margin-right: 10rpx;
+}
+.Edit .other{
+    display: flex;
+    /* width: 200rpx; */
+    width:100rpx;
+    height: 80rpx; 
+    line-height: 80rpx;
+    justify-content: flex-end;
+}
+.Edit .other view{
+    /* height: 80rpx;  */
+    /* padding: 0 30rpx; */
+}

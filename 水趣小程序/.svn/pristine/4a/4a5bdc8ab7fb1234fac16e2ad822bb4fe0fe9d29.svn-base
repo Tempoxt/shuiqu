@@ -1,0 +1,23 @@
+<!-- 电子票详情-->
+<view class="container">
+    <view class="header">
+        <view class="orderNo">订单号：{{result.consumeDetails[0].orderNo}}</view>
+        <view>电子票名称：{{pname}}</view>
+    </view>
+    <view class="detail">
+      <view>购买日期：{{sellDate}}</view>
+      <view>购买量：{{sellNum}}</view>
+      <view>剩余量：{{surplusNum}}</view>
+      <view>有效期：{{beginDate}}至：{{endDate}}</view>
+    </view>
+    <view class="other" wx:if="{{result.consumeDetails[0].dateCreated}}">
+        <view class="title">
+            <view>配送日期</view>
+            <view>配送量</view>
+        </view>
+        <view class="info">
+            <view>{{result.consumeDetails[0].dateCreated}}</view>
+            <view>{{result.consumeDetails[0].subtractNum}}</view>
+        </view>
+    </view>
+</view>

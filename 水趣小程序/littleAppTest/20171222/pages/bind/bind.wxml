@@ -1,0 +1,20 @@
+<!--pages/bind/bind.wxml-->
+<!--已弃用  -->
+<view class="container">
+    <view class="tipsBox">
+        <view class="tips">已发送验证码短信到</view>
+        <text>{{phoneNum}}</text>
+    </view>
+    
+    <view class="validateBox">
+
+        <text class="validateNum">验证码:</text>
+        <input class="inputCode" type="number" placeholder="请输入验证码" focus="true" bindinput="inputHandler" />
+        <button class="getCode" type="text" style="background-color:{{getCodeColor}}" catchtap="getCode" disabled='{{getCodeStatus}}'>{{second}}</button>
+    </view>
+    
+    <button class="confirm-button" type="default" style="background-color:{{buttonColor}}" bindtap="bindAccount" disabled='{{bindStatus}}'> 绑定</button>
+</view>
+
+
+

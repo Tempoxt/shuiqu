@@ -1,0 +1,18 @@
+<!--在线客服-->
+<view class="container">
+    <view class="questions">常见问题</view>
+    <!-- <view>1.如何查看我的订单</view>
+    <view>2.如果支付失败怎么办？</view>
+    <view>3.如果支付成功没开门怎么办？</view>
+    <view>4.如何订单申诉？</view>
+    <view>5.如果支付失败怎么办？</view>
+    <view>6.如果支付成功没开门怎么办？</view> -->
+    <block wx:for="{{faqs}}">
+        <view data-q="{{item.Q}}" data-a="{{item.A}}" catchtap='faq'>{{item.Q}}</view>
+    </block>
+    
+    <view class="more-help">如需更多帮助请点击下方在线客服按钮</view>
+    <button class="btn-box" open-type='contact'>
+        <view class="online-kefu" bindtap='online-kefu'>在线客服</view>
+    </button>
+</view>

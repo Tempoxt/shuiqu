@@ -1,0 +1,22 @@
+<!--pages/publish/publish.wxml-->
+<view class="container">
+    <input placeholder='活动标题' maxlength='26' bindinput='inputTitle'></input>
+    <view class="content">
+        <textarea placeholder='输入活动内容' maxlength="1000" placeholder-style="color:#bbb;" bindinput='inputContent'></textarea>
+        <text class="len">({{len}}/1000)</text>
+    </view>
+    <!-- <view class="weui-uploader__file">
+        <image class="weui-uploader__img" src="../images/pic_160.png" mode="aspectFill" />
+    </view> -->
+    <view class="img-list">
+        <view class="upload-img" wx:for="{{files}}">
+            <image class="img-item" src="{{item}}" />
+            <image class="close" src="../../images/28ico_close.png" catchtap='removeImg' data-src="{{item}}"></image>
+        </view> 
+        <view class="add-img" bindtap='uploadImg'>
+            <text class="plus">+</text>
+            <text>添加图片</text>
+        </view>
+    </view>
+    <view class="footer{{title && notice?' hasContent':''}}" bindtap='publish'>确定</view>
+</view>

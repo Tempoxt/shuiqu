@@ -1,0 +1,152 @@
+/* pages/index/index.wxss */
+
+.gray {
+    color: #bbb;
+}
+
+page {
+    background-color: #eee;
+    height: 100%;
+}
+.container .login {
+    display: flex;
+    padding: 10rpx 30rpx;
+    justify-content: space-between;
+    font-size: 30rpx;
+}
+
+.container .user-info {
+    display: flex;
+    height: 300rpx;
+    padding: 0 30rpx;
+    flex-direction: row;
+    align-items: center;
+    background: #f9d600;
+}
+.container .user-info .userinfo-avatar {
+    width: 100rpx;
+    height: 100rpx;
+    margin-right: 20rpx;
+    border-radius: 50%;
+}
+
+.container .user-info .userinfo-nickname {
+    flex: 1;
+    font-weight: normal;
+}
+.container .user-info .set-icon{
+    height: 40rpx;
+    width: 40rpx;
+}
+.container .user-info .setInfo {
+    font-size: 30rpx;
+}
+.container .coin{
+    margin: 10rpx 0;
+    /* height: 80rpx;  */
+     padding: 20rpx 0; 
+    background-color: #fff;
+    display: flex;
+}
+.container .coin .integral{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.container .coin .integral .desc{
+    display: flex;
+    align-items: center;
+    margin-right:20rpx;
+}
+.container .coin .integral .desc image{
+    margin-right: 10rpx;
+    height: 40rpx;
+    width: 40rpx;
+}
+.container .coin .integral .desc text{
+    font-size: 30rpx;
+}
+.container .coin .integral .num{
+    font-size: 30rpx;
+}
+.container .coin .line{
+    color:#ccc;
+}
+.container .coin .e-ticket{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.container .coin .e-ticket .desc{
+    display: flex;
+    align-items: center;
+    margin-right:20rpx;
+}
+.container .coin .e-ticket .desc image{
+    margin-right: 10rpx;
+    height: 40rpx;
+    width: 40rpx;
+}
+.container .coin .e-ticket .num{
+    font-size: 30rpx;
+}
+.container .coin .e-ticket .desc text{
+    font-size: 30rpx;
+}
+.container .main {
+    /* margin-top: 10rpx; */
+    /* padding: 0 20rpx; */
+}
+.main  .item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100rpx;
+    font-size: 26rpx;
+    background-color: #fff;
+    border-bottom: 1rpx solid #eee;
+    padding: 0 30rpx;
+}
+ .main .item.quickShopping{
+    padding:0 30rpx 0 26rpx;
+} 
+.main .item .item-logo {
+    width: 40rpx;
+    height: 40rpx;
+    margin-right: 20rpx;
+}
+  .main .item.quickShopping .item-logo{
+    width:48rpx;
+    height:48rpx;
+    margin-right: 16rpx;
+}  
+.main .item  .item-text {
+    flex: 1;
+}
+
+.main .item  .navigator-arrow {
+    padding-right: 26rpx;
+    position: relative;
+}
+
+.main .item .navigator-arrow:after {
+    content: " ";
+    display: inline-block;
+    height: 18rpx;
+    width: 18rpx;
+    border-width: 2rpx 2rpx 0 0;
+    border-color: #888;
+    border-style: solid;
+    transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+    position: absolute;
+    top: 50%;
+    margin-top: -8rpx;
+    right: 2rpx;
+}
+/*注册窗口*/
+  @import "../../common/register.wxss";  
+
+
+

@@ -1,0 +1,93 @@
+<!-- 首页 -->
+<!--主题颜色  theme1：黄色  theme2：紫色  theme3：红色  theme4：浅蓝色  theme5：绿色-->
+
+<!--  弹出授权登录或注册窗口后 设置背景高斯模糊  -->
+<view class="container">
+  <view class="msg-box" wx:if="{{textMsg.length > 0 }}" catchtap="msgDetail">
+    <view class="msg-list" wx:if="{{textMsg.length>0}}">
+      <text class="msg-item" wx:for="{{textMsg}}">{{item.notifyContent}}　</text>
+      <text class="msg-item" wx:for="{{textMsg}}">{{item.notifyContent}}　</text>
+      <text class="msg-item" wx:for="{{textMsg}}">{{item.notifyContent}}　</text>
+    </view>
+  </view>
+  <view class="user-info {{theme==1?' theme1':''}}{{theme==2?' theme2':''}}{{theme==3?' theme3':''}}{{theme==4?' theme4':''}}{{theme==5?' theme5':''}}">
+    <image wx:if="{{userInfo.avatarUrl}}" class="userinfo-avatar" src="{{userInfo.avatarUrl}}"></image>
+    <image wx:else class="userinfo-avatar" src="../../images/default.png"></image>
+    <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+  </view>
+  <view class="coin">
+    <view class="integral" bindtap='integral'>
+      <image src="../../images/home_points.png"></image>
+      <text class="title">积分</text>
+      <text class="num" style="padding-left:30rpx;">{{integral? integral:0}}</text>
+    </view>
+    <view class="e-ticket" bindtap='eTicket'>
+      <image src="../../images/home_e_ticket.png"></image>
+      <text class="title">电子票</text>
+      <text class="num" style="padding-left:30rpx;">{{ticket_number? ticket_number:0}}</text>
+    </view>
+  </view>
+  <view class="main">
+    <!-- <view class="item bind-box" wx:if="{{hasBind != 1}}">
+            <view class="bind-box-left">
+                <image class="item-logo" src="../../images/1/bdphone.png"></image>
+                <text class="item-text">找不到优惠券和积分？绑定手机号试试</text>
+            </view>
+             <button class="btn-bind theme1" bindtap="openModal">立即绑定</button> 
+        </view> -->
+    <view class="item quickShopping" bindtap="quickOrderWater">
+      <image class="item-logo" src="{{theme==1?'../../images/1/sd.png':''}}{{theme==2?'../../images/2/sd.png':''}}{{theme==3?'../../images/3/sd.png':''}}{{theme==4?'../../images/4/sd.png':''}}{{theme==5?'../../images/5/sd.png':''}}"></image>
+      <text class="item-text">快速订水</text>
+      <view class="navigator-arrow"></view>
+    </view>
+    <view class="item" bindtap="oftenUseShop">
+      <image class="item-logo" src="{{theme==1?'../../images/1/home_store.png':''}}{{theme==2?'../../images/2/home_store.png':''}}{{theme==3?'../../images/3/home_store.png':''}}{{theme==4?'../../images/4/home_store.png':''}}{{theme==5?'../../images/5/home_store.png':''}}"></image>
+      <text class="item-text">常用店铺</text>
+      <view class="navigator-arrow"></view>
+    </view>
+    <view class="item" bindtap="myOrders">
+      <image class="item-logo" src="{{theme==1?'../../images/1/home_order.png':''}}{{theme==2?'../../images/2/home_order.png':''}}{{theme==3?'../../images/3/home_order.png':''}}{{theme==4?'../../images/4/home_order.png':''}}{{theme==5?'../../images/5/home_order.png':''}}"></image>
+      <text class="item-text">我的订单</text>
+      <view class="navigator-arrow"></view>
+    </view>
+    <view class="item" bindtap="myAccount">
+      <image class="item-logo" src="{{theme==1?'../../images/1/zhh-icon.png':''}}{{theme==2?'../../images/2/zhh-icon.png':''}}{{theme==3?'../../images/3/zhh-icon.png':''}}{{theme==4?'../../images/4/zhh-icon.png':''}}{{theme==5?'../../images/5/zhh-icon.png':''}}"></image>
+      <text class="item-text">我的账户</text>
+      <view class="navigator-arrow"></view>
+    </view>
+    <view class="item" bindtap="myCoupons">
+      <image class="item-logo" src="{{theme==1?'../../images/1/home_coupon.png':''}}{{theme==2?'../../images/2/home_coupon.png':''}}{{theme==3?'../../images/3/home_coupon.png':''}}{{theme==4?'../../images/4/home_coupon.png':''}}{{theme==5?'../../images/5/home_coupon.png':''}}"></image>
+      <text class="item-text">优惠券</text>
+      <view class="navigator-arrow"></view>
+    </view>
+    <view class="item" bindtap="myAddress">
+      <image class="item-logo" src="{{theme==1?'../../images/1/home_add.png':''}}{{theme==2?'../../images/2/home_add.png':''}}{{theme==3?'../../images/3/home_add.png':''}}{{theme==4?'../../images/4/home_add.png':''}}{{theme==5?'../../images/5/home_add.png':''}}"></image>
+      <text class="item-text">我的地址</text>
+      <view class="navigator-arrow"></view>
+    </view>
+    <view class="item" bindtap="aboutUs">
+      <image class="item-logo" src="{{theme==1?'../../images/1/about.png':''}}{{theme==2?'../../images/2/about.png':''}}{{theme==3?'../../images/3/about.png':''}}{{theme==4?'../../images/4/about.png':''}}{{theme==5?'../../images/5/about.png':''}}"></image>
+      <text class="item-text">关于我们</text>
+      <view class="navigator-arrow"></view>
+    </view>
+  </view>
+  <view class="footer">
+    <view class="bottom-info">
+      <view class="company">
+        <image src="../../images/shuiqu_logo.png"></image>提供技术支持
+      </view>
+      <view class="ename">{{version}}</view>
+    </view>
+  </view>
+</view>
+<!-- <view class="bind-bg" wx:if="{{unBindBg}}">
+    <view class="bind-box">
+        <view class="title">登录或注册订水账号</view>
+        <button class="weixin-bind" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"><image src="../../images/weixin_logo.png"></image>微信账号快速登录</button>
+        <button class="phone-bind" bindtap='openModal'><image src="../../images/phone_logo.png"></image>手机号注册 / 登录</button>
+    </view>
+</view> -->
+<!-- 弹出授权登录或注册窗口后，遮住背景下的元素，防止用户乱点击  -->
+<!-- <view class="shade" wx:if="{{shadeOn}}"></view> -->
+<!--注册-->
+<!-- <include src="../../common/register/register.wxml" /> -->

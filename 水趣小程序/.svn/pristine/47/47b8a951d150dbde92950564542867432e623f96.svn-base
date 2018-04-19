@@ -1,0 +1,64 @@
+/* pages/couponProduct/couponProduct.wxss */
+.product{
+    display: flex;
+    border-bottom: 1rpx solid #eee;
+    justify-content: space-between;
+    padding-bottom:20rpx;
+    padding-right:20rpx;
+    padding-top:20rpx;
+}
+.product .product-info{
+    display: flex;
+    flex: 1;
+}
+.product .product-info .product-textInfo{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    font-size: 28rpx;
+    
+}
+.product .product-info .product-textInfo .sales{
+    color: #AAAEB8;
+    font-size: 26rpx;
+}
+
+.product .product-info .product-textInfo .bottom-line{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.product .product-info .product-textInfo .bottom-line view{
+    color: #FE791E;
+}
+
+.product .product-info .product-textInfo .bottom-line button{
+    margin: 0;
+    padding: 0 20rpx;
+}
+.product .product-info .product-textInfo .bottom-line button.theme1{
+    color:#fff;
+    background: linear-gradient(to right,#F6CC47,#FFAD52);
+    border-radius: 60rpx; 
+}
+.product .product-info .product-textInfo .bottom-line button.theme2{
+    color:#fff;
+    background:linear-gradient(to right,#7b00d3,#b25aff);
+    border-radius: 60rpx;
+}
+.product .product-info .product-textInfo .bottom-line button.theme3{
+    color:#fff;
+    background:linear-gradient(to right,#cf1731,#ff4060);
+    border-radius: 60rpx;
+}
+.product .product-info .product-textInfo .bottom-line button.theme4{
+    color:#fff;
+    background:linear-gradient(to right,#15a0ff,#3ebaff);
+    border-radius: 60rpx;
+}
+.product .product-info .product-textInfo .bottom-line button.theme5{
+    color:#fff;
+    background:linear-gradient(to right,#2cc136,#5de04f);
+    border-radius: 60rpx;
+}

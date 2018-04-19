@@ -1,0 +1,72 @@
+/* pages/oftenUseShop/oftenUseShop.wxss */
+page{
+    height: 100%;
+    background-color: #eeeeee;
+}
+.container {
+    height:100%;
+    display:flex;
+    flex-direction:column;
+}
+.shop-list .shop-item{
+    display:flex;
+    background-color:#fff;
+    padding:10rpx;
+    border-bottom:1rpx solid #eee;
+}
+.no-shop{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.no-shop .default{
+    width: 200rpx;
+    height: 200rpx;
+}
+.no-shop text{
+    font-size: 28rpx;
+    color:#aaa;
+}
+.shop-list .shop-item .picture-img{
+    width:150rpx;
+    height:150rpx;
+    margin-right:10rpx;
+}
+.shop-list .shop-item .shop-detail{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+.shop-list .shop-item .shop-detail .shop-name{
+    font-size:30rpx;
+}
+.shop-list .shop-item .shop-detail .level{
+    height: 40rpx;
+    display: flex;
+    align-items: center;
+}
+.shop-list .shop-item .shop-detail .level image{
+    width:30rpx;
+    height:30rpx;
+}
+.shop-list .shop-item .shop-detail .dispatch-info{
+    font-size:24rpx;
+    color: #aaa;
+}
+.shop-list .shop-item .shop-detail .distance{
+    display:flex;
+    align-items:center;
+}
+.shop-list .shop-item .shop-detail .distance image{
+    width:40rpx;
+    height:40rpx;
+}
+.shop-list .shop-item .shop-detail .distance text{
+    font-size:24rpx;
+    color: #aaa;
+}
+/*注册窗口*/
+ @import "../../common/register.wxss"; 

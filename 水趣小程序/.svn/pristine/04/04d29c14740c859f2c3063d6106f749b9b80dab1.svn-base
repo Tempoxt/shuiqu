@@ -1,0 +1,114 @@
+/* pages/address/address.wxss */
+
+page {
+    background: #eee;
+    /* height: 100%; */
+}
+.container{
+     /* margin-bottom:40rpx;  */
+}
+.address{
+    padding: 0 40rpx 0 40rpx;
+    /* margin-top: 20rpx; */
+    background: white;
+    margin-bottom:20rpx;
+}
+
+.address:first-child {
+    margin-top: 20rpx;
+}
+
+.item-address {
+    width: 100%;
+    /* padding-bottom: 20rpx; */
+    padding: 10rpx 0;
+    border-bottom: 2rpx #f2f2f2 solid;
+}
+.item-address view{
+    height: 50rpx;
+    line-height: 50rpx;
+}
+
+/* .Edit .icon-true:before {
+    font-size: 40rpx;
+    position: relative;
+    color: #ffe400;
+    top: -4rpx;
+    left: -4rpx;
+} */
+
+.addAddress {
+    position: fixed;
+    height: 40px;
+    line-height: 40px;
+    bottom: 0;
+    width: 100%;
+    font-size: 32rpx;
+    background: #EECE1F;
+    text-align: center;
+    z-index:10000;
+}
+.addAddress.cannot-add{
+    background: #ddd;
+     color:#aaa; 
+}
+.add {
+    display: inline-block;
+    width: 80rpx;
+    height: 80rpx;
+    color: #999;
+    margin-bottom: 30rpx;
+    border: 2rpx #ddd solid;
+    border-radius: 8rpx;
+    font-size: 80rpx;
+}
+
+.del {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    background: #333;
+    color: white;
+    padding: 40rpx 0;
+}
+
+.personalInfo {
+    font-size: 32rpx;
+}
+.personalInfo .myName{
+    margin-right: 20rpx;
+}
+.address{
+    font-size: 32rpx;
+}
+.Edit {
+    font-size: 32rpx;
+    height: 80rpx;
+    display: flex;
+}
+.Edit .setDefault{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    height: 80rpx;
+    line-height: 80rpx;
+}
+.Edit .setDefault image{
+    width:44rpx;
+    height:44rpx;
+    margin-right: 10rpx;
+}
+.Edit .other{
+    display: flex;
+    /* width: 200rpx; */
+    width:100rpx;
+    height: 80rpx; 
+    line-height: 80rpx;
+    justify-content: flex-end;
+}
+.Edit .other view{
+    /* height: 80rpx;  */
+    /* padding: 0 30rpx; */
+}

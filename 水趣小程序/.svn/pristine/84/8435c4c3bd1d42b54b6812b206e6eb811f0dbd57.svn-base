@@ -1,0 +1,35 @@
+<!--退款退货详情-->
+<view class="container">
+    <view class="explain">
+        <view class="title">退货退款服务说明:</view>
+        <view class="content">{{tuihuo.thDetail.desc}}</view>
+    </view>
+    <view class="progress-detail">
+        <view class="title">
+            <text>进度详情:</text>
+            <image wx:if="{{showDetail}}" src="../../images/94refund_go_top.png" bindtap='changeShow'></image>
+            <image wx:else src="../../images/95refund_go_down.png" bindtap='changeShow'></image>
+            
+        </view>
+        <view class="detail" hidden='{{!showDetail}}'>
+            <view class="item" wx:for="{{tuihuo.loggers}}">
+                <view class="line">
+                    <view></view>
+                    <text></text>
+                </view>
+                <text class="step">{{item.disposeDate}}　{{item.logger}}</text>
+            </view>
+        </view>
+    </view>
+    <view class="apply-type">
+        <view class="title">申请类型:{{tuihuo.thDetail.th_type}}</view>
+    </view>
+    <view class="apply-reason">
+        <view class="title">申请原因:</view>
+        <view class="reason">{{tuihuo.thDetail.th_reason}}</view>
+    </view>
+    <view class="message">
+        <view class="title">留言:</view>
+        <view class="content">{{tuihuo.thDetail.th_remark}}</view>
+    </view>
+</view>

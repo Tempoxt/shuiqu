@@ -1,0 +1,84 @@
+/* pages/myTicket/myTicket.wxss */
+.swiper-tab{ 
+  width: 100%; 
+  text-align: center;
+  height: 40px; 
+  line-height: 40px;
+  display: flex;
+} 
+.swiper-tab-item{ 
+    font-size: 30rpx; 
+    flex: 1;
+    width: 50%; 
+    color: #4d555d;
+    
+} 
+.on{
+  color: #000; 
+  font-weight: bold; 
+  border-bottom: 2px solid #F8D32F;
+} 
+ 
+.swiper-box{ display: block; height: 100%; width: 100%; overflow: hidden;background-color: #eee; } 
+.swiper-box .header{ 
+  /* text-align: center;  */
+  display: flex;
+  font-size: 30rpx;
+  justify-content: center;
+  padding:10rpx 0;
+} 
+.swiper-box .header .info .red{
+    color:red;
+}
+.swiper-box .content .item{
+    width:100%;
+    height:250rpx;
+    background:#fff;
+    display:flex;
+    justify-content:flex-end;
+    font-size:24rpx;
+    margin-bottom:10rpx;
+}
+
+.swiper-box .content .item .item-detail{
+    flex:1;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 40rpx;
+}
+.swiper-box .content .item .item-detail .info{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+.swiper-box .content .item .item-detail .info .title{
+    font-size:30rpx;
+    font-weight:bold;
+}
+.swiper-box .content .item .item-detail image{
+    width:120rpx;
+    height:120rpx;
+}
+.swiper-box .content .item .to-use{
+    display:flex;
+    width:10%;
+    height:100%;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    flex-wrap:wrap;
+    background:#F9D603;
+    font-size:30rpx;
+}
+.swiper-box .content .item .to-use .arrow{
+    width:30rpx;
+    height:30rpx;
+}
+/*注册窗口*/
+ @import "../../common/register.wxss"; 
+
+
+
+

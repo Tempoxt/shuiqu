@@ -1,0 +1,91 @@
+/* pages/productEvaluate/productEvaluate.wxss */
+page{
+    height: 100%;
+}
+.container{
+    height: 100%;
+}
+.container .choose-evaluate{
+    display: flex;
+    flex-direction: column;
+    padding: 20rpx;
+    border-bottom: 1rpx solid #eeeeee;
+}
+.container .choose-evaluate .evaluate-type{
+    display: flex;
+    justify-content: space-between;
+    font-size: 32rpx;
+    margin-bottom: 20rpx;
+    
+}
+
+.container .choose-evaluate .evaluate-type view{
+    border: 1rpx solid #ddd;
+    border-radius: 20rpx;
+    padding:0 20rpx;
+}
+.container .choose-evaluate .evaluate-type .active{
+    
+}
+.container .choose-evaluate .evaluate-type .active.theme1{
+    color: #E8A44F;
+}
+.container .choose-evaluate .evaluate-type .active.theme2{
+    color: #7b00d3;
+}
+.container .choose-evaluate .evaluate-type .active.theme3{
+    color: #ff4060;
+}
+.container .choose-evaluate .evaluate-type .active.theme4{
+    color: #3ebaff;
+}
+.container .choose-evaluate .evaluate-type .active.theme5{
+    color: #5de04f;
+}
+.container .choose-evaluate .toggle-image{
+    display: flex;
+    align-items: center;
+    font-size: 28rpx;
+}
+.container .choose-evaluate .toggle-image image{
+    width:50rpx;
+    height:50rpx;
+}
+.container .evaluate-list .evaluate{
+    padding: 20rpx;
+    border-bottom: 1rpx solid #eeeeee;
+}
+.container .evaluate-list .evaluate .evaluate-info .user-photo{
+    width:80rpx;
+    height:80rpx;
+    border-radius:50%;
+    margin-right: 20rpx;
+}
+.container .evaluate-list .evaluate .evaluate-content{
+    font-size: 24rpx;
+    margin-bottom: 20rpx;
+}
+.container .evaluate-list .evaluate .evaluate-info{
+    display: flex;
+    margin-bottom: 20rpx;
+}
+.container .evaluate-list .evaluate .evaluate-info .info{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 24rpx;
+    
+}
+.container .evaluate-list .evaluate .evaluate-info .info .row-one{
+    display: flex;
+    justify-content: space-between;
+}
+ .container .evaluate-list .evaluate .evaluate-info .info .row-two{
+    display: flex;
+    align-items: center;
+} 
+.container .evaluate-list .evaluate .evaluate-info .info .row-two image{
+    width:30rpx;
+    height:30rpx;
+}

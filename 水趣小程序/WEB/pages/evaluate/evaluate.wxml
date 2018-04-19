@@ -1,0 +1,32 @@
+<!-- 评价 -->
+<view class="container">
+    <view class="service-evaluate">
+        <image class="staff-photo" wx:if="{{evaluate.staff.photo}}" src="{{evaluate.staff.photo}}"></image>
+        <image class="staff-photo" wx:else src="../../images/default.png"></image>
+        <view class="evaluate-list">
+            <view wx:for="{{evaluate.orderTags}}" class="orderTags">
+                <text>{{item.projectName}}</text>
+                <view wx:for="{{item.projectGrades}}" class="star {{item.defaultGrades>index?' on':''}}" data-index="{{index}}" bindtap="changeStar" data-projectId="{{item.projectId}}"></view>
+                <text data-projectId="{{item.projectId}}">{{item.defaultName}}</text>  
+            </view>
+        </view>
+    </view>
+    <view class="service-feel">
+        <textarea placeholder='请写下对服务的感受，长度在5~200之间' bindinput="serviceFeel"></textarea>
+    </view>
+    <view class="goods-evaluate">
+        <view class="goods" wx:for="{{evaluate.goods}}" wx:for-item="good">
+            <view class="title">{{good.pname}}</view>
+            <view class="goods-content">
+                <image src="{{good.pictureUrl}}"></image>
+                <textarea class="evaluate-content" placeholder='请写下对商品的评价，对他人帮助很大哦' data-pid="{{good.pid}}" bindinput="productEvaluate"></textarea>
+            </view>
+            <view class="goods-star">
+                <view wx:for="{{evaluate.productTags[0].projectGrades}}" class="star {{good.defaultGrades>index?' on':''}}" data-pid="{{good.pid}}" data-index="{{index}}" bindtap="changeProductStar" data-projectId="{{good.projectId}}"></view><text>{{good.defaultName}}</text>
+            </view>
+        </view>
+    </view>
+    <view class="btn-box">
+    <view class="footer {{theme==1?' theme1':''}}{{theme==2?' theme2':''}}{{theme==3?' theme3':''}}{{theme==4?' theme4':''}}{{theme==5?' theme5':''}}" bindtap='submitEvaluate'>发表评价</view>
+    </view>
+</view>

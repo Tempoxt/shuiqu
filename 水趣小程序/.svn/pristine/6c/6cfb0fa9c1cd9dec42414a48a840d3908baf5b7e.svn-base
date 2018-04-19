@@ -1,0 +1,30 @@
+/* pages/msgDetail/msgDetail.wxss */
+page{
+    background: #eee;
+    height: 100%;
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.container .msg-wrap{
+    background: #fff;
+    padding: 20rpx 0;
+    font-size: 28rpx;
+    margin-bottom: 1rpx;
+}
+.container .msg-wrap .time-box{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20rpx;
+    margin-bottom: 10rpx;
+}
+.container .msg-wrap .time-box .time{
+    font-size: 24rpx;
+}
+.container .msg-wrap .notifyContent{
+    padding: 0 20rpx;
+    white-space: pre-line;
+}

@@ -1,0 +1,19 @@
+<!--pages/register/register.wxml-->
+<!--已弃用-->
+<view class="container">
+    <view class="phoneBox">
+
+        <text class="phoneNum">手机号:</text>
+        <input type="number" placeholder="请输入手机号" focus="true" maxlength="11" bindinput="inputHandler" />
+    </view>
+    <view class="tips">
+        <image wx:if="{{selectStatus}}" src="../../images/checkbox_big_checked.png" bindtap="toggleStatus">
+        </image>
+        <image wx:else src="../../images/checkbox_big_disabled.png" bindtap="toggleStatus">
+        </image>    
+        <text>我已阅读并同意《水趣用户协议》</text>
+    </view>
+    <button class="confirm-button" type="default" style="background-color:{{buttonColor}}" disabled="{{clickStatus}}" bindtap="getCode"> 获取手机验证码 </button>
+</view>
+
+

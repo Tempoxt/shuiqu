@@ -1,0 +1,14 @@
+/* pages/faq/faq.wxss */
+page{
+    background: #F0F0F0;
+}
+.quesiton{
+    font-size: 32rpx;
+    padding: 20rpx 40rpx;
+    font-weight: bold;
+}
+.answer{
+    font-size: 26rpx;
+    padding: 10rpx 40rpx;
+    color: #666;
+}

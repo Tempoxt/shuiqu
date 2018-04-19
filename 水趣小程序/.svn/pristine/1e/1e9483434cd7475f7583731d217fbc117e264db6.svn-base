@@ -1,0 +1,224 @@
+<!--  购物车  -->
+<!--购物车没有商品-->
+<view class="container cart-container" wx:if="{{!shopCartData || shopCartData.shopcarts.length == 0}}" style="display:flex;justify-content:center;align-items:center;height:100%;">
+    <image src="../../images/88tip_ico_order.png" style="width:120rpx;height:120rpx;"></image>
+    <text style="font-size:30rpx;margin:20rpx 0;color:#959595">购物车暂无商品，快去买买买！</text>
+    <button size='mini'  bindtap='goHome' class="goHomePage {{theme==1?'theme1':''}}{{theme==2?'theme2':''}}{{theme==3?'theme3':''}}{{theme==4?'theme4':''}}{{theme==5?'theme5':''}}">确定</button>
+</view>
+<!--正常状态-->
+<view class="container cart-container" wx:elif="{{shopCartData.shopcarts[0].status == '编辑'}}">
+    <view class="top">   
+        <view class="quanxuan" bindtap="toggleSelectAll">
+            <image wx:if="{{shopCartData.allSelectStatus}}" class="xuanze" src="{{theme==1?'../../images/1/xuanze.png':''}}{{theme==2?'../../images/2/xuanze.png':''}}{{theme==3?'../../images/3/xuanze.png':''}}{{theme==4?'../../images/4/xuanze.png':''}}{{theme==5?'../../images/5/xuanze.png':''}}" ></image>
+            <image wx:else class="xuanze" src="../../images/checkbox_big_disabled.png" ></image>
+            <text>全选</text>
+        </view>  
+        <image src="{{theme==1?'../../images/1/yatong.png':''}}{{theme==2?'../../images/2/yatong.png':''}}{{theme==3?'../../images/3/yatong.png':''}}{{theme==4?'../../images/4/yatong.png':''}}{{theme==5?'../../images/5/yatong.png':''}}" bindtap='bucketExplain'></image>
+    </view> 
+    
+     <!-- <form action="/weixin/confirmCarJson"  method="POST">
+      <input type="hidden" name="quickSpJson">
+     </form> -->
+     <block wx:for="{{shopCartData.shopcarts}}"> 
+        
+        <view class="cart-box">
+                <view class="header">
+                    <view>
+                         <block wx:if="{{shopCartData.allSelectStatus}}" >
+                            <image src="{{theme==1?'../../images/1/xuanze.png':''}}{{theme==2?'../../images/2/xuanze.png':''}}{{theme==3?'../../images/3/xuanze.png':''}}{{theme==4?'../../images/4/xuanze.png':''}}{{theme==5?'../../images/5/xuanze.png':''}}" data-shopid="{{item.shopId}}" bindtap="toggleSelectAll"></image>
+                            <text>{{item.shopName}}</text>
+                        </block>
+                        <block wx:else>
+                            <image src="../../images/checkbox_big_disabled.png" data-shopid="{{item.shopId}}" bindtap="toggleSelectAll"></image>
+                            <text>{{item.shopName}}</text>
+                        </block> 
+                    </view>
+                    <button class="{{theme==1?'theme1':''}}{{theme==2?'theme2':''}}{{theme==3?'theme3':''}}{{theme==4?'theme4':''}}{{theme==5?'theme5':''}}" size="mini" data-status="{{item.status}}" bindtap="edit">{{item.status}}</button>
+                </view>
+                <view class="cart-item"  wx:for="{{item.products}}">
+                    <image wx:if="{{item.fpid}}" src="../../images/peison.png" class="fpid"></image>
+                    <view class="cart-item-main">
+                        
+                        <view class="cart-item-checkbox">
+                            <image wx:if="{{item.productSelectStatus}}" src="{{theme==1?'../../images/1/xuanze.png':''}}{{theme==2?'../../images/2/xuanze.png':''}}{{theme==3?'../../images/3/xuanze.png':''}}{{theme==4?'../../images/4/xuanze.png':''}}{{theme==5?'../../images/5/xuanze.png':''}}" bindtap="toggleStatus" data-pid="{{item.pid}}" data-fpid="{{item.fpid}}" data-shopid="{{item.shopId}}">
+                            </image>
+                            <image wx:else src="../../images/checkbox_big_disabled.png" bindtap="toggleStatus" data-pid="{{item.pid}}" data-fpid="{{item.fpid}}">
+                            </image>
+                        </view>
+                        <view class="cart-item-img">
+                            <image class="good-image" src="{{item.pictureUrl}}"></image>
+                        </view>
+                        <view class="cart-item-word">
+                            <view class="title-box">{{item.pname}}
+                            </view>
+                            <view class="vipPrice {{item.settleStyle=='现金'||item.settleStyle=='押桶'? '':' noCash'}}">￥{{item.vipPrice}}</view>
+                            <view class="bottom-box">
+                                <view class="cart-item-counts">
+                                    <view class="number">数量:
+                                        <text class="counts">{{item.number}}</text>
+                                    </view>
+                                   
+                                </view>
+                                <view class="settle-box">结算方式:
+                                    <text class="settleStyle">{{item.settleStyle}}  </text>
+                                </view>
+                            </view>
+                        </view>
+
+                    </view>
+                </view>
+            <!-- </block> -->
+        </view>
+        <view class="footer-account-box all-accounts-box">
+            <view class="total-price" bindtap='backShop' data-shopid="{{shopId}}">
+                <view class="back-shop"><image src="../../images/backShop.png"></image>返回店铺</view>
+                <view>合计：<text>￥{{total}}</text>　水票<text>{{ticket}}</text>　电子票<text>{{eticket}}</text></view> 
+            </view>
+            <view class="footer">
+                <view class="content-left">
+                    <button catchtap="goHome">
+                        <image src="../../images/home.png" ></image><text>首页</text>
+                    </button>
+                    <button catchtap="kefu">
+                        <image src="../../images/kefu.png" ></image><text>客服</text>
+                    </button>
+                    <button open-type="share" catchtap="share">
+                        <image src="../../images/fenxiang.png" ></image><text>分享</text>
+                    </button>
+                </view>
+                <view class="content-right">
+                    <view class="all-price-submit {{shopCartData.shopcarts[0].status == '完成'?'disabled no-product':'has-product'}}{{theme==1?' theme1':''}}{{theme==2?' theme2':''}}{{theme==3?' theme3':''}}{{theme==4?' theme4':''}}{{theme==5?' theme5':''}}" bindtap="submitOrder">我选好了</view>
+                </view>
+            </view> 
+        </view>
+     </block>
+</view>
+<!--编辑状态-->
+<view wx:else class="container cart-container">
+    <block wx:for="{{shopCartData.shopcarts}}"> 
+        <view class="top">
+            <view class="quanxuan" bindtap="toggleSelectAll">
+                <image wx:if="{{shopCartData.allSelectStatus}}" class="xuanze" src="{{theme==1?'../../images/1/xuanze.png':''}}{{theme==2?'../../images/2/xuanze.png':''}}{{theme==3?'../../images/3/xuanze.png':''}}{{theme==4?'../../images/4/xuanze.png':''}}{{theme==5?'../../images/5/xuanze.png':''}}" ></image>
+                <image wx:else class="xuanze" src="../../images/checkbox_big_disabled.png" ></image>
+                <text>全选</text>
+            </view>
+            <image src="{{theme==1?'../../images/1/yatong.png':''}}{{theme==2?'../../images/2/yatong.png':''}}{{theme==3?'../../images/3/yatong.png':''}}{{theme==4?'../../images/4/yatong.png':''}}{{theme==5?'../../images/5/yatong.png':''}}" bindtap='bucketExplain'></image>
+        </view> 
+        <view class="cart-box">
+                <view class="header">
+                    <view>
+                         <block wx:if="{{shopCartData.allSelectStatus}}" >
+                            <image src="{{theme==1?'../../images/1/xuanze.png':''}}{{theme==2?'../../images/2/xuanze.png':''}}{{theme==3?'../../images/3/xuanze.png':''}}{{theme==4?'../../images/4/xuanze.png':''}}{{theme==5?'../../images/5/xuanze.png':''}}" data-shopid="{{item.shopId}}" bindtap="toggleSelectAll"></image>
+                            <text>{{item.shopName}}</text>
+                        </block>
+                        <block wx:else>
+                            <image src="../../images/checkbox_big_disabled.png" data-shopid="{{item.shopId}}" bindtap="toggleSelectAll"></image>
+                            <text>{{item.shopName}}</text>
+                        </block> 
+                    </view>
+                    <button class="{{theme==1?'theme1':''}}{{theme==2?'theme2':''}}{{theme==3?'theme3':''}}{{theme==4?'theme4':''}}{{theme==5?'theme5':''}}" size="mini" data-status="{{item.status}}" bindtap="edit">{{item.status}}</button>
+                </view>
+                <view class="cart-item"  wx:for="{{item.products}}">
+                    <image wx:if="{{item.fpid}}" src="../../images/peison.png" class="fpid"></image>
+                    <view class="cart-item-main">
+                        <view class="cart-item-checkbox">
+                            <image wx:if="{{item.productSelectStatus}}" src="{{theme==1?'../../images/1/xuanze.png':''}}{{theme==2?'../../images/2/xuanze.png':''}}{{theme==3?'../../images/3/xuanze.png':''}}{{theme==4?'../../images/4/xuanze.png':''}}{{theme==5?'../../images/5/xuanze.png':''}}" bindtap="toggleStatus" data-pid="{{item.pid}}" data-fpid="{{item.fpid}}" data-shopid="{{item.shopId}}">
+                                </image>
+                            <image wx:else src="../../images/checkbox_big_disabled.png" bindtap="toggleStatus" data-pid="{{item.pid}}" data-fpid="{{item.fpid}}">
+                            </image>  
+
+                        </view>
+                        <view class="cart-item-img">
+                            <image class="good-image" src="{{item.pictureUrl}}">
+                            </image>
+                        </view>
+                        <view class="cart-item-word">
+                            <view class="title-box">{{item.pname}}
+                            </view>
+                           
+                            <view class="cartControl">
+                                <image class="cart-decrease" data-item-index="{{index}}" catchtap="decreaseCart" src="{{theme==1?'../../images/1/minus_btn.png':''}}{{theme==2?'../../images/2/minus_btn.png':''}}{{theme==3?'../../images/3/minus_btn.png':''}}{{theme==4?'../../images/4/minus_btn.png':''}}{{theme==5?'../../images/5/minus_btn.png':''}}" data-pid="{{item.pid}}" data-fpid="{{item.fpid}}" data-hashticket="{{item.hashTicket}}"></image>
+                                <view class="cart-count">{{item.number}}</view>
+                                <image class="cart-add" data-item-index="{{index}}" catchtap="addCart" src="{{theme==1?'../../images/1/add_btn.png':''}}{{theme==2?'../../images/2/add_btn.png':''}}{{theme==3?'../../images/3/add_btn.png':''}}{{theme==4?'../../images/4/add_btn.png':''}}{{theme==5?'../../images/5/add_btn.png':''}}" data-pid="{{item.pid}}" data-fpid="{{item.fpid}}" data-maxnum="{{item.maxnum}}" data-surplusnum="{{item.surplusNum}}" data-hashticket="{{item.hashTicket}}"></image>     
+                            </view>
+                            <view class="bottom-box">
+                                
+                                    <view class="settleStyle-box">
+                                        <block wx:if="{{item.fpid}}">
+                                            <image src="{{theme==1?'../../images/1/200 btn_dzp-01.png':''}}{{theme==2?'../../images/2/200 btn_dzp-01.png':''}}{{theme==3?'../../images/3/200 btn_dzp-01.png':''}}{{theme==4?'../../images/4/200 btn_dzp-01.png':''}}{{theme==5?'../../images/5/200 btn_dzp-01.png':''}}" data-name="电子票" data-value="2"></image>
+                                        </block>
+                                        <block wx:else>
+                                            <block wx:if="{{item.hashTicket}}">  
+                                                <image wx:if="{{item.settleStyle == '现金'}}" src="{{theme==1?'../../images/1/163btn_xj.png':''}}{{theme==2?'../../images/2/163btn_xj.png':''}}{{theme==3?'../../images/3/163btn_xj.png':''}}{{theme==4?'../../images/4/163btn_xj.png':''}}{{theme==5?'../../images/5/163btn_xj.png':''}}"></image>
+                                            </block>
+                                            <block wx:else>
+                                                <block wx:if="{{item.surplusNum > 0}}">
+                                                    <block wx:if="{{item.settleStyle == '电子票'}}">
+                                                        <image src="../../images/166btn_xj_off.png" data-pid="{{item.pid}}" bindtap="toggleSettleStyle" data-name="现金" data-value="1"></image>
+                                                        <image src="{{theme==1?'../../images/1/200 btn_dzp-01.png':''}}{{theme==2?'../../images/2/200 btn_dzp-01.png':''}}{{theme==3?'../../images/3/200 btn_dzp-01.png':''}}{{theme==4?'../../images/4/200 btn_dzp-01.png':''}}{{theme==5?'../../images/5/200 btn_dzp-01.png':''}}"></image>
+                                                        
+                                                    </block>
+                                                    <block wx:else>
+                                                        <image src="{{theme==1?'../../images/1/163btn_xj.png':''}}{{theme==2?'../../images/2/163btn_xj.png':''}}{{theme==3?'../../images/3/163btn_xj.png':''}}{{theme==4?'../../images/4/163btn_xj.png':''}}{{theme==5?'../../images/5/163btn_xj.png':''}}"></image>
+                                                        <image src="../../images/200 btn_dzp_off-01.png" data-pid="{{item.pid}}" bindtap="toggleSettleStyle" data-name="电子票" data-value="2" data-fpid="{{item.fpid}}" data-surplusnum="{{item.surplusnum}}" data-number="{{item.number}}"></image>
+                                                        
+                                                    </block>
+                                                </block>
+                                                <block wx:else>
+                                                    <block wx:if="{{item.ifTicket}}">
+                                                        <block wx:if="{{item.settleStyle == '现金'}}">
+                                                            <image src="{{theme==1?'../../images/1/163btn_xj.png':''}}{{theme==2?'../../images/2/163btn_xj.png':''}}{{theme==3?'../../images/3/163btn_xj.png':''}}{{theme==4?'../../images/4/163btn_xj.png':''}}{{theme==5?'../../images/5/163btn_xj.png':''}}"></image>
+                                                            <image src="../../images/165btn_sp_off.png" data-pid="{{item.pid}}" bindtap="toggleSettleStyle" data-name="水票" data-value="3"></image>                
+                                                        </block>
+                                                        <block wx:else>
+                                                            <image src="../../images/166btn_xj_off.png"  data-pid="{{item.pid}}" bindtap="toggleSettleStyle" data-name="现金" data-value="1"></image>
+                                                            <image src="{{theme==1?'../../images/1/160btn_sp.png':''}}{{theme==2?'../../images/2/160btn_sp.png':''}}{{theme==3?'../../images/3/160btn_sp.png':''}}{{theme==4?'../../images/4/160btn_sp.png':''}}{{theme==5?'../../images/5/160btn_sp.png':''}}" ></image>    
+                                                        </block>
+                                                    </block>
+                                                    <block wx:else>
+                                                        <block wx:if="{{item.settleStyle == '现金'}}">
+                                                            <image src="{{theme==1?'../../images/1/163btn_xj.png':''}}{{theme==2?'../../images/2/163btn_xj.png':''}}{{theme==3?'../../images/3/163btn_xj.png':''}}{{theme==4?'../../images/4/163btn_xj.png':''}}{{theme==5?'../../images/5/163btn_xj.png':''}}"></image>            
+                                                        </block>
+                                                        <block wx:else>
+                                                            <!-- <image src="../../images/163btn_xj.png"></image>    -->
+                                                        </block>
+                                                    </block>
+                                                </block>
+                                            </block>
+                                        </block>
+                                    </view>
+                                
+                                <image class="delete-item" src="../../images/11address_del.png" data-pid="{{item.pid}}" data-number="{{item.number}}" data-settlestyle="{{item.settleStyle}}" bindtap='delete'></image>
+                            </view>
+                        </view>
+
+                    </view>
+                </view>
+            <!-- </block> -->
+        </view>
+        <view class="footer-account-box all-accounts-box">
+            <view class="total-price" bindtap='backShop' data-shopid="{{shopId}}">
+                <view class="back-shop"><image src="../../images/backShop.png"></image>返回店铺</view>
+                <view>合计：<text>￥{{total}}</text>　水票<text>{{ticket}}</text>　电子票<text>{{eticket}}</text></view> 
+            </view>
+            <view class="footer">
+                <view class="content-left">
+                    <button catchtap="goHome">
+                        <image src="../../images/home.png" ></image><text>首页</text>
+                    </button>
+                    <button catchtap="kefu">
+                        <image src="../../images/kefu.png" ></image><text>客服</text>
+                    </button>
+                    <button open-type="share" catchtap="share">
+                        <image src="../../images/fenxiang.png" ></image><text>分享</text>
+                    </button>
+                    
+                </view>
+                <view class="content-right">
+                    <view class="all-price-submit {{shopCartData.shopcarts[0].status == '完成'?'disabled no-product':'has-product'}}" bindtap="submitOrder">我选好了</view>
+                </view>
+            </view>
+            
+        </view>
+     </block>
+</view>

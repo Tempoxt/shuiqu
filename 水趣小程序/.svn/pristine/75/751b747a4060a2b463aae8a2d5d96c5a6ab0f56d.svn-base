@@ -1,0 +1,5 @@
+<!--无水店-->
+<view class="container">
+    <image src="../../images/xcx_wjh.png"></image>
+    <text>亲,小店正在装修中...</text>
+</view>
